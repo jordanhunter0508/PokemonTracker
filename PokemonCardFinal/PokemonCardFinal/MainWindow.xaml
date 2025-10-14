@@ -14,7 +14,7 @@
             <RowDefinition Height="10" />
             <RowDefinition />
             <!-- tabset -->
-            <RowDefinition Height="50" />
+            <RowDefinition Height="500" />
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Padding="20 3">
