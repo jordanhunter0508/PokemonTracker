@@ -19,12 +19,15 @@ namespace PokemonCardFinal
         public MainWindow()
         {
             InitializeComponent();
-            test("This is a test");
         }
 
-        public void test(string str) 
+        // Clears the search box when the user enters a value a character
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            tabRental.Content = str;
+            if (txtSearch.Text.Equals("Search..."))
+            {
+                txtSearch.Text = string.Empty;
+            }
         }
     }
 }

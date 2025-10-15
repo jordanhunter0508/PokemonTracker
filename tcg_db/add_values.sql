@@ -3,7 +3,35 @@ GO
 USE [tcg_db]
 GO
 
-PRINT '' PRINT '*** adding to ElementType table in tcg_db'
+PRINT '' PRINT '' PRINT 'Adding values to Tables in tcg_db'
+
+PRINT '*** adding to Role Table ***'
+GO
+INSERT INTO [dbo].[Role]
+	([RoleID],[Description])
+VALUES
+	('Admin','This user can create an entry for new cards, boosters,
+		artist, alternate arts, abilitys, element types, moves, pokedex, pokemon rules,
+		stages, stage evolutions, or pokemon evolutions'),
+	
+	('General','This is the standard user can not create new cards, boosters,
+		artist, alternate arts, abilitys, element types, moves, pokedex, pokemon rules,
+		stages, stage evolutions, or pokemon evolutions')
+GO
+
+PRINT '*** adding to Users Table ***'
+GO
+INSERT INTO [dbo].[Users]
+	([RoleID],[GivenName],[Surname],[Email])
+VALUES
+	('Admin','john','stewart','john@mail.com'),
+	('General','ceedee','lamb','lamb@mail.com'),
+	('General','daniel','jones','daniel@mail.com'),
+	('General','harrison','mevis','mevis@mail.com'),
+	('General','tom','ford','tom@mail.com')
+GO
+
+PRINT '*** adding to ElementType Table ***'
 GO
 INSERT INTO [dbo].[ElementType]
 	([Name],[Description])
@@ -28,7 +56,7 @@ VALUES
 	('Fairy','')
 GO
 
-PRINT'' PRINT '*** adding to Pokedex table in tcg_db'
+PRINT '*** adding to Pokedex Table ***'
 GO
 INSERT INTO [dbo].[Pokedex]
 	([PokedexID],[Name])
@@ -1035,7 +1063,6 @@ VALUES
 	(999,'gimmighoul')	
 GO
 
-PRINT'' PRINT '*** adding to Pokedex table in tcg_db'
 GO
 INSERT INTO [dbo].[Pokedex]
 	([PokedexID],[Name])
@@ -1073,7 +1100,7 @@ GO
 
 
 
-PRINT'' PRINT '*** adding to Booster table in tcg_db'
+PRINT '*** adding to Booster Table ***'
 GO
 INSERT INTO [dbo].[Booster]
 	([GenerationName],[GenerationNumber],[BoosterName],[BoosterNumber],

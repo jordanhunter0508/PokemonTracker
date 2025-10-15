@@ -1,0 +1,87 @@
+﻿<Window x:Class="PokemonCardFinal.MainWindowCopy"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PokemonCardFinal"
+        mc:Ignorable="d"
+        Title="MainWindowCopy" Height="450" Width="800">
+    <Grid>
+        <!-- Main Window grid -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="10" />
+            <RowDefinition />
+            <!-- tabset -->
+            <RowDefinition Height="50" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" Padding="20 3">
+            <MenuItem x:Name="mnuFile" Header="File">
+                <MenuItem x:Name="mnuExit" Header="Exit" />
+            </MenuItem>
+            <MenuItem x:Name="mnuEdit" Header="Edit">
+                <MenuItem x:Name="mnuPreferences" Header="Preferences" />
+            </MenuItem>
+            <MenuItem x:Name="mnuHelp" Header="Help">
+                <MenuItem x:Name="mnuAbout" Header="About" />
+            </MenuItem>
+        </Menu>
+
+        <!-- Grid.Row="0" is where file edit and help are-->
+        <Grid Grid.Row="1">
+            <!-- password area grid -->
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="120" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="lblGreeting" Content="You are not logged in."
+                   Padding="20 5 0 0" Margin="5"/>
+            <TextBox x:Name="txtEmail" Margin="5 5 5 0" Grid.Column="1"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"/>
+            <PasswordBox x:Name="pwdPassword" Margin="5 5 20 5" Grid.Column="2"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"/>
+            <Button x:Name="btnlogin" Margin="5 5 20 5" Grid.Column="3" Content="Log In"/>
+            <Label x:Name="lblEmail" Grid.Row="1" Grid.Column="1" Content="Email" 
+                   HorizontalAlignment="Right" HorizontalContentAlignment="Center" Width="250"/>
+            <Label x:Name="lblPassword" HorizontalAlignment="center" 
+                   Content="Password" Grid.Row="1" Grid.Column="2"/>
+
+        </Grid>
+        <!-- end of password area grid -->
+
+        <Grid x:Name="tabContainer" Grid.Row="3" Grid.ColumnSpan="4">
+            <TabControl x:Name="tabSetMain">
+                <TabItem x:Name="tabRental" Header="Ready To Rental" FontWeight="DemiBold">
+                    <Label  Content="This is test content"/>
+                </TabItem>
+                <TabItem x:Name="tabCheckOut" Header="Check Out Carts" FontWeight="DemiBold"/>
+                <TabItem x:Name="tabCheckIn" Header="Check In Carts" FontWeight="DemiBold"/>
+                <TabItem x:Name="tabInspection" Header="Inspection" FontWeight="DemiBold"/>
+                <TabItem x:Name="tabMaintence" Header="Maintence" FontWeight="DemiBold"/>
+                <TabItem x:Name="tabPrep" Header="Needs Prep" FontWeight="DemiBold"/>
+                <TabItem x:Name="tabInventory" Header="Inventory" FontWeight="DemiBold"/>
+                <TabItem x:Name="tabAdmin" Header="User Administration" FontWeight="DemiBold"/>
+            </TabControl>
+        </Grid>
+
+        <!-- This is the bottom section that is grey -->
+        <StatusBar Grid.Row="5">
+            <StatusBarItem x:Name="statMessage" Padding="20 0">
+                <!-- Could also use Content="Welcom. Please log in to continue"-->
+                Welcome. Please log in to continue
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
+    <!-- end of Main Window grid -->
+</Window>
