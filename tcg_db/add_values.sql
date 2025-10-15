@@ -34,7 +34,7 @@ GO
 PRINT '*** adding to ElementType Table ***'
 GO
 INSERT INTO [dbo].[ElementType]
-	([Name],[Description])
+	([ElementTypeID],[Description])
 VALUES
 	('Colorless',''),
 	('Fire',''),

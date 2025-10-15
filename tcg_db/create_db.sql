@@ -1,7 +1,16 @@
 /*
 Trigger on UserCard if Quantity is 0 then change bit field to 0
+Trigger for owned in collection
+
+when card is added to UserCard
+and it is in a user collection with the same id as in UserCard
+then change owned to 1
+
 
 Think of what stored procedures are needed for the program
+
+Might want to add a user Role so the user doesn't directly say Admin
+
 */
 
 print '' print'*** dropping the database tcg_db ***'
@@ -66,12 +75,10 @@ Description = "Standard card with the background of the card holographic."
 PRINT '*** creating AlternateArt Table ***'
 GO
 CREATE TABLE [dbo].[AlternateArt](
-	[AlternateArtID]		[int]				NOT NULL	IDENTITY(1,1),
-	[Name]					[nvarchar](50)		NOT NULL,
+	[AlternateArtID]		[nvarchar](50)		NOT NULL,
 	[Description]			[nvarchar](250)		NOT NULL	DEFAULT '',
 	
-	CONSTRAINT [pk_alternateart_alternateartid] PRIMARY KEY ([AlternateArtID] ASC),
-	CONSTRAINT [ak_alternateart_name] UNIQUE ([Name] ASC)
+	CONSTRAINT [pk_alternateart_alternateartid] PRIMARY KEY ([AlternateArtID] ASC)
 )
 Go
 
@@ -100,12 +107,10 @@ Name = ability name from card
 PRINT '*** creating Ability Table ***'
 GO
 CREATE TABLE [dbo].[Ability](
-	[AbilityID]				[int]				NOT NULL	IDENTITY(1,1),
-	[Name]					[nvarchar](25)		NOT NULL	DEFAULT 'support',
+	[AbilityID]				[nvarchar](25)		NOT NULL	DEFAULT 'support',
 	[Description]			[nvarchar](500)		NOT NULL	DEFAULT '',
 	
 	CONSTRAINT [pk_ability_abilityid] PRIMARY KEY ([AbilityID] ASC),
-	CONSTRAINT [ak_ability_description] UNIQUE ([Description])
 )
 Go
 
@@ -115,12 +120,10 @@ Needed because PokemonCards/CollectionType/MoveCost can all have more than one
 PRINT '*** creating ElementType Table ***'
 GO
 CREATE TABLE [dbo].[ElementType](
-	[ElementTypeID]			[int]				NOT NULL	IDENTITY(1,1),
-	[Name]					[nvarchar](15)		NOT NULL,
+	[ElementTypeID]			[nvarchar](15)		NOT NULL,
 	[Description]			[nvarchar](100)		NOT NULL	DEFAULT '',
 	
-	CONSTRAINT [pk_elementtype_elementtypeid] PRIMARY KEY ([ElementTypeID] ASC),
-	CONSTRAINT [ak_elementtype_name] UNIQUE ([Name])
+	CONSTRAINT [pk_elementtype_elementtypeid] PRIMARY KEY ([ElementTypeID] ASC)
 )
 Go
 
@@ -131,8 +134,7 @@ a card can have multiple element types for the cost
 PRINT '*** creating Move Table ***'
 GO
 CREATE TABLE [dbo].[Move](
-	[MoveID]				[int]				NOT NULL	IDENTITY(1,1),
-	[Name]					[nvarchar](30)		NOT NULL,
+	[MoveID]				[nvarchar](30)		NOT NULL,
 	[Damage]				[int]				NOT NULL,
 	[Description]			[nvarchar](100)		NOT NULL	DEFAULT '',
 	
@@ -147,13 +149,11 @@ User's have Favorites, and Wishlist by default
 PRINT '*** creating CollectionType Table ***'
 GO
 CREATE TABLE [dbo].[CollectionType](
-	[CollectionTypeID]		[int]				NOT NULL	IDENTITY(1,1),
-	[Name]					[nvarchar](25)		NOT NULL,
+	[CollectionTypeID]		[nvarchar](25)		NOT NULL,
 	[Description]			[nvarchar](25)		NOT NULL	DEFAULT '',
 	[MaxSize]				[int]				NOT NULL,	
 	
-	CONSTRAINT [pk_collectiontype_collectiontypeid] PRIMARY KEY ([CollectionTypeID] ASC),
-	CONSTRAINT [ak_collectiontype_name] UNIQUE ([Name] ASC)
+	CONSTRAINT [pk_collectiontype_collectiontypeid] PRIMARY KEY ([CollectionTypeID] ASC)
 )
 GO
 
@@ -166,7 +166,7 @@ GO
 CREATE TABLE [dbo].[Collection](
 	[CollectionID]			[int]				NOT NULL	IDENTITY(1,1),
 	[UserID]				[int]				NOT NULL,
-	[CollectionTypeID]		[int]				NOT NULL,
+	[CollectionTypeID]		[nvarchar](25)		NOT NULL,
 	[Name]					[nvarchar](50)		NOT NULL,
 	[Description]			[nvarchar](50)		NOT NULL	DEFAULT '',
 	[Active]				[bit]				NOT NULL	DEFAULT 1,
@@ -185,7 +185,7 @@ PRINT '*** creating CollectionElement Table ***'
 GO
 CREATE TABLE [dbo].[CollectionElement](
 	[CollectionID]		 	[int]				NOT NULL,
-	[ElementTypeID]		 	[int]				NOT NULL,
+	[ElementTypeID]			[nvarchar](15)		NOT NULL,
 	
 	CONSTRAINT [pk_collectiontype_collectionelementid] PRIMARY KEY ([CollectionID],[ElementTypeID]),
 	CONSTRAINT [fk_collectiontype_collectionid] FOREIGN KEY ([CollectionID]) REFERENCES [Collection]([CollectionID]),
@@ -202,12 +202,10 @@ Description = "When your Pokemon V is Knocked Out, your opponent takes 2 Prize C
 PRINT '*** creating PokemonRule Table ***'
 GO
 CREATE TABLE [dbo].[PokemonRule](
-	[PokemonRuleID]			[int]				NOT NULL	IDENTITY(1,1),
-	[Name]					[nvarchar](50)		NOT NULL,
-	[Description]			[nvarchar](100)		NOT NULL	DEFAULT '',
+	[PokemonRuleID]			[nvarchar](50)		NOT NULL,
+	[Description]			[nvarchar](100)		NOT NULL,
 	
 	CONSTRAINT [pk_pokemonrule_pokemonruleid] PRIMARY KEY ([PokemonRuleID] ASC),
-	CONSTRAINT [ak_pokemonrule_name] UNIQUE ([Name] ASC),
 	CONSTRAINT [ak_pokemonrule_description] UNIQUE ([Description])
 )
 GO
@@ -236,7 +234,7 @@ PRINT '*** creating Stage Table ***'
 GO
 CREATE TABLE [dbo].[Stage](
 	[StageID]				[int]				NOT NULL	IDENTITY(1,1),
-	[Name]					[int]               NOT NULL,
+	[Name]					[int]				NOT NULL,
 	
 	CONSTRAINT [pk_stage_stageid] PRIMARY KEY ([StageID]),
 	CONSTRAINT [ak_stage_name] UNIQUE ([Name])
@@ -249,14 +247,12 @@ Used to store the data about the booster packs or sets
 PRINT '*** creating Booster Table ***'
 GO
 CREATE TABLE [dbo].[Booster](
-	[BoosterID]				[int]				NOT NULL 	IDENTITY(1,1),
+	[BoosterID]				[nvarchar](50)		NOT NULL,
 	[Series]				[nvarchar](50)		NOT NULL,
-	[BoosterName]			[nvarchar](50)		NOT NULL,
 	[ReleaseDate]			[date]				NOT NULL,
 	[Abbreviation]			[nvarchar](4)		NOT NULL,
 	
 	CONSTRAINT [pk_booster_boosterid] PRIMARY KEY ([BoosterID]),
-	CONSTRAINT [ak_booster_boostername] UNIQUE ([BoosterName]),
 	CONSTRAINT [ak_booster_releasedate] UNIQUE ([ReleaseDate] DESC),
 	CONSTRAINT [ak_booster_abbreviation] UNIQUE ([Abbreviation])
 )
@@ -270,12 +266,12 @@ PRINT '*** creating PokemonCard Table ***'
 GO
 CREATE TABLE [dbo].[PokemonCard](
 	[PokemonCardID]			[int]				NOT NULL	IDENTITY(1,1),
-	[AlternateArtID]		[int]	            NOT NULL,	
-	[ArtistID]				[int]	            NOT NULL,	
-	[AbilityID]				[int]	            NOT NULL,	
-	[BoosterID]				[int]	            NOT NULL,	
-	[StageID]				[int]	            NOT NULL,
-	[BoosterNumber]         [int]               NOT NULL,	
+	[AlternateArtID]		[nvarchar](50)		NOT NULL,	
+	[ArtistID]				[int]				NOT NULL,	
+	[AbilityID]				[nvarchar](25)		NOT NULL,	
+	[BoosterID]				[nvarchar](50)		NOT NULL,	
+	[StageID]				[int]				NOT NULL,
+	[BoosterNumber]         [int]				NOT NULL,	
 	[Name]					[nvarchar](50)	    NOT NULL,	
 	[CardType]				[nvarchar](50)    	NOT NULL,
 	[Rarity]				[nvarchar](20)		NOT NULL,
@@ -306,13 +302,12 @@ Used to keep track of which card each user has
 PRINT '*** creating UserCard Table ***'
 GO
 CREATE TABLE [dbo].[UserCard](
-	[UserCardID]			[int]				NOT NULL	IDENTITY(1,1),
 	[UserID]				[int]				NOT NULL,
 	[PokemonCardID]			[int]				NOT NULL,
 	[Quantity]				[int]				NOT NULL, /*Quantity prevents duplicate entries*/
 	[Active]				[bit]				NOT NULL	DEFAULT 1, /* If the user sells the card and wants to remove it from there card list*/
 	
-	CONSTRAINT [pk_usercard_usercardid] PRIMARY KEY ([UserCardID] ASC),
+	CONSTRAINT [pk_usercard_usercardid] PRIMARY KEY ([UserID], [PokemonCardID]),
 	CONSTRAINT [fk_usercard_userid] FOREIGN KEY ([UserID]) REFERENCES [Users]([UserID]),
 	CONSTRAINT [fk_usercard_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]),
 )
@@ -325,12 +320,11 @@ Some moves have multiple elements needed to use the move
 PRINT '*** creating MoveCost Table ***'
 GO
 CREATE TABLE [dbo].[MoveCost](
-	[MoveCostID]			[int]				NOT NULL	IDENTITY(1,1),
-	[MoveID]				[int]				NOT NULL,
-	[ElementTypeID]			[int]				NOT NULL,
+	[MoveID]				[nvarchar](30)		NOT NULL,
+	[ElementTypeID]			[nvarchar](15)		NOT NULL,
 	[Quantity]				[int]				NOT NULL,
 	
-	CONSTRAINT [pk_movecost_movecostid] PRIMARY KEY ([MoveCostID]),
+	CONSTRAINT [pk_movecost_movecostid] PRIMARY KEY ([MoveID],[ElementTypeID]),
 	CONSTRAINT [fk_moveelement_moveid] FOREIGN KEY ([MoveID]) REFERENCES [Move]([MoveID]),
 	CONSTRAINT [fk_moveelement_elementtypeid] FOREIGN KEY ([ElementTypeID]) REFERENCES [ElementType]([ElementTypeID]),
 )
@@ -343,11 +337,10 @@ Some cards have more than one move
 PRINT '*** creating CardMove Table ***'
 GO
 CREATE TABLE [dbo].[CardMove](
-	[CardMoveID]			[int]				NOT NULL	IDENTITY(1,1),
 	[PokemonCardID]			[int]				NOT NULL,
-	[MoveID]				[int]				NOT NULL,
+	[MoveID]				[nvarchar](30)		NOT NULL,
 	
-	CONSTRAINT [pk_cardmove_cardmoveid] PRIMARY KEY ([CardMoveID]),
+	CONSTRAINT [pk_cardmove_cardmoveid] PRIMARY KEY ([PokemonCardID],[MoveID]),
 	CONSTRAINT [fk_cardmove_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]),
 	CONSTRAINT [fk_cardmove_moveid] FOREIGN KEY ([MoveID]) REFERENCES [Move]([MoveID])
 )
@@ -359,30 +352,30 @@ This can be used to all collection types(deck,wishlist,ect.)
 */
 PRINT '*** creating CollectionList Table ***'
 GO
-CREATE TABLE [dbo].[CollectionList](
-	[CollectionListID]		[int]				NOT NULL	IDENTITY(1,1),
-	[UserCardID]			[int]				NOT NULL,
+CREATE TABLE [dbo].[CollectionCard](
+	[CollectionCardID]		[int]				NOT NULL	IDENTITY(1,1),
+	[PokemonCardID]			[int]				NOT NULL,
 	[CollectionID]			[int]				NOT NULL,
 	[Quantity]				[int]				NOT NULL,
+	[Owned]					[bit]				NOT NULL	DEFAULT 0,
 	
-	CONSTRAINT [pk_collectionlist_collectionlistid] PRIMARY KEY ([CollectionListID]),
-	CONSTRAINT [fk_collectionlist_usercard] FOREIGN KEY ([UserCardID]) REFERENCES [UserCard]([UserCardID]),
+	CONSTRAINT [pk_collectionlist_collectioncardid] PRIMARY KEY ([CollectionCardID]),
+	CONSTRAINT [fk_collectionlist_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]),
 	CONSTRAINT [fk_collectionlist_collectionid] FOREIGN KEY ([CollectionID]) REFERENCES [Collection]([CollectionID])
 )
 GO
 
 
 /*
-Used because some cards have multiple pokemon on them
+Used because some cards have multiple pokemon
 */
 PRINT '*** creating PokedexCard Table ***'
 GO
 CREATE TABLE [dbo].[PokedexCard](
-	[PokedexCardID]			[int]				NOT NULL	IDENTITY(1,1),
 	[PokedexID]				[int]				NOT NULL,
 	[PokemonCardID]			[int]				NOT NULL,
 	
-	CONSTRAINT [pk_pokdexcard_pokedexcardid] PRIMARY KEY ([PokedexCardID]),
+	CONSTRAINT [pk_pokdexcard_pokedexcardid] PRIMARY KEY ([PokemonCardID],[PokedexID]),
 	CONSTRAINT [fk_pokedexcard_pokedexid] FOREIGN KEY([PokedexID]) REFERENCES [Pokedex]([PokedexID]),
 	CONSTRAINT [fk_pokedexcard_cardid] FOREIGN KEY([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]),
 )

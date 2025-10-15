@@ -29,5 +29,11 @@ namespace PokemonCardFinal
                 txtSearch.Text = string.Empty;
             }
         }
+
+        private void btnLogIn_Click(object sender, RoutedEventArgs e)
+        {
+            LogInWindow logInWindow = new LogInWindow();
+            logInWindow.Show();
+        }
     }
 }

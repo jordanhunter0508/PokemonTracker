@@ -72,7 +72,7 @@
                 <Button x:Name="btnSearch" Content="Search" Grid.Column="0" Width="50" Height="24" Margin="340 0 0 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Button x:Name="btnLogIn" Content="Log In" Grid.Column="1" Width="100" Height="40" 
-                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnLogIn_Click"/>
                 <Button x:Name="btnSignUp" Content="Sign Up" Grid.Column="2" Width="100" Height="40"
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid> <!--End of the Search, Log In, and Sign Up Grid-->

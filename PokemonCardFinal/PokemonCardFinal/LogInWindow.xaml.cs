@@ -15,13 +15,23 @@ using System.Windows.Shapes;
 namespace PokemonCardFinal
 {
     /// <summary>
-    /// Interaction logic for MainWindowCopy.xaml
+    /// Interaction logic for LogInWindow.xaml
     /// </summary>
-    public partial class MainWindowCopy : Window
+    public partial class LogInWindow : Window
     {
-        public MainWindowCopy()
+        public LogInWindow()
         {
             InitializeComponent();
+        }
+
+        private void btnLogIn_Click(object sender, RoutedEventArgs e)
+        {
+            // Authenticate and then log in
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
