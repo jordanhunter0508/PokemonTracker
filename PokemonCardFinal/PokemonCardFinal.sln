@@ -14,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessInterfaces", "DataAccessInterfaces\DataAccessInterfaces.csproj", "{C2B34141-F708-4186-9DB1-5D97C5213590}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLayerInterfaces", "LogicLayerInterfaces\LogicLayerInterfaces.csproj", "{5116FABE-CDE3-4DFA-A9DC-1816C03FDC60}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2B055CEA-B234-441C-BF15-07DE5A83D0DE} = {2B055CEA-B234-441C-BF15-07DE5A83D0DE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataDomain", "DataDomain\DataDomain.csproj", "{2B055CEA-B234-441C-BF15-07DE5A83D0DE}"
 EndProject

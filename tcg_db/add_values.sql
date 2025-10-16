@@ -22,13 +22,36 @@ GO
 PRINT '*** adding to Users Table ***'
 GO
 INSERT INTO [dbo].[Users]
-	([RoleID],[GivenName],[Surname],[Email])
+	([GivenName],[Surname],[Email])
 VALUES
-	('Admin','john','stewart','john@mail.com'),
-	('General','ceedee','lamb','lamb@mail.com'),
-	('General','daniel','jones','daniel@mail.com'),
-	('General','harrison','mevis','mevis@mail.com'),
-	('General','tom','ford','tom@mail.com')
+	('john','stewart','john@mail.com'),
+	('ceedee','lamb','lamb@mail.com'),
+	('daniel','jones','daniel@mail.com'),
+	('harrison','mevis','mevis@mail.com'),
+	('tom','ford','tom@mail.com')
+GO
+
+Print '*** adding to UserRole Table ***'
+GO
+INSERT INTO [dbo].[UserRole]
+	([RoleID],[UserID])
+VALUES
+	('Admin',10000),
+	('General',10001),
+	('General',10002),
+	('General',10003),
+	('General',10004)
+GO
+
+PRINT '*** adding to AlternateArt Table ***'
+GO
+INSERT INTO [dbo].[AlternateArt]
+	([AlternateArtID],[Description])
+VALUES
+	('None',''),
+	('Reverse Holo',''),
+	('Reverse Holo Pokeball',''),
+	('Reverse Holo Master Ball','')
 GO
 
 PRINT '*** adding to ElementType Table ***'

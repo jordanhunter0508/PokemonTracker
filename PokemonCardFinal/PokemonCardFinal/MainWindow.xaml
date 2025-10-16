@@ -1,4 +1,8 @@
-﻿<!--Make the menu part clickable-->
+﻿<!--
+    Make the menu part clickable
+    Update UI page buttons no previous on 1st page and no next on last
+    Change search to clear when you click into it
+-->
 
 
 <Window x:Class="PokemonCardFinal.MainWindow"
@@ -42,10 +46,10 @@
 
             <!--Menu Items-->
             <StackPanel Grid.Row ="1">
-                <MenuItem x:Name="mniPopularCard" Header="Popular Cards" FontSize="20" HorizontalAlignment="Center" Margin="0 25 0 25"/>
-                <MenuItem x:Name="mniNewestSet" Header="Newest Set" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
-                <MenuItem x:Name="mniViewDeck" Header="View Decks" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
-                <MenuItem x:Name="mniAllCards" Header="All Cards" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
+                <MenuItem x:Name="mnuPopularCard" Header="Popular Cards" FontSize="20" HorizontalAlignment="Center" Margin="0 25 0 25"/>
+                <MenuItem x:Name="mnuNewestSet" Header="Newest Set" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
+                <MenuItem x:Name="mnuViewDeck" Header="View Decks" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
+                <MenuItem x:Name="mnuAllCards" Header="All Cards" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
             </StackPanel>
         </Grid><!--End of the Menu Grid-->
 
@@ -113,7 +117,9 @@
             
             <!--Start of the Page Button Grid-->
             <Grid Grid.Row="3">
-                
+                <Button x:Name="btnPreviousPage" Width="100" HorizontalAlignment="left">Previous Page</Button>
+                <Label x:Name="lblCurrentPage" HorizontalAlignment="Center">pg. 1</Label>
+                <Button x:Name="btnNextPage" Width="100" HorizontalAlignment="Right">Next Page</Button>
             </Grid><!--End of the Page Button Grid-->
         </Grid>
 

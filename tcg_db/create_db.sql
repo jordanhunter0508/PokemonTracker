@@ -37,7 +37,8 @@ Used to store roles for the users
 */
 PRINT '*** creating Role Table ***'
 GO
-CREATE TABLE [dbo].[Role](
+CREATE TABLE [dbo].[Role]
+(
 	[RoleID]				[nvarchar](50)		NOT NULL	DEFAULT 'Unassigned',
 	[Description]			[nvarchar](250)		NOT NULL	DEFAULT '',
 	
@@ -51,9 +52,9 @@ connects to roles to check what the user can do
 */
 PRINT '*** creating Users Table ***'
 GO
-CREATE TABLE [dbo].[Users](
+CREATE TABLE [dbo].[Users]
+(
 	[UserID]				[int]				NOT NULL	IDENTITY(10000,1),
-	[RoleID]				[nvarchar](50)		NOT NULL,
 	[GivenName]				[nvarchar](50)		NOT NULL,
 	[Surname]				[nvarchar](100)		NOT NULL,
 	[PasswordHash]			[nvarchar](100)		NOT NULL	DEFAULT '9c9064c59f1ffa2e174ee754d2979be80dd30db552ec03e7e327e9b1a4bd594e',
@@ -61,8 +62,24 @@ CREATE TABLE [dbo].[Users](
 	[Active]				[bit]				NOT NULL 	DEFAULT 1,
 	
 	CONSTRAINT [pk_users_userid] PRIMARY KEY ([UserID] ASC),
-	CONSTRAINT [fk_users_roleid] FOREIGN KEY ([RoleID]) REFERENCES [Role]([RoleID]),
 	CONSTRAINT [ak_users_email] UNIQUE ([Email] ASC)
+)
+GO
+
+/*
+Used so the roleId dose not directly appear in the users table
+this can also be used to assign more than one role to a user
+*/
+PRINT '*** createing UserRole Table ***'
+GO
+CREATE TABLE [dbo].[UserRole]
+(
+	[RoleID]		[NVARCHAR](50)		NOT NULL,
+	[UserID]	[INT]				NOT NULL
+	CONSTRAINT [pk_userrole_userroleid] PRIMARY KEY([UserID], [RoleID]),
+	CONSTRAINT [fk_userrole__roleid] FOREIGN KEY([RoleID]) REFERENCES [Role]([RoleID]),
+	CONSTRAINT [fk_userrole_userid] FOREIGN KEY ([UserID]) REFERENCES [Users]([UserID])
+
 )
 GO
 
@@ -80,7 +97,7 @@ CREATE TABLE [dbo].[AlternateArt](
 	
 	CONSTRAINT [pk_alternateart_alternateartid] PRIMARY KEY ([AlternateArtID] ASC)
 )
-Go
+GO
 
 /*
 Used to store Artist for the PokemonCard Table
@@ -95,7 +112,7 @@ CREATE TABLE [dbo].[Artist](
 	CONSTRAINT [pk_artist_artistid] PRIMARY KEY ([ArtistID] ASC),
 	CONSTRAINT [ak_artist_givenname_surname] UNIQUE ([GivenName],[Surname])
 )
-Go
+GO
 
 /*
 Used to store Ability for the PokemonCard Table
@@ -140,7 +157,7 @@ CREATE TABLE [dbo].[Move](
 	
 	CONSTRAINT [pk_move_moveid] PRIMARY KEY ([MoveID] ASC)
 )
-Go
+GO
 
 /*
 These are the types of collections a user can CREATE
@@ -328,7 +345,7 @@ CREATE TABLE [dbo].[MoveCost](
 	CONSTRAINT [fk_moveelement_moveid] FOREIGN KEY ([MoveID]) REFERENCES [Move]([MoveID]),
 	CONSTRAINT [fk_moveelement_elementtypeid] FOREIGN KEY ([ElementTypeID]) REFERENCES [ElementType]([ElementTypeID]),
 )
-Go
+GO
 
 /*
 Used to join PokemonCard and Move
@@ -418,7 +435,7 @@ PRINT '' PRINT '' PRINT 'Creating Stored Procedures in tcg_db'
 
 PRINT '*** creating sp_authenticate_user ***'
 GO
-CREATE PROCEDURE [dbo].[sp_authenticate_user]
+CREATE PROCEDURE [dbo].[sp_authenticate_user_by_email_and_password_hash]
 	(
 		@Email				[nvarchar](250),
 		@PasswordHash		[nvarchar](100)
@@ -450,14 +467,14 @@ GO
 
 PRINT '*** creating sp_select_role_by_email ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_role_by_email]
+CREATE PROCEDURE [dbo].[sp_select_role_by_user_email]
 	(
 		@Email				[nvarchar](250)
 	)
 AS
 	BEGIN
-		SELECT	[Role].[RoleID]
-		FROM	[Role] JOIN [Users] ON [Role].[RoleID] = [Users].[RoleID]
+		SELECT	[UserRole].[RoleID]
+		FROM	[UserRole] JOIN [Users] ON [UserRole].[UserID] = [Users].[UserID]
 		WHERE	[Users].[Email] = @Email
 	END
 GO

@@ -9,10 +9,14 @@ namespace DataDomain
     public class User
     {
         int UserID { get; set; }
-        string RoleID { get; set; }
         string GivenName { get; set; }
         string Surname { get; set; }
         string Email { get; set; }
         bool Active { get; set; }
+    }
+
+    public class UserVM : User 
+    {
+        List<string> RoleID { get; set; }
     }
 }

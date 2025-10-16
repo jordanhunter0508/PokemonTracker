@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PokemonCardFinal"
         mc:Ignorable="d"
-        Title="LogInWindow" Height="200" Width="300">
+        Title="LogInWindow" Height="200" Width="300" 
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
