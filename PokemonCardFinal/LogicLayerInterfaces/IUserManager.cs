@@ -24,15 +24,21 @@ namespace LogicLayerInterfaces
         public bool AuthenticateUser(string email, string password);
 
         /// <summary>
-        /// Passes parameters to <see href="SelectUserByEmail(email)"/> then retuns <br/>
+        /// Passes parameters to <see href="SelectUserByEmail(email)"/> then returns <br/>
         /// the user with a matching email.
         /// </summary>
         /// <param name="email">Used to search the database for a matching email</param>
         /// <returns>A User object from the database that has the matching email</returns>
         /// <exception cref="ApplicationException">Throws if the email is not found in the database</exception>
         public User GetUserByEmail(string email);
-        
-        //
+
+        /// <summary>
+        /// Passes parameters to <see href="SelectRoleByUserEmail(email)"/> then returns <br/>
+        /// a list of strings of the user roles.
+        /// </summary>
+        /// <param name="email">Used to search the database for a matching email</param>
+        /// <returns>Returns a list of strings that are roles of a specific user</returns>
+        /// <exception cref="ApplicationException">Throws if the email is not found in the database</exception>
         public List<String> GetRolesForUser(string email);
 
         /// <summary>

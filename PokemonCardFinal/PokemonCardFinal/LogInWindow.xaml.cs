@@ -40,8 +40,11 @@ namespace PokemonCardFinal
                 if (_userManager.AuthenticateUser(email, password))
                 {
                     _accessToken = _userManager.GetUserByEmail(email);
-
-                    MessageBox.Show("User as been authenticated\n\nWelcome Back " + _accessToken.GivenName + ", " + _accessToken.Surname +"!");
+                    UserVM userVM = new UserVM() 
+                    {
+                        Roles = _userManager.GetRolesForUser(email) 
+                    };
+                    MessageBox.Show("User as been authenticated\n\nWelcome Back " + userVM.Roles[0] +"!");
                 }
                 else
                 {

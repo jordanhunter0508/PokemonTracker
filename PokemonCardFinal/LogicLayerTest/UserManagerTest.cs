@@ -166,5 +166,54 @@ public class UserManagerTest
         // do nothing
     }
 
+    [TestMethod]
+    public void TestGetRolesForUserReturnsCorrectListOfRoles()
+    {
+        // arrange
+        const string email = "testuser1@test.com";
+        const int listSize = 2;
+        const string role1 = "testRole1";
+        const string role2 = "testRole2";
+        List<string> actualList;
+
+        // act
+        actualList = _userManager.GetRolesForUser(email);
+
+        // assert
+        Assert.AreEqual(listSize, actualList.Count);
+        Assert.AreEqual(role1, actualList[0]);
+        Assert.AreEqual(role2, actualList[1]);
+    }
+
+    [TestMethod]
+    public void TestGetRolesForUserWithNoRoles()
+    {
+        // arrange
+        const string email = "testuser3@test.com";
+        const int listSize = 0;
+        List<string> actualList;
+
+        // act
+        actualList = _userManager.GetRolesForUser(email);
+
+        // assert
+        Assert.AreEqual(listSize, actualList.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestGetRolesForUserThrowsApplicationExceptionForInvalidEmail()
+    {
+        // arrange
+        const string email = "testloser1@test.com";
+        List<string> actualList;
+
+        // act
+        actualList = _userManager.GetRolesForUser(email);
+
+        // assert
+        // do nothing
+    }
+
     //
 }

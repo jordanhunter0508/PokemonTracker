@@ -11,6 +11,7 @@ namespace DataAccessFakes
     public class UserAccessorFakes : IUserAccessor
     {
         List<User> _users = new List<User>();
+        List<UserVM> _userVMs = new List<UserVM>();
         string _passwordHash;
 
         /// <summary>
@@ -18,6 +19,7 @@ namespace DataAccessFakes
         /// </summary>
         public UserAccessorFakes() 
         {
+            // Fake User objects
             _users.Add(new User()
             {
                 UserID = 1,
@@ -59,6 +61,35 @@ namespace DataAccessFakes
                 Active = false,
             });
 
+            // Fake UserVM objects
+            _userVMs.Add(new UserVM()
+            {
+                UserID = _users[0].UserID,
+                GivenName = _users[0].GivenName,
+                Surname = _users[0].Surname,
+                Email = _users[0].Email,
+                Active = _users[0].Active,
+                Roles = new List<String>() { "testRole1", "testRole2" }
+            });
+            _userVMs.Add(new UserVM()
+            {
+                UserID = _users[1].UserID,
+                GivenName = _users[1].GivenName,
+                Surname = _users[1].Surname,
+                Email = _users[1].Email,
+                Active = _users[1].Active,
+                Roles = new List<String>() { "testRole3", "testRole4" }
+            });
+            _userVMs.Add(new UserVM()
+            {
+                UserID = _users[2].UserID,
+                GivenName = _users[2].GivenName,
+                Surname = _users[2].Surname,
+                Email = _users[2].Email,
+                Active = _users[2].Active,
+                Roles = new List<String>() { }
+            });
+
             _passwordHash = "9c9064c59f1ffa2e174ee754d2979be80dd30db552ec03e7e327e9b1a4bd594e";
         }
 
@@ -69,7 +100,7 @@ namespace DataAccessFakes
         {
             int result = 0;
 
-            foreach (var user in _users)
+            foreach (User user in _users)
             {
                 if ((user.Email.Equals(email) && _passwordHash.Equals(passwordHash))
                     && user.Active)
@@ -88,7 +119,7 @@ namespace DataAccessFakes
         {
             User result = null;
 
-            foreach (var user in _users)
+            foreach (User user in _users)
             {
                 if (user.Email == email)
                 {
@@ -109,9 +140,22 @@ namespace DataAccessFakes
         /// </summary>
         public List<string> SelectRoleByUserEmail(string email)
         {
-            throw new NotImplementedException();
-        }
+            List<string> results = null;
 
-        
+            foreach (UserVM userVM in _userVMs)
+            {
+                if (userVM.Email == email)
+                {
+                    results = userVM.Roles;
+                }
+            }
+
+            if (results == null)
+            {
+                throw new ArgumentException("Email not found.");
+            }
+
+            return results;
+        }
     }
 }

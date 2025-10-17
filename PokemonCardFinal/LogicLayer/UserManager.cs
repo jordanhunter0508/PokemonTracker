@@ -104,9 +104,23 @@ namespace LogicLayer
             return result;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IUserManager"/>
+        /// </summary>
         public List<string> GetRolesForUser(string email)
         {
-            throw new NotImplementedException();
+            List<string> results = null;
+
+            try
+            {
+                results = _userAccessor.SelectRoleByUserEmail(email);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("User not found.", ex);
+            }
+
+            return results;
         }
 
         public UserVM LogInUser(string email, string password)

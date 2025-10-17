@@ -54,7 +54,7 @@ namespace DataAccess
 
             // After the connection is used close it
             finally
-            { 
+            {
                 conn.Close();
             }
 
@@ -76,13 +76,13 @@ namespace DataAccess
             string cmdText = "sp_select_user_by_email";
 
             // Create command object from the string and connection
-            SqlCommand cmd = new SqlCommand(cmdText,conn);
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             // Add paramater
-            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar,250);
+            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
 
             // Set paramater
             cmd.Parameters["@Email"].Value = email;
@@ -92,14 +92,14 @@ namespace DataAccess
                 // Open a connection
                 conn.Open();
 
-                // creates a reader object
+                // Creates a reader object
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
-                { 
+                {
                     reader.Read();
                     result = new User()
-                    { 
+                    {
                         UserID = reader.GetInt32(0),
                         GivenName = reader.GetString(1),
                         Surname = reader.GetString(2),
@@ -122,11 +122,63 @@ namespace DataAccess
             return result;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>. Access the database
+        /// using sp_select_role_by_user_email
+        /// </summary>
         public List<string> SelectRoleByUserEmail(string email)
         {
-            throw new NotImplementedException();
-        }
+            List<string> results = new List<string>();
 
-        
+            // Establish a connection
+            SqlConnection conn = DBConnection.GetConnection();
+
+            // Command text
+            string cmdText = "sp_select_role_by_user_email";
+
+            // Create command object from the string and connection
+            SqlCommand cmd = new SqlCommand(cmdText,conn);
+
+            // Set the command type
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            // Add parameters
+            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
+
+            // Set paramaters
+            cmd.Parameters["@Email"].Value = email;
+
+            try
+            {
+                // Open Connection
+                conn.Open();
+
+                // Creates a reader object
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    // Loop through rows
+                    while (reader.Read())
+                    {
+                        // Add to results
+                        results.Add(reader.GetString(0));
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            // Close connection after use
+            finally
+            { 
+                conn.Close();
+            }
+
+            return results;
+        }
     }
 }

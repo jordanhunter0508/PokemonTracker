@@ -26,7 +26,12 @@ namespace DataAccessInterfaces
         /// <returns>Returns a User object that was found with the matching email</returns>
         public User SelectUserByEmail(string email);
 
-        //
+        /// <summary>
+        /// Request from the database the RoleID. 
+        /// Where the email parameter matches one stored in the database.
+        /// </summary>
+        /// <param name="email">Compared against the emails stored in the database</param>
+        /// <returns>Returns a list of strings that are roles of a specific user</returns>
         public List<String> SelectRoleByUserEmail(string email);
     }
 }
