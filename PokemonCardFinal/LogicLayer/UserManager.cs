@@ -20,7 +20,7 @@ namespace LogicLayer
         /// <summary>
         /// General UserManger created for the presentaion layer
         /// </summary>
-        public UserManager() 
+        public UserManager()
         {
             _userAccessor = new UserAccessor();
         }
@@ -56,7 +56,7 @@ namespace LogicLayer
             var s = new StringBuilder();
 
             for (int i = 0; i < data.Length; i++)
-            { 
+            {
                 s.Append(data[i].ToString("x2").ToLower());
             }
 
@@ -79,7 +79,7 @@ namespace LogicLayer
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Authentication failed.\n\n",ex);
+                throw new ApplicationException("Authentication failed.\n\n", ex);
             }
 
             return result;
@@ -123,9 +123,33 @@ namespace LogicLayer
             return results;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IUserManager"/>
+        /// </summary>
         public UserVM LogInUser(string email, string password)
         {
-            throw new NotImplementedException();
+            UserVM result = null;
+            try
+            {
+                if (AuthenticateUser(email, password))
+                {
+                    User user = GetUserByEmail(email);
+                    result = new UserVM()
+                    {
+                        UserID = user.UserID,
+                        GivenName = user.GivenName,
+                        Surname = user.Surname,
+                        Email = user.Email,
+                        Active = user.Active,
+                        Roles = GetRolesForUser(email)
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Faild to log in.", ex);
+            }
+            return result;
         }
     }
 }

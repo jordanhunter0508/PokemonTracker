@@ -23,7 +23,7 @@ namespace PokemonCardFinal
     public partial class LogInWindow : Window
     {
         IUserManager _userManager;
-        User _accessToken;
+        UserVM _accessToken;
 
         public LogInWindow()
         {
@@ -37,18 +37,17 @@ namespace PokemonCardFinal
             string password = pwdPassword.Password;
             try
             {
-                if (_userManager.AuthenticateUser(email, password))
+                _accessToken = _userManager.LogInUser(email, password);
+
+                if (_accessToken != null)
                 {
-                    _accessToken = _userManager.GetUserByEmail(email);
-                    UserVM userVM = new UserVM() 
-                    {
-                        Roles = _userManager.GetRolesForUser(email) 
-                    };
-                    MessageBox.Show("User as been authenticated\n\nWelcome Back " + userVM.Roles[0] +"!");
+                    MessageBox.Show("Welcome Back " + _accessToken.GivenName + "!\n" +
+                            "You are logged in as " + _accessToken.Roles[0] + " user.");
                 }
+
                 else
                 {
-                    MessageBox.Show("Authentication Failed!");
+                    MessageBox.Show("Failed to log in the user.");
                 }
             }
             catch (Exception ex)

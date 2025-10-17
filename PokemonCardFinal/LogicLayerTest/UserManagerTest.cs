@@ -215,5 +215,59 @@ public class UserManagerTest
         // do nothing
     }
 
-    //
+    [TestMethod]
+    public void TestLogInUserReturnsCorrectUserVM() 
+    {
+        // arrange
+        const string email = "testuser1@test.com";
+        const string password = "newuser";
+        const int expectedID = 1;
+        const int expectedRoleCount = 2;
+        const string role1 = "testRole1";
+        const string role2 = "testRole2";
+        UserVM actualUserVM = null;
+
+        // act
+        actualUserVM = _userManager.LogInUser(email, password);
+
+        // assert
+        Assert.AreEqual(expectedID,actualUserVM.UserID);
+        Assert.AreEqual(expectedRoleCount,actualUserVM.Roles.Count);
+        Assert.AreEqual(role1, actualUserVM.Roles[0]);
+        Assert.AreEqual(role2, actualUserVM.Roles[1]);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void TestLogInUserThowsNullReferenceExceptionWithInvalidEmail()
+    {
+        // arrange
+        const string email = "testloser1@test.com";
+        const string password = "newuser";
+        const int expectedID = 1;
+        UserVM actualUserVM = null;
+
+        // act
+        actualUserVM = _userManager.LogInUser(email, password);
+
+        // assert
+        Assert.AreEqual(expectedID, actualUserVM.UserID);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(NullReferenceException))]
+    public void TestLogInUserThowsNullReferenceExceptionWithInvalidPassword()
+    {
+        // arrange
+        const string email = "testuser1@test.com";
+        const string password = "newloser";
+        const int expectedID = 1;
+        UserVM actualUserVM = null;
+
+        // act
+        actualUserVM = _userManager.LogInUser(email, password);
+
+        // assert
+        Assert.AreEqual(expectedID,actualUserVM.UserID);
+    }
 }

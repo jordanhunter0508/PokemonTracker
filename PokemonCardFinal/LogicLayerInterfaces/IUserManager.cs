@@ -9,7 +9,13 @@ namespace LogicLayerInterfaces
 {
     public interface IUserManager
     {
-        //
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        /// <exception cref="ApplicationException"></exception>
         public UserVM LogInUser(string email, string password);
 
         /// <summary>
