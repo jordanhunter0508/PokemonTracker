@@ -8,15 +8,15 @@ namespace DataDomain
 {
     public class User
     {
-        int UserID { get; set; }
-        string GivenName { get; set; }
-        string Surname { get; set; }
-        string Email { get; set; }
-        bool Active { get; set; }
+        public int UserID { get; set; }
+        public string GivenName { get; set; }
+        public string Surname { get; set; }
+        public string Email { get; set; }
+        public bool Active { get; set; }
     }
 
     public class UserVM : User 
     {
-        List<string> RoleID { get; set; }
+        public List<string> RoleID { get; set; }
     }
 }

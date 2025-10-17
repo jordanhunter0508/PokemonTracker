@@ -23,17 +23,17 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
-        <Label x:Name="lblLogIn" Content="Log In:" Grid.Column="1" Grid.Row="1"
+        <Label x:Name="lblEmail" Content="Email:" Grid.Column="1" Grid.Row="1"
                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <Label x:Name="lblPassword" Content="Password:" Grid.Column="1" Grid.Row="2"
                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
 
-        <TextBox x:Name="txtLogIn" Height="24" Width="150" Grid.Column="2" Grid.Row="1"/>
-        <PasswordBox x:Name="pwdLogIn" Height="24" Width="150" Grid.Column="2" Grid.Row="2"/>
+        <TextBox x:Name="txtEmail" Height="24" Width="150" Grid.Column="2" Grid.Row="1"/>
+        <PasswordBox x:Name="pwdPassword" Height="24" Width="150" Grid.Column="2" Grid.Row="2"/>
 
-        <Button x:Name="btnLogIn" Content="Log In" Grid.Column="2" Grid.Row="3" 
-                HorizontalAlignment="Left" Height="20" Width="75" Click="btnLogIn_Click"/>
-        <Button x:Name="btnCancel" Content="Cancel" Grid.Column="2" Grid.Row="3" 
-                HorizontalAlignment="Right" Height="20" Width="75" Click="btnCancel_Click"/>
+        <Button x:Name="btnLogIn" Content="Log In" Grid.Column="2" Grid.Row="3" Margin="27.5 0 0 0"
+                HorizontalAlignment="Left" Height="20" Width="50" Click="btnLogIn_Click"/>
+        <Button x:Name="btnCancel" Content="Cancel" Grid.Column="2" Grid.Row="3" Margin="0 0 27.5 0"
+                HorizontalAlignment="Right" Height="20" Width="50" Click="btnCancel_Click"/>
     </Grid>
 </Window>
