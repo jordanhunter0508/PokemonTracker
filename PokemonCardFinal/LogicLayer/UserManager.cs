@@ -35,7 +35,7 @@ namespace LogicLayer
         }
 
         /// <summary>
-        /// Implements from IUserManager
+        /// Implements from <see cref="IUserManager"/>
         /// </summary>
         public string HashSha256(string password)
         {
@@ -66,7 +66,7 @@ namespace LogicLayer
         }
 
         /// <summary>
-        /// Implements from IUserManager
+        /// Implements from <see cref="IUserManager"/>
         /// </summary>
         public bool AuthenticateUser(string email, string password)
         {
@@ -85,9 +85,23 @@ namespace LogicLayer
             return result;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IUserManager"/>
+        /// </summary>
         public User GetUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            User result = null;
+
+            try
+            {
+                result = _userAccessor.SelectUserByEmail(email);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("User not found.", ex);
+            }
+
+            return result;
         }
 
         public List<string> GetRolesForUser(string email)

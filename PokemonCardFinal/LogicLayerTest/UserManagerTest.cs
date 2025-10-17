@@ -1,4 +1,5 @@
 using DataAccessFakes;
+using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
 
@@ -7,12 +8,12 @@ namespace LogicLayerTest;
 [TestClass]
 public class UserManagerTest
 {
-    IUserManager _manager = null;
+    IUserManager _userManager = null;
 
     [TestInitialize]
     public void TestSetup()
     {
-        _manager = new UserManager(new UserAccessorFakes());
+        _userManager = new UserManager(new UserAccessorFakes());
     }
 
     [TestMethod]
@@ -24,7 +25,7 @@ public class UserManagerTest
         string actualValue = null;
 
         // act
-        actualValue = _manager.HashSha256(password);
+        actualValue = _userManager.HashSha256(password);
 
         // assert
         Assert.AreEqual(expectedValue, actualValue);
@@ -39,7 +40,7 @@ public class UserManagerTest
         string actualValue = null;
 
         // act
-        actualValue = _manager.HashSha256(password);
+        actualValue = _userManager.HashSha256(password);
 
         // assert
         // nothing to do
@@ -54,14 +55,14 @@ public class UserManagerTest
         string actualValue = null;
 
         // act
-        actualValue = _manager.HashSha256(password);
+        actualValue = _userManager.HashSha256(password);
 
         // assert
         // nothing to do
     }
 
     [TestMethod]
-    public void TestAuthenticateUserWithCorrectInput()
+    public void TestAuthenticateUserReturnsCorrectBool()
     {
         // arrange
         const string email = "testuser1@test.com";
@@ -70,7 +71,7 @@ public class UserManagerTest
         bool actualValue = false;
 
         // act
-        actualValue = _manager.AuthenticateUser(email, password);
+        actualValue = _userManager.AuthenticateUser(email, password);
 
         // assert
         Assert.AreEqual(expectedValue, actualValue);
@@ -86,7 +87,7 @@ public class UserManagerTest
         bool actualValue = true;
 
         // act
-        actualValue = _manager.AuthenticateUser(email, password);
+        actualValue = _userManager.AuthenticateUser(email, password);
 
         // assert
         Assert.AreEqual(expectedValue, actualValue);
@@ -102,7 +103,7 @@ public class UserManagerTest
         bool actualValue = true;
 
         // act
-        actualValue = _manager.AuthenticateUser(email, password);
+        actualValue = _userManager.AuthenticateUser(email, password);
 
         // assert
         Assert.AreEqual(expectedValue, actualValue);
@@ -118,15 +119,52 @@ public class UserManagerTest
         bool actualValue = true;
 
         // act
-        actualValue = _manager.AuthenticateUser(email, password);
+        actualValue = _userManager.AuthenticateUser(email, password);
 
         // assert
         Assert.AreEqual(expectedValue, actualValue);
     }
 
     [TestMethod]
-    public void TestGetUserByEmail()
-    { 
-        //
+    public void TestGetUserByEmailReturnsCorrectUser()
+    {
+        // arrange
+        const string email = "testuser1@test.com";
+        User expectedUser = new User()
+        {
+            UserID = 1,
+            GivenName = "test",
+            Surname = "user",
+            Email = "testuser1@test.com",
+            Active = true,
+        };
+        User actualUser;
+
+        // act
+        actualUser = _userManager.GetUserByEmail(email);
+
+        // assert
+        Assert.AreEqual(expectedUser.UserID, actualUser.UserID);
+        Assert.AreEqual(expectedUser.GivenName, actualUser.GivenName);
+        Assert.AreEqual(expectedUser.Surname, actualUser.Surname);
+        Assert.AreEqual(expectedUser.Email, actualUser.Email);
+        Assert.AreEqual(expectedUser.Active, actualUser.Active);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestGetUserByEmailThrowsApplicationExceptionForInvalidEmail()
+    {
+        // arrange
+        const string email = "testloser1@test.com";
+        User actualUser;
+
+        // act
+        actualUser = _userManager.GetUserByEmail(email);
+
+        // assert
+        // do nothing
+    }
+
+    //
 }

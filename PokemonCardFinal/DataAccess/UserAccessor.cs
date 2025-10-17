@@ -13,7 +13,7 @@ namespace DataAccess
     public class UserAccessor : IUserAccessor
     {
         /// <summary>
-        /// Implements from IUserAccessor access the database
+        /// Implements from <see cref="IUserAccessor"/>. Access the database
         /// using sp_authenticate_user_by_email_and_password_hash
         /// </summary>
         public int AuthenticateUserByEmailAndPasswordHash(string email, string passwordHash)
@@ -21,13 +21,13 @@ namespace DataAccess
             int count = 0;
 
             // ADO.Net needs a connection
-            var conn = DBConnection.GetConnection();
+            SqlConnection conn = DBConnection.GetConnection();
 
             // Command text
-            var cmdText = "sp_authenticate_user_by_email_and_password_hash";
+            string cmdText = "sp_authenticate_user_by_email_and_password_hash";
 
-            // Create a comman object from the connection and command text
-            var cmd = new SqlCommand(cmdText, conn);
+            // Create a command object from the connection and command text
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -61,9 +61,65 @@ namespace DataAccess
             return count;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>. Access the database
+        /// using sp_select_user_by_email
+        /// </summary>
         public User SelectUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            User result = null;
+
+            // ADO.Net needs a Conncetion
+            SqlConnection conn = DBConnection.GetConnection();
+
+            // Command Text
+            string cmdText = "sp_select_user_by_email";
+
+            // Create command object from the string and connection
+            SqlCommand cmd = new SqlCommand(cmdText,conn);
+
+            // Set the command type
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            // Add paramater
+            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar,250);
+
+            // Set paramater
+            cmd.Parameters["@Email"].Value = email;
+
+            try
+            {
+                // Open a connection
+                conn.Open();
+
+                // creates a reader object
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                { 
+                    reader.Read();
+                    result = new User()
+                    { 
+                        UserID = reader.GetInt32(0),
+                        GivenName = reader.GetString(1),
+                        Surname = reader.GetString(2),
+                        Email = reader.GetString(3),
+                        Active = reader.GetBoolean(4),
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            // Close connection after user
+            finally
+            {
+                conn.Close();
+            }
+
+            return result;
         }
 
         public List<string> SelectRoleByUserEmail(string email)

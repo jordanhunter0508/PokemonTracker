@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
 
@@ -22,6 +23,7 @@ namespace PokemonCardFinal
     public partial class LogInWindow : Window
     {
         IUserManager _userManager;
+        User _accessToken;
 
         public LogInWindow()
         {
@@ -37,7 +39,9 @@ namespace PokemonCardFinal
             {
                 if (_userManager.AuthenticateUser(email, password))
                 {
-                    MessageBox.Show("User as been authenticated");
+                    _accessToken = _userManager.GetUserByEmail(email);
+
+                    MessageBox.Show("User as been authenticated\n\nWelcome Back " + _accessToken.GivenName + ", " + _accessToken.Surname +"!");
                 }
                 else
                 {

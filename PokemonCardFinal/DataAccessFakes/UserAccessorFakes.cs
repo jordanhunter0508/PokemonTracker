@@ -63,7 +63,7 @@ namespace DataAccessFakes
         }
 
         /// <summary>
-        /// Implements from IUserAccessor used for testing
+        /// Implements from <see cref="IUserAccessor"/> used for testing
         /// </summary>
         public int AuthenticateUserByEmailAndPasswordHash(string email, string passwordHash)
         {
@@ -82,19 +82,36 @@ namespace DataAccessFakes
         }
 
         /// <summary>
-        /// Implements from IUserAccessor used for testing
+        /// Implements from <see cref="IUserAccessor"/> used for testing
+        /// </summary>
+        public User SelectUserByEmail(string email)
+        {
+            User result = null;
+
+            foreach (var user in _users)
+            {
+                if (user.Email == email)
+                {
+                    result = user;
+                }
+
+            }
+            if (result == null)
+            {
+                throw new ArgumentException("Email not found.");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>  used for testing
         /// </summary>
         public List<string> SelectRoleByUserEmail(string email)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Implements from IUserAccessor used for testing
-        /// </summary>
-        public User SelectUserByEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
