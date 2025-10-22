@@ -151,5 +151,20 @@ namespace LogicLayer
             }
             return result;
         }
+
+        public bool ResetPassword(string currentPassword, string newPassword)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeactivateUser(int userID, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ActivateUser(int userID, string email)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -10,17 +10,19 @@ namespace LogicLayerInterfaces
     public interface IUserManager
     {
         /// <summary>
-        /// 
+        /// Uses <see cref="AuthenticateUser"/> to verify the user has an active account.<br/>
+        /// Then uses <see cref="GetUserByEmail"/> to get information about the user in the database.<br/>
+        /// Then uses <see cref="GetRolesForUser"/> to get the list of roles the user may have.
         /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        /// <exception cref="ApplicationException"></exception>
+        /// <param name="email">Used to search the database for a matching email</param>
+        /// <param name="password">Converted to a Hash then used to find a match in the database</param>
+        /// <returns>Returns a UserVM object created from the user's information from the database.</returns>
+        /// <exception cref="ApplicationException">Throws if the Authentication fails or if either of the Get methods fail</exception>
         public UserVM LogInUser(string email, string password);
 
         /// <summary>
         /// Passes parameters to 
-        /// <see href="AuthenticateUserByEmailAndPasswordHash(email, passwordHash)"/><br/>
+        /// <see href="AuthenticateUserByEmailAndPasswordHash(string, string)"/><br/>
         /// to verify with the database the user is valid.
         /// </summary>
         /// <param name="email">String to be used in AuthenticateUserByEmailAndPasswordHash</param>
@@ -30,7 +32,7 @@ namespace LogicLayerInterfaces
         public bool AuthenticateUser(string email, string password);
 
         /// <summary>
-        /// Passes parameters to <see href="SelectUserByEmail(email)"/> then returns <br/>
+        /// Passes parameters to <see href="SelectUserByEmail(string)"/> then returns <br/>
         /// the user with a matching email.
         /// </summary>
         /// <param name="email">Used to search the database for a matching email</param>
@@ -39,7 +41,7 @@ namespace LogicLayerInterfaces
         public User GetUserByEmail(string email);
 
         /// <summary>
-        /// Passes parameters to <see href="SelectRoleByUserEmail(email)"/> then returns <br/>
+        /// Passes parameters to <see href="SelectRoleByUserEmail(string)"/> then returns <br/>
         /// a list of strings of the user roles.
         /// </summary>
         /// <param name="email">Used to search the database for a matching email</param>
@@ -55,5 +57,8 @@ namespace LogicLayerInterfaces
         /// <returns>Returns a string of password as a Sha256</returns>
         /// <exception cref="ArgumentOutOfRangeException">Throws if the inputed string lenght is 0</exception>
         public string HashSha256(string password);
+        public bool ResetPassword(string currentPassword, string newPassword);
+        public bool DeactivateUser(int userID, string email);
+        public bool ActivateUser(int userID, string email);
     }
 }

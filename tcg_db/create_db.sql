@@ -11,6 +11,9 @@ Think of what stored procedures are needed for the program
 
 Might want to add a user Role so the user doesn't directly say Admin
 
+Very few cards have more than one ability but could make a join table for them
+if there is enough time
+
 */
 
 print '' print'*** dropping the database tcg_db ***'
@@ -91,7 +94,8 @@ Description = "Standard card with the background of the card holographic."
 */
 PRINT '*** creating AlternateArt Table ***'
 GO
-CREATE TABLE [dbo].[AlternateArt](
+CREATE TABLE [dbo].[AlternateArt]
+(
 	[AlternateArtID]		[nvarchar](50)		NOT NULL,
 	[Description]			[nvarchar](250)		NOT NULL	DEFAULT '',
 	
@@ -104,10 +108,11 @@ Used to store Artist for the PokemonCard Table
 */
 PRINT '*** creating Artist Table ***'
 GO
-CREATE TABLE [dbo].[Artist](
+CREATE TABLE [dbo].[Artist]
+(
 	[ArtistID]				[int]				NOT NULL	IDENTITY(1,1),
 	[GivenName]				[nvarchar](50)		NOT NULL,
-	[Surname]				[nvarchar](100)		NULL,
+	[Surname]				[nvarchar](100)		NOT NULL	DEFAULT '',
 	
 	CONSTRAINT [pk_artist_artistid] PRIMARY KEY ([ArtistID] ASC),
 	CONSTRAINT [ak_artist_givenname_surname] UNIQUE ([GivenName],[Surname])
@@ -123,11 +128,13 @@ Name = ability name from card
 */
 PRINT '*** creating Ability Table ***'
 GO
-CREATE TABLE [dbo].[Ability](
-	[AbilityID]				[nvarchar](25)		NOT NULL	DEFAULT 'support',
-	[Description]			[nvarchar](500)		NOT NULL	DEFAULT '',
-	
-	CONSTRAINT [pk_ability_abilityid] PRIMARY KEY ([AbilityID] ASC),
+CREATE TABLE [dbo].[Ability]
+(
+	[AbilityID]				[nvarchar](30)		NOT NULL	DEFAULT 'support',
+	[AbilityType]			[nvarchar](25)		NOT NULL	DEFAULT '',
+	[Description]			[nvarchar](650)		NOT NULL	DEFAULT '',
+
+	CONSTRAINT [pk_ability_abilityid] PRIMARY KEY ([AbilityID] ASC)
 )
 Go
 
@@ -136,7 +143,8 @@ Needed because PokemonCards/CollectionType/MoveCost can all have more than one
 */
 PRINT '*** creating ElementType Table ***'
 GO
-CREATE TABLE [dbo].[ElementType](
+CREATE TABLE [dbo].[ElementType]
+(
 	[ElementTypeID]			[nvarchar](15)		NOT NULL,
 	[Description]			[nvarchar](100)		NOT NULL	DEFAULT '',
 	
@@ -150,7 +158,8 @@ a card can have multiple element types for the cost
 */
 PRINT '*** creating Move Table ***'
 GO
-CREATE TABLE [dbo].[Move](
+CREATE TABLE [dbo].[Move]
+(
 	[MoveID]				[nvarchar](30)		NOT NULL,
 	[Damage]				[int]				NOT NULL,
 	[Description]			[nvarchar](100)		NOT NULL	DEFAULT '',
@@ -165,7 +174,8 @@ User's have Favorites, and Wishlist by default
 */
 PRINT '*** creating CollectionType Table ***'
 GO
-CREATE TABLE [dbo].[CollectionType](
+CREATE TABLE [dbo].[CollectionType]
+(
 	[CollectionTypeID]		[nvarchar](25)		NOT NULL,
 	[Description]			[nvarchar](25)		NOT NULL	DEFAULT '',
 	[MaxSize]				[int]				NOT NULL,	
@@ -180,7 +190,8 @@ any of there collections
 */
 PRINT '*** creating Collection Table ***'
 GO
-CREATE TABLE [dbo].[Collection](
+CREATE TABLE [dbo].[Collection]
+(
 	[CollectionID]			[int]				NOT NULL	IDENTITY(1,1),
 	[UserID]				[int]				NOT NULL,
 	[CollectionTypeID]		[nvarchar](25)		NOT NULL,
@@ -200,7 +211,8 @@ because a deck can have more than one element
 */
 PRINT '*** creating CollectionElement Table ***'
 GO
-CREATE TABLE [dbo].[CollectionElement](
+CREATE TABLE [dbo].[CollectionElement]
+(
 	[CollectionID]		 	[int]				NOT NULL,
 	[ElementTypeID]			[nvarchar](15)		NOT NULL,
 	
@@ -218,7 +230,8 @@ Description = "When your Pokemon V is Knocked Out, your opponent takes 2 Prize C
 */
 PRINT '*** creating PokemonRule Table ***'
 GO
-CREATE TABLE [dbo].[PokemonRule](
+CREATE TABLE [dbo].[PokemonRule]
+(
 	[PokemonRuleID]			[nvarchar](50)		NOT NULL,
 	[Description]			[nvarchar](100)		NOT NULL,
 	
@@ -234,7 +247,8 @@ a card's pokemon can evolve into or from
 */
 PRINT '*** creating Pokedex Table ***'
 GO
-CREATE TABLE [dbo].[Pokedex](
+CREATE TABLE [dbo].[Pokedex]
+(
 	[PokedexID]				[int]	 			NOT NULL,
 	[Name]					[nvarchar](30)		NOT NULL,
 	
@@ -249,7 +263,8 @@ the next or previous stage of a card
 */
 PRINT '*** creating Stage Table ***'
 GO
-CREATE TABLE [dbo].[Stage](
+CREATE TABLE [dbo].[Stage]
+(
 	[StageID]				[int]				NOT NULL	IDENTITY(1,1),
 	[Name]					[int]				NOT NULL,
 	
@@ -263,7 +278,8 @@ Used to store the data about the booster packs or sets
 */
 PRINT '*** creating Booster Table ***'
 GO
-CREATE TABLE [dbo].[Booster](
+CREATE TABLE [dbo].[Booster]
+(
 	[BoosterID]				[nvarchar](50)		NOT NULL,
 	[Series]				[nvarchar](50)		NOT NULL,
 	[ReleaseDate]			[date]				NOT NULL,
@@ -281,9 +297,9 @@ Used to store all data about the pokemon card
 */
 PRINT '*** creating PokemonCard Table ***'
 GO
-CREATE TABLE [dbo].[PokemonCard](
+CREATE TABLE [dbo].[PokemonCard]
+(
 	[PokemonCardID]			[int]				NOT NULL	IDENTITY(1,1),
-	[AlternateArtID]		[nvarchar](50)		NOT NULL,	
 	[ArtistID]				[int]				NOT NULL,	
 	[AbilityID]				[nvarchar](25)		NOT NULL,	
 	[BoosterID]				[nvarchar](50)		NOT NULL,	
@@ -303,12 +319,27 @@ CREATE TABLE [dbo].[PokemonCard](
 	
 	/*AlternateArtID, boosterid,BoosterID unique*/
 	CONSTRAINT [pk_pokemoncard_pokemoncardid] PRIMARY KEY ([PokemonCardID] ASC),
-	CONSTRAINT [fk_pokemoncard_alternateid] FOREIGN KEY ([AlternateArtID]) REFERENCES [AlternateArt] ([AlternateArtID]),
 	CONSTRAINT [fk_pokemoncard_artistid] FOREIGN KEY ([ArtistID]) REFERENCES [Artist] ([ArtistID]),
 	CONSTRAINT [fk_pokemoncard_abilityid] FOREIGN KEY ([AbilityID]) REFERENCES [Ability] ([AbilityID]),
 	CONSTRAINT [fk_pokemoncard_boosterid] FOREIGN KEY ([BoosterID]) REFERENCES [Booster] ([BoosterID]),
 	CONSTRAINT [fk_pokemoncard_stageid] FOREIGN KEY ([StageID]) REFERENCES [Stage] ([StageID]),
-	CONSTRAINT [ak_pokemoncard_alternateid_boosterid_boosternumber] UNIQUE ([AlternateArtID],[BoosterID],[BoosterNumber])
+	CONSTRAINT [ak_pokemoncard_alternateid_boosterid_boosternumber] UNIQUE ([BoosterID],[BoosterNumber])
+)
+GO
+
+/*
+Join table between Pokemon Cards and Alternate Art
+*/
+PRINT '*** creating CardAlternateArt Table ***'
+GO
+CREATE TABLE [dbo].[CardAlternateArt]
+(
+	[PokemonCardID]			[int]				NOT NULL	IDENTITY(1,1),
+	[AlternateArtID]		[nvarchar](50)		NOT NULL,
+	
+	CONSTRAINT [pk_cardalternateart_cardalternateartid] PRIMARY KEY ([PokemonCardID],[AlternateArtID]),
+	CONSTRAINT [fk_cardalternateart_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard] ([PokemonCardID]),
+	CONSTRAINT [fk_cardalternateart_alternateartid] FOREIGN KEY ([AlternateArtID]) REFERENCES [AlternateArt] ([AlternateArtID])
 )
 GO
 
@@ -318,7 +349,8 @@ Used to keep track of which card each user has
 */
 PRINT '*** creating UserCard Table ***'
 GO
-CREATE TABLE [dbo].[UserCard](
+CREATE TABLE [dbo].[UserCard]
+(
 	[UserID]				[int]				NOT NULL,
 	[PokemonCardID]			[int]				NOT NULL,
 	[Quantity]				[int]				NOT NULL, /*Quantity prevents duplicate entries*/
@@ -336,7 +368,8 @@ Some moves have multiple elements needed to use the move
 */
 PRINT '*** creating MoveCost Table ***'
 GO
-CREATE TABLE [dbo].[MoveCost](
+CREATE TABLE [dbo].[MoveCost]
+(
 	[MoveID]				[nvarchar](30)		NOT NULL,
 	[ElementTypeID]			[nvarchar](15)		NOT NULL,
 	[Quantity]				[int]				NOT NULL,
@@ -353,7 +386,8 @@ Some cards have more than one move
 */
 PRINT '*** creating CardMove Table ***'
 GO
-CREATE TABLE [dbo].[CardMove](
+CREATE TABLE [dbo].[CardMove]
+(
 	[PokemonCardID]			[int]				NOT NULL,
 	[MoveID]				[nvarchar](30)		NOT NULL,
 	
@@ -369,7 +403,8 @@ This can be used to all collection types(deck,wishlist,ect.)
 */
 PRINT '*** creating CollectionList Table ***'
 GO
-CREATE TABLE [dbo].[CollectionCard](
+CREATE TABLE [dbo].[CollectionCard]
+(
 	[CollectionCardID]		[int]				NOT NULL	IDENTITY(1,1),
 	[PokemonCardID]			[int]				NOT NULL,
 	[CollectionID]			[int]				NOT NULL,
@@ -388,7 +423,8 @@ Used because some cards have multiple pokemon
 */
 PRINT '*** creating PokedexCard Table ***'
 GO
-CREATE TABLE [dbo].[PokedexCard](
+CREATE TABLE [dbo].[PokedexCard]
+(
 	[PokedexID]				[int]				NOT NULL,
 	[PokemonCardID]			[int]				NOT NULL,
 	
@@ -403,7 +439,8 @@ Used to find the pokemon's next evolution
 */
 PRINT '*** creating PokemonEvolution Table ***'
 GO
-CREATE TABLE [dbo].[PokedexEvolution](
+CREATE TABLE [dbo].[PokedexEvolution]
+(
 	[PokedexEvolutionID]	[int]				NOT NULL	IDENTITY(1,1),
 	[CurrentPokedexID]		[int]				NOT NULL,
 	[EvolvedPokedexID]		[int]				NOT NULL,
@@ -419,7 +456,8 @@ Used to find the stage's next evolution
 */
 PRINT '*** creating StageEvolution Table ***'
 GO
-CREATE TABLE [dbo].[StageEvolution](
+CREATE TABLE [dbo].[StageEvolution]
+(
 	[StageEvolutionID]		[int]				NOT NULL	IDENTITY(1,1),
 	[CurrentStageID]		[int]				NOT NULL,
 	[EvolvedStageID]		[int]				NOT NULL,
