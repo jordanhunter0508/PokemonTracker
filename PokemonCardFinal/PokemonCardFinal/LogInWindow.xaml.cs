@@ -23,31 +23,65 @@ namespace PokemonCardFinal
     public partial class LogInWindow : Window
     {
         IUserManager _userManager;
-        UserVM _accessToken;
+        public UserVM AccessToken { get; set; }
 
-        public LogInWindow()
+        public LogInWindow(IUserManager userManager) 
         {
-            _userManager = new UserManager();
+            _userManager = userManager;
             InitializeComponent();
+            
         }
 
+        /// <summary>
+        /// When the window loads set the focus to txtEmail
+        /// and set btnLogIn to default
+        /// </summary>
+        private void txtEmail_Loaded(object sender, RoutedEventArgs e)
+        {
+            txtEmail.Focus();
+            btnLogIn.IsDefault = true;
+        }
+
+        /// <summary>
+        /// Attempts to log in the user based on the content of
+        /// txtEmail and pwdPassword. Check if they are empty or null
+        /// if so return if not attempt to log in.
+        /// </summary>
         private void btnLogIn_Click(object sender, RoutedEventArgs e)
         {
             string email = txtEmail.Text;
             string password = pwdPassword.Password;
             try
             {
-                _accessToken = _userManager.LogInUser(email, password);
-
-                if (_accessToken != null)
+                
+                if (email == "" || email == null)
                 {
-                    MessageBox.Show("Welcome Back " + _accessToken.GivenName + "!\n" +
-                            "You are logged in as " + _accessToken.Roles[0] + " user.");
+                    txtEmail.Focus();
+                    statMessage.Content = "Please enter an email.";
+                    return;
+                }
+                if (password == "" || password == null)
+                {
+                    pwdPassword.Focus();
+                    statMessage.Content = "Please enter a password.";
+                    return;
+                }
+
+                AccessToken = _userManager.LogInUser(email, password);
+
+                // Close window if the log in was succesfull
+                if (AccessToken != null)
+                {
+                    this.DialogResult = false;
                 }
 
                 else
                 {
-                    MessageBox.Show("Failed to log in the user.");
+                    MessageBox.Show("Log in attempt has failed.\nPlease try again.");
+                    txtEmail.Text = "";
+                    pwdPassword.Password = "";
+                    statMessage.Content = "";
+                    txtEmail.Focus();
                 }
             }
             catch (Exception ex)
@@ -57,9 +91,12 @@ namespace PokemonCardFinal
             }
         }
 
+        /// <summary>
+        /// Closes the window if clicked
+        /// </summary>
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            this.DialogResult = false;
         }
     }
 }

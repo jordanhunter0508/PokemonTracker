@@ -5,35 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PokemonCardFinal"
         mc:Ignorable="d"
-        Title="LogInWindow" Height="200" Width="300" 
+        Title="Log In" Height="200" Width="300" 
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="75"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
+        <!--Labels-->
         <Label x:Name="lblEmail" Content="Email:" Grid.Column="1" Grid.Row="1"
                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <Label x:Name="lblPassword" Content="Password:" Grid.Column="1" Grid.Row="2"
                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
 
-        <TextBox x:Name="txtEmail" Height="24" Width="150" Grid.Column="2" Grid.Row="1"/>
+        <!--User Input-->
+        <TextBox x:Name="txtEmail" Height="24" Width="150" Grid.Column="2" Grid.Row="1" Loaded="txtEmail_Loaded"/>
         <PasswordBox x:Name="pwdPassword" Height="24" Width="150" Grid.Column="2" Grid.Row="2"/>
 
+        <!--Buttons-->
         <Button x:Name="btnLogIn" Content="Log In" Grid.Column="2" Grid.Row="3" Margin="27.5 0 0 0"
                 HorizontalAlignment="Left" Height="20" Width="50" Click="btnLogIn_Click"/>
         <Button x:Name="btnCancel" Content="Cancel" Grid.Column="2" Grid.Row="3" Margin="0 0 27.5 0"
                 HorizontalAlignment="Right" Height="20" Width="50" Click="btnCancel_Click"/>
+
+        <!--Status Bar for some error messages-->
+        <StatusBar Grid.Row="4" Grid.ColumnSpan="4">
+            <StatusBarItem x:Name="statMessage" Padding="20 0"/>
+        </StatusBar>
     </Grid>
 </Window>

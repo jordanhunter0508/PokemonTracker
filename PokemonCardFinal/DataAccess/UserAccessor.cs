@@ -180,5 +180,111 @@ namespace DataAccess
 
             return results;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>. Access the database
+        /// using sp_create_user_account
+        /// </summary>
+        public int CreateUserAccount(string givenName, string surname, string email, string passwordHash)
+        {
+            int count = 0;
+
+            // ADO.Net needs a connection
+            SqlConnection conn = DBConnection.GetConnection();
+
+            // Command text
+            string cmdText = "sp_create_user_account";
+
+            // Create a command object from the connection and command text
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+
+            // Set the command type
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            // Add Parameters to the command
+            cmd.Parameters.Add("@GivenName", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Surname", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@PasswordHash", System.Data.SqlDbType.NVarChar, 100);
+
+            cmd.Parameters["@GivenName"].Value = givenName;
+            cmd.Parameters["@Surname"].Value = surname;      
+            cmd.Parameters["@Email"].Value = email;
+            cmd.Parameters["@PasswordHash"].Value = passwordHash;
+
+
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // Execute the command and capture the results
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            // After the connection is used close it
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>. Access the database
+        /// using sp_select_user_count_by_email
+        /// </summary>
+        public int SelectUserCountByEmail(string email)
+        {
+            int count = 0;
+
+            // ADO.Net needs a connection
+            SqlConnection conn = DBConnection.GetConnection();
+
+            // Command text
+            string cmdText = "sp_select_user_count_by_email";
+
+            // Create a command object from the connection and command text
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+
+            // Set the command type
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            // Add Parameters to the command
+            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
+
+            cmd.Parameters["@Email"].Value = email;
+
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // Execute the command and capture the results
+                count = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            // After the connection is used close it
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        public int AddUserRole(string roleID, string userID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

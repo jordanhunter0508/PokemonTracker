@@ -152,6 +152,54 @@ namespace LogicLayer
             return result;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IUserManager"/>
+        /// </summary>
+        public bool RegisterUserAccount(string givenName, string surname, string email, string password)
+        {
+            bool isRegistered = false;
+
+            try
+            {
+                string passwordHash = HashSha256(password);
+
+                // Checks if email is already used to prevent sql errors
+                if (GetUserCountByEmail(email) == 0)
+                {
+                    isRegistered = (1 == _userAccessor.CreateUserAccount(givenName, surname, email, passwordHash));
+                }
+                else
+                { 
+                    isRegistered = false ;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error creating user account.",ex);
+            }
+
+            return isRegistered;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IUserManager"/>
+        /// </summary>
+        public int GetUserCountByEmail(string email)
+        {
+            int result = 0;
+
+            try
+            {
+                result = _userAccessor.SelectUserCountByEmail(email);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to get a count of users by email.");
+            }
+
+            return result;
+        }
+
         public bool ResetPassword(string currentPassword, string newPassword)
         {
             throw new NotImplementedException();
@@ -163,6 +211,11 @@ namespace LogicLayer
         }
 
         public bool ActivateUser(int userID, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddUserRole(string roleID, string userID)
         {
             throw new NotImplementedException();
         }

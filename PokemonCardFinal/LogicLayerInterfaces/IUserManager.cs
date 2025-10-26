@@ -57,8 +57,34 @@ namespace LogicLayerInterfaces
         /// <returns>Returns a string of password as a Sha256</returns>
         /// <exception cref="ArgumentOutOfRangeException">Throws if the inputed string lenght is 0</exception>
         public string HashSha256(string password);
-        public bool ResetPassword(string currentPassword, string newPassword);
-        public bool DeactivateUser(int userID, string email);
-        public bool ActivateUser(int userID, string email);
+
+        /// <summary>
+        /// GetUserCountByEmail
+        /// CreateUserAccount
+        /// Passes parameters to <see href="CreateUserAccount(string,string,string,string)"/><br/>
+        /// then returns true if the account was successfully created.
+        /// </summary>
+        /// <param name="givenName">Given name of the user inputing data</param>
+        /// <param name="surname">Surname of the user inputing data</param>
+        /// <param name="email">Email of the user inputing data</param>
+        /// <param name="passwordHash">Hashed password from the users inputted password</param>
+        /// <returns>Returns true if the account was successfully created, false otherwise</returns>
+        /// <exception cref="ApplicationException">Throws there is an error reaching the database</exception>
+        public bool RegisterUserAccount(string givenName, string surname, string email, string passwordHash);
+
+        /// <summary>
+        /// Passes parameters to <see href="SelectUserCountByEmail(string)"/> then returns <br/>
+        /// the number of users with a specified email
+        /// </summary>
+        /// <param name="email">Used to search the database for matches</param>
+        /// <returns>The number of users with a specified email</returns>
+        /// /// <exception cref="ApplicationException">Throws there is an error reaching the database</exception>
+        public int GetUserCountByEmail(string email);
+
+        public bool AddUserRole(string roleID, string userID);
+
+        //public bool ResetPassword(string currentPassword, string newPassword);
+        //public bool DeactivateUser(int userID, string email);
+        //public bool ActivateUser(int userID, string email);
     }
 }

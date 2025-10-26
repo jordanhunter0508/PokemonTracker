@@ -13,22 +13,22 @@
         xmlns:local="clr-namespace:PokemonCardFinal"
         mc:Ignorable="d"
         Title="Pokemon TCG Home" Height="620" Width="1020"
-        x:Name="winHome">
+        x:Name="winHome" Loaded="winHome_Loaded">
 
     <Grid>
         <!--Set up general cloumns 0 and 3 are for margins-->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
         <!--Set up general rows 0 and 2 are for margins-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
             <RowDefinition/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
         <!--This Grid is used for the Name of the Project and the Menu Items-->
@@ -50,6 +50,7 @@
                 <MenuItem x:Name="mnuNewestSet" Header="Newest Set" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
                 <MenuItem x:Name="mnuViewDeck" Header="View Decks" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
                 <MenuItem x:Name="mnuAllCards" Header="All Cards" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
+                <MenuItem x:Name="mnuTest" Header="Test" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25" Visibility="Hidden"/>
             </StackPanel>
         </Grid><!--End of the Menu Grid-->
 
@@ -75,14 +76,14 @@
                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Button x:Name="btnSearch" Content="Search" Grid.Column="0" Width="50" Height="24" Margin="340 0 0 0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Button x:Name="btnLogIn" Content="Log In" Grid.Column="1" Width="100" Height="40" 
+                <Button x:Name="btnLogIn" Content="Log In" Grid.Column="2" Width="100" Height="40" Focusable="False"
                         HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnLogIn_Click"/>
-                <Button x:Name="btnSignUp" Content="Sign Up" Grid.Column="2" Width="100" Height="40"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button x:Name="btnSignUp" Content="Sign Up" Grid.Column="1" Width="100" Height="40" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnSignUp_Click"/>
             </Grid> <!--End of the Search, Log In, and Sign Up Grid-->
 
             <!--Start of the Filter Grid-->
-            <Grid Grid.Row="1">
+            <Grid x:Name="grdFilter" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>

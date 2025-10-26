@@ -216,7 +216,7 @@ public class UserManagerTest
     }
 
     [TestMethod]
-    public void TestLogInUserReturnsCorrectUserVM() 
+    public void TestLogInUserReturnsCorrectUserVM()
     {
         // arrange
         const string email = "testuser1@test.com";
@@ -231,8 +231,8 @@ public class UserManagerTest
         actualUserVM = _userManager.LogInUser(email, password);
 
         // assert
-        Assert.AreEqual(expectedID,actualUserVM.UserID);
-        Assert.AreEqual(expectedRoleCount,actualUserVM.Roles.Count);
+        Assert.AreEqual(expectedID, actualUserVM.UserID);
+        Assert.AreEqual(expectedRoleCount, actualUserVM.Roles.Count);
         Assert.AreEqual(role1, actualUserVM.Roles[0]);
         Assert.AreEqual(role2, actualUserVM.Roles[1]);
     }
@@ -268,6 +268,81 @@ public class UserManagerTest
         actualUserVM = _userManager.LogInUser(email, password);
 
         // assert
-        Assert.AreEqual(expectedID,actualUserVM.UserID);
+        Assert.AreEqual(expectedID, actualUserVM.UserID);
+    }
+
+    [TestMethod]
+    public void TestRegisterUserAccountWithValidInput()
+    {
+        // arrange
+        const string givenName = "Jim";
+        const string surname = "John";
+        const string email = "JimJohn@mail.com";
+        const string password = "newtest";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _userManager.RegisterUserAccount(givenName, surname, email, password);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestRegisterUserAccountReturnsFalseWithDuplicateEmail()
+    {
+        // arrange
+        const string givenName1 = "Jimmmy";
+        const string surname1 = "Johns";
+        const string email1 = "JimmmyJohn@mail.com";
+        const string password1 = "newtest";
+        bool user1Result = false;
+        const string givenName2 = "Jimmmy";
+        const string surname2 = "Johns";
+        const string email2 = "JimmmyJohn@mail.com";
+        const string password2 = "newtest";
+        bool user2Result = false;
+
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        user1Result = _userManager.RegisterUserAccount(givenName1, surname1, email1, password1);
+        user2Result = _userManager.RegisterUserAccount(givenName2, surname2, email2, password2);
+        actualResult = (user1Result == user2Result);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestGetUserCountByEmailWithValidEmail() 
+    {
+        // arrange
+        const string email = "testuser1@test.com";
+        const int expectedCount = 1;
+        int actualCount = 0;
+
+        // act
+        actualCount = _userManager.GetUserCountByEmail(email);
+
+        // assert
+        Assert.AreEqual(expectedCount, actualCount);
+    }
+
+    [TestMethod]
+    public void TestGetUserCountByEmailWithInvalidEmail()
+    {
+        // arrange
+        const string email = "testLoser@test.com";
+        const int expectedCount = 0;
+        int actualCount = 1;
+
+        // act
+        actualCount = _userManager.GetUserCountByEmail(email);
+
+        // assert
+        Assert.AreEqual(expectedCount, actualCount);
     }
 }

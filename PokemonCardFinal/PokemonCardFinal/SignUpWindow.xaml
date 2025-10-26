@@ -1,0 +1,59 @@
+﻿<Window x:Class="PokemonCardFinal.SignUpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PokemonCardFinal"
+        mc:Ignorable="d"
+        Title="Create an Account" Height="325" Width="400"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="125"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Labels-->
+        <Label x:Name="lblGivenName" Content="First Name:" Grid.Column="1" Grid.Row="1"
+       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Label x:Name="lblSurname" Content="Last Name:" Grid.Column="1" Grid.Row="2"
+       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Label x:Name="lblEmail" Content="Email:" Grid.Column="1" Grid.Row="3"
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Label x:Name="lblPassword" Content="Password:" Grid.Column="1" Grid.Row="4"
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Label x:Name="lblRetype" Content="Retype Password:" Grid.Column="1" Grid.Row="5"
+               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        
+
+        <!--User Input-->
+        <TextBox x:Name="txtGivenName" Height="24" Width="150" Grid.Column="2" Grid.Row="1"/>
+        <TextBox x:Name="txtSurname" Height="24" Width="150" Grid.Column="2" Grid.Row="2"/>
+        <TextBox x:Name="txtEmail" Height="24" Width="150" Grid.Column="2" Grid.Row="3"/>
+        <PasswordBox x:Name="pwdPassword" Height="24" Width="150" Grid.Column="2" Grid.Row="4"/>
+        <PasswordBox x:Name="pwdRetype" Height="24" Width="150" Grid.Column="2" Grid.Row="5"/>
+
+        <!--Buttons-->
+        <Button x:Name="btnSignUp" Content="Log In" Grid.Column="2" Grid.Row="6" Margin="27.5 0 0 0"
+                HorizontalAlignment="Left" Height="20" Width="50" Click="btnSignUp_Click"/>
+        <Button x:Name="btnCancel" Content="Cancel" Grid.Column="2" Grid.Row="6" Margin="0 0 27.5 0"
+                HorizontalAlignment="Right" Height="20" Width="50" Click="btnCancel_Click" />
+
+        <!--Status Bar for some error messages-->
+        <StatusBar Grid.Row="7" Grid.ColumnSpan="4">
+            <StatusBarItem x:Name="statMessage" Padding="20 0"/>
+        </StatusBar>
+    </Grid>
+</Window>

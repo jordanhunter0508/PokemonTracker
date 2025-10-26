@@ -157,5 +157,52 @@ namespace DataAccessFakes
 
             return results;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>  used for testing
+        /// </summary>
+        public int CreateUserAccount(string givenName, string surname, string email, string passwordHash)
+        {
+            int result = 0;
+
+            User newuser = new User()
+            {
+                UserID = 100,
+                GivenName = givenName,
+                Surname = surname,
+                Email = email,
+                Active = true,
+            };
+
+            _users.Add(newuser);
+
+            result = SelectUserCountByEmail(email);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>  used for testing
+        /// </summary>
+        public int SelectUserCountByEmail(string email)
+        {
+            int result = 0;
+            foreach (User user in _users)
+            {
+                if (email == user.Email)
+                {
+                    result++;
+                }
+            }
+
+            return result;
+        }
+
+        public int AddUserRole(string roleID, string userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        //
     }
 }

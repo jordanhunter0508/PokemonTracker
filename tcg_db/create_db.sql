@@ -14,6 +14,7 @@ Might want to add a user Role so the user doesn't directly say Admin
 Very few cards have more than one ability but could make a join table for them
 if there is enough time
 
+
 */
 
 print '' print'*** dropping the database tcg_db ***'
@@ -77,8 +78,8 @@ PRINT '*** createing UserRole Table ***'
 GO
 CREATE TABLE [dbo].[UserRole]
 (
-	[RoleID]		[NVARCHAR](50)		NOT NULL,
-	[UserID]	[INT]				NOT NULL
+	[RoleID]		[nvarchar](50)		NOT NULL,
+	[UserID]		[int]				NOT NULL
 	CONSTRAINT [pk_userrole_userroleid] PRIMARY KEY([UserID], [RoleID]),
 	CONSTRAINT [fk_userrole__roleid] FOREIGN KEY([RoleID]) REFERENCES [Role]([RoleID]),
 	CONSTRAINT [fk_userrole_userid] FOREIGN KEY ([UserID]) REFERENCES [Users]([UserID])
@@ -301,7 +302,7 @@ CREATE TABLE [dbo].[PokemonCard]
 (
 	[PokemonCardID]			[int]				NOT NULL	IDENTITY(1,1),
 	[ArtistID]				[int]				NOT NULL,	
-	[AbilityID]				[nvarchar](25)		NOT NULL,	
+	[AbilityID]				[nvarchar](30)		NOT NULL,	
 	[BoosterID]				[nvarchar](50)		NOT NULL,	
 	[StageID]				[int]				NOT NULL,
 	[BoosterNumber]         [int]				NOT NULL,	
@@ -471,7 +472,7 @@ GO
 
 PRINT '' PRINT '' PRINT 'Creating Stored Procedures in tcg_db'
 
-PRINT '*** creating sp_authenticate_user ***'
+PRINT '*** creating sp_authenticate_user_by_email_and_password_hash ***'
 GO
 CREATE PROCEDURE [dbo].[sp_authenticate_user_by_email_and_password_hash]
 	(
@@ -484,7 +485,7 @@ AS
 		FROM	[Users]
 		WHERE	[Email] = @Email
 			AND	[PasswordHash] = @PasswordHash
-			AND	[Active] = 1
+			AND	[Active] = 1;
 	END
 GO
 
@@ -499,7 +500,7 @@ AS
 		SELECT	[Users].[UserID],[Users].[GivenName],[Users].[Surname],
 					[Email],[Active]
 		FROM	[Users]
-		WHERE	[Email] = @Email
+		WHERE	[Email] = @Email;
 	END
 GO
 
@@ -513,8 +514,56 @@ AS
 	BEGIN
 		SELECT	[UserRole].[RoleID]
 		FROM	[UserRole] JOIN [Users] ON [UserRole].[UserID] = [Users].[UserID]
-		WHERE	[Users].[Email] = @Email
+		WHERE	[Users].[Email] = @Email;
 	END
 GO
 
-	
+PRINT '*** creating sp_create_user_account ***'
+GO
+CREATE PROCEDURE [dbo].[sp_create_user_account]
+	(
+		@GivenName				[nvarchar](50),
+		@Surname				[nvarchar](100),
+		@PasswordHash			[nvarchar](100),
+		@Email					[nvarchar](250)		
+	)
+AS
+	BEGIN
+		INSERT INTO [dbo].[Users]
+			([GivenName],[Surname],[PasswordHash],[Email])
+		VALUES
+			(@GivenName,@Surname,@PasswordHash,@Email)
+		RETURN @@ROWCOUNT;
+	END
+GO	
+
+PRINT '*** creating sp_add_user_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_add_user_role]
+	(
+		@RoleID		[nvarchar](50),
+		@UserID		[int]			
+	)
+AS
+	BEGIN
+		INSERT INTO [dbo].[UserRole]
+			([RoleID],[UserID])
+		VALUES
+			(@RoleID,@UserID)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_select_user_count_by_email ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_user_count_by_email]
+	(
+		@Email				[nvarchar](250)
+	)
+AS
+	BEGIN
+		SELECT	COUNT([Users].[UserID])
+		FROM	[Users]
+		WHERE	[Email] = @Email;
+	END
+GO
