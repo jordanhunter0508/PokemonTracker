@@ -74,7 +74,6 @@ namespace PokemonCardFinal
             }
             else
             {
-                MessageBox.Show("Welcom back " + _accessToken.GivenName + ".");
                 LoggedInView();
             }
         }
@@ -118,7 +117,7 @@ namespace PokemonCardFinal
         {
             if (btnSignUp.Content == "Sign Up")
             {
-                SignUpWindow signUpWindow = new SignUpWindow();
+                SignUpWindow signUpWindow = new SignUpWindow(_userManager);
                 signUpWindow.Owner = this;
                 signUpWindow.ShowDialog();
                 UserLoggedIn(signUpWindow.AccessToken);

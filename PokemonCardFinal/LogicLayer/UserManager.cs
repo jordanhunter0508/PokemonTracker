@@ -215,9 +215,30 @@ namespace LogicLayer
             throw new NotImplementedException();
         }
 
-        public bool AddUserRole(string roleID, string userID)
+        /// <summary>
+        /// Implements from <see cref="IUserManager"/>
+        /// </summary>
+        public bool AddRoleToUser(int userID, string roleID = "General")
         {
-            throw new NotImplementedException();
+            bool result = false;
+
+            if (roleID == "" || roleID == null)
+            {
+                throw new ArgumentException("RoleID is not valid.");
+            }
+
+
+            try
+            {
+                result = (1 == _userAccessor.AddUserRole(userID,roleID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to assign user a role.");
+            }
+
+
+            return result;
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataDomain;
+﻿using DataDomain;
 
 namespace DataAccessInterfaces
 {
@@ -53,6 +48,6 @@ namespace DataAccessInterfaces
         /// <returns>Returns the number of users with the specific email</returns>
         public int SelectUserCountByEmail(string email);
 
-        public int AddUserRole(string roleID, string userID);
+        public int AddUserRole(int userID, string roleID = "General");
     }
 }

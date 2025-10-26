@@ -163,7 +163,7 @@ namespace DataAccessFakes
         /// </summary>
         public int CreateUserAccount(string givenName, string surname, string email, string passwordHash)
         {
-            int result = 0;
+            int count = 0;
 
             User newuser = new User()
             {
@@ -176,9 +176,9 @@ namespace DataAccessFakes
 
             _users.Add(newuser);
 
-            result = SelectUserCountByEmail(email);
+            count = SelectUserCountByEmail(email);
 
-            return result;
+            return count;
         }
 
         /// <summary>
@@ -186,21 +186,35 @@ namespace DataAccessFakes
         /// </summary>
         public int SelectUserCountByEmail(string email)
         {
-            int result = 0;
+            int count = 0;
             foreach (User user in _users)
             {
                 if (email == user.Email)
                 {
-                    result++;
+                    count++;
                 }
             }
 
-            return result;
+            return count;
         }
 
-        public int AddUserRole(string roleID, string userID)
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>  used for testing
+        /// </summary>
+        public int AddUserRole(int userID, string roleID = "General")
         {
-            throw new NotImplementedException();
+            int count = 0;
+
+            foreach (UserVM user in _userVMs)
+            {
+                if (user.UserID == userID)
+                {
+                    user.Roles.Add(roleID);
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         //

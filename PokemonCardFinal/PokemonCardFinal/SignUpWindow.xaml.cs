@@ -25,9 +25,9 @@ namespace PokemonCardFinal
     {
         IUserManager _userManager;
         public UserVM AccessToken { get; set; }
-        public SignUpWindow()
+        public SignUpWindow(IUserManager userManager)
         {
-            _userManager = new UserManager();
+            _userManager = userManager;
             InitializeComponent();
         }
 
@@ -39,8 +39,6 @@ namespace PokemonCardFinal
 
         private void btnSignUp_Click(object sender, RoutedEventArgs e)
         {
-            // need a stored procedure to set the role of the new user to general
-
             string givenName = txtGivenName.Text;
             string surname = txtSurname.Text;
             string email = txtEmail.Text;
@@ -57,12 +55,10 @@ namespace PokemonCardFinal
                 bool isRegistered = _userManager.RegisterUserAccount(txtGivenName.Text, txtSurname.Text, txtEmail.Text, pwdPassword.Password);
                 if (isRegistered)
                 {
-                    MessageBox.Show("Account created");
                     AccessToken = _userManager.LogInUser(email, password);
-                    // _userManager.AddRole("General" ,accessToke.ID)
-
-                    this.DialogResult = false;
-
+                    _userManager.AddRoleToUser(AccessToken.UserID);
+                    MessageBox.Show("Account was successfuly created.");
+                    this.DialogResult = false;  
                 }
                 else 
                 {

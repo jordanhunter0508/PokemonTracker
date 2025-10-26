@@ -524,8 +524,8 @@ CREATE PROCEDURE [dbo].[sp_create_user_account]
 	(
 		@GivenName				[nvarchar](50),
 		@Surname				[nvarchar](100),
-		@PasswordHash			[nvarchar](100),
-		@Email					[nvarchar](250)		
+		@Email					[nvarchar](250),
+		@PasswordHash			[nvarchar](100)		
 	)
 AS
 	BEGIN
@@ -541,8 +541,8 @@ PRINT '*** creating sp_add_user_role ***'
 GO
 CREATE PROCEDURE [dbo].[sp_add_user_role]
 	(
-		@RoleID		[nvarchar](50),
-		@UserID		[int]			
+		@UserID		[int],
+		@RoleID		[nvarchar](50)			
 	)
 AS
 	BEGIN

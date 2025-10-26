@@ -282,9 +282,51 @@ namespace DataAccess
             return count;
         }
 
-        public int AddUserRole(string roleID, string userID)
+        public int AddUserRole(int userID, string roleID = "General")
         {
-            throw new NotImplementedException();
+            int count = 0;
+
+            // ADO.Net needs a connection
+            SqlConnection conn = DBConnection.GetConnection();
+
+            // Command text
+            string cmdText = "sp_add_user_role";
+
+            // Create a command object from the connection and command text
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+
+            // Set the command type
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            // Add Parameters to the command
+            cmd.Parameters.Add("@RoleID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@RoleID"].Value = roleID;
+            cmd.Parameters["@UserID"].Value = userID;
+
+
+
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // Execute the command and capture the results
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            // After the connection is used close it
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
         }
     }
 }

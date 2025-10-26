@@ -345,4 +345,53 @@ public class UserManagerTest
         // assert
         Assert.AreEqual(expectedCount, actualCount);
     }
+
+    [TestMethod]
+    public void TestAddRoleToUserWithValidInput() 
+    {
+        // arrange
+        const string roleID = "testRole6";
+        const int userID = 1;
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _userManager.AddRoleToUser(userID, roleID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestAddRoleToUserThrowsArgumentExceptionWithEmptyRoleID()
+    {
+        // arrange
+        const string roleID = "";
+        const int userID = 1;
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _userManager.AddRoleToUser(userID, roleID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestAddRoleToUserReturnsFalseWithInvalidUserID()
+    {
+        // arrange
+        const string roleID = "testRole6";
+        const int userID = -1;
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _userManager.AddRoleToUser(userID, roleID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
 }

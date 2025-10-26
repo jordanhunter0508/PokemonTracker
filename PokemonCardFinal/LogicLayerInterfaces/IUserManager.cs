@@ -81,7 +81,7 @@ namespace LogicLayerInterfaces
         /// /// <exception cref="ApplicationException">Throws there is an error reaching the database</exception>
         public int GetUserCountByEmail(string email);
 
-        public bool AddUserRole(string roleID, string userID);
+        public bool AddRoleToUser(int userID, string roleID = "General");
 
         //public bool ResetPassword(string currentPassword, string newPassword);
         //public bool DeactivateUser(int userID, string email);
