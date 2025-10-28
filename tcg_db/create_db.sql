@@ -558,12 +558,31 @@ PRINT '*** creating sp_select_user_count_by_email ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_user_count_by_email]
 	(
-		@Email				[nvarchar](250)
+		@Email		[nvarchar](250)
 	)
 AS
 	BEGIN
 		SELECT	COUNT([Users].[UserID])
 		FROM	[Users]
 		WHERE	[Email] = @Email;
+	END
+GO
+
+PRINT '*** creating sp_update_passwordhash_by_email ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_passwordhash_by_email]
+	(
+		@Email					[nvarchar](250),
+		@CurrentPasswordHash	[nvarchar](100),
+		@NewPasswordHash		[nvarchar](100),
+	)
+AS
+	BEGIN
+		UPDATE 	[Users]
+		SET		[PasswordHash] = @NewPasswordHash
+		WHERE	[PasswordHash] = @CurrentPasswordHash
+			AND	@CurrentPasswordHash != @NewPasswordHash
+			AND	[Email] = @Email
+		RETURN @@ROWCOUNT
 	END
 GO

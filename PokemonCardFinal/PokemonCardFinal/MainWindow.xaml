@@ -1,11 +1,4 @@
-﻿<!--
-    Make the menu part clickable
-    Update UI page buttons no previous on 1st page and no next on last
-    Change search to clear when you click into it
--->
-
-
-<Window x:Class="PokemonCardFinal.MainWindow"
+﻿<Window x:Class="PokemonCardFinal.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -58,9 +51,7 @@
         <Grid Grid.Row="1" Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
-                <RowDefinition Height="40"/> <!--Filter section-->
                 <RowDefinition/>
-                <RowDefinition Height="40"/><!--this will be used for the next page buttons-->
             </Grid.RowDefinitions>
 
             <!--Start of the Search Bar, Login Button, and Sign Up Button-->
@@ -82,49 +73,13 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnSignUp_Click"/>
             </Grid> <!--End of the Search, Log In, and Sign Up Grid-->
 
-            <!--Start of the Filter Grid-->
-            <Grid x:Name="grdFilter" Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <ComboBox x:Name="cmbBooster" Grid.Column="0" Height="24" Width="140" SelectedIndex="0">
-                    <ComboBoxItem Visibility="Collapsed">Booster Pack</ComboBoxItem>
-                    <ComboBoxItem>test</ComboBoxItem>
-                </ComboBox>
-                <ComboBox x:Name="cmbRarity" Grid.Column="1" Height="24" Width="140" SelectedIndex="0">
-                    <ComboBoxItem Visibility="Collapsed">Rarity</ComboBoxItem>
-                    <ComboBoxItem>test</ComboBoxItem>
-                </ComboBox>
-                <ComboBox x:Name="cmbCardType" Grid.Column="2" Height="24" Width="140" SelectedIndex="0">
-                    <ComboBoxItem Visibility="Collapsed">Card Type</ComboBoxItem>
-                    <ComboBoxItem>test</ComboBoxItem>
-                </ComboBox>
-                <ComboBox x:Name="cmbElement" Grid.Column="3" Height="24" Width="140" SelectedIndex="0">
-                    <ComboBoxItem Visibility="Collapsed">Element</ComboBoxItem>
-                    <ComboBoxItem>test</ComboBoxItem>
-                </ComboBox>
-                <Button x:Name="btnFilterSearch" Content="Search" Grid.Column="4" Height="20" Width="100"/>
-
-            </Grid><!--End of the Filter Grid-->
-            
-            <!--Start of the Main Content Grid-->
-            <Grid Grid.Row="2">
+            <!--Start the main frame-->
+            <Frame x:Name="frmMain" Grid.Row="1"> 
                 
-            </Grid> <!--End of the Main Content Grid-->
-            
-            <!--Start of the Page Button Grid-->
-            <Grid Grid.Row="3">
-                <Button x:Name="btnPreviousPage" Width="100" HorizontalAlignment="left">Previous Page</Button>
-                <Label x:Name="lblCurrentPage" HorizontalAlignment="Center">pg. 1</Label>
-                <Button x:Name="btnNextPage" Width="100" HorizontalAlignment="Right">Next Page</Button>
-            </Grid><!--End of the Page Button Grid-->
+            </Frame> <!--End of Main Frame-->
         </Grid>
 
     </Grid>
-    <!-- end of Main Window grid -->
+    <!-- End of Main Window grid -->
 </Window>
 

@@ -1,0 +1,102 @@
+﻿<Page x:Class="PokemonCardFinal.ProfilePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PokemonCardFinal"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="730"
+      Title="Profile Page" Loaded="Page_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TabControl x:Name="tabController">
+
+            <TabItem x:Name="tabMyCards" Header="My Cards">
+                <Grid x:Name="grdMyCards">
+                    <DataGrid x:Name="datCards"></DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabMyDecks" Header="My Decks"></TabItem>
+            <TabItem x:Name="tabFavorites" Header="Favorites"></TabItem>
+            <TabItem x:Name="tabWhishlist" Header="Whishlist"></TabItem>
+
+            <TabItem x:Name="tabAccount" Header="Account Information">
+                <Grid x:Name="grdAccount">
+                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="lblGivenName" Content="First Name:" Grid.Column="0" Margin="25 0"
+                                HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="txtGivenName" Width="150" Height="25" IsEnabled="False" Grid.Column="1" 
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+                    </Grid><!--End of Given Name Grid-->
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="lblSurname" Content="Last Name:" Grid.Column="0" Margin="25 0"
+                                HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="txtSurname" Width="150" Height="25" IsEnabled="False" Grid.Column="1" 
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+                    </Grid><!--End of Surname Grid-->
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="lblEmail" Content="Email:" Grid.Column="0" Margin="25 0"
+                                HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="txtEmail" Width="150" Height="25" IsEnabled="False" Grid.Column="1" 
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+                    </Grid><!--End of Email Grid-->
+
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="lblPassowrd" Content="Password:" Grid.Column="0" Margin="25 0"
+                                HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                        <PasswordBox x:Name="pwdPassword" Width="150" Height="25" IsEnabled="False" Grid.Column="1" Password="***********"
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+                    </Grid><!--End of Password Grid-->
+
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="btnUpdatePassword" Content="Change Password" Height="50" Width="150" Click="btnUpdatePassword_Click"/>
+                    </Grid><!--End of Change Password Grid-->
+                </Grid>
+            </TabItem><!--End of Account Information Tab-->
+            
+        </TabControl>
+
+    </Grid>
+</Page>

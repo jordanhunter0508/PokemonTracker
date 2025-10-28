@@ -123,6 +123,10 @@ namespace PokemonCardFinal
                 UserLoggedIn(signUpWindow.AccessToken);
 
             }
+            if (btnSignUp.Content == "View Profile")
+            {
+                frmMain.Navigate(new ProfilePage(_accessToken));
+            }
         }
     }
 }

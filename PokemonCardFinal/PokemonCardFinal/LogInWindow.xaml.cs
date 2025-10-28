@@ -36,7 +36,7 @@ namespace PokemonCardFinal
         /// When the window loads set the focus to txtEmail
         /// and set btnLogIn to default
         /// </summary>
-        private void txtEmail_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txtEmail.Focus();
             btnLogIn.IsDefault = true;

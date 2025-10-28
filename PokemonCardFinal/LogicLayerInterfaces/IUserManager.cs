@@ -83,8 +83,6 @@ namespace LogicLayerInterfaces
 
         public bool AddRoleToUser(int userID, string roleID = "General");
 
-        //public bool ResetPassword(string currentPassword, string newPassword);
-        //public bool DeactivateUser(int userID, string email);
-        //public bool ActivateUser(int userID, string email);
+        public bool ResetPassword(string email, string currentPassword, string newPassword);
     }
 }

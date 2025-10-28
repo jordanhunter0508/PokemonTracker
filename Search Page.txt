@@ -1,0 +1,51 @@
+  d:DesignHeight="500" d:DesignWidth="730"
+  Title="ProfilePage" Loaded="Page_Loaded">
+<Grid>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="50"/>
+        <RowDefinition/>
+        <RowDefinition Height="50"/>
+    </Grid.RowDefinitions>
+    <!--Start of the Filter Grid-->
+    <Grid x:Name="grdFilter">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ComboBox x:Name="cmbBooster" Grid.Column="0" Height="24" Width="140" SelectedIndex="0">
+            <ComboBoxItem Visibility="Collapsed">Booster Pack</ComboBoxItem>
+            <ComboBoxItem>test</ComboBoxItem>
+        </ComboBox>
+        <ComboBox x:Name="cmbRarity" Grid.Column="1" Height="24" Width="140" SelectedIndex="0">
+            <ComboBoxItem Visibility="Collapsed">Rarity</ComboBoxItem>
+            <ComboBoxItem>test</ComboBoxItem>
+        </ComboBox>
+        <ComboBox x:Name="cmbCardType" Grid.Column="2" Height="24" Width="140" SelectedIndex="0">
+            <ComboBoxItem Visibility="Collapsed">Card Type</ComboBoxItem>
+            <ComboBoxItem>test</ComboBoxItem>
+        </ComboBox>
+        <ComboBox x:Name="cmbElement" Grid.Column="3" Height="24" Width="140" SelectedIndex="0">
+            <ComboBoxItem Visibility="Collapsed">Element</ComboBoxItem>
+            <ComboBoxItem>test</ComboBoxItem>
+        </ComboBox>
+        <Button x:Name="btnFilterSearch" Content="Search" Grid.Column="4" Height="20" Width="100"/>
+
+    </Grid>
+    <!--End of the Filter Grid-->
+
+    <!--Start of the Main Content Grid-->
+    <Grid Grid.Row="2">
+
+    </Grid>
+    <!--End of the Main Content Grid-->
+
+    <!--Start of the Page Button Grid-->
+    <Grid Grid.Row="3">
+        <Button x:Name="btnPreviousPage" Width="100" HorizontalAlignment="left">Previous Page</Button>
+        <Label x:Name="lblCurrentPage" HorizontalAlignment="Center">pg. 1</Label>
+        <Button x:Name="btnNextPage" Width="100" HorizontalAlignment="Right">Next Page</Button>
+    </Grid>
+    <!--End of the Page Button Grid-->
