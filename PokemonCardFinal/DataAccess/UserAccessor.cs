@@ -331,7 +331,51 @@ namespace DataAccess
 
         public int UpdatePasswordHashByEmail(string email, string currentPassword, string newPassword)
         {
-            throw new NotImplementedException();
+            int count = 0;
+
+            // ADO.Net needs a connection
+            SqlConnection conn = DBConnection.GetConnection();
+
+            // Command text
+            string cmdText = "sp_update_passwordhash_by_email";
+
+            // Create a command object from the connection and command text
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+
+            // Set the command type
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            // Add Parameters to the command
+            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@CurrentPasswordHash", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@NewPasswordHash", System.Data.SqlDbType.NVarChar, 100);
+
+            cmd.Parameters["@Email"].Value = email;
+            cmd.Parameters["@CurrentPasswordHash"].Value = currentPassword;
+            cmd.Parameters["@NewPasswordHash"].Value = newPassword;
+
+
+
+            try
+            {
+                // Open the connection
+                conn.Open();
+
+                // Execute the command and capture the results
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            // After the connection is used close it
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
         }
     }
 }
