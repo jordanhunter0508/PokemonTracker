@@ -217,6 +217,26 @@ namespace DataAccessFakes
             return count;
         }
 
+        public int UpdatePasswordHashByEmail(string email, string currentPassword, string newPassword)
+        {
+            int rows = 0;
+
+            try
+            {
+                rows = AuthenticateUserByEmailAndPasswordHash(email, currentPassword);
+                if (rows == 1)
+                {
+                    _passwordHash = newPassword;
+                }
+            }
+            catch (Exception)
+            { 
+                throw new ArgumentException("Invalid email or password.");
+            }
+
+            return rows;
+        }
+
         //
     }
 }

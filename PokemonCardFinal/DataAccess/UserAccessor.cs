@@ -328,5 +328,10 @@ namespace DataAccess
 
             return count;
         }
+
+        public int UpdatePasswordHashByEmail(string email, string currentPassword, string newPassword)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

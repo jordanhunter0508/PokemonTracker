@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataDomain;
+using LogicLayerInterfaces;
 
 namespace PokemonCardFinal
 {
@@ -21,9 +22,11 @@ namespace PokemonCardFinal
     /// </summary>
     public partial class ProfilePage : Page
     {
+        IUserManager _userManager;
         UserVM _accessToken;
-        public ProfilePage(UserVM accessToken)
+        public ProfilePage(UserVM accessToken, IUserManager userManager)
         {
+            _userManager = userManager;
             _accessToken = accessToken;
             InitializeComponent();
         }
@@ -38,7 +41,7 @@ namespace PokemonCardFinal
 
         private void btnUpdatePassword_Click(object sender, RoutedEventArgs e)
         {
-            UpdatePasswordWindow updatePassword = new UpdatePasswordWindow();
+            UpdatePasswordWindow updatePassword = new UpdatePasswordWindow(_accessToken, _userManager);
             updatePassword.Owner = Window.GetWindow(this);
             updatePassword.ShowDialog();
         }

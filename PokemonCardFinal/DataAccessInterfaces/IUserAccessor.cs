@@ -48,6 +48,15 @@ namespace DataAccessInterfaces
         /// <returns>Returns the number of users with the specific email</returns>
         public int SelectUserCountByEmail(string email);
 
+        /// <summary>
+        /// Adds a user and role to the UserRole table
+        /// Used when creating an account
+        /// </summary>
+        /// <param name="userID">Specified user to add to roles</param>
+        /// <param name="roleID">Role the user is being assigned</param>
+        /// <returns>Returns 1 if the number of rows effected</returns>
         public int AddUserRole(int userID, string roleID = "General");
+
+        public int UpdatePasswordHashByEmail(string email, string currentPassword, string newPassword);
     }
 }

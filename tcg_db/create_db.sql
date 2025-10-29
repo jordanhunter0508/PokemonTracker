@@ -163,7 +163,7 @@ CREATE TABLE [dbo].[Move]
 (
 	[MoveID]				[nvarchar](30)		NOT NULL,
 	[Damage]				[int]				NOT NULL,
-	[Description]			[nvarchar](100)		NOT NULL	DEFAULT '',
+	[Description]			[nvarchar](200)		NOT NULL	DEFAULT '',
 	
 	CONSTRAINT [pk_move_moveid] PRIMARY KEY ([MoveID] ASC)
 )
@@ -574,7 +574,7 @@ CREATE PROCEDURE [dbo].[sp_update_passwordhash_by_email]
 	(
 		@Email					[nvarchar](250),
 		@CurrentPasswordHash	[nvarchar](100),
-		@NewPasswordHash		[nvarchar](100),
+		@NewPasswordHash		[nvarchar](100)
 	)
 AS
 	BEGIN
@@ -584,5 +584,19 @@ AS
 			AND	@CurrentPasswordHash != @NewPasswordHash
 			AND	[Email] = @Email
 		RETURN @@ROWCOUNT
+	END
+GO
+
+PRINT '*** creating sp_select_move_by_moveid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_move_by_moveid]
+	(
+		@MoveID			[nvarchar](30)
+	)
+AS
+	BEGIN
+		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description]
+		FROM	[Move]
+		WHERE	[Move].[MoveID] = @MoveID;
 	END
 GO

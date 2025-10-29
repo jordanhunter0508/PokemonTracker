@@ -202,7 +202,24 @@ namespace LogicLayer
 
         public bool ResetPassword(string email, string currentPassword, string newPassword)
         {
-            throw new NotImplementedException();
+            bool isUpdated = false;
+
+            try
+            {
+                currentPassword = HashSha256(currentPassword);
+                newPassword = HashSha256(newPassword);
+                isUpdated = (1 == _userAccessor.UpdatePasswordHashByEmail(email,currentPassword,newPassword));
+                if (!isUpdated) 
+                {
+                    throw new ApplicationException("Failed to reset password.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Authentication failed.",ex);
+            }
+
+            return isUpdated;
         }
 
         /// <summary>

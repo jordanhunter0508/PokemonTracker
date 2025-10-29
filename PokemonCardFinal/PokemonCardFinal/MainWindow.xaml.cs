@@ -125,7 +125,7 @@ namespace PokemonCardFinal
             }
             if (btnSignUp.Content == "View Profile")
             {
-                frmMain.Navigate(new ProfilePage(_accessToken));
+                frmMain.Navigate(new ProfilePage(_accessToken,_userManager));
             }
         }
     }

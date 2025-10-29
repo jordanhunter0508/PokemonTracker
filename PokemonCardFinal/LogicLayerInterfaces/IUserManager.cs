@@ -81,6 +81,13 @@ namespace LogicLayerInterfaces
         /// /// <exception cref="ApplicationException">Throws there is an error reaching the database</exception>
         public int GetUserCountByEmail(string email);
 
+        /// <summary>
+        /// Passes parameters to <see href="AddUserRole"/> then returns true <br/>
+        /// if the number of rows is 1
+        /// </summary>
+        /// <param name="userID">Specified user to add to roles</param>
+        /// <param name="roleID">Role the user is being assigned</param>
+        /// <returns>Returns true if the number of effected rows is 1, false otherwise</returns>
         public bool AddRoleToUser(int userID, string roleID = "General");
 
         public bool ResetPassword(string email, string currentPassword, string newPassword);

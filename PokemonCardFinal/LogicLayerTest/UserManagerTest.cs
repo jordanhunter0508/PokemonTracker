@@ -394,4 +394,21 @@ public class UserManagerTest
         // assert
         Assert.AreEqual(expectedResult, actualResult);
     }
+
+    [TestMethod]
+    public void TestResetPasswordSuccedsWithCorrectEmailAndPassword()
+    {
+        // arrange
+        const string email = "testuser1@test.com";
+        const string oldPassword = "newuser";
+        const string newPassword = "Password!";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _userManager.ResetPassword(email, oldPassword, newPassword);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
 }
