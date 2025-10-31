@@ -11,9 +11,14 @@ namespace DataAccess
 {
     public class MoveAccessor : IMoveAccessor
     {
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_select_move_by_moveid
+        /// </summary>
         public Move SelectMoveByMoveID(string moveID)
         {
-            Move resultMove = null;
+            Move restultMove = null;
 
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_move_by_moveid";
@@ -33,7 +38,7 @@ namespace DataAccess
                 if (reader.HasRows)
                 {
                     reader.Read();
-                    resultMove = new Move()
+                    restultMove = new Move()
                     {
                         MoveID = reader.GetString(0),
                         Damage = reader.GetInt32(1),
@@ -50,7 +55,9 @@ namespace DataAccess
                 conn.Close();
             }
 
-            return resultMove;
+            return restultMove;
         }
+    
+    
     }
 }

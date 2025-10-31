@@ -58,7 +58,6 @@ namespace PokemonCardFinal
 
         }
 
-
         /// <summary>
         /// Sets this classes accessToken
         /// from the one in logInWindow
@@ -84,6 +83,7 @@ namespace PokemonCardFinal
         /// </summary>
         private void LoggedInView()
         {
+
             btnLogIn.Content = "Log Out";
             btnSignUp.Content = "View Profile";
 
@@ -97,6 +97,7 @@ namespace PokemonCardFinal
         private void UserLoggedOut()
         {
             if (_accessToken != null)
+            if (_accessToken != null)
             {
                 _accessToken = null;
                 LoggedOutView();
@@ -104,7 +105,7 @@ namespace PokemonCardFinal
         }
 
         /// <summary>
-        /// Updates teh disaply of the main window
+        /// Updates the disaply of the main window
         /// to match what a user should see when logged out
         /// </summary>
         private void LoggedOutView() 

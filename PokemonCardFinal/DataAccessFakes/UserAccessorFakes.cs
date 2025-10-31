@@ -99,7 +99,6 @@ namespace DataAccessFakes
         public int AuthenticateUserByEmailAndPasswordHash(string email, string passwordHash)
         {
             int result = 0;
-
             foreach (User user in _users)
             {
                 if ((user.Email.Equals(email) && _passwordHash.Equals(passwordHash))
@@ -161,9 +160,9 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IUserAccessor"/>  used for testing
         /// </summary>
-        public int CreateUserAccount(string givenName, string surname, string email, string passwordHash)
+        public int InsertUserIntoUser(string givenName, string surname, string email, string passwordHash)
         {
-            int count = 0;
+            int userID = 0;
 
             User newuser = new User()
             {
@@ -173,12 +172,12 @@ namespace DataAccessFakes
                 Email = email,
                 Active = true,
             };
-
+            
             _users.Add(newuser);
 
-            count = SelectUserCountByEmail(email);
+            userID = newuser.UserID;
 
-            return count;
+            return userID;
         }
 
         /// <summary>
@@ -201,22 +200,28 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IUserAccessor"/>  used for testing
         /// </summary>
-        public int AddUserRole(int userID, string roleID = "General")
+        public int InsertUserIntoRole(int userID, string roleID = "General")
         {
-            int count = 0;
+            // Initialized to 1 because a sql error calling this
+            // stored procedure returns 1 
+            // 0 when inputed successfuly
+            int count = 1;
 
             foreach (UserVM user in _userVMs)
             {
                 if (user.UserID == userID)
                 {
                     user.Roles.Add(roleID);
-                    count++;
+                    count--;
                 }
             }
 
             return count;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>  used for testing
+        /// </summary>
         public int UpdatePasswordHashByEmail(string email, string currentPassword, string newPassword)
         {
             int rows = 0;
@@ -224,7 +229,7 @@ namespace DataAccessFakes
             try
             {
                 rows = AuthenticateUserByEmailAndPasswordHash(email, currentPassword);
-                if (rows == 1)
+                if (rows == 0)
                 {
                     _passwordHash = newPassword;
                 }
@@ -237,6 +242,5 @@ namespace DataAccessFakes
             return rows;
         }
 
-        //
     }
 }

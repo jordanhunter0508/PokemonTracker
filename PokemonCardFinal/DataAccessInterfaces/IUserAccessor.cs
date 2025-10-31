@@ -38,7 +38,7 @@ namespace DataAccessInterfaces
         /// <param name="email">Email of the user inputing data</param>
         /// <param name="passwordHash">Hashed password from the users inputted password</param>
         /// <returns>Returns the number of rows affected. 1 if the account was created succefully.</returns>
-        public int CreateUserAccount(string givenName, string surname, string email, string passwordHash);
+        public int InsertUserIntoUser(string givenName, string surname, string email, string passwordHash);
 
         /// <summary>
         /// Requests from the database the count of users.
@@ -49,14 +49,21 @@ namespace DataAccessInterfaces
         public int SelectUserCountByEmail(string email);
 
         /// <summary>
-        /// Adds a user and role to the UserRole table
-        /// Used when creating an account
+        /// Inserts a user and role to the UserRole table
+        /// Used when creating an account.
         /// </summary>
         /// <param name="userID">Specified user to add to roles</param>
         /// <param name="roleID">Role the user is being assigned</param>
-        /// <returns>Returns 1 if the number of rows effected</returns>
-        public int AddUserRole(int userID, string roleID = "General");
+        /// <returns>Returns 0 if the data got inserted correctly</returns>
+        public int InsertUserIntoRole(int userID, string roleID = "General");
 
+        /// <summary>
+        /// Updates the password hash of the user with a matching email.
+        /// </summary>
+        /// <param name="email">Email of the user to update</param>
+        /// <param name="currentPassword">Users current password hash</param>
+        /// <param name="newPassword">Users new password hash</param>
+        /// <returns>Returns the number of rows affected</returns>
         public int UpdatePasswordHashByEmail(string email, string currentPassword, string newPassword);
     }
 }

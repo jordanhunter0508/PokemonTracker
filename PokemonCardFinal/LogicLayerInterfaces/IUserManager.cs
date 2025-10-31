@@ -61,7 +61,7 @@ namespace LogicLayerInterfaces
         /// <summary>
         /// GetUserCountByEmail
         /// CreateUserAccount
-        /// Passes parameters to <see href="CreateUserAccount(string,string,string,string)"/><br/>
+        /// Passes parameters to <see href="InsertUserIntoUser(string,string,string,string)"/><br/>
         /// then returns true if the account was successfully created.
         /// </summary>
         /// <param name="givenName">Given name of the user inputing data</param>
@@ -70,7 +70,7 @@ namespace LogicLayerInterfaces
         /// <param name="passwordHash">Hashed password from the users inputted password</param>
         /// <returns>Returns true if the account was successfully created, false otherwise</returns>
         /// <exception cref="ApplicationException">Throws there is an error reaching the database</exception>
-        public bool RegisterUserAccount(string givenName, string surname, string email, string passwordHash);
+        public bool CreateUserAccount(string givenName, string surname, string email, string passwordHash);
 
         /// <summary>
         /// Passes parameters to <see href="SelectUserCountByEmail(string)"/> then returns <br/>
@@ -82,14 +82,23 @@ namespace LogicLayerInterfaces
         public int GetUserCountByEmail(string email);
 
         /// <summary>
-        /// Passes parameters to <see href="AddUserRole"/> then returns true <br/>
-        /// if the number of rows is 1
+        /// Passes parameters to <see href="InsertUserIntoRole"/> then returns true <br/>
+        /// if the number of rows is 0
         /// </summary>
         /// <param name="userID">Specified user to add to roles</param>
         /// <param name="roleID">Role the user is being assigned</param>
-        /// <returns>Returns true if the number of effected rows is 1, false otherwise</returns>
-        public bool AddRoleToUser(int userID, string roleID = "General");
+        /// <returns>Returns true if the number of effected rows is 0, false otherwise</returns>
+        public bool AddUserToRole(int userID, string roleID = "General");
 
+        /// <summary>
+        /// Passes parameters to <see href="UpdatePasswordHashByEmail"/> uses the int it returns <br/>
+        /// check if it is 1 if so return true false otherwise.
+        /// </summary>
+        /// <param name="email">String used to search the database for</param>
+        /// <param name="currentPassword">String of the user's current password hash</param>
+        /// <param name="newPassword">String of the user's new password hash</param>
+        /// <returns>true if the password was reset false otherwise</returns>
+        /// <exception cref="ApplicationException">Throws if the email is not found in the database</exception>
         public bool ResetPassword(string email, string currentPassword, string newPassword);
     }
 }

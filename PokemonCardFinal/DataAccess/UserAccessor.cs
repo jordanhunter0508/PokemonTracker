@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -183,17 +184,17 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IUserAccessor"/>. Access the database
-        /// using sp_create_user_account
+        /// using sp_insert_user_into_user
         /// </summary>
-        public int CreateUserAccount(string givenName, string surname, string email, string passwordHash)
+        public int InsertUserIntoUser(string givenName, string surname, string email, string passwordHash)
         {
-            int count = 0;
+            int userID = 0;
 
             // ADO.Net needs a connection
             SqlConnection conn = DBConnection.GetConnection();
 
             // Command text
-            string cmdText = "sp_create_user_account";
+            string cmdText = "sp_insert_user_into_user";
 
             // Create a command object from the connection and command text
             SqlCommand cmd = new SqlCommand(cmdText, conn);
@@ -219,7 +220,7 @@ namespace DataAccess
                 conn.Open();
 
                 // Execute the command and capture the results
-                count = cmd.ExecuteNonQuery();
+                userID = cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -232,7 +233,7 @@ namespace DataAccess
                 conn.Close();
             }
 
-            return count;
+            return userID;
         }
 
         /// <summary>
@@ -282,7 +283,11 @@ namespace DataAccess
             return count;
         }
 
-        public int AddUserRole(int userID, string roleID = "General")
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>. Access the database
+        /// using sp_insert_user_into_role
+        /// </summary>
+        public int InsertUserIntoRole(int userID, string roleID = "General")
         {
             int count = 0;
 
@@ -290,7 +295,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
 
             // Command text
-            string cmdText = "sp_add_user_role";
+            string cmdText = "sp_insert_user_into_role";
 
             // Create a command object from the connection and command text
             SqlCommand cmd = new SqlCommand(cmdText, conn);
@@ -329,6 +334,10 @@ namespace DataAccess
             return count;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>. Access the database
+        /// using sp_update_passwordhash_by_email
+        /// </summary>
         public int UpdatePasswordHashByEmail(string email, string currentPassword, string newPassword)
         {
             int count = 0;

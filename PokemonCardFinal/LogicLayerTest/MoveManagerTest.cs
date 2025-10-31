@@ -24,29 +24,29 @@ public class MoveManagerTest
         const string expectedMoveID = "test move 1";
         const int expectedDamage = 10;
         const string expectedDescription = "This is a test move.";
-        Move actualMove;
+        Move actualMove = null;
 
         // act
-        actualMove = _moveManager.GetMoveByMoveID(inputedMoveID);
+        actualMove = _moveManager.GetMovseByMoveID(inputedMoveID);
 
         // assert
-        Assert.AreEqual(expectedMoveID,actualMove.MoveID);
+        Assert.AreEqual(expectedMoveID, actualMove.MoveID);
         Assert.AreEqual(expectedDamage,actualMove.Damage);
         Assert.AreEqual(expectedDescription,actualMove.Description);
     }
 
     [TestMethod]
-    public void TestGetMoveByMoveIDWithInvalidInputReturnsNull()
+    public void TestGetMoveByMoveIDWithInvalidInputReturnsEmptyList()
     {
         // arrange
         const string inputedMoveID = "test";
-        const Move expectedMove = null;
+        Move expectedMove = null;
         Move actualMove;
 
         // act
-        actualMove = _moveManager.GetMoveByMoveID(inputedMoveID);
+        actualMove = _moveManager.GetMovseByMoveID(inputedMoveID);
 
         // assert
-        Assert.AreEqual(expectedMove,actualMove);
+        Assert.AreEqual(expectedMove, actualMove);
     }
 }

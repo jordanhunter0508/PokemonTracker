@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataDomain;
 
 namespace DataDomain
 {
@@ -13,7 +14,9 @@ namespace DataDomain
         public string Description { get; set; }
     }
 
-    // Vms might include cost
-    // List<string> element type
-    // List<int> quantity
+    public class MoveVM : Move
+    {
+        public List<string> ElementTypeIDs { get; set; }
+        public List<int> Quantity {  get; set; }
+    }
 }

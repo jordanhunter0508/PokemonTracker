@@ -52,15 +52,18 @@ namespace PokemonCardFinal
 
             try
             {
-                bool isRegistered = _userManager.RegisterUserAccount(txtGivenName.Text, txtSurname.Text, txtEmail.Text, pwdPassword.Password);
+                bool isRegistered = _userManager.CreateUserAccount(txtGivenName.Text, txtSurname.Text, txtEmail.Text, pwdPassword.Password);
                 if (isRegistered)
                 {
                     AccessToken = _userManager.LogInUser(email, password);
-                    _userManager.AddRoleToUser(AccessToken.UserID);
+                    if (_userManager.AddUserToRole(AccessToken.UserID))
+                    {
+                        MessageBox.Show("There was an error");
+                    }
                     MessageBox.Show("Account was successfuly created.");
-                    this.DialogResult = false;  
+                    this.DialogResult = false;
                 }
-                else 
+                else
                 {
                     statMessage.Content = "Invalid email address.";
                 }
@@ -91,21 +94,21 @@ namespace PokemonCardFinal
         {
             bool result = true;
 
-            if (givenName == "" || givenName == null)
+            if (givenName == "" || givenName == null || givenName.Any(char.IsDigit))
             {
-                statMessage.Content = "Please enter a first name.";
+                statMessage.Content = "Please enter a valid first name.";
                 txtGivenName.Focus();
                 result = false;
             }
-            else if (surname == "" || surname == null)
+            else if (surname == "" || surname == null || surname.Any(char.IsDigit))
             {
-                statMessage.Content = "Please enter a last name.";
+                statMessage.Content = "Please enter a valid last name.";
                 txtSurname.Focus();
                 result = false;
             }
-            else if (email == "" || email == null)
+            else if (email == "" || email == null || email.Length < 10)
             {
-                statMessage.Content = "Please enter an email address.";
+                statMessage.Content = "Please enter a valid email address.";
                 txtEmail.Focus();
                 result = false;
             }

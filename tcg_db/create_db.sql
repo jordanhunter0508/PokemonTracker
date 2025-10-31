@@ -15,6 +15,8 @@ Very few cards have more than one ability but could make a join table for them
 if there is enough time
 
 
+Ask Jim about sign up automatically opening view profile
+
 */
 
 print '' print'*** dropping the database tcg_db ***'
@@ -74,7 +76,7 @@ GO
 Used so the roleId dose not directly appear in the users table
 this can also be used to assign more than one role to a user
 */
-PRINT '*** createing UserRole Table ***'
+PRINT '*** creating UserRole Table ***'
 GO
 CREATE TABLE [dbo].[UserRole]
 (
@@ -242,39 +244,6 @@ CREATE TABLE [dbo].[PokemonRule]
 GO
 
 /*
-All pokemon
-Used with PokedexEvolution to find what 
-a card's pokemon can evolve into or from
-*/
-PRINT '*** creating Pokedex Table ***'
-GO
-CREATE TABLE [dbo].[Pokedex]
-(
-	[PokedexID]				[int]	 			NOT NULL,
-	[Name]					[nvarchar](30)		NOT NULL,
-	
-	CONSTRAINT [pk_pokedex_pokedexid] PRIMARY KEY ([PokedexID] ASC),
-	CONSTRAINT [ak_pokedex_name] UNIQUE ([Name])
-)
-GO
-
-/*
-Used with StageEvolution to find what is 
-the next or previous stage of a card
-*/
-PRINT '*** creating Stage Table ***'
-GO
-CREATE TABLE [dbo].[Stage]
-(
-	[StageID]				[int]				NOT NULL	IDENTITY(1,1),
-	[Name]					[int]				NOT NULL,
-	
-	CONSTRAINT [pk_stage_stageid] PRIMARY KEY ([StageID]),
-	CONSTRAINT [ak_stage_name] UNIQUE ([Name])
-)
-GO
-
-/*
 Used to store the data about the booster packs or sets
 */
 PRINT '*** creating Booster Table ***'
@@ -304,7 +273,7 @@ CREATE TABLE [dbo].[PokemonCard]
 	[ArtistID]				[int]				NOT NULL,	
 	[AbilityID]				[nvarchar](30)		NOT NULL,	
 	[BoosterID]				[nvarchar](50)		NOT NULL,	
-	[StageID]				[int]				NOT NULL,
+	[PokemonRuleID]			[nvarchar](50)		NOT NULL,
 	[BoosterNumber]         [int]				NOT NULL,	
 	[Name]					[nvarchar](50)	    NOT NULL,	
 	[CardType]				[nvarchar](50)    	NOT NULL,
@@ -316,6 +285,7 @@ CREATE TABLE [dbo].[PokemonCard]
 	[ResistanceValue]       [int]               NULL,
 	[RetreatCost]           [int]               NULL,
 	[Health]				[int]				NULL,
+	[Stage]					[nvarchar](30)		NOT NULL,
 
 	
 	/*AlternateArtID, boosterid,BoosterID unique*/
@@ -323,7 +293,7 @@ CREATE TABLE [dbo].[PokemonCard]
 	CONSTRAINT [fk_pokemoncard_artistid] FOREIGN KEY ([ArtistID]) REFERENCES [Artist] ([ArtistID]),
 	CONSTRAINT [fk_pokemoncard_abilityid] FOREIGN KEY ([AbilityID]) REFERENCES [Ability] ([AbilityID]),
 	CONSTRAINT [fk_pokemoncard_boosterid] FOREIGN KEY ([BoosterID]) REFERENCES [Booster] ([BoosterID]),
-	CONSTRAINT [fk_pokemoncard_stageid] FOREIGN KEY ([StageID]) REFERENCES [Stage] ([StageID]),
+	CONSTRAINT [fk_pokemoncard_pokemonruleid] FOREIGN KEY ([PokemonRuleID]) REFERENCES [PokemonRule] ([PokemonRuleID]),
 	CONSTRAINT [ak_pokemoncard_alternateid_boosterid_boosternumber] UNIQUE ([BoosterID],[BoosterNumber])
 )
 GO
@@ -419,56 +389,8 @@ CREATE TABLE [dbo].[CollectionCard]
 GO
 
 
-/*
-Used because some cards have multiple pokemon
-*/
-PRINT '*** creating PokedexCard Table ***'
-GO
-CREATE TABLE [dbo].[PokedexCard]
-(
-	[PokedexID]				[int]				NOT NULL,
-	[PokemonCardID]			[int]				NOT NULL,
-	
-	CONSTRAINT [pk_pokdexcard_pokedexcardid] PRIMARY KEY ([PokemonCardID],[PokedexID]),
-	CONSTRAINT [fk_pokedexcard_pokedexid] FOREIGN KEY([PokedexID]) REFERENCES [Pokedex]([PokedexID]),
-	CONSTRAINT [fk_pokedexcard_cardid] FOREIGN KEY([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]),
-)
-GO
 
-/*
-Used to find the pokemon's next evolution
-*/
-PRINT '*** creating PokemonEvolution Table ***'
-GO
-CREATE TABLE [dbo].[PokedexEvolution]
-(
-	[PokedexEvolutionID]	[int]				NOT NULL	IDENTITY(1,1),
-	[CurrentPokedexID]		[int]				NOT NULL,
-	[EvolvedPokedexID]		[int]				NOT NULL,
-	
-	CONSTRAINT [pk_pokedexevolution_pokedexevolutionid] PRIMARY KEY ([PokedexEvolutionID]),
-	CONSTRAINT [fk_pokedex_currentpokedexid] FOREIGN KEY ([CurrentPokedexID]) REFERENCES [Pokedex]([PokedexID]),
-	CONSTRAINT [fk_pokedex_evolvedpokedexid] FOREIGN KEY ([EvolvedPokedexID]) REFERENCES [Pokedex]([PokedexID])
-)
-GO
 
-/*
-Used to find the stage's next evolution
-*/
-PRINT '*** creating StageEvolution Table ***'
-GO
-CREATE TABLE [dbo].[StageEvolution]
-(
-	[StageEvolutionID]		[int]				NOT NULL	IDENTITY(1,1),
-	[CurrentStageID]		[int]				NOT NULL,
-	[EvolvedStageID]		[int]				NOT NULL,
-	
-	CONSTRAINT [pk_stageevolution_stageevolutionid] PRIMARY KEY ([StageEvolutionID]),
-	CONSTRAINT [fk_stageevolution_currentstageid] FOREIGN KEY ([CurrentStageID]) REFERENCES [Stage]([StageID]),
-	CONSTRAINT [fk_stageevolution_evolvedstageid] FOREIGN KEY ([EvolvedStageID]) REFERENCES [Stage]([StageID])
-
-)
-GO
 
 PRINT '' PRINT '' PRINT 'Creating Stored Procedures in tcg_db'
 
@@ -483,9 +405,9 @@ AS
 	BEGIN
 		SELECT	COUNT([Users].[UserID])
 		FROM	[Users]
-		WHERE	[Email] = @Email
-			AND	[PasswordHash] = @PasswordHash
-			AND	[Active] = 1;
+		WHERE	[Users].[Email] = @Email
+			AND	[Users].[PasswordHash] = @PasswordHash
+			AND	[Users].[Active] = 1;
 	END
 GO
 
@@ -518,9 +440,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_create_user_account ***'
+PRINT '*** creating sp_insert_user_into_user ***'
 GO
-CREATE PROCEDURE [dbo].[sp_create_user_account]
+CREATE PROCEDURE [dbo].[sp_insert_user_into_user]
 	(
 		@GivenName				[nvarchar](50),
 		@Surname				[nvarchar](100),
@@ -533,13 +455,13 @@ AS
 			([GivenName],[Surname],[PasswordHash],[Email])
 		VALUES
 			(@GivenName,@Surname,@PasswordHash,@Email)
-		RETURN @@ROWCOUNT;
+		RETURN SCOPE_IDENTITY();
 	END
 GO	
 
-PRINT '*** creating sp_add_user_role ***'
+PRINT '*** creating sp_insert_user_into_role ***'
 GO
-CREATE PROCEDURE [dbo].[sp_add_user_role]
+CREATE PROCEDURE [dbo].[sp_insert_user_into_role]
 	(
 		@UserID		[int],
 		@RoleID		[nvarchar](50)			
@@ -550,21 +472,7 @@ AS
 			([RoleID],[UserID])
 		VALUES
 			(@RoleID,@UserID)
-		RETURN @@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_select_user_count_by_email ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_user_count_by_email]
-	(
-		@Email		[nvarchar](250)
-	)
-AS
-	BEGIN
-		SELECT	COUNT([Users].[UserID])
-		FROM	[Users]
-		WHERE	[Email] = @Email;
+		RETURN SCOPE_IDENTITY();
 	END
 GO
 
@@ -579,11 +487,11 @@ CREATE PROCEDURE [dbo].[sp_update_passwordhash_by_email]
 AS
 	BEGIN
 		UPDATE 	[Users]
-		SET		[PasswordHash] = @NewPasswordHash
-		WHERE	[PasswordHash] = @CurrentPasswordHash
+		SET		[Users].[PasswordHash] = @NewPasswordHash
+		WHERE	[Users].[PasswordHash] = @CurrentPasswordHash
 			AND	@CurrentPasswordHash != @NewPasswordHash
-			AND	[Email] = @Email
-		RETURN @@ROWCOUNT
+			AND	[Users].[Email] = @Email
+		RETURN 	@@ROWCOUNT;
 	END
 GO
 
@@ -597,6 +505,82 @@ AS
 	BEGIN
 		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description]
 		FROM	[Move]
-		WHERE	[Move].[MoveID] = @MoveID;
+		WHERE	[Move].[MoveID] LIKE @MoveID;
+	END
+GO
+
+PRINT '*** creating sp_select_all_fields_for_move_by_moveid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_fields_for_move_by_moveid]
+	(
+		@MoveID			[nvarchar](30)
+	)
+AS
+	BEGIN
+		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description],
+				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
+		FROM	[Move] JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
+		WHERE	[Move].[MoveID] LIKE @MoveID;
+	END
+GO
+
+PRINT '*** creating sp_select_element_by_elementtypeid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_element_by_elementid]
+	(
+		@ElementTypeID	[nvarchar](15)
+	)
+AS
+	BEGIN
+		SELECT 	[ElementType].[ElementTypeID],[ElementType].[Description]
+		FROM	[ElementType]
+		WHERE	[ElementType].[ElementTypeID] = @ElementTypeID
+	END
+GO
+
+PRINT '*** creating sp_insert_element_into_element_type ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_element_into_element_type]
+	(
+		@ElementTypeID	[nvarchar](15),
+		@Description	[nvarchar](100)
+	)
+AS
+	BEGIN
+		INSERT INTO [dbo].[ElementType]
+			([ElementTypeID],[Description])
+		VALUES
+			(@ElementTypeID,@Description)
+		RETURN SCOPE_IDENTITY();
+	END
+GO
+
+PRINT '*** creating sp_update_element_description_by_elementtypeid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_element_description_by_elementtypeid]
+	(
+		@ElementTypeID	[nvarchar](15),
+		@Description	[nvarchar](100)
+	)
+AS
+	BEGIN
+		UPDATE 	[ElementType]
+		SET		[ElementType].[Description] = @Description
+		WHERE	[ElementType].[ElementTypeID] = @ElementTypeID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_delete_element_by_elementtypeid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_element_by_elementtypeid]
+	(
+		@ElementTypeID	[nvarchar](15)
+	)
+AS
+	BEGIN
+		DELETE 	[ElementType]
+		WHERE 	[ElementType].[ElementTypeID] = @ElementTypeID
+		RETURN 	@@ROWCOUNT;
 	END
 GO

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PokemonCardFinal"
         mc:Ignorable="d"
-        Title="TESTWINDOW" Height="450" Width="800">
+        Title="TESTWINDOW" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <Label x:Name="lblName" Content="Name"/>
+        <Label x:Name="lblName" Content=""/>
     </Grid>
 </Window>

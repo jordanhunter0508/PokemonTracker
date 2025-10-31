@@ -24,14 +24,16 @@ namespace PokemonCardFinal
         public TESTWINDOW()
         {
             InitializeComponent();
-            string input = "shadow bind";
-            MoveManager moveManager = new MoveManager();
-            Move move = moveManager.GetMoveByMoveID(input);
-            if (move != null)
-            {
-                lblName.Content = move.MoveID + " does " + move.Damage + ": " + move.Description;
-            }
-            else { lblName.Content = "There is no moved named " + input; }
         }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            TestElementType();
+        }
+
+        private void TestElementType()
+        { 
+            //
+        }
+
     }
 }

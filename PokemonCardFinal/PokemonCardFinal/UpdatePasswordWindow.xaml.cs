@@ -60,7 +60,7 @@ namespace PokemonCardFinal
             if (currentPassword == "" || currentPassword == null)
             { 
                 pwdCurrentPassword.Focus();
-                statMessage.Content = "Please eneter your current password.";
+                statMessage.Content = "Please enter your current password.";
                 return;
             }
             if (newPassword == "" || newPassword == null)
@@ -88,13 +88,21 @@ namespace PokemonCardFinal
             {
                 if (_userManager.ResetPassword(email, currentPassword, newPassword))
                 {
-                    MessageBox.Show("Password Update.");
+                    MessageBox.Show("Password Updated.");
                     this.DialogResult = false;
+                }
+                else 
+                {
+                    statMessage.Content = "Could not update password. Please reenter your passwords.";
+                    pwdCurrentPassword.Password = "";
+                    pwdNewPassword.Password = "";
+                    pwdRetypePassword.Password = "";
+                    pwdCurrentPassword.Focus();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Update Failed" + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show("Update Failed." + "\n\n" + ex.InnerException.Message);
             }
         }
 

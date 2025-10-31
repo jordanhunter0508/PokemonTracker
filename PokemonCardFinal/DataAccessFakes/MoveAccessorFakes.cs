@@ -32,18 +32,19 @@ namespace DataAccessFakes
                 Description = "This is a test move."
             });
         }
+
         public Move SelectMoveByMoveID(string moveID)
         {
-            Move resultMove = null;
+            Move restultMove = null;
             foreach (Move move in _moves)
             {
                 if (move.MoveID == moveID)
                 {
-                    resultMove = move;
+                    restultMove = move;
                     break;
                 }
             }
-            return resultMove;
+            return restultMove;
         }
     }
 }

@@ -155,7 +155,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IUserManager"/>
         /// </summary>
-        public bool RegisterUserAccount(string givenName, string surname, string email, string password)
+        public bool CreateUserAccount(string givenName, string surname, string email, string password)
         {
             bool isRegistered = false;
 
@@ -166,11 +166,12 @@ namespace LogicLayer
                 // Checks if email is already used to prevent sql errors
                 if (GetUserCountByEmail(email) == 0)
                 {
-                    isRegistered = (1 == _userAccessor.CreateUserAccount(givenName, surname, email, passwordHash));
+                    _userAccessor.InsertUserIntoUser(givenName, surname, email, passwordHash);
+                    isRegistered = (1 == _userAccessor.AuthenticateUserByEmailAndPasswordHash(email, passwordHash));
                 }
                 else
                 { 
-                    isRegistered = false ;
+                    isRegistered = false;
                 }
             }
             catch (Exception ex)
@@ -199,7 +200,10 @@ namespace LogicLayer
 
             return result;
         }
-
+        
+        /// <summary>
+        /// Implements from <see cref="IUserManager"/>
+        /// </summary>
         public bool ResetPassword(string email, string currentPassword, string newPassword)
         {
             bool isUpdated = false;
@@ -209,10 +213,6 @@ namespace LogicLayer
                 currentPassword = HashSha256(currentPassword);
                 newPassword = HashSha256(newPassword);
                 isUpdated = (1 == _userAccessor.UpdatePasswordHashByEmail(email,currentPassword,newPassword));
-                if (!isUpdated) 
-                {
-                    throw new ApplicationException("Failed to reset password.");
-                }
             }
             catch (Exception ex)
             {
@@ -225,7 +225,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IUserManager"/>
         /// </summary>
-        public bool AddRoleToUser(int userID, string roleID = "General")
+        public bool AddUserToRole(int userID, string roleID = "General")
         {
             bool result = false;
 
@@ -237,7 +237,7 @@ namespace LogicLayer
 
             try
             {
-                result = (1 == _userAccessor.AddUserRole(userID,roleID));
+                result = (0 == _userAccessor.InsertUserIntoRole(userID,roleID));
             }
             catch (Exception ex)
             {

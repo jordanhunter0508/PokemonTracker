@@ -272,44 +272,44 @@ public class UserManagerTest
     }
 
     [TestMethod]
-    public void TestRegisterUserAccountWithValidInput()
+    public void TestCreateUserAccountWithValidInput()
     {
         // arrange
         const string givenName = "Jim";
         const string surname = "John";
         const string email = "JimJohn@mail.com";
-        const string password = "newtest";
+        const string password = "newuser";
         const bool expectedResult = true;
         bool actualResult = false;
 
         // act
-        actualResult = _userManager.RegisterUserAccount(givenName, surname, email, password);
+        actualResult = _userManager.CreateUserAccount(givenName, surname, email, password);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
     }
 
     [TestMethod]
-    public void TestRegisterUserAccountReturnsFalseWithDuplicateEmail()
+    public void TestCreateUserAccountReturnsFalseWithDuplicateEmail()
     {
         // arrange
         const string givenName1 = "Jimmmy";
         const string surname1 = "Johns";
         const string email1 = "JimmmyJohn@mail.com";
-        const string password1 = "newtest";
+        const string password1 = "newuser";
         bool user1Result = false;
         const string givenName2 = "Jimmmy";
         const string surname2 = "Johns";
         const string email2 = "JimmmyJohn@mail.com";
-        const string password2 = "newtest";
+        const string password2 = "newuser";
         bool user2Result = false;
 
         const bool expectedResult = false;
         bool actualResult = true;
 
         // act
-        user1Result = _userManager.RegisterUserAccount(givenName1, surname1, email1, password1);
-        user2Result = _userManager.RegisterUserAccount(givenName2, surname2, email2, password2);
+        user1Result = _userManager.CreateUserAccount(givenName1, surname1, email1, password1);
+        user2Result = _userManager.CreateUserAccount(givenName2, surname2, email2, password2);
         actualResult = (user1Result == user2Result);
 
         // assert
@@ -347,7 +347,7 @@ public class UserManagerTest
     }
 
     [TestMethod]
-    public void TestAddRoleToUserWithValidInput() 
+    public void TestAddUserToRoleWithValidInput() 
     {
         // arrange
         const string roleID = "testRole6";
@@ -356,7 +356,7 @@ public class UserManagerTest
         bool actualResult = false;
 
         // act
-        actualResult = _userManager.AddRoleToUser(userID, roleID);
+        actualResult = _userManager.AddUserToRole(userID, roleID);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
@@ -364,7 +364,7 @@ public class UserManagerTest
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
-    public void TestAddRoleToUserThrowsArgumentExceptionWithEmptyRoleID()
+    public void TestAddUserToRoleThrowsArgumentExceptionWithEmptyRoleID()
     {
         // arrange
         const string roleID = "";
@@ -373,14 +373,14 @@ public class UserManagerTest
         bool actualResult = false;
 
         // act
-        actualResult = _userManager.AddRoleToUser(userID, roleID);
+        actualResult = _userManager.AddUserToRole(userID, roleID);
 
         // assert
         // do nothing
     }
 
     [TestMethod]
-    public void TestAddRoleToUserReturnsFalseWithInvalidUserID()
+    public void TestAddUserToRoleReturnsFalseWithInvalidUserID()
     {
         // arrange
         const string roleID = "testRole6";
@@ -389,7 +389,7 @@ public class UserManagerTest
         bool actualResult = true;
 
         // act
-        actualResult = _userManager.AddRoleToUser(userID, roleID);
+        actualResult = _userManager.AddUserToRole(userID, roleID);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
@@ -404,6 +404,23 @@ public class UserManagerTest
         const string newPassword = "Password!";
         const bool expectedResult = true;
         bool actualResult = false;
+
+        // act
+        actualResult = _userManager.ResetPassword(email, oldPassword, newPassword);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestResetPasswordSuccedsWithInCorrectOldPassword()
+    {
+        // arrange
+        const string email = "testuser1@test.com";
+        const string oldPassword = "t";
+        const string newPassword = "Password!";
+        const bool expectedResult = false;
+        bool actualResult = true;
 
         // act
         actualResult = _userManager.ResetPassword(email, oldPassword, newPassword);
