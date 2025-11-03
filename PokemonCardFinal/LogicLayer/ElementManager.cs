@@ -25,7 +25,7 @@ namespace LogicLayer
         /// <summary>
         /// Used for testing to pass in fake data
         /// </summary>
-        /// <param name="elementAccessor">Set the IElementAccessor the ElementManager</param>
+        /// <param name="elementAccessor">Set the IElementAccessor in the ElementManager</param>
         public ElementManager(IElementAccessor elementAccessor)
         {
             _elementAccessor = elementAccessor;
@@ -109,12 +109,12 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/>
         /// </summary>
-        public bool DeleteElementType(string elementTypeID)
+        public bool DeleteElementTypeByElementTypeID(string elementTypeID)
         {
             bool result;
             try
             {
-                result = (1 == _elementAccessor.DeleteElementType(elementTypeID));
+                result = (1 == _elementAccessor.DeleteElementTypeByElementTypeID(elementTypeID));
             }
             catch (Exception ex)
             {

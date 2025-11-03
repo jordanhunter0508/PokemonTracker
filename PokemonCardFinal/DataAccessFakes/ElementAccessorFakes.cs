@@ -135,7 +135,7 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/> used for testing
         /// </summary>
-        public int DeleteElementType(string elementTypeID)
+        public int DeleteElementTypeByElementTypeID(string elementTypeID)
         {
             int count = 0;
 

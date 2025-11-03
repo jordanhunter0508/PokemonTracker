@@ -171,7 +171,7 @@ namespace DataAccess
         /// Implements from <see cref="IElementAccessor"/>. Access the database
         /// using sp_delete_element_by_elementtypeid
         /// </summary>
-        public int DeleteElementType(string elementTypeID)
+        public int DeleteElementTypeByElementTypeID(string elementTypeID)
         {
             int count = 0;
 

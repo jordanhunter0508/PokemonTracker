@@ -46,7 +46,7 @@ namespace DataAccessInterfaces
         /// </summary>
         /// <param name="elementTypeID">Used to search the table Element Type for a match</param>
         /// <returns>Returns 1 if the record at elementTypeID was deleted successfully</returns>
-        public int DeleteElementType(string elementTypeID);
+        public int DeleteElementTypeByElementTypeID(string elementTypeID);
  
     }
 }

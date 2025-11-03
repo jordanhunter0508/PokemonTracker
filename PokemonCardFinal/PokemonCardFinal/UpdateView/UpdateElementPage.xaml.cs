@@ -66,7 +66,7 @@ namespace PokemonCardFinal.UpdateView
             {
                 try
                 {
-                    if (_elementManager.DeleteElementType(selectedElement.ElementTypeID))
+                    if (_elementManager.DeleteElementTypeByElementTypeID(selectedElement.ElementTypeID))
                     {
                         MessageBox.Show("The element was successfully deleted");
                     }

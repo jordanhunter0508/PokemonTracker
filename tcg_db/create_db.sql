@@ -625,15 +625,17 @@ GO
 
 PRINT '*** creating sp_select_artist_by_given_name ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_artist_by_given_name]
+CREATE PROCEDURE [dbo].[sp_select_artist_by_name]
 	(
-		@GivenName		[nvarchar](50)
+		@GivenName		[nvarchar](50),
+		@Surname		[nvarchar](100)
 	)
 AS
 	BEGIN
 		SELECT 	[Artist].[ArtistID],[Artist].[GivenName],[Artist].[Surname]
 		FROM	[Artist]
-		WHERE	[Artist].[GivenName] = @GivenName;
+		WHERE	[Artist].[GivenName] = @GivenName
+		AND		[Artist].[Surname] = @Surname;
 	END
 GO
 

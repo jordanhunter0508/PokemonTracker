@@ -47,13 +47,13 @@ namespace LogicLayerInterfaces
         public bool UpdateElementDescritpionByElementTypeID(string elementTypeID, string description);
 
         /// <summary>
-        /// Passes parameters to <see href="DeleteElementType(string)"/><br/>
+        /// Passes parameters to <see href="DeleteElementTypeByElementTypeID(string)"/><br/>
         /// Then returns true if the record was deleted successfully
         /// </summary>
         /// <param name="elementTypeID"></param>
         /// <returns>Returns true if the ElementType was deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if the element is attached to a move</exception>
-        public bool DeleteElementType(string elementTypeID);
+        public bool DeleteElementTypeByElementTypeID(string elementTypeID);
 
         /// <summary>
         /// Makes sure the first leter of a element type is capital

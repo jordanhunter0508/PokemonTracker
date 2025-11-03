@@ -140,7 +140,7 @@ public class ElementManagerTest
     }
 
     [TestMethod]
-    public void TestDeleteElementTypeReturnsTrueWithValidInput()
+    public void TestDeleteElementTypeByElementTypeIDReturnsTrueWithValidInput()
     {
         // arrange
         const string elementID = "testElement1";
@@ -148,14 +148,14 @@ public class ElementManagerTest
         bool actualResult = false;
 
         // act
-        actualResult = _elementManager.DeleteElementType(elementID);
+        actualResult = _elementManager.DeleteElementTypeByElementTypeID(elementID);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
     }
 
     [TestMethod]
-    public void TestDeleteElementTypeReturnsFalseWithInvalidInput()
+    public void TestDeleteElementTypeByElementTypeIDReturnsFalseWithInvalidInput()
     {
         // arrange
         const string elementID = "no";
@@ -163,7 +163,7 @@ public class ElementManagerTest
         bool actualResult = true;
 
         // act
-        actualResult = _elementManager.DeleteElementType(elementID);
+        actualResult = _elementManager.DeleteElementTypeByElementTypeID(elementID);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
