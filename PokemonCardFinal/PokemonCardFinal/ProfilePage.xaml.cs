@@ -39,7 +39,7 @@ namespace PokemonCardFinal
             pwdPassword.Password = "***********";
         }
 
-        private void btnUpdatePassword_Click(object sender, RoutedEventArgs e)
+        public void btnUpdatePassword_Click(object sender, RoutedEventArgs e)
         {
             UpdatePasswordWindow updatePassword = new UpdatePasswordWindow(_accessToken, _userManager);
             updatePassword.Owner = Window.GetWindow(this);

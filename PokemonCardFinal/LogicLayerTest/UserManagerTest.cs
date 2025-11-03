@@ -363,23 +363,6 @@ public class UserManagerTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void TestAddUserToRoleThrowsArgumentExceptionWithEmptyRoleID()
-    {
-        // arrange
-        const string roleID = "";
-        const int userID = 1;
-        const bool expectedResult = true;
-        bool actualResult = false;
-
-        // act
-        actualResult = _userManager.AddUserToRole(userID, roleID);
-
-        // assert
-        // do nothing
-    }
-
-    [TestMethod]
     public void TestAddUserToRoleReturnsFalseWithInvalidUserID()
     {
         // arrange

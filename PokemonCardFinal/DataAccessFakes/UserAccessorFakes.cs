@@ -205,14 +205,14 @@ namespace DataAccessFakes
             // Initialized to 1 because a sql error calling this
             // stored procedure returns 1 
             // 0 when inputed successfuly
-            int count = 1;
+            int count = 0;
 
             foreach (UserVM user in _userVMs)
             {
                 if (user.UserID == userID)
                 {
                     user.Roles.Add(roleID);
-                    count--;
+                    count++;
                 }
             }
 

@@ -45,8 +45,42 @@ namespace PokemonCardFinal
             string password = pwdPassword.Password;
             string retypePassword = pwdRetype.Password;
 
-            if (!ValidateInput(givenName, surname, email, password, retypePassword))
+            if (givenName == "" || givenName == null || givenName.Any(char.IsDigit))
             {
+                statMessage.Content = "Please enter a valid first name.";
+                txtGivenName.Focus();
+                return;
+            }
+            else if (surname == "" || surname == null || surname.Any(char.IsDigit))
+            {
+                statMessage.Content = "Please enter a valid last name.";
+                txtSurname.Focus();
+                return;
+            }
+            else if (email == "" || email == null || email.Length < 10)
+            {
+                statMessage.Content = "Please enter a valid email address.";
+                txtEmail.Focus();
+                return;
+            }
+            else if (password == "" || password == null)
+            {
+                statMessage.Content = "Please enter a password.";
+                pwdPassword.Focus();
+                return;
+            }
+            else if (retypePassword == "" || retypePassword == null)
+            {
+                statMessage.Content = "Please retype the password.";
+                pwdRetype.Focus();
+                return;
+            }
+            else if (password != retypePassword)
+            {
+                statMessage.Content = "Passwords do not match please retype them.";
+                pwdPassword.Password = "";
+                pwdRetype.Password = "";
+                pwdPassword.Focus();
                 return;
             }
 
@@ -56,9 +90,9 @@ namespace PokemonCardFinal
                 if (isRegistered)
                 {
                     AccessToken = _userManager.LogInUser(email, password);
-                    if (_userManager.AddUserToRole(AccessToken.UserID))
+                    if (!_userManager.AddUserToRole(AccessToken.UserID))
                     {
-                        MessageBox.Show("There was an error");
+                        MessageBox.Show("There was an error creating your account.");
                     }
                     MessageBox.Show("Account was successfuly created.");
                     this.DialogResult = false;
@@ -78,62 +112,6 @@ namespace PokemonCardFinal
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
-        }
-
-        /// <summary>
-        /// Checks if the user input is valid
-        /// </summary>
-        /// <param name="givenName">input from txtGivenname</param>
-        /// <param name="surname">input from txtSurname</param>
-        /// <param name="email">input from txtEmail</param>
-        /// <param name="password">input from pwdPassword</param>
-        /// <param name="retypePassword">input from pwdRetype</param>
-        /// <returns>False if any parameters are null or empty, true otherwise</returns>
-        private bool ValidateInput(string givenName, string surname, string email,
-                string password, string retypePassword)
-        {
-            bool result = true;
-
-            if (givenName == "" || givenName == null || givenName.Any(char.IsDigit))
-            {
-                statMessage.Content = "Please enter a valid first name.";
-                txtGivenName.Focus();
-                result = false;
-            }
-            else if (surname == "" || surname == null || surname.Any(char.IsDigit))
-            {
-                statMessage.Content = "Please enter a valid last name.";
-                txtSurname.Focus();
-                result = false;
-            }
-            else if (email == "" || email == null || email.Length < 10)
-            {
-                statMessage.Content = "Please enter a valid email address.";
-                txtEmail.Focus();
-                result = false;
-            }
-            else if (password == "" || password == null)
-            {
-                statMessage.Content = "Please enter a password.";
-                pwdPassword.Focus();
-                result = false;
-            }
-            else if (retypePassword == "" || retypePassword == null)
-            {
-                statMessage.Content = "Please retype the password.";
-                pwdRetype.Focus();
-                result = false;
-            }
-            else if (password != retypePassword)
-            {
-                statMessage.Content = "Passwords do not match please retype them.";
-                pwdPassword.Password = "";
-                pwdRetype.Password = "";
-                pwdPassword.Focus();
-                result = false;
-            }
-
-            return result;
         }
     }
 }

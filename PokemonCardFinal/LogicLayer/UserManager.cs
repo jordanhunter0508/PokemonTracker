@@ -229,21 +229,14 @@ namespace LogicLayer
         {
             bool result = false;
 
-            if (roleID == "" || roleID == null)
-            {
-                throw new ArgumentException("RoleID is not valid.");
-            }
-
-
             try
             {
-                result = (0 == _userAccessor.InsertUserIntoRole(userID,roleID));
+                result = (1 == _userAccessor.InsertUserIntoRole(userID,roleID));
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to assign user a role.");
             }
-
 
             return result;
         }

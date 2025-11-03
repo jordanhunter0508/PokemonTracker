@@ -87,7 +87,11 @@ namespace PokemonCardFinal
             btnLogIn.Content = "Log Out";
             btnSignUp.Content = "View Profile";
 
-            mnuTest.Visibility = Visibility.Visible;;
+            if (_accessToken.Roles.Contains("Admin"))
+            {
+                mnuCreateRecord.Visibility = Visibility.Visible;
+                mnuEditRecord.Visibility = Visibility.Visible;
+            }
         }
 
         /// <summary>
@@ -112,6 +116,8 @@ namespace PokemonCardFinal
         {
             btnLogIn.Content = "Log In";
             btnSignUp.Content = "Sign Up";
+            mnuCreateRecord.Visibility = Visibility.Collapsed;
+            mnuEditRecord.Visibility = Visibility.Collapsed;
         }
 
         private void btnSignUp_Click(object sender, RoutedEventArgs e)
@@ -128,6 +134,17 @@ namespace PokemonCardFinal
             {
                 frmMain.Navigate(new ProfilePage(_accessToken,_userManager));
             }
+        }
+
+        private void mnuCreateRecord_Click(object sender, RoutedEventArgs e)
+        {
+            // Open the create record page
+            frmMain.Navigate(new CreateRecordPage());
+        }
+
+        private void mnuEditRecord_Click(object sender, RoutedEventArgs e)
+        {
+            frmMain.Navigate(new ViewRecordsPage());
         }
     }
 }

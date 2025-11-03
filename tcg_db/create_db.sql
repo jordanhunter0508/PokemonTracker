@@ -457,6 +457,20 @@ AS
 			(@GivenName,@Surname,@PasswordHash,@Email)
 		RETURN SCOPE_IDENTITY();
 	END
+GO
+
+PRINT '*** creating sp_select_user_count_by_email ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_user_count_by_email]
+	(
+		@Email		[nvarchar](250)
+	)
+AS
+	BEGIN
+		SELECT	COUNT([Users].[UserID])
+		FROM	[Users]
+		WHERE	[Email] = @Email;
+	END
 GO	
 
 PRINT '*** creating sp_insert_user_into_role ***'
@@ -472,7 +486,7 @@ AS
 			([RoleID],[UserID])
 		VALUES
 			(@RoleID,@UserID)
-		RETURN SCOPE_IDENTITY();
+		RETURN @@ROWCOUNT;
 	END
 GO
 
@@ -526,7 +540,7 @@ GO
 
 PRINT '*** creating sp_select_element_by_elementtypeid ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_element_by_elementid]
+CREATE PROCEDURE [dbo].[sp_select_element_by_elementtypeid]
 	(
 		@ElementTypeID	[nvarchar](15)
 	)
@@ -534,7 +548,7 @@ AS
 	BEGIN
 		SELECT 	[ElementType].[ElementTypeID],[ElementType].[Description]
 		FROM	[ElementType]
-		WHERE	[ElementType].[ElementTypeID] = @ElementTypeID
+		WHERE	[ElementType].[ElementTypeID] = @ElementTypeID;
 	END
 GO
 
@@ -551,7 +565,7 @@ AS
 			([ElementTypeID],[Description])
 		VALUES
 			(@ElementTypeID,@Description)
-		RETURN SCOPE_IDENTITY();
+		RETURN @@ROWCOUNT;
 	END
 GO
 
@@ -582,5 +596,102 @@ AS
 		DELETE 	[ElementType]
 		WHERE 	[ElementType].[ElementTypeID] = @ElementTypeID
 		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_select_elements ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_elements]
+AS
+	BEGIN
+		SELECT 	[ElementType].[ElementTypeID],[ElementType].[Description]
+		FROM	[ElementType];
+	END
+GO
+
+PRINT '*** creating sp_select_artist_by_artistid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_artist_by_artistid]
+	(
+		@ArtistID		[int]
+	)
+AS
+	BEGIN
+		SELECT 	[Artist].[ArtistID],[Artist].[GivenName],[Artist].[Surname]
+		FROM	[Artist]
+		WHERE	[Artist].[ArtistID] = @ArtistID;
+	END
+GO
+
+PRINT '*** creating sp_select_artist_by_given_name ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_artist_by_given_name]
+	(
+		@GivenName		[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT 	[Artist].[ArtistID],[Artist].[GivenName],[Artist].[Surname]
+		FROM	[Artist]
+		WHERE	[Artist].[GivenName] = @GivenName;
+	END
+GO
+
+PRINT '*** creating sp_insert_artist_into_artist ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_artist]
+	(
+		@GivenName		[nvarchar](50),
+		@Surname		[nvarchar](100)
+	)
+AS
+	BEGIN
+		INSERT INTO [dbo].[Artist]
+			([GivenName],[Surname])
+		VALUES
+			(@GivenName,@Surname)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_update_artist_by_artistid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_artist_by_artistid]
+	(
+		@ArtistID		[int],
+		@GivenName		[nvarchar](50),
+		@Surname		[nvarchar](100)
+	)
+AS
+	BEGIN
+		UPDATE 	[Arist]
+		SET		[Arist].[GivenName] = @GivenName,
+				[Artist].[Surname] = @Surname
+		WHERE	[Arist].[Arist] = @ArtistID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_delete_artist_by_artistid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_artist_by_artistid]
+	(
+		@ArtistID		[int]
+	)
+AS
+	BEGIN
+		DELETE 	[Arist]
+		WHERE 	[Arist].[ArtistID] = @ArtistID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_select_artists ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_artists]
+AS
+	BEGIN
+		SELECT 	[Arist].[ArtistID],[Arist].[GivenName],[Artist].[Surname]
+		FROM	[Arist];
 	END
 GO

@@ -8,12 +8,6 @@
       d:DesignHeight="500" d:DesignWidth="730"
       Title="Profile Page" Loaded="Page_Loaded">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
 
         <TabControl x:Name="tabController">
 

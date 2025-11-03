@@ -31,8 +31,34 @@ namespace PokemonCardFinal
         }
 
         private void TestElementType()
-        { 
-            //
+        {
+            ElementType elmType = null;
+
+
+            try
+            {
+                ElementManager manager = new ElementManager();
+                elmType = manager.GetElementTypeByElementTypeID("fire");
+                List<ElementType> elmList = manager.GetElementTypes();
+
+                foreach (ElementType element in elmList)
+                {
+                    lblName.Content += "\nElementTypeID: " + element.ElementTypeID;
+                }
+
+                if (elmType != null)
+                {
+                    //lblName.Content = elmType.ElementTypeID + elmType.Description;
+                }
+                else
+                {
+                    MessageBox.Show("Object is nul;");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
     }

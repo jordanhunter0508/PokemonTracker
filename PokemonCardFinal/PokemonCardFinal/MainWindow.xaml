@@ -43,7 +43,10 @@
                 <MenuItem x:Name="mnuNewestSet" Header="Newest Set" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
                 <MenuItem x:Name="mnuViewDeck" Header="View Decks" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
                 <MenuItem x:Name="mnuAllCards" Header="All Cards" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
-                <MenuItem x:Name="mnuTest" Header="Test" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25" Visibility="Hidden"/>
+                <MenuItem x:Name="mnuCreateRecord" Header="Create a Record" FontSize="20" HorizontalAlignment="Center" 
+                          Margin="0 0 0 25" Visibility="Hidden" Click="mnuCreateRecord_Click"/>
+                <MenuItem x:Name="mnuEditRecord" Header="Edit a Record" FontSize="20" HorizontalAlignment="Center" 
+                          Margin="0 0 0 25" Visibility="Hidden" Click="mnuEditRecord_Click" />
             </StackPanel>
         </Grid><!--End of the Menu Grid-->
 
