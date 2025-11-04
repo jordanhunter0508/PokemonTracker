@@ -39,8 +39,8 @@ namespace DataAccessInterfaces
         /// </summary>
         /// <param name="giveName">Given name of the artist wanting to create</param>
         /// <param name="surname">Surname of the artist wanting to create</param>
-        /// <returns>Returns 1 if the record was created</returns>
-        public int InsertArtist(string giveName, string surname);
+        /// <returns>Returns the artist id of the newly created artist</returns>
+        public int InsertArtist(string givenName, string surname);
 
         /// <summary>
         /// Updates the givenName nad surname of a specified artist at artistID.<br/>
@@ -50,7 +50,7 @@ namespace DataAccessInterfaces
         /// <param name="giveName">Used to change the give name of an artist at artistID</param>
         /// <param name="surname">Used to changed the surname of an artist at artistID</param>
         /// <returns>Returns 1 if the record at artistID updated successfully</returns>
-        public int UpdateArtistByArtistID(int artistID,string giveName, string surname);
+        public int UpdateArtistByArtistID(int artistID,string givenName, string surname);
 
         /// <summary>
         /// Deletes the record at artistID

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,8 +71,43 @@ namespace PokemonCardFinal
             try
             {
                 //Artist artist = artistManager.GetArtistByArtistID(56);
-                Artist artist = artistManager.GetArtistByName("fujimoto", "gold");
-                lblName.Content = artist.GivenName + ", " + artist.Surname;
+                //lblName.Content = artist.GivenName + ", " + artist.Surname;
+
+                //Artist artist = artistManager.GetArtistByName("fujimoto", "gold");
+                //lblName.Content = artist.GivenName + ", " + artist.Surname;
+
+                //List<Artist> artists = artistManager.GetArtists();
+                //foreach (Artist artist in artists)
+                //{
+                //    lblName.Content += artist.GivenName + ", " + artist.Surname + "\n";
+                //}
+
+                //if (artistManager.AddArtist("test", "person"))
+                //{
+                //    MessageBox.Show("Artist added.");
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Failed to add artist.");
+                //}
+
+                if (artistManager.EditArtistByArtistID(3, "Nothgin", ""))
+                {
+                    MessageBox.Show("Artist updated.");
+                }
+                else
+                {
+                    MessageBox.Show("Failed to upgggggggdate artist.");
+                }
+
+                //if (artistManager.DeleteArtistByArtistID(3))
+                //{
+                //    MessageBox.Show("Artist deleted.");
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Failed to deleteggggd artist.");
+                //}
             }
             catch (Exception ex)
             {

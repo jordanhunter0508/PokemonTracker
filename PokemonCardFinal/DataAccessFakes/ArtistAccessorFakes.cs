@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using DataAccessInterfaces;
 using DataDomain;
 
@@ -16,7 +17,7 @@ namespace DataAccessFakes
         /// Fills the _artists list with fake data
         /// </summary>
         public ArtistAccessorFakes()
-        { 
+        {
             _artists = new List<Artist>();
             _artists.Add(new Artist()
             {
@@ -27,14 +28,14 @@ namespace DataAccessFakes
             _artists.Add(new Artist()
             {
                 ArtistID = 2,
-                GivenName = "Test Given 1",
+                GivenName = "Test Given 2",
                 Surname = "Test Surname 2"
             });
             _artists.Add(new Artist()
             {
                 ArtistID = 3,
                 GivenName = "Test Given 3",
-                Surname = " "
+                Surname = ""
             });
         }
 
@@ -48,7 +49,7 @@ namespace DataAccessFakes
             foreach (Artist artist in _artists)
             {
                 if (artist.ArtistID == artistID)
-                { 
+                {
                     resultArtist = artist;
                     break;
                 }
@@ -92,23 +93,79 @@ namespace DataAccessFakes
         /// </summary>
         public List<Artist> SelectArtists()
         {
-            throw new NotImplementedException();
+            List<Artist> results = null;
+            results = _artists;
+            return results;
         }
 
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/> used for testing
         /// </summary>
-        public int InsertArtist(string giveName, string surname)
+        public int InsertArtist(string givenName, string surname)
         {
-            throw new NotImplementedException();
+            int result = 0;
+            int count = 0;
+
+            Artist newArtist = new Artist()
+            {
+                ArtistID = 4,
+                GivenName = givenName,
+                Surname = surname
+            };
+
+            foreach (Artist artist in _artists)
+            {
+                if (artist.GivenName == givenName && artist.Surname == surname)
+                {
+                    count = artist.ArtistID;
+                    break;
+                }
+            }
+
+            if (count == 0)
+            {
+                _artists.Add(newArtist);
+                result = newArtist.ArtistID;
+            }
+            else
+            {
+                result = 0;
+            }
+
+            return result;
         }
 
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/> used for testing
         /// </summary>
-        public int UpdateArtistByArtistID(int artistID, string giveName, string surname)
+        public int UpdateArtistByArtistID(int artistID, string givenName, string surname)
         {
-            throw new NotImplementedException();
+            int count = 0;
+            Artist updatedArtist = null;
+
+            foreach (Artist artist in _artists)
+            {
+                if (artist.ArtistID == artistID)
+                {
+                    updatedArtist = artist;
+                    break;
+                }
+            }
+
+            if (updatedArtist != null)
+            {
+                updatedArtist.GivenName = giveName;
+                updatedArtist.Surname = surname;
+
+                foreach (Artist artist in _artists)
+                {
+                    if (updatedArtist.GivenName == artist.GivenName && updatedArtist.Surname == artist.Surname)
+                    {
+                        count++;
+                    }
+                }
+            }
+            return count;
         }
 
         /// <summary>
@@ -116,7 +173,25 @@ namespace DataAccessFakes
         /// </summary>
         public int DeleteArtistByArtistID(int artistID)
         {
-            throw new NotImplementedException();
+            int count = 0;
+            Artist deletedArtist = null;
+
+            foreach (Artist artist in _artists)
+            {
+                if (artist.ArtistID == artistID)
+                {
+                    deletedArtist = artist;
+                    break;
+                }
+            }
+
+            if (deletedArtist != null)
+            { 
+                _artists.Remove(deletedArtist);
+                count++;
+            }
+
+            return count;
         }
     }
 }

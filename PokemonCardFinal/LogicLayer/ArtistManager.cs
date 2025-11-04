@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace LogicLayer
             }
             catch (Exception)
             {
-                throw new ApplicationException("Faild to retrive an artist.");
+                throw new ApplicationException("Faild to retrieve an artist.");
             }
 
             return resultArtist;
@@ -61,10 +62,6 @@ namespace LogicLayer
             {
                 throw new ArgumentNullException("Given name cannot be empty.");
             }
-            if (surname == null || surname == "")
-            {
-                surname = " ";
-            }
 
             try
             {
@@ -72,7 +69,7 @@ namespace LogicLayer
             }
             catch (Exception)
             {
-                throw new ApplicationException("Faild to retrive an artist.");
+                throw new ApplicationException("Faild to retrieve an artist.");
             }
 
             return resultArtist;
@@ -83,7 +80,18 @@ namespace LogicLayer
         /// </summary>
         public List<Artist> GetArtists()
         {
-            throw new NotImplementedException();
+            List<Artist> results = null;
+
+            try
+            {
+                results = _artistAccessor.SelectArtists();
+            }
+            catch (Exception)
+            { 
+                throw new ApplicationException("Failed to retrieve artists");
+            }
+
+            return results;
         }
 
         /// <summary>
@@ -91,15 +99,44 @@ namespace LogicLayer
         /// </summary>
         public bool AddArtist(string givenName, string surname)
         {
-            throw new NotImplementedException();
+            bool result = false;
+
+            try
+            {
+                Artist artist = null;
+                int artistID = _artistAccessor.InsertArtist(givenName, surname);
+                Debug.WriteLine(artistID);
+                artist = _artistAccessor.SelectArtistByArtistID(artistID);
+
+                if (_artistAccessor != null)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception)
+            {
+                throw new ApplicationException("Failed to create new record of an artist.\nCheck if artist is already added.");
+            }
+            return result;
         }
 
         /// <summary>
         /// Implements from <see cref="IArtistManager"/>
         /// </summary>
-        public bool EditArtistByArtistID(int artistID, string giveName, string surname)
+        public bool EditArtistByArtistID(int artistID, string givenName, string surname)
         {
-            throw new NotImplementedException();
+            bool result = false;
+
+            try
+            {
+                result = (1 == _artistAccessor.UpdateArtistByArtistID(artistID, givenName, surname));
+            }
+            catch (Exception)
+            {
+                throw new Exception("Failed to update artist.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -107,7 +144,18 @@ namespace LogicLayer
         /// </summary>
         public bool DeleteArtistByArtistID(int artistID)
         {
-            throw new NotImplementedException();
+            bool result = false;
+
+            try
+            {
+                result = (1 == _artistAccessor.DeleteArtistByArtistID(artistID));
+            }
+            catch (Exception)
+            {
+                throw new Exception("Failed to update artist.");
+            }
+
+            return result;
         }        
     }
 }

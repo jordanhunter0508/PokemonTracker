@@ -652,7 +652,7 @@ AS
 			([GivenName],[Surname])
 		VALUES
 			(@GivenName,@Surname)
-		RETURN @@ROWCOUNT;
+		RETURN SCOPE_IDENTITY();
 	END
 GO
 
@@ -666,10 +666,10 @@ CREATE PROCEDURE [dbo].[sp_update_artist_by_artistid]
 	)
 AS
 	BEGIN
-		UPDATE 	[Arist]
-		SET		[Arist].[GivenName] = @GivenName,
+		UPDATE 	[Artist]
+		SET		[Artist].[GivenName] = @GivenName,
 				[Artist].[Surname] = @Surname
-		WHERE	[Arist].[Arist] = @ArtistID
+		WHERE	[Artist].[ArtistID] = @ArtistID
 		RETURN	@@ROWCOUNT;
 	END
 GO
@@ -682,8 +682,8 @@ CREATE PROCEDURE [dbo].[sp_delete_artist_by_artistid]
 	)
 AS
 	BEGIN
-		DELETE 	[Arist]
-		WHERE 	[Arist].[ArtistID] = @ArtistID
+		DELETE 	[Artist]
+		WHERE 	[Artist].[ArtistID] = @ArtistID
 		RETURN 	@@ROWCOUNT;
 	END
 GO
@@ -693,7 +693,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_artists]
 AS
 	BEGIN
-		SELECT 	[Arist].[ArtistID],[Arist].[GivenName],[Artist].[Surname]
-		FROM	[Arist];
+		SELECT 	[Artist].[ArtistID],[Artist].[GivenName],[Artist].[Surname]
+		FROM	[Artist];
 	END
 GO

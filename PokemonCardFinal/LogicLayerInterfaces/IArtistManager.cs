@@ -55,8 +55,8 @@ namespace LogicLayerInterfaces
         /// <param name="giveName">Used to update the GiveName field</param>
         /// <param name="surname">Used to update the Surname field</param>
         /// <returns>Returns true if the Artist was updated successfully</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error connecting to the server</exception>
-        public bool EditArtistByArtistID(int artistID, string giveName, string surname);
+        /// <exception cref="ApplicationException">Throws if the combination of the given name and surname is already used.</exception>
+        public bool EditArtistByArtistID(int artistID, string givenName, string surname);
 
         /// <summary>
         /// Passes parameters to <see href="DeleteArtistByArtistID(int)"/><br/>

@@ -103,7 +103,6 @@ namespace DataAccessFakes
         public int UpdateElementTypeByElementTypeID(string elementTypeID, string description)
         {
             int count = 0;
-
             ElementType updatedElement = null;
 
             // Uses a foreach rather than calling the SelectElementTypeByElementTypeID method
