@@ -47,6 +47,7 @@ namespace DataAccessFakes
                 if (element.ElementTypeID == elementTypeID)
                 {
                     resultElement = element;
+                    break;
                 }
             }
             if (resultElement == null)
@@ -74,10 +75,10 @@ namespace DataAccessFakes
             int count = 0;
 
             ElementType newElement = new ElementType()
-                {
-                    ElementTypeID = elementTypeID,
-                    Description = description,
-                };
+            {
+                ElementTypeID = elementTypeID,
+                Description = description,
+            };
             _elements.Add(newElement);
 
             foreach (ElementType element in _elements)
@@ -114,6 +115,7 @@ namespace DataAccessFakes
                 if (element.ElementTypeID == elementTypeID)
                 {
                     updatedElement = element;
+                    break;
                 }
             }
             if (updatedElement != null)
@@ -150,6 +152,7 @@ namespace DataAccessFakes
                 if (element.ElementTypeID == elementTypeID)
                 {
                     deletedElement = element;
+                    break;
                 }
             }
             if (deletedElement != null)

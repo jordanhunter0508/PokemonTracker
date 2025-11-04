@@ -33,36 +33,87 @@ namespace DataAccessFakes
             _artists.Add(new Artist()
             {
                 ArtistID = 3,
-                GivenName = "Test Given1",
-                Surname = ""
+                GivenName = "Test Given 3",
+                Surname = " "
             });
         }
-       
+
+        /// <summary>
+        /// Implements from <see cref="IArtistAccessor"/> used for testing
+        /// </summary>
         public Artist SelectArtistByArtistID(int artistID)
         {
-            throw new NotImplementedException();
+            Artist resultArtist = null;
+
+            foreach (Artist artist in _artists)
+            {
+                if (artist.ArtistID == artistID)
+                { 
+                    resultArtist = artist;
+                    break;
+                }
+            }
+
+            if (resultArtist == null)
+            {
+                throw new ArgumentException("Artist ID could not be found.");
+            }
+
+            return resultArtist;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/> used for testing
+        /// </summary>
         public Artist SelectArtistByArtistName(string givenName, string surname)
         {
-            throw new NotImplementedException();
+
+            Artist resultArtist = null;
+
+            foreach (Artist artist in _artists)
+            {
+                if (artist.GivenName == givenName && artist.Surname == surname)
+                {
+                    resultArtist = artist;
+                    break;
+                }
+            }
+
+            if (resultArtist == null)
+            {
+                throw new ArgumentException("Artist ID could not be found.");
+            }
+
+            return resultArtist;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/> used for testing
+        /// </summary>
         public List<Artist> SelectArtists()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/> used for testing
+        /// </summary>
         public int InsertArtist(string giveName, string surname)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/> used for testing
+        /// </summary>
         public int UpdateArtistByArtistID(int artistID, string giveName, string surname)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/> used for testing
+        /// </summary>
         public int DeleteArtistByArtistID(int artistID)
         {
             throw new NotImplementedException();

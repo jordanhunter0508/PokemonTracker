@@ -31,31 +31,80 @@ namespace LogicLayer
             _artistAccessor = artistAccessor;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IArtistManager"/>
+        /// </summary>
         public Artist GetArtistByArtistID(int artistID)
         {
-            throw new NotImplementedException();
+            Artist resultArtist = null;
+
+            try
+            {
+                resultArtist = _artistAccessor.SelectArtistByArtistID(artistID);
+            }
+            catch (Exception)
+            {
+                throw new ApplicationException("Faild to retrive an artist.");
+            }
+
+            return resultArtist;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IArtistManager"/>
+        /// </summary>
         public Artist GetArtistByName(string givenName, string surname)
         {
-            throw new NotImplementedException();
+            Artist resultArtist = null;
+
+            if (givenName == null || givenName == "")
+            {
+                throw new ArgumentNullException("Given name cannot be empty.");
+            }
+            if (surname == null || surname == "")
+            {
+                surname = " ";
+            }
+
+            try
+            {
+                resultArtist = _artistAccessor.SelectArtistByArtistName(givenName, surname);
+            }
+            catch (Exception)
+            {
+                throw new ApplicationException("Faild to retrive an artist.");
+            }
+
+            return resultArtist;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IArtistManager"/>
+        /// </summary>
         public List<Artist> GetArtists()
         {
             throw new NotImplementedException();
         }
 
-        public bool CreateArtist(string givenName, string surname)
+        /// <summary>
+        /// Implements from <see cref="IArtistManager"/>
+        /// </summary>
+        public bool AddArtist(string givenName, string surname)
         {
             throw new NotImplementedException();
         }
 
-        public bool UpdateArtistByArtistID(int artistID, string giveName, string surname)
+        /// <summary>
+        /// Implements from <see cref="IArtistManager"/>
+        /// </summary>
+        public bool EditArtistByArtistID(int artistID, string giveName, string surname)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Implements from <see cref="IArtistManager"/>
+        /// </summary>
         public bool DeleteArtistByArtistID(int artistID)
         {
             throw new NotImplementedException();

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
+using LogicLayerInterfaces;
 
 namespace PokemonCardFinal
 {
@@ -27,7 +28,8 @@ namespace PokemonCardFinal
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            TestElementType();
+            //TestElementType();
+            TestArtist();
         }
 
         private void TestElementType()
@@ -61,5 +63,20 @@ namespace PokemonCardFinal
             }
         }
 
+        private void TestArtist() 
+        {
+            IArtistManager artistManager = new ArtistManager();
+
+            try
+            {
+                //Artist artist = artistManager.GetArtistByArtistID(56);
+                Artist artist = artistManager.GetArtistByName("fujimoto", "gold");
+                lblName.Content = artist.GivenName + ", " + artist.Surname;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n");
+            }
+        }
     }
 }

@@ -24,17 +24,17 @@ namespace DataAccessInterfaces
         public List<ElementType> SelectElementTypes();
 
         /// <summary>
-        /// Inserts the parameters into the sotred procedure to try
+        /// Inserts the parameters into the stored procedure to try
         /// and create a new record for an ElementType
         /// </summary>
         /// <param name="elementTypeID">Element Type ID of the element wanting to create</param>
         /// <param name="description">Description of the element wanting to create</param>
-        /// <returns>Returns 1 if the item was created</returns>
+        /// <returns>Returns 1 if the record was created</returns>
         public int InsertElementType(string elementTypeID, string description);
 
         /// <summary>
-        /// Updates the description of a specified element type at elementTypeID. 
-        /// Changes description in the table to the description parameter
+        /// Updates the description of a specified element type at elementTypeID. <br/>
+        /// Changes description in the table to the description parameter.
         /// </summary>
         /// <param name="elementTypeID">Used to search the table Element Type for a match</param>
         /// <param name="description">Used to change the description of the element at elementTypeID</param>

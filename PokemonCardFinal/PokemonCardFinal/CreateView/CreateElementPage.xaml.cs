@@ -92,7 +92,7 @@ namespace PokemonCardFinal.CreateView
                     return;
                 }
 
-                if (_elementManager.CreateElementType(elementId, description))
+                if (_elementManager.AddElementType(elementId, description))
                 {
                     MessageBox.Show("The element " + elementId + " was successfully created.");
                     ClearTextAreas();

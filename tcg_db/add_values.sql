@@ -118,7 +118,6 @@ GO
 INSERT INTO [dbo].[Artist]
 	([GivenName],[Surname])
 VALUES
-	('a-g',''),
 	('5ban','graphics'),
 	('0313',''),
 	('2003 pikachu','project'),

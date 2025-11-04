@@ -34,23 +34,23 @@ namespace LogicLayerInterfaces
         /// <param name="description">Description of the element wanting to create</param>
         /// <returns>Returns true of the ElementType was created, false if not</returns>
         /// <exception cref="ApplicationException">Throws if the elemntTypeID is alredy used.</exception>
-        public bool CreateElementType(string elementTypeID, string description);
+        public bool AddElementType(string elementTypeID, string description);
 
         /// <summary>
         /// Passes parameters to <see href="UpdateElementDescritpionByElementTypeID(string,string)"/><br/>
         /// Then returns true if the record was updated successfully
         /// </summary>
-        /// <param name="elementTypeID"></param>
-        /// <param name="description"></param>
+        /// <param name="elementTypeID">Used to find the ElementType</param>
+        /// <param name="description">Used to update the Description field</param>
         /// <returns>Returns true if the ElementType was updated successfully</returns>
         /// <exception cref="ApplicationException">Throws if there is an error connecting to the server</exception>
-        public bool UpdateElementDescritpionByElementTypeID(string elementTypeID, string description);
+        public bool EditElementDescritpionByElementTypeID(string elementTypeID, string description);
 
         /// <summary>
         /// Passes parameters to <see href="DeleteElementTypeByElementTypeID(string)"/><br/>
         /// Then returns true if the record was deleted successfully
         /// </summary>
-        /// <param name="elementTypeID"></param>
+        /// <param name="elementTypeID">Used to find the ElementType</param>
         /// <returns>Returns true if the ElementType was deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if the element is attached to a move</exception>
         public bool DeleteElementTypeByElementTypeID(string elementTypeID);

@@ -70,7 +70,7 @@ public class ElementManagerTest
     }
 
     [TestMethod]
-    public void TestCreateElementTypeWithValidInput() 
+    public void TestAddElementTypeWithValidInput() 
     {
         // arrange
         const string elementTypeID = "Cool New Element";
@@ -79,7 +79,7 @@ public class ElementManagerTest
         bool actualResult = false;
 
         // act
-        actualResult = _elementManager.CreateElementType(elementTypeID, description);
+        actualResult = _elementManager.AddElementType(elementTypeID, description);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
@@ -87,7 +87,7 @@ public class ElementManagerTest
 
     [TestMethod]
     [ExpectedException(typeof(ApplicationException))]
-    public void TestCreateElementTypeThrowsApplicationExceptionWithDuplicateID()
+    public void TestAddElementTypeThrowsApplicationExceptionWithDuplicateID()
     {
         // arrange
         const string elementTypeID = "Cool New Element";
@@ -96,15 +96,15 @@ public class ElementManagerTest
         bool actualResult = false;
 
         // act
-        actualResult = _elementManager.CreateElementType(elementTypeID, description);
-        actualResult = _elementManager.CreateElementType(elementTypeID, description);
+        actualResult = _elementManager.AddElementType(elementTypeID, description);
+        actualResult = _elementManager.AddElementType(elementTypeID, description);
 
         // assert
         // do nothing
     }
 
     [TestMethod]
-    public void TestUpdateElementDescriptionByElementTypeIDReturnsTrue()
+    public void TestEditElementDescriptionByElementTypeIDReturnsTrue()
     {
         // arrange
         const string elementID = "testElement1";
@@ -114,7 +114,7 @@ public class ElementManagerTest
         bool actualResult = false;
 
         // act
-        actualResult = _elementManager.UpdateElementDescritpionByElementTypeID(elementID, newDescription);
+        actualResult = _elementManager.EditElementDescritpionByElementTypeID(elementID, newDescription);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
@@ -122,7 +122,7 @@ public class ElementManagerTest
     }
 
     [TestMethod]
-    public void TestUpdateElementDescriptionByElementTypeIDReturnsFalse()
+    public void TestEditElementDescriptionByElementTypeIDReturnsFalse()
     {
         // arrange
         const string elementID = "no";
@@ -132,7 +132,7 @@ public class ElementManagerTest
         bool actualResult = true;
 
         // act
-        actualResult = _elementManager.UpdateElementDescritpionByElementTypeID(elementID, newDescription);
+        actualResult = _elementManager.EditElementDescritpionByElementTypeID(elementID, newDescription);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);

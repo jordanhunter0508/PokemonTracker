@@ -44,7 +44,7 @@ namespace LogicLayer
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to retrieve element.");
+                throw new ApplicationException("Failed to retrieve an element.");
             }
 
             return resultElement;
@@ -71,7 +71,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/>
         /// </summary>
-        public bool CreateElementType(string elementTypeID, string description)
+        public bool AddElementType(string elementTypeID, string description)
         {
             bool result = false;
 
@@ -90,7 +90,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/>
         /// </summary>
-        public bool UpdateElementDescritpionByElementTypeID(string elementTypeID, string description)
+        public bool EditElementDescritpionByElementTypeID(string elementTypeID, string description)
         {
             bool result = false;
 
