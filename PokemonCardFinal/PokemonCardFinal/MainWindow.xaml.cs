@@ -11,6 +11,8 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using PokemonCardFinal.AddView;
+using PokemonCardFinal.ViewRecords;
 
 namespace PokemonCardFinal
 {
@@ -139,7 +141,7 @@ namespace PokemonCardFinal
         private void mnuCreateRecord_Click(object sender, RoutedEventArgs e)
         {
             // Open the create record page
-            frmMain.Navigate(new CreateRecordPage());
+            frmMain.Navigate(new AddRecordPage());
         }
 
         private void mnuEditRecord_Click(object sender, RoutedEventArgs e)

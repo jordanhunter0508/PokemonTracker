@@ -77,7 +77,7 @@
             </Grid> <!--End of the Search, Log In, and Sign Up Grid-->
 
             <!--Start the main frame-->
-            <Frame x:Name="frmMain" Grid.Row="1"> 
+            <Frame x:Name="frmMain" Grid.Row="1" NavigationUIVisibility="Hidden"> 
                 
             </Frame> <!--End of Main Frame-->
         </Grid>

@@ -15,19 +15,19 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
-using PokemonCardFinal.CreateView;
+using PokemonCardFinal.AddView;
 
-namespace PokemonCardFinal.UpdateView
+namespace PokemonCardFinal.ViewRecords
 {
     /// <summary>
     /// Interaction logic for UpdateElementPage.xaml
     /// </summary>
-    public partial class UpdateElementPage : Page
+    public partial class ViewElementsPage : Page
     {
         ElementType[] _elementTypes;
         IElementManager _elementManager;
-        ElementType selectedElement;
-        public UpdateElementPage()
+        ElementType _selectedElement;
+        public ViewElementsPage()
         {
             InitializeComponent();
         }
@@ -49,14 +49,14 @@ namespace PokemonCardFinal.UpdateView
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedElement == null)
+            if (_selectedElement == null)
             {
                 return;
             }
             // Pop up window to confirm if the admin wants to delete the record
             MessageBoxResult conformationWindow = MessageBox.Show
             (
-                "Are you sure you want to delete " + selectedElement.ElementTypeID,
+                "Are you sure you want to delete " + _selectedElement.ElementTypeID,
                 "Confirm Delete",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning
@@ -66,7 +66,7 @@ namespace PokemonCardFinal.UpdateView
             {
                 try
                 {
-                    if (_elementManager.DeleteElementTypeByElementTypeID(selectedElement.ElementTypeID))
+                    if (_elementManager.DeleteElementTypeByElementTypeID(_selectedElement.ElementTypeID))
                     {
                         MessageBox.Show("The element was successfully deleted");
                     }
@@ -89,17 +89,29 @@ namespace PokemonCardFinal.UpdateView
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedElement == null)
+            // Navigate to CreateRecordPage
+            if (Application.Current.MainWindow is MainWindow mainWindow)
             {
-                return;
-            }
+                // Navigate the main frame to the new outer page
+                AddRecordPage addRecordPage = new AddRecordPage();
+                mainWindow.frmMain.Navigate(addRecordPage);
 
-            this.NavigationService?.Navigate(new CreateElementPage(selectedElement, _elementManager));
+                // When the addRecordPage is loaded change the inner page
+                // to addElementPage
+                addRecordPage.Loaded += (s, args) =>
+                {
+                    addRecordPage.frmElement.Navigate
+                    (
+                        new AddElementPage(_selectedElement,_elementManager)
+                    );
+                };
+            }
         }
+
 
         private void datElement_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedElement = datElement.SelectedItem as ElementType;
+            _selectedElement = datElement.SelectedItem as ElementType;
         }
     }
 }

@@ -1,32 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
-using PokemonCardFinal.CreateView;
-using PokemonCardFinal.UpdateView;
 
-namespace PokemonCardFinal
+namespace PokemonCardFinal.ViewRecords
 {
     /// <summary>
-    /// Interaction logic for CreateRecordPage.xaml
+    /// Interaction logic for ViewRecordsPage.xaml
     /// </summary>
-    public partial class CreateRecordPage : Page
+    public partial class ViewRecordsPage : Page
     {
         bool _isElementLoaded;
-        public CreateRecordPage()
+        public ViewRecordsPage()
         {
             InitializeComponent();
         }
@@ -45,7 +31,7 @@ namespace PokemonCardFinal
             else if (!_isElementLoaded && tabController.SelectedItem == tabElement)
             {
                 _isElementLoaded = true;
-                frmElement.Navigate(new CreateElementPage());
+                frmElement.Navigate(new ViewElementsPage());
             }
             else { }
         }
