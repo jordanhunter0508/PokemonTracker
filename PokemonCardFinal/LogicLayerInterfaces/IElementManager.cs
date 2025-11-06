@@ -60,7 +60,7 @@ namespace LogicLayerInterfaces
         /// then puts them in alphabetical order.
         /// </summary>
         /// <param name="elementTypes">The IEnumerable that is being sorted</param>
-        /// <returns>Returns an IEnumberable or type ElementType that is formated for dispaly.</returns>
+        /// <returns>Returns an IEnumberable of type ElementType that is formated for dispaly.</returns>
         public IEnumerable<ElementType> FormatElemetTypes(IEnumerable<ElementType> elementTypes);
     }
 }

@@ -1,0 +1,28 @@
+﻿<Page x:Class="PokemonCardFinal.View.AddRecord.RecordContainerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PokemonCardFinal.View.AddRecord"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="730"
+      Title="AddRecordPage" Loaded="Page_Loaded">
+
+    <Grid>
+        <TabControl x:Name="tabController" SelectionChanged="tabController_SelectionChanged">
+
+            <!--Start of the Element Type Tab-->
+            <TabItem x:Name="tabElement" Header="Element Type">
+                <Frame x:Name="frmElement" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+
+            <TabItem x:Name="tabMove" Header="Move">
+                
+            </TabItem>
+
+            <TabItem x:Name="tabArtist" Header="Artist">
+                <Frame x:Name="frmArtist" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Page>

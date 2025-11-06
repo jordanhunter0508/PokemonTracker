@@ -697,3 +697,9 @@ AS
 		FROM	[Artist];
 	END
 GO
+
+/*
+When going to the create records page from the edit button
+make the other tabs not clickable.
+
+*/

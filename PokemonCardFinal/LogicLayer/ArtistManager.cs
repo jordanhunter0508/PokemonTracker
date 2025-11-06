@@ -156,6 +156,23 @@ namespace LogicLayer
             }
 
             return result;
-        }        
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IArtistManager"/>
+        /// </summary>
+        public IEnumerable<Artist> FormatArtists(IEnumerable<Artist> artists)
+        {
+            foreach (Artist artist in artists)
+            {
+                artist.GivenName = char.ToUpper(artist.GivenName[0]) + artist.GivenName.Substring(1);
+                if (artist.Surname.Length != 0)
+                {
+                    artist.Surname = char.ToUpper(artist.Surname[0]) + artist.GivenName.Substring(1);
+                }
+            }
+            artists = artists.OrderBy(element => element.ArtistID);
+            return artists;
+        }
     }
 }

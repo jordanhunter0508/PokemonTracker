@@ -154,7 +154,7 @@ namespace DataAccessFakes
 
             if (updatedArtist != null)
             {
-                updatedArtist.GivenName = giveName;
+                updatedArtist.GivenName = givenName;
                 updatedArtist.Surname = surname;
 
                 foreach (Artist artist in _artists)

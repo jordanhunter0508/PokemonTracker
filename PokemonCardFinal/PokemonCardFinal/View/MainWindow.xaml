@@ -1,0 +1,88 @@
+﻿<Window x:Class="PokemonCardFinal.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PokemonCardFinal.View"
+        mc:Ignorable="d"
+        Title="Pokemon TCG Home" Height="620" Width="1020"
+        x:Name="winHome" Loaded="winHome_Loaded">
+
+    <Grid>
+        <!--Set up general cloumns 0 and 3 are for margins-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Set up general rows 0 and 2 are for margins-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <!--This Grid is used for the Name of the Project and the Menu Items-->
+        <Grid Grid.Row="1" Grid.Column="1">
+            
+            <!--One grid for the Name, One for the Menu, and One for the extra room-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            
+            <!--Name of the Project-->
+            <TextBlock x:Name="txtProjectTitle" Text="Pokemon TCG Tracker" Grid.Row="0" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Margin="10 0"/>
+
+            <!--Menu Items-->
+            <StackPanel Grid.Row ="1">
+                <MenuItem x:Name="mnuPopularCard" Header="Popular Cards" FontSize="20" HorizontalAlignment="Center" Margin="0 25 0 25"/>
+                <MenuItem x:Name="mnuNewestSet" Header="Newest Set" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
+                <MenuItem x:Name="mnuViewDeck" Header="View Decks" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
+                <MenuItem x:Name="mnuAllCards" Header="All Cards" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
+                <MenuItem x:Name="mnuCreateRecord" Header="Create a Record" FontSize="20" HorizontalAlignment="Center" 
+                          Margin="0 0 0 25" Visibility="Hidden" Click="mnuCreateRecord_Click"/>
+                <MenuItem x:Name="mnuEditRecord" Header="Edit a Record" FontSize="20" HorizontalAlignment="Center" 
+                          Margin="0 0 0 25" Visibility="Hidden" Click="mnuEditRecord_Click" />
+            </StackPanel>
+        </Grid><!--End of the Menu Grid-->
+
+        <!--Main Section of the program-->
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!--Start of the Search Bar, Login Button, and Sign Up Button-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="txtSearch" Grid.Column="0" Width="200" Height="24" Margin="120 0 0 0"
+                         HorizontalAlignment="Left" VerticalAlignment="Center" Text="Search..." KeyDown="txtSearch_KeyDown"/>
+                <Label x:Name="lblSearch" Content="Find a Card" Grid.Column="0" FontSize="16" Margin="15 0 0 0"
+                       HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button x:Name="btnSearch" Content="Search" Grid.Column="0" Width="50" Height="24" Margin="340 0 0 0"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button x:Name="btnLogIn" Content="Log In" Grid.Column="2" Width="100" Height="40" Focusable="False"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnLogIn_Click"/>
+                <Button x:Name="btnSignUp" Content="Sign Up" Grid.Column="1" Width="100" Height="40" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnSignUp_Click"/>
+            </Grid> <!--End of the Search, Log In, and Sign Up Grid-->
+
+            <!--Start the main frame-->
+            <Frame x:Name="frmMain" Grid.Row="1" NavigationUIVisibility="Hidden"> 
+                
+            </Frame> <!--End of Main Frame-->
+        </Grid>
+
+    </Grid>
+    <!-- End of Main Window grid -->
+</Window>
+

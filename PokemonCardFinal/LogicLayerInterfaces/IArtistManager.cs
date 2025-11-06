@@ -66,5 +66,13 @@ namespace LogicLayerInterfaces
         /// <returns>Returns true if the Artist was deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if the artist is attached to a card</exception>
         public bool DeleteArtistByArtistID(int artistID);
+
+        /// <summary>
+        /// Makes sure the first leter of the given and surname a is capital
+        /// then sorts by the id
+        /// </summary>
+        /// <param name="artists">The IEnumerable that is being sorted</param>
+        /// <returns>Returns an IEnumberable of type Artist that is formated for dispaly.</returns>
+        public IEnumerable<Artist> FormatArtists(IEnumerable<Artist> artists);
     }
 }

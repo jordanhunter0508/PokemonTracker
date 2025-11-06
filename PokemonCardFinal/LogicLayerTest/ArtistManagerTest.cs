@@ -213,4 +213,46 @@ public class ArtistManagerTest
         // assert
         Assert.AreEqual(expectedResult, actualResult);
     }
+
+    [TestMethod]
+    public void TestFormatArtistsReturnCorrectOrder()
+    {
+        // arrange
+        List<Artist> inputList = new List<Artist>();
+        inputList.Add(new Artist()
+        {
+            ArtistID = 2,
+            GivenName = "test",
+            Surname = "test",
+        });
+        inputList.Add(new Artist()
+        {
+            ArtistID = 1,
+            GivenName = "another test",
+            Surname = "another test",
+        });
+
+        List<Artist> expectedResult = new List<Artist>();
+        expectedResult.Add(new Artist()
+        {
+            ArtistID = 1,
+            GivenName = "Another test",
+            Surname = "another test",
+        });
+        expectedResult.Add(new Artist()
+        {
+            ArtistID = 2,
+            GivenName = "Test",
+            Surname = "test",
+        });
+
+        List<Artist> actualResult = new List<Artist>();
+
+        // act
+        actualResult = _artistManager.FormatArtists(inputList).ToList();
+
+        // assert
+        Assert.AreEqual(expectedResult[0].ArtistID, actualResult[0].ArtistID);
+        Assert.AreEqual(expectedResult[1].ArtistID, actualResult[1].ArtistID);
+    }
 }
