@@ -17,6 +17,8 @@ if there is enough time
 
 Ask Jim about sign up automatically opening view profile
 
+May won't select_booster_by_abbreviation
+
 */
 
 print '' print'*** dropping the database tcg_db ***'
@@ -698,8 +700,91 @@ AS
 	END
 GO
 
+PRINT '*** creating sp_select_booster_by_boosterid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_booster_by_boosterid]
+	(
+		@BoosterID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT 	[Booster].[BoosterID],[Booster].[Series],
+				[Booster].[ReleaseDate],[Booster].[Abbreviation]
+		FROM	[Booster]
+		WHERE	[Booster].[BoosterID] = @BoosterID;
+	END
+GO
+
+PRINT '*** creating sp_insert_booster ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_booster]
+	(
+		@BoosterID		[nvarchar](50),
+		@Series			[nvarchar](50),
+		@ReleaseDate	[date],
+		@Abbreviation	[nvarchar](4)
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[Booster]
+			([BoosterID],[Series],[ReleaseDate],[Abbreviation])
+		VALUES
+			(@BoosterID,@Series,@ReleaseDate,@Abbreviation)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_update_booster_by_boosterid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_booster_by_boosterid]
+	(
+		@BoosterID		[nvarchar](50),
+		@Series			[nvarchar](50),
+		@ReleaseDate	[date],
+		@Abbreviation	[nvarchar](4)
+	)
+AS
+	BEGIN
+		UPDATE 	[Booster]
+		SET		[Booster].[Series] = @Series,
+				[Booster].[ReleaseDate] = @ReleaseDate,
+				[Booster].[Abbreviation] = @Abbreviation
+		WHERE	[Booster].[BoosterID] = @BoosterID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_delete_booster_by_boosterid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_booster_by_boosterid]
+	(
+		@BoosterID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		DELETE 	[Booster]
+		WHERE 	[Booster].[BoosterID] = @BoosterID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_select_boosters ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_boosters]
+AS
+	BEGIN
+		SELECT 	[Booster].[BoosterID],[Booster].[Series],
+				[Booster].[ReleaseDate],[Booster].[Abbreviation]
+		FROM	[Booster];
+	END
+GO
+
+
 /*
+Work on booster sp
+
 When going to the create records page from the edit button
 make the other tabs not clickable.
 
 */
+
