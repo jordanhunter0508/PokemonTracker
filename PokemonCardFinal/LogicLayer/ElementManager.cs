@@ -96,7 +96,7 @@ namespace LogicLayer
 
             try
             {
-                result = (1 == _elementAccessor.UpdateElementTypeByElementTypeID(elementTypeID, description));
+                result = (1 == _elementAccessor.UpdateElementType(elementTypeID, description));
             }
             catch (Exception ex)
             {
@@ -114,7 +114,7 @@ namespace LogicLayer
             bool result;
             try
             {
-                result = (1 == _elementAccessor.DeleteElementTypeByElementTypeID(elementTypeID));
+                result = (1 == _elementAccessor.DeleteElementType(elementTypeID));
             }
             catch (Exception ex)
             {

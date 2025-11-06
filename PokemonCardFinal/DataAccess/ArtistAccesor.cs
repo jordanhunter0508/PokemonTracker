@@ -184,14 +184,14 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IArtistAccessor"/>. Access the database
-        /// using sp_update_artist_by_artistid
+        /// using sp_update_artist
         /// </summary>
-        public int UpdateArtistByArtistID(int artistID, string givenName, string surname)
+        public int UpdateArtist(int artistID, string givenName, string surname)
         {
             int count = 0;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_update_artist_by_artistid";
+            string cmdText = "sp_update_artist";
             SqlCommand cmd = new SqlCommand(cmdText,conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -222,14 +222,14 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IArtistAccessor"/>. Access the database
-        /// using sp_delete_artist_by_artistid
+        /// using sp_delete_artist
         /// </summary>
-        public int DeleteArtistByArtistID(int artistID)
+        public int DeleteArtist(int artistID)
         {
             int count = 0;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_delete_artist_by_artistid";
+            string cmdText = "sp_delete_artist";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 

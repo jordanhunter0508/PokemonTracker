@@ -123,13 +123,13 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IArtistManager"/>
         /// </summary>
-        public bool EditArtistByArtistID(int artistID, string givenName, string surname)
+        public bool EditArtist(int artistID, string givenName, string surname)
         {
             bool result = false;
 
             try
             {
-                result = (1 == _artistAccessor.UpdateArtistByArtistID(artistID, givenName, surname));
+                result = (1 == _artistAccessor.UpdateArtist(artistID, givenName, surname));
             }
             catch (Exception)
             {
@@ -142,13 +142,13 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IArtistManager"/>
         /// </summary>
-        public bool DeleteArtistByArtistID(int artistID)
+        public bool DeleteArtist(int artistID)
         {
             bool result = false;
 
             try
             {
-                result = (1 == _artistAccessor.DeleteArtistByArtistID(artistID));
+                result = (1 == _artistAccessor.DeleteArtist(artistID));
             }
             catch (Exception)
             {

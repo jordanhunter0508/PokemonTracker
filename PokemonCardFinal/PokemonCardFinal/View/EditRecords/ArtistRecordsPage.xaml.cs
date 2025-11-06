@@ -64,7 +64,7 @@ namespace PokemonCardFinal.View.EditRecords
             {
                 try
                 {
-                    if (_artistManager.DeleteArtistByArtistID(_selectedArtist.ArtistID))
+                    if (_artistManager.DeleteArtist(_selectedArtist.ArtistID))
                     {
                         MessageBox.Show("The artist was successfully deleted");
                     }

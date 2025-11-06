@@ -120,7 +120,7 @@ namespace PokemonCardFinal.View.AddRecord
 
             try
             {
-                if (_artistManager.EditArtistByArtistID(artistID,givenName, surname))
+                if (_artistManager.EditArtist(artistID,givenName, surname))
                 {
                     MessageBox.Show("The artist " + givenName + ", " + surname + " was successfully created.");
 

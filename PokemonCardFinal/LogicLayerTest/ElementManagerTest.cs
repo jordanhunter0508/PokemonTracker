@@ -104,7 +104,7 @@ public class ElementManagerTest
     }
 
     [TestMethod]
-    public void TestEditElementDescriptionByElementTypeIDReturnsTrue()
+    public void TestEditElementTypeIDReturnsTrue()
     {
         // arrange
         const string elementID = "testElement1";
@@ -122,7 +122,7 @@ public class ElementManagerTest
     }
 
     [TestMethod]
-    public void TestEditElementDescriptionByElementTypeIDReturnsFalse()
+    public void TestEditElementTypeIDReturnsFalse()
     {
         // arrange
         const string elementID = "no";
@@ -140,7 +140,7 @@ public class ElementManagerTest
     }
 
     [TestMethod]
-    public void TestDeleteElementTypeByElementTypeIDReturnsTrueWithValidInput()
+    public void TestDeleteElementTypeReturnsTrueWithValidInput()
     {
         // arrange
         const string elementID = "testElement1";
@@ -155,7 +155,7 @@ public class ElementManagerTest
     }
 
     [TestMethod]
-    public void TestDeleteElementTypeByElementTypeIDReturnsFalseWithInvalidInput()
+    public void TestDeleteElementTypeReturnsFalseWithInvalidInput()
     {
         // arrange
         const string elementID = "no";

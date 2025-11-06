@@ -50,13 +50,13 @@ namespace DataAccessInterfaces
         /// <param name="giveName">Used to change the give name of an artist at artistID</param>
         /// <param name="surname">Used to changed the surname of an artist at artistID</param>
         /// <returns>Returns 1 if the record at artistID updated successfully</returns>
-        public int UpdateArtistByArtistID(int artistID,string givenName, string surname);
+        public int UpdateArtist(int artistID,string givenName, string surname);
 
         /// <summary>
         /// Deletes the record at artistID
         /// </summary>
         /// <param name="artistID">Used to search the table Artist for a match</param>
         /// <returns>Returns 1 if the record at artistID was deleted successfully</returns>
-        public int DeleteArtistByArtistID(int artistID);
+        public int DeleteArtist(int artistID);
     }
 }

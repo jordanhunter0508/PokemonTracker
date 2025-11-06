@@ -260,7 +260,6 @@ CREATE TABLE [dbo].[Booster]
 	[Abbreviation]			[nvarchar](4)		NOT NULL,
 	
 	CONSTRAINT [pk_booster_boosterid] PRIMARY KEY ([BoosterID]),
-	CONSTRAINT [ak_booster_releasedate] UNIQUE ([ReleaseDate] DESC),
 	CONSTRAINT [ak_booster_abbreviation] UNIQUE ([Abbreviation])
 )
 GO
@@ -542,9 +541,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_element_by_elementtypeid ***'
+PRINT '*** creating sp_select_element_by_element_type_id ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_element_by_elementtypeid]
+CREATE PROCEDURE [dbo].[sp_select_element_by_element_type_id]
 	(
 		@ElementTypeID	[nvarchar](15)
 	)
@@ -556,9 +555,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_element_into_element_type ***'
+PRINT '*** creating sp_insert_element_type ***'
 GO
-CREATE PROCEDURE [dbo].[sp_insert_element_into_element_type]
+CREATE PROCEDURE [dbo].[sp_insert_element_type]
 	(
 		@ElementTypeID	[nvarchar](15),
 		@Description	[nvarchar](100)
@@ -573,9 +572,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_update_element_description_by_elementtypeid ***'
+PRINT '*** creating sp_update_element_type ***'
 GO
-CREATE PROCEDURE [dbo].[sp_update_element_description_by_elementtypeid]
+CREATE PROCEDURE [dbo].[sp_update_element_type]
 	(
 		@ElementTypeID	[nvarchar](15),
 		@Description	[nvarchar](100)
@@ -589,9 +588,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_element_by_elementtypeid ***'
+PRINT '*** creating sp_delete_element_type ***'
 GO
-CREATE PROCEDURE [dbo].[sp_delete_element_by_elementtypeid]
+CREATE PROCEDURE [dbo].[sp_delete_element_type]
 	(
 		@ElementTypeID	[nvarchar](15)
 	)
@@ -643,7 +642,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_artist_into_artist ***'
+PRINT '*** creating sp_insert_artist ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_artist]
 	(
@@ -660,9 +659,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_update_artist_by_artistid ***'
+PRINT '*** creating sp_update_artist ***'
 GO
-CREATE PROCEDURE [dbo].[sp_update_artist_by_artistid]
+CREATE PROCEDURE [dbo].[sp_update_artist]
 	(
 		@ArtistID		[int],
 		@GivenName		[nvarchar](50),
@@ -678,9 +677,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_artist_by_artistid ***'
+PRINT '*** creating sp_delete_artist ***'
 GO
-CREATE PROCEDURE [dbo].[sp_delete_artist_by_artistid]
+CREATE PROCEDURE [dbo].[sp_delete_artist]
 	(
 		@ArtistID		[int]
 	)
@@ -736,9 +735,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_update_booster_by_boosterid ***'
+PRINT '*** creating sp_update_booster ***'
 GO
-CREATE PROCEDURE [dbo].[sp_update_booster_by_boosterid]
+CREATE PROCEDURE [dbo].[sp_update_booster]
 	(
 		@BoosterID		[nvarchar](50),
 		@Series			[nvarchar](50),
@@ -756,9 +755,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_booster_by_boosterid ***'
+PRINT '*** creating sp_delete_booster ***'
 GO
-CREATE PROCEDURE [dbo].[sp_delete_booster_by_boosterid]
+CREATE PROCEDURE [dbo].[sp_delete_booster]
 	(
 		@BoosterID		[nvarchar](50)
 	)

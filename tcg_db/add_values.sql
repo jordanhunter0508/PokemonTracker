@@ -579,6 +579,16 @@ VALUES
 	('zig',''),
 	('zu-ka','')
 GO
+
+PRINT '*** adding to Booster Table ***'
+GO
+INSERT INTO [dbo].[Booster]
+	([BoosterID],[Series],[ReleaseDate],[Abbreviation])
+VALUES
+	('Shrouded Fable','Scarlet and Violet','2025-11-06','shre'),
+	('151','Scarlet and Violet','2004-11-06','mew')
+GO
+
 /*
 	add unique for pokemon name, ElementType, boosterName/Abbreviation GenerationName
 

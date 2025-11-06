@@ -48,7 +48,7 @@ namespace LogicLayerInterfaces
         public bool AddArtist(string givenName, string surname);
 
         /// <summary>
-        /// Passes parameters to <see href="UpdateArtistByArtistID(int,string,string)"/><br/>
+        /// Passes parameters to <see href="UpdateArtist(int,string,string)"/><br/>
         /// Then returns true if the record was updated successfully
         /// </summary>
         /// <param name="artistID">Used to find the Artist</param>
@@ -56,16 +56,16 @@ namespace LogicLayerInterfaces
         /// <param name="surname">Used to update the Surname field</param>
         /// <returns>Returns true if the Artist was updated successfully</returns>
         /// <exception cref="ApplicationException">Throws if the combination of the given name and surname is already used.</exception>
-        public bool EditArtistByArtistID(int artistID, string givenName, string surname);
+        public bool EditArtist(int artistID, string givenName, string surname);
 
         /// <summary>
-        /// Passes parameters to <see href="DeleteArtistByArtistID(int)"/><br/>
+        /// Passes parameters to <see href="DeleteArtist(int)"/><br/>
         /// Then returns true if the record was deleted successfully
         /// </summary>
         /// <param name="artistID">Used to find the Artist</param>
         /// <returns>Returns true if the Artist was deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if the artist is attached to a card</exception>
-        public bool DeleteArtistByArtistID(int artistID);
+        public bool DeleteArtist(int artistID);
 
         /// <summary>
         /// Makes sure the first leter of the given and surname a is capital

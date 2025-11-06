@@ -39,14 +39,14 @@ namespace DataAccessInterfaces
         /// <param name="elementTypeID">Used to search the table Element Type for a match</param>
         /// <param name="description">Used to change the description of the element at elementTypeID</param>
         /// <returns>Returns 1 if the record at elementTypeId updated the description successfully</returns>
-        public int UpdateElementTypeByElementTypeID(string elementTypeID,string description);
+        public int UpdateElementType(string elementTypeID,string description);
 
         /// <summary>
         /// Deletes the record at elementTypeID
         /// </summary>
         /// <param name="elementTypeID">Used to search the table Element Type for a match</param>
         /// <returns>Returns 1 if the record at elementTypeID was deleted successfully</returns>
-        public int DeleteElementTypeByElementTypeID(string elementTypeID);
+        public int DeleteElementType(string elementTypeID);
  
     }
 }

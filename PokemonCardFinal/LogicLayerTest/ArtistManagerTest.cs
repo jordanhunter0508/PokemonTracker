@@ -150,7 +150,7 @@ public class ArtistManagerTest
     }
 
     [TestMethod]
-    public void TestEditArtistByArtistIDReturnsTrueWithValidInput()
+    public void TestEditArtistReturnsTrueWithValidInput()
     {
         // arrange
         const int artistID = 1;
@@ -160,14 +160,14 @@ public class ArtistManagerTest
         bool actualResult = false;
 
         // act
-        actualResult = _artistManager.EditArtistByArtistID(artistID, newGiveName, newSurname);
+        actualResult = _artistManager.EditArtist(artistID, newGiveName, newSurname);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
     }
 
     [TestMethod]
-    public void TestEditArtistByArtistIDWithInvalidArtistID()
+    public void TestEditArtistWithInvalidArtistID()
     {
         // arrange
         const int artistID = -1;
@@ -177,7 +177,7 @@ public class ArtistManagerTest
         bool actualResult = true;
 
         // act
-        actualResult = _artistManager.EditArtistByArtistID(artistID, newGiveName, newSurname);
+        actualResult = _artistManager.EditArtist(artistID, newGiveName, newSurname);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
@@ -193,7 +193,7 @@ public class ArtistManagerTest
         bool actualResult = false;
 
         // act
-        actualResult = _artistManager.DeleteArtistByArtistID(artistID);
+        actualResult = _artistManager.DeleteArtist(artistID);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
@@ -208,7 +208,7 @@ public class ArtistManagerTest
         bool actualResult = true;
 
         // act
-        actualResult = _artistManager.DeleteArtistByArtistID(artistID);
+        actualResult = _artistManager.DeleteArtist(artistID);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);

@@ -14,14 +14,14 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/>. Access the database
-        /// using sp_select_element_by_elementtypeid
+        /// using sp_select_element_by_element_type_id
         /// </summary>
         public ElementType SelectElementTypeByElementTypeID(string elementTypeID)
         {
             ElementType resultElement = null;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_element_by_elementtypeid";
+            string cmdText = "sp_select_element_by_element_type_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -99,14 +99,14 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/>. Access the database
-        /// using sp_insert_element_into_element_type
+        /// using sp_insert_element_type
         /// </summary>
         public int InsertElementType(string elementTypeID, string description)
         {
             int count = 0;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_insert_element_into_element_type";
+            string cmdText = "sp_insert_element_type";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -134,14 +134,14 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/>. Access the database
-        /// using sp_update_element_description_by_elementtypeid
+        /// using sp_update_element_type
         /// </summary>
-        public int UpdateElementTypeByElementTypeID(string elementTypeID, string description)
+        public int UpdateElementType(string elementTypeID, string description)
         {
             int count = 0;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_update_element_description_by_elementtypeid";
+            string cmdText = "sp_update_element_type";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -169,14 +169,14 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/>. Access the database
-        /// using sp_delete_element_by_elementtypeid
+        /// using sp_delete_element_type
         /// </summary>
-        public int DeleteElementTypeByElementTypeID(string elementTypeID)
+        public int DeleteElementType(string elementTypeID)
         {
             int count = 0;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_delete_element_by_elementtypeid";
+            string cmdText = "sp_delete_element_type";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 

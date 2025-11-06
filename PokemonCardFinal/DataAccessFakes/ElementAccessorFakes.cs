@@ -100,7 +100,7 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/> used for testing
         /// </summary>
-        public int UpdateElementTypeByElementTypeID(string elementTypeID, string description)
+        public int UpdateElementType(string elementTypeID, string description)
         {
             int count = 0;
             ElementType updatedElement = null;
@@ -136,7 +136,7 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/> used for testing
         /// </summary>
-        public int DeleteElementTypeByElementTypeID(string elementTypeID)
+        public int DeleteElementType(string elementTypeID)
         {
             int count = 0;
 

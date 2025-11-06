@@ -1,0 +1,156 @@
+using DataAccessFakes;
+using DataDomain;
+using LogicLayer;
+using LogicLayerInterfaces;
+
+namespace LogicLayerTest;
+
+[TestClass]
+public class BoosterManagerTest
+{
+    IBoosterManger _boosterManager;
+
+    [TestInitialize]
+    public void TestSetup() 
+    {
+        _boosterManager = new BoosterManager(new BoosterAccessorFakes());
+    }
+
+    [TestMethod]
+    public void TestGetBoosterByBoosterIDWithValidInput()
+    {
+        // arrange
+        const string boosterID = "Test Booster 1";
+        const string series = "test series";
+        DateTime dateTime = new DateTime(2025,11,06);
+        const string abbreviation = "test";
+        Booster actualBooster;
+
+        // act
+        actualBooster = _boosterManager.GetBoosterByBoosterID(boosterID);
+
+        // assert
+        Assert.AreEqual(boosterID, actualBooster.BoosterID);
+        Assert.AreEqual(series, actualBooster.Series);
+        Assert.AreEqual(dateTime, actualBooster.ReleaseDate);
+        Assert.AreEqual(abbreviation, actualBooster.Abbreviation);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestGetBoosterByBoosterIDThrowsApplicationExceptionWithInvalidBoosterID()
+    {
+        // arrange
+        const string boosterID = "Test Fails";
+        const string series = "test series";
+        DateTime dateTime = new DateTime(2025, 11, 06);
+        const string abbreviation = "test";
+        Booster actualBooster;
+
+        // act
+        actualBooster = _boosterManager.GetBoosterByBoosterID(boosterID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestGetBoostersWithValidInput()
+    {
+        // arrange
+        const int count = 3;
+        const string boosterID1 = "Test Booster 1";
+        const string abbreviation3 = "abv";
+        List<Booster> actualBoosters;
+
+        // act
+        actualBoosters = _boosterManager.GetBoosters();
+
+        // assert
+        Assert.AreEqual(count, actualBoosters.Count);
+        Assert.AreEqual(boosterID1, actualBoosters[0].BoosterID);
+        Assert.AreEqual(abbreviation3, actualBoosters[2].Abbreviation);
+    }
+
+    [TestMethod]
+    public void TestAddBoosterReturnsTrueWithValidBooster()
+    {
+        // arrange
+        Booster booster = new Booster()
+        {
+            BoosterID = "new Booster",
+            Series = "test series",
+            ReleaseDate = DateTime.Parse("2025-11-06"),
+            Abbreviation = "bost",
+        };
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _boosterManager.AddBooster(booster);
+
+        // assert
+        Assert.AreEqual(expectedResult,actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestAddBoosterThrowsArgumentNullExceptionWithNullBooster()
+    {
+
+        // arrange
+        Booster booster = null;
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _boosterManager.AddBooster(booster);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddBoosterThrowsApplicationExcpetionWithDuplicateBoosterID()
+    { 
+        // arrange
+        Booster booster = new Booster()
+        {
+            BoosterID = "Test Booster 1",
+            Series = "test series",
+            ReleaseDate = DateTime.Parse("2025-11-06"),
+            Abbreviation = "bost",
+        };
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _boosterManager.AddBooster(booster);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddBoosterThrowsApplicationExcpetionWithDuplicateAbbreviation()
+    {
+        // arrange
+        Booster booster = new Booster()
+        {
+            BoosterID = "new Booster",
+            Series = "test series",
+            ReleaseDate = DateTime.Parse("2025-11-06"),
+            Abbreviation = "test",
+        };
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _boosterManager.AddBooster(booster);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+}

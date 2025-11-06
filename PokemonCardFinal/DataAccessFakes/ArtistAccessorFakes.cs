@@ -138,7 +138,7 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/> used for testing
         /// </summary>
-        public int UpdateArtistByArtistID(int artistID, string givenName, string surname)
+        public int UpdateArtist(int artistID, string givenName, string surname)
         {
             int count = 0;
             Artist updatedArtist = null;
@@ -171,7 +171,7 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/> used for testing
         /// </summary>
-        public int DeleteArtistByArtistID(int artistID)
+        public int DeleteArtist(int artistID)
         {
             int count = 0;
             Artist deletedArtist = null;

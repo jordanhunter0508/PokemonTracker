@@ -30,7 +30,76 @@ namespace PokemonCardFinal.View
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //TestElementType();
-            TestArtist();
+            //TestArtist();
+            TestBooster();
+        }
+
+        private void TestBooster()
+        {
+            IBoosterManger boosterManager = new BoosterManager();
+
+            Booster booster = boosterManager.GetBoosterByBoosterID("151");
+
+            List<Booster> boosters = boosterManager.GetBoosters();
+
+            if (booster == null)
+            {
+                MessageBox.Show("Booster is null");
+                return;
+            }
+            lblName.Content = booster.Series;
+            lblName.Content = boosters.Count;
+        }
+
+        private void TestArtist()
+        {
+            IArtistManager artistManager = new ArtistManager();
+
+            try
+            {
+                //Artist artist = artistManager.GetArtistByArtistID(56);
+                //lblName.Content = artist.GivenName + ", " + artist.Surname;
+
+                //Artist artist = artistManager.GetArtistByName("fujimoto", "gold");
+                //lblName.Content = artist.GivenName + ", " + artist.Surname;
+
+                //List<Artist> artists = artistManager.GetArtists();
+                //foreach (Artist artist in artists)
+                //{
+                //    lblName.Content += artist.GivenName + ", " + artist.Surname + "\n";
+                //}
+
+                //if (artistManager.AddArtist("test", "person"))
+                //{
+                //    MessageBox.Show("Artist added.");
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Failed to add artist.");
+                //}
+
+                if (artistManager.EditArtist(3, "Nothgin", ""))
+                {
+                    MessageBox.Show("Artist updated.");
+                }
+                else
+                {
+                    MessageBox.Show("Failed to upgggggggdate artist.");
+                }
+
+                //if (artistManager.DeleteArtistByArtistID(3))
+                //{
+                //    MessageBox.Show("Artist deleted.");
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Failed to deleteggggd artist.");
+                //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n");
+            }
         }
 
         private void TestElementType()
@@ -64,55 +133,5 @@ namespace PokemonCardFinal.View
             }
         }
 
-        private void TestArtist() 
-        {
-            IArtistManager artistManager = new ArtistManager();
-
-            try
-            {
-                //Artist artist = artistManager.GetArtistByArtistID(56);
-                //lblName.Content = artist.GivenName + ", " + artist.Surname;
-
-                //Artist artist = artistManager.GetArtistByName("fujimoto", "gold");
-                //lblName.Content = artist.GivenName + ", " + artist.Surname;
-
-                //List<Artist> artists = artistManager.GetArtists();
-                //foreach (Artist artist in artists)
-                //{
-                //    lblName.Content += artist.GivenName + ", " + artist.Surname + "\n";
-                //}
-
-                //if (artistManager.AddArtist("test", "person"))
-                //{
-                //    MessageBox.Show("Artist added.");
-                //}
-                //else
-                //{
-                //    MessageBox.Show("Failed to add artist.");
-                //}
-
-                if (artistManager.EditArtistByArtistID(3, "Nothgin", ""))
-                {
-                    MessageBox.Show("Artist updated.");
-                }
-                else
-                {
-                    MessageBox.Show("Failed to upgggggggdate artist.");
-                }
-
-                //if (artistManager.DeleteArtistByArtistID(3))
-                //{
-                //    MessageBox.Show("Artist deleted.");
-                //}
-                //else
-                //{
-                //    MessageBox.Show("Failed to deleteggggd artist.");
-                //}
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n");
-            }
-        }
     }
 }

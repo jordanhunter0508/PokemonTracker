@@ -37,7 +37,7 @@ namespace LogicLayerInterfaces
         public bool AddElementType(string elementTypeID, string description);
 
         /// <summary>
-        /// Passes parameters to <see href="UpdateElementDescritpionByElementTypeID(string,string)"/><br/>
+        /// Passes parameters to <see href="UpdateElementType(string,string)"/><br/>
         /// Then returns true if the record was updated successfully
         /// </summary>
         /// <param name="elementTypeID">Used to find the ElementType</param>
@@ -47,7 +47,7 @@ namespace LogicLayerInterfaces
         public bool EditElementDescritpionByElementTypeID(string elementTypeID, string description);
 
         /// <summary>
-        /// Passes parameters to <see href="DeleteElementTypeByElementTypeID(string)"/><br/>
+        /// Passes parameters to <see href="DeleteElementType(string)"/><br/>
         /// Then returns true if the record was deleted successfully
         /// </summary>
         /// <param name="elementTypeID">Used to find the ElementType</param>
