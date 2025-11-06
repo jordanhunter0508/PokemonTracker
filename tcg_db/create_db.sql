@@ -19,6 +19,8 @@ Ask Jim about sign up automatically opening view profile
 
 May won't select_booster_by_abbreviation
 
+Need select card from booster
+
 */
 
 print '' print'*** dropping the database tcg_db ***'
