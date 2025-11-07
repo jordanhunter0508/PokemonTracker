@@ -24,7 +24,7 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar,50);
+            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar, 50);
             cmd.Parameters["@BoosterID"].Value = boosterID;
 
             try
@@ -108,7 +108,39 @@ namespace DataAccess
         /// </summary>
         public int InsertBooster(Booster booster)
         {
-            throw new NotImplementedException();
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_insert_booster";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Series", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@ReleaseDate", System.Data.SqlDbType.Date);
+            cmd.Parameters.Add("@Abbreviation", System.Data.SqlDbType.NVarChar, 4);
+
+            cmd.Parameters["@BoosterID"].Value = booster.BoosterID;
+            cmd.Parameters["@Series"].Value = booster.Series;
+            cmd.Parameters["@ReleaseDate"].Value = booster.ReleaseDate;
+            cmd.Parameters["@Abbreviation"].Value = booster.Abbreviation;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
         }
 
         /// <summary>
@@ -117,7 +149,39 @@ namespace DataAccess
         /// </summary>
         public int UpdateBooster(Booster booster)
         {
-            throw new NotImplementedException();
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_update_booster";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Series", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@ReleaseDate", System.Data.SqlDbType.Date);
+            cmd.Parameters.Add("@Abbreviation", System.Data.SqlDbType.NVarChar, 4);
+
+            cmd.Parameters["@BoosterID"].Value = booster.BoosterID;
+            cmd.Parameters["@Series"].Value = booster.Series;
+            cmd.Parameters["@ReleaseDate"].Value = booster.ReleaseDate;
+            cmd.Parameters["@Abbreviation"].Value = booster.Abbreviation;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
         }
 
         /// <summary>
@@ -126,7 +190,32 @@ namespace DataAccess
         /// </summary>
         public int DeleteBooster(string boosterID)
         {
-            throw new NotImplementedException();
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_delete_booster";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@BoosterID"].Value = boosterID;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
         }
 
     }

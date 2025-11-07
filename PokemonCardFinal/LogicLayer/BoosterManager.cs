@@ -98,7 +98,23 @@ namespace LogicLayer
         /// </summary>
         public bool EditBooster(Booster booster)
         {
-            throw new NotImplementedException();
+            bool result = false;
+
+            if (booster == null)
+            {
+                throw new ArgumentNullException("Booster was null.");
+            }
+
+            try
+            {
+                result = (1 == _boosterAccessor.UpdateBooster(booster));
+            }
+            catch (Exception)
+            {
+                throw new ApplicationException("Failed to update the booster in the database.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -106,7 +122,18 @@ namespace LogicLayer
         /// </summary>
         public bool DeleteBooster(string boosterID)
         {
-            throw new NotImplementedException();
+            bool result = false;
+
+            try
+            {
+                result = (1 == _boosterAccessor.DeleteBooster(boosterID));
+            }
+            catch (Exception)
+            {
+                throw new ApplicationException("Failed to update the booster in the database.");
+            }
+
+            return result;
         }
     }
 }

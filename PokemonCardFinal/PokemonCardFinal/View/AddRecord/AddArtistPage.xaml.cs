@@ -70,7 +70,7 @@ namespace PokemonCardFinal.View.AddRecord
             string givenName = txtGivenName.Text;
             string surname = txtSurname.Text;
 
-            if (givenName == "" || givenName == null || givenName.Length > 10)
+            if (givenName == "" || givenName == null || givenName.Length > 50)
             {
                 MessageBox.Show("The artist's first name entered was invalid.");
                 txtGivenName.Focus();

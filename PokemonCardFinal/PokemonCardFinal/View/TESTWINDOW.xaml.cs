@@ -31,24 +31,51 @@ namespace PokemonCardFinal.View
         {
             //TestElementType();
             //TestArtist();
-            TestBooster();
+            //TestBooster();
+            
         }
 
         private void TestBooster()
         {
             IBoosterManger boosterManager = new BoosterManager();
 
-            Booster booster = boosterManager.GetBoosterByBoosterID("151");
+            //Booster booster = boosterManager.GetBoosterByBoosterID("151");
 
-            List<Booster> boosters = boosterManager.GetBoosters();
+            //List<Booster> boosters = boosterManager.GetBoosters();
 
-            if (booster == null)
+            //if (booster == null)
+            //{
+            //    MessageBox.Show("Booster is null");
+            //    return;
+            //}
+            //lblName.Content = boosters.Count;
+
+            //Booster newBooster = new Booster()
+            //{
+            //    BoosterID = "Meaga Evolution",
+            //    Series = "Mega Evolution",
+            //    ReleaseDate = DateTime.Parse("2025-05-04"),
+            //    Abbreviation = "meg"
+            //};
+
+            //    if (boosterManager.AddBooster(newBooster))
+            //    {
+            //        MessageBox.Show("Success");
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Failed to insert.");
+            //    }
+
+
+            if (boosterManager.DeleteBooster("Shrouded Fable"))
             {
-                MessageBox.Show("Booster is null");
-                return;
+                MessageBox.Show("success");
             }
-            lblName.Content = booster.Series;
-            lblName.Content = boosters.Count;
+            else
+            {
+                MessageBox.Show("failed");
+            }
         }
 
         private void TestArtist()

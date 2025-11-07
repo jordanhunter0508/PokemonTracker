@@ -97,17 +97,15 @@ public class BoosterManagerTest
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestAddBoosterThrowsArgumentNullExceptionWithNullBooster()
     {
-
         // arrange
         Booster booster = null;
-        const bool expectedResult = false;
         bool actualResult = true;
 
         // act
         actualResult = _boosterManager.AddBooster(booster);
 
         // assert
-        Assert.AreEqual(expectedResult, actualResult);
+        // do nothing
     }
 
     [TestMethod]
@@ -122,14 +120,13 @@ public class BoosterManagerTest
             ReleaseDate = DateTime.Parse("2025-11-06"),
             Abbreviation = "bost",
         };
-        const bool expectedResult = true;
         bool actualResult = false;
 
         // act
         actualResult = _boosterManager.AddBooster(booster);
 
         // assert
-        Assert.AreEqual(expectedResult, actualResult);
+        // do nothing
     }
 
     [TestMethod]
@@ -144,11 +141,96 @@ public class BoosterManagerTest
             ReleaseDate = DateTime.Parse("2025-11-06"),
             Abbreviation = "test",
         };
-        const bool expectedResult = true;
         bool actualResult = false;
 
         // act
         actualResult = _boosterManager.AddBooster(booster);
+
+        // assert
+       // do nothing
+    }
+
+    [TestMethod]
+    public void TestEditBoosterWithValidInput()
+    {
+        // arrange
+        Booster booster = new Booster()
+        {
+            BoosterID = "Test Booster 1",
+            Series = "updated series",
+            ReleaseDate = DateTime.Parse("2025-11-06"),
+            Abbreviation = "boss",
+        };
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _boosterManager.EditBooster(booster); 
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestEditBoosterThrowsArgumentNullExceptionWithNullBooster() 
+    {
+        // arrange
+        Booster booster = null;
+        bool actualResult = false;
+
+        // act
+        actualResult = _boosterManager.EditBooster(booster);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditBoosterThrowsApplicationExceptionWithDuplicateAbbreviation()
+    {
+        Booster booster = new Booster()
+        {
+            BoosterID = "Test Booster 2",
+            Series = "updated series",
+            ReleaseDate = DateTime.Parse("2025-11-06"),
+            Abbreviation = "test",
+        };
+        bool actualResult = false;
+
+        // act
+        actualResult = _boosterManager.EditBooster(booster);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestDeleteBoosterReturnTrueWithValidBoosterID()
+    {
+        // arrange
+        const string boosterID = "Test Booster 3";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _boosterManager.DeleteBooster(boosterID);    
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeleteBoosterReturnsFalseWithInvalidBoosterID() 
+    {
+        // arrange
+        const string boosterID = "Test Booster 4";
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _boosterManager.DeleteBooster(boosterID);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);

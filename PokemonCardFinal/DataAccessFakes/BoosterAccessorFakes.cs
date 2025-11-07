@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using DataAccessInterfaces;
 using DataDomain;
 
@@ -80,8 +81,7 @@ namespace DataAccessFakes
         /// </summary>
         public int InsertBooster(Booster booster)
         {
-            int result = 0;
-            bool notUsed = true;
+            int count = 0;
 
             foreach (Booster boosters in _boosters)
             {
@@ -96,9 +96,9 @@ namespace DataAccessFakes
             }
 
             _boosters.Add(booster);
-            result = 1;
+            count = 1;
 
-            return result;
+            return count;
         }
 
         /// <summary>
@@ -106,7 +106,29 @@ namespace DataAccessFakes
         /// </summary>
         public int UpdateBooster(Booster booster)
         {
-            throw new NotImplementedException();
+            int count = 0;
+            Booster updatedElement = null;
+
+            foreach (Booster element in _boosters)
+            {
+                if (element.Abbreviation == booster.Abbreviation &&
+                    element.BoosterID != booster.BoosterID)
+                {
+                    throw new Exception("Abbreviation already used.");
+                }
+                if (element.BoosterID == booster.BoosterID)
+                {
+                    updatedElement = element;
+                    break;
+                }
+            }
+            if (updatedElement != null)
+            {
+                updatedElement = booster;
+                count++;
+            }
+
+            return count;
         }
 
         /// <summary>
@@ -114,7 +136,24 @@ namespace DataAccessFakes
         /// </summary>
         public int DeleteBooster(string boosterID)
         {
-            throw new NotImplementedException();
+            int count = 0;
+            Booster deleteBooster = null;
+
+            foreach (Booster booster in _boosters)
+            {
+                if (booster.BoosterID == boosterID)
+                {
+                    count++;
+                    deleteBooster = booster;
+                }
+            }
+
+            if (count == 1)
+            {
+                _boosters.Remove(deleteBooster);
+            }
+
+            return count;
         }
     }
 }
