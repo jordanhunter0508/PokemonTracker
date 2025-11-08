@@ -152,7 +152,7 @@ namespace LogicLayer
             }
             catch (Exception)
             {
-                throw new Exception("Failed to update artist.");
+                throw new Exception("Failed to delete artist.");
             }
 
             return result;

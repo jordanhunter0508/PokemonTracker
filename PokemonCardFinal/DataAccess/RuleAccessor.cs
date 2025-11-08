@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,23 +10,23 @@ using Microsoft.Data.SqlClient;
 
 namespace DataAccess
 {
-    public class BoosterAccsesor : IBoosterAccessor
+    public class RuleAccessor : IRuleAccessor
     {
         /// <summary>
-        /// Implements from <see cref="IArtistAccessor"/>. Access the database
-        /// using sp_select_booster_by_boosterid
+        /// Implements from <see cref="IRuleAccessor"/>. Access the database
+        /// using sp_select_rule_by_rule_id
         /// </summary>
-        public Booster SelectBoosterByBoosterID(string boosterID)
+        public PokemonRule SelectRuleByRuleID(string ruleID)
         {
-            Booster result = null;
+            PokemonRule result = null;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_booster_by_boosterid";
+            string cmdText = "sp_select_rule_by_rule_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters["@BoosterID"].Value = boosterID;
+            cmd.Parameters.Add("@PokemonRuleID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@PokemonRuleID"].Value = ruleID;
 
             try
             {
@@ -33,24 +34,25 @@ namespace DataAccess
 
                 SqlDataReader reader = cmd.ExecuteReader();
 
-                if (reader.HasRows)
+                if (reader.HasRows) 
                 {
                     reader.Read();
-                    result = new Booster()
+
+                    result = new PokemonRule() 
                     {
-                        BoosterID = reader.GetString(0),
-                        Series = reader.GetString(1),
-                        ReleaseDate = reader.GetDateTime(2),
-                        Abbreviation = reader.GetString(3),
+                        RuleID = reader.GetString(0),
+                        Description = reader.GetString(1)
                     };
                 }
             }
             catch (Exception ex)
             {
+
                 throw ex;
             }
+
             finally
-            {
+            { 
                 conn.Close();
             }
 
@@ -58,15 +60,15 @@ namespace DataAccess
         }
 
         /// <summary>
-        /// Implements from <see cref="IArtistAccessor"/>. Access the database
-        /// using sp_select_boosters
+        /// Implements from <see cref="IRuleAccessor"/>. Access the database 
+        /// using sp_select_rules
         /// </summary>
-        public List<Booster> SelectBoosters()
+        public List<PokemonRule> SelectRules()
         {
-            List<Booster> results = new List<Booster>();
+            List<PokemonRule> results = new List<PokemonRule>();
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_boosters";
+            string cmdText = "sp_select_rules";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -80,20 +82,20 @@ namespace DataAccess
                 {
                     while (reader.Read())
                     {
-                        results.Add(new Booster()
+                        results.Add(new PokemonRule()
                         {
-                            BoosterID = reader.GetString(0),
-                            Series = reader.GetString(1),
-                            ReleaseDate = reader.GetDateTime(2),
-                            Abbreviation = reader.GetString(3),
+                            RuleID = reader.GetString(0),
+                            Description = reader.GetString(1)
                         });
                     }
                 }
             }
             catch (Exception ex)
             {
+
                 throw ex;
             }
+
             finally
             {
                 conn.Close();
@@ -103,36 +105,32 @@ namespace DataAccess
         }
 
         /// <summary>
-        /// Implements from <see cref="IArtistAccessor"/>. Access the database
-        /// using sp_insert_booster
+        /// Implements from <see cref="IRuleAccessor"/>. Access the database 
+        /// using sp_insert_rule
         /// </summary>
-        public int InsertBooster(Booster booster)
+        public int InsertRule(PokemonRule rule)
         {
             int count = 0;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_insert_booster";
-            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            string cmdText = "sp_insert_rule";
+            SqlCommand cmd = new SqlCommand( cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@Series", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@ReleaseDate", System.Data.SqlDbType.Date);
-            cmd.Parameters.Add("@Abbreviation", System.Data.SqlDbType.NVarChar, 5);
+            cmd.Parameters.Add("@PokemonRuleID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 150);
 
-            cmd.Parameters["@BoosterID"].Value = booster.BoosterID;
-            cmd.Parameters["@Series"].Value = booster.Series;
-            cmd.Parameters["@ReleaseDate"].Value = booster.ReleaseDate;
-            cmd.Parameters["@Abbreviation"].Value = booster.Abbreviation;
+            cmd.Parameters["@PokemonRuleID"].Value = rule.RuleID;
+            cmd.Parameters["@Description"].Value = rule.Description;
 
             try
             {
                 conn.Open();
-
                 count = cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
+
                 throw ex;
             }
             finally
@@ -144,36 +142,32 @@ namespace DataAccess
         }
 
         /// <summary>
-        /// Implements from <see cref="IArtistAccessor"/>. Access the database
-        /// using sp_update_booster
+        /// Implements from <see cref="IRuleAccessor"/>. Access the database 
+        /// using sp_update_rule
         /// </summary>
-        public int UpdateBooster(Booster booster)
+        public int UpdateRule(PokemonRule rule)
         {
             int count = 0;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_update_booster";
+            string cmdText = "sp_update_rule";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@Series", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@ReleaseDate", System.Data.SqlDbType.Date);
-            cmd.Parameters.Add("@Abbreviation", System.Data.SqlDbType.NVarChar, 5);
+            cmd.Parameters.Add("@PokemonRuleID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 150);
 
-            cmd.Parameters["@BoosterID"].Value = booster.BoosterID;
-            cmd.Parameters["@Series"].Value = booster.Series;
-            cmd.Parameters["@ReleaseDate"].Value = booster.ReleaseDate;
-            cmd.Parameters["@Abbreviation"].Value = booster.Abbreviation;
+            cmd.Parameters["@PokemonRuleID"].Value = rule.RuleID;
+            cmd.Parameters["@Description"].Value = rule.Description;
 
             try
             {
                 conn.Open();
-
                 count = cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
+
                 throw ex;
             }
             finally
@@ -185,29 +179,31 @@ namespace DataAccess
         }
 
         /// <summary>
-        /// Implements from <see cref="IArtistAccessor"/>. Access the database
-        /// using sp_delete_booster
+        /// Implements from <see cref="IRuleAccessor "/>. Access the database
+        /// using sp_delete_rule
         /// </summary>
-        public int DeleteBooster(string boosterID)
+        public int DeleteRule(string ruleID)
         {
             int count = 0;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_delete_booster";
+            string cmdText = "sp_delete_rule";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters["@BoosterID"].Value = boosterID;
+            cmd.Parameters.Add("@PokemonRuleID", System.Data.SqlDbType.NVarChar, 50);
+
+            cmd.Parameters["@PokemonRuleID"].Value = ruleID;
+
 
             try
             {
                 conn.Open();
-
                 count = cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
+
                 throw ex;
             }
             finally
@@ -217,6 +213,5 @@ namespace DataAccess
 
             return count;
         }
-
     }
 }

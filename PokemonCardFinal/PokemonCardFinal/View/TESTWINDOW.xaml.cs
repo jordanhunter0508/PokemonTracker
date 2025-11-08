@@ -32,7 +32,73 @@ namespace PokemonCardFinal.View
             //TestElementType();
             //TestArtist();
             //TestBooster();
+            //TestPokemonRule();
+
             
+        }
+
+        private void TestPokemonRule()
+        {
+            try
+            {
+                IRuleManager ruleManager = new RuleManager();
+
+                //PokemonRule ruleByID = ruleManager.GetRuleByRuleID("pokemon-ex");
+                //lblName.Content += ruleByID.RuleID + " " + ruleByID.Description;
+
+                //List<PokemonRule> rules = ruleManager.GetRules();
+
+                //foreach (PokemonRule rule in rules)
+                //{
+                //    lblName.Content += rule.RuleID + " " + rule.Description + "\n";
+                //}
+
+                //PokemonRule rule = new PokemonRule()
+                //{
+                //    RuleID = "Add Test",
+                //    Description = "This is test for the AddRule method."
+                //};
+                //if (ruleManager.AddRule(rule))
+                //{
+                //    MessageBox.Show("Success");
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Failed");
+                //}
+
+                //PokemonRule rule = new PokemonRule()
+                //{
+                //    RuleID = "invalid",
+                //    Description = "This is an updated test for the EditRule method."
+                //};
+                //if (ruleManager.EditRule(rule))
+                //{
+                //    MessageBox.Show("Success");
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Failed");
+                //}
+
+                //PokemonRule rule = new PokemonRule()
+                //{
+                //    RuleID = "Add Test",
+                //    Description = "This is test for the AddRule method."
+                //};
+                //if (ruleManager.DeleteRule(rule.RuleID))
+                //{
+                //    MessageBox.Show("Success");
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Failed");
+                //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void TestBooster()

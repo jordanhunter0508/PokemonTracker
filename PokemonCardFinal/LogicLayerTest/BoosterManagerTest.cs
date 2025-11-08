@@ -37,21 +37,18 @@ public class BoosterManagerTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ApplicationException))]
-    public void TestGetBoosterByBoosterIDThrowsApplicationExceptionWithInvalidBoosterID()
+    public void TestGetBoosterByBoosterIDReturnsNullWithInvalidBoosterID()
     {
         // arrange
         const string boosterID = "Test Fails";
-        const string series = "test series";
-        DateTime dateTime = new DateTime(2025, 11, 06);
-        const string abbreviation = "test";
-        Booster actualBooster;
+        const Booster expectedResult = null;
+        Booster acutalResult;
 
         // act
-        actualBooster = _boosterManager.GetBoosterByBoosterID(boosterID);
+        acutalResult = _boosterManager.GetBoosterByBoosterID(boosterID);
 
         // assert
-        // do nothing
+        Assert.AreEqual(expectedResult, acutalResult);
     }
 
     [TestMethod]

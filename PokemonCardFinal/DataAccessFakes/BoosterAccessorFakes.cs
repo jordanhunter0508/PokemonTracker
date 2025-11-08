@@ -59,10 +59,6 @@ namespace DataAccessFakes
                 }
             }
 
-            if (result == null)
-            {
-                throw new ArgumentNullException("Booster ID could not be found.");
-            }
             return result;
         }
 

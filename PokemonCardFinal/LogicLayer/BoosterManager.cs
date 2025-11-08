@@ -78,7 +78,7 @@ namespace LogicLayer
 
             if (booster == null)
             {
-                throw new ArgumentNullException("Booster was null.");
+                throw new ArgumentNullException("Booster was empty.");
             }
 
             try
@@ -87,7 +87,8 @@ namespace LogicLayer
             }
             catch (Exception)
             {
-                throw new ApplicationException("Failed to add booster to database.");
+                throw new ApplicationException("Failed to add booster to database.\n" +
+                    "Please make sure the booster was not already created.");
             }
 
             return result;
@@ -102,7 +103,7 @@ namespace LogicLayer
 
             if (booster == null)
             {
-                throw new ArgumentNullException("Booster was null.");
+                throw new ArgumentNullException("Booster was empty.");
             }
 
             try
@@ -111,7 +112,8 @@ namespace LogicLayer
             }
             catch (Exception)
             {
-                throw new ApplicationException("Failed to update the booster in the database.");
+                throw new ApplicationException("Failed to update the booster in the database.\n" + 
+                    "Please make sure the booster name was correct.");
             }
 
             return result;
@@ -130,7 +132,8 @@ namespace LogicLayer
             }
             catch (Exception)
             {
-                throw new ApplicationException("Failed to update the booster in the database.");
+                throw new ApplicationException("Failed to delete the booster in the database.\n" + 
+                    "Please make sure the booster is not attached to any cards.");
             }
 
             return result;

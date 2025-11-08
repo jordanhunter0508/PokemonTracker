@@ -27,7 +27,7 @@ namespace LogicLayerInterfaces
         public List<Booster> GetBoosters();
 
         /// <summary>
-        /// Passes parameters to <see href="CreateBooster()"/> Then returns true
+        /// Passes parameters to <see href="InsertBooster()"/> Then returns true
         /// if the record was updated successfully.
         /// </summary>
         /// <param name="booster">New Booster object to be added to the database.</param>

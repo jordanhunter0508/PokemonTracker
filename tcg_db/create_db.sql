@@ -21,6 +21,10 @@ May won't select_booster_by_abbreviation
 
 Need select card from booster
 
+
+Create a trigger for when an account is created add a user to to 2 collections
+1 wishlist and 1 Favorites
+
 */
 
 print '' print'*** dropping the database tcg_db ***'
@@ -240,10 +244,9 @@ GO
 CREATE TABLE [dbo].[PokemonRule]
 (
 	[PokemonRuleID]			[nvarchar](50)		NOT NULL,
-	[Description]			[nvarchar](100)		NOT NULL,
+	[Description]			[nvarchar](150)		NOT NULL,
 	
-	CONSTRAINT [pk_pokemonrule_pokemonruleid] PRIMARY KEY ([PokemonRuleID] ASC),
-	CONSTRAINT [ak_pokemonrule_description] UNIQUE ([Description])
+	CONSTRAINT [pk_pokemonrule_pokemonruleid] PRIMARY KEY ([PokemonRuleID] ASC)
 )
 GO
 
@@ -257,7 +260,7 @@ CREATE TABLE [dbo].[Booster]
 	[BoosterID]				[nvarchar](50)		NOT NULL,
 	[Series]				[nvarchar](50)		NOT NULL,
 	[ReleaseDate]			[date]				NOT NULL,
-	[Abbreviation]			[nvarchar](4)		NOT NULL,
+	[Abbreviation]			[nvarchar](5)		NOT NULL,
 	
 	CONSTRAINT [pk_booster_boosterid] PRIMARY KEY ([BoosterID]),
 	CONSTRAINT [ak_booster_abbreviation] UNIQUE ([Abbreviation])
@@ -723,7 +726,7 @@ CREATE PROCEDURE [dbo].[sp_insert_booster]
 		@BoosterID		[nvarchar](50),
 		@Series			[nvarchar](50),
 		@ReleaseDate	[date],
-		@Abbreviation	[nvarchar](4)
+		@Abbreviation	[nvarchar](5)
 	)	
 AS
 	BEGIN
@@ -742,7 +745,7 @@ CREATE PROCEDURE [dbo].[sp_update_booster]
 		@BoosterID		[nvarchar](50),
 		@Series			[nvarchar](50),
 		@ReleaseDate	[date],
-		@Abbreviation	[nvarchar](4)
+		@Abbreviation	[nvarchar](5)
 	)
 AS
 	BEGIN
@@ -780,12 +783,163 @@ AS
 	END
 GO
 
+PRINT '*** creating sp_select_rule_by_rule_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_rule_by_rule_id]
+	(
+		@PokemonRuleID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT 	[PokemonRule].[PokemonRuleID],[PokemonRule].[Description]
+		FROM	[PokemonRule]
+		WHERE	[PokemonRule].[PokemonRuleID] = @PokemonRuleID;
+	END
+GO
+
+PRINT '*** creating sp_select_rules ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_rules]
+AS
+	BEGIN
+		SELECT 	[PokemonRule].[PokemonRuleID],[PokemonRule].[Description]
+		FROM	[PokemonRule];
+	END
+GO
+
+PRINT '*** creating sp_insert_rule ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_rule]
+	(
+		@PokemonRuleID		[nvarchar](50),
+		@Description		[nvarchar](150)
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[PokemonRule]
+			([PokemonRuleID],[Description])
+		VALUES
+			(@PokemonRuleID,@Description)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_update_rule ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_rule]
+	(
+		@PokemonRuleID		[nvarchar](50),
+		@Description		[nvarchar](150)
+	)
+AS
+	BEGIN
+		UPDATE 	[PokemonRule]
+		SET		[PokemonRule].[Description] = @Description
+		WHERE	[PokemonRule].[PokemonRuleID] = @PokemonRuleID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_delete_rule ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_rule]
+	(
+		@PokemonRuleID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		DELETE 	[PokemonRule]
+		WHERE 	[PokemonRule].[PokemonRuleID] = @PokemonRuleID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_select_ability_by_ability_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_ability_by_ability_id]
+	(
+		@AbilityID		[nvarchar](30)
+	)
+AS
+	BEGIN
+		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],[Ability].[Description]
+		FROM	[Ability]
+		WHERE	[Ability].[AbilityID] = @AbilityID;
+	END
+GO
+
+PRINT '*** creating sp_select_abilities ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_abilities]
+AS
+	BEGIN
+		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],[Ability].[Description]
+		FROM	[Ability];
+	END
+GO
+
+PRINT '*** creating sp_insert_ability ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_ability]
+	(
+		@AbilityID			[nvarchar](30),
+		@AbilityType		[nvarchar](25),
+		@Description		[nvarchar](650)
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[Ability]
+			([AbilityID],[AbilityType],[Description])
+		VALUES
+			(@AbilityID,@AbilityType,@Description)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_update_ability ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_ability]
+	(
+		@AbilityID			[nvarchar](30),
+		@AbilityType		[nvarchar](25),
+		@Description		[nvarchar](650)
+	)
+AS
+	BEGIN
+		UPDATE 	[Ability]
+		SET		[Ability].[AbilityType] = @AbilityType,
+				[Ability].[Description] = @Description
+		WHERE	[Ability].[AbilityID] = @AbilityID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_delete_ability ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_ability]
+	(
+		@AbilityID		[nvarchar](30)
+	)
+AS
+	BEGIN
+		DELETE 	[Ability]
+		WHERE 	[Ability].[AbilityID] = @AbilityID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
 
 /*
 Work on booster sp
 
 When going to the create records page from the edit button
 make the other tabs not clickable.
+
+[AbilityID]				[nvarchar](30)
+[AbilityType]			[nvarchar](25)
+[Description]			[nvarchar](650)
+
+
+
 
 */
 
