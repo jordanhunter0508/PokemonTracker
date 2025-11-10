@@ -11,7 +11,7 @@ namespace DataAccessInterfaces
     public interface IRuleAccessor
     {
         /// <summary>
-        /// Requests all fields from the PokemonRule table to create an Rule.
+        /// Requests all fields from the PokemonRule table to create a Rule.
         /// </summary>
         /// <param name="ruleID">Used to search the database for a Pokemon Rule</param>
         /// <returns>Returns a PokemonRule of the specified ruleID.</returns>
@@ -19,7 +19,7 @@ namespace DataAccessInterfaces
 
         /// <summary>
         /// Requests all data from the PokemonRule table to
-        /// create an Rule List.
+        /// create a Rule List.
         /// </summary>
         /// <returns>Returns a List of all pokemon rules in the database.</returns>
         public List<PokemonRule> SelectRules();

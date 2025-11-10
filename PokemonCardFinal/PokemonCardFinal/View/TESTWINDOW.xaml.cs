@@ -33,8 +33,75 @@ namespace PokemonCardFinal.View
             //TestArtist();
             //TestBooster();
             //TestPokemonRule();
-
+            //TestAbility();
             
+        }
+
+        private void TestAbility()
+        {
+            IAbilityManager abilityManager = new AbilityManager();
+
+            //Ability ability = abilityManager.GetAbilityByAbilityID("invisible wall");
+            //lblName.Content += ability.AbilityID + " " + ability.AbilityType;
+
+            //List<Ability> abilities = abilityManager.GetAbilities();
+
+            //foreach (Ability element in abilities)
+            //{
+            //    lblName.Content += element.AbilityID + " " + element.AbilityType + "\n";
+            //}
+
+            //List<Ability> abilities = abilityManager.GetAbilityByAbilityType("pokemon power");
+
+            //foreach (Ability element in abilities)
+            //{
+            //    lblName.Content += element.AbilityID + " " + element.AbilityType + "\n";
+            //}
+
+            //Ability ability = new Ability()
+            //{
+            //    AbilityID = "Add Test",
+            //    AbilityType = "Ability Type",
+            //    Description = "This is test for the AddRule method."
+            //};
+            //if (abilityManager.AddAbility(ability))
+            //{
+            //    MessageBox.Show("Success");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Failed");
+            //}
+
+            //Ability ability = new Ability()
+            //{
+            //    AbilityID = "Add Test",
+            //    AbilityType = "Ability new Type",
+            //    Description = "This is test for the editRule method."
+            //};
+            //if (abilityManager.EditAbility(ability))
+            //{
+            //    MessageBox.Show("Success");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Failed");
+            //}
+
+            //Ability ability = new Ability()
+            //{
+            //    AbilityID = "Add Test",
+            //    AbilityType = "Ability Type",
+            //    Description = "This is test for the AddRule method."
+            //};
+            //if (abilityManager.DeleteAbility(ability.AbilityID))
+            //{
+            //    MessageBox.Show("Success");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Failed");
+            //}
         }
 
         private void TestPokemonRule()

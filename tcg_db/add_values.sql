@@ -61,12 +61,12 @@ INSERT INTO [dbo].[Ability]
 	([AbilityID],[AbilityType],[Description])
 VALUES
 
-('rain dance','pokémon power','As often as you like during your turn (before your attack), you may attach 1 Water Energy card to 1 of your Water Pokémon. (This doesn''t use up your 1 Energy card attachment for the turn.) This power can''t be used if Blastoise is Asleep, Confused, or Paralyzed.'),
-('strikes back','pokémon power','Whenever your opponent''s attack damages Machamp (even if Machamp is Knocked Out), this power does 10 damage to the attacking Pokémon. (Don''t apply Weakness and Resistance.) This power can''t be used if Machamp is Asleep, Confused, or Paralyzed when your opponent attacks.'),
-('energy trans','pokémon power','As often as you like during your turn (before your attack), you may take 1 Grass Energy card attached to 1 of your Pokémon and attach it to a different one. This power can''t be used if your pokemon is Asleep, Confused, or Paralyzed.'),
-('invisible wall','pokémon power','Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can''t be used if Mr. Mime is Asleep, Confused, or Paralyzed.'),
-('thick skinned','pokémon power','Snorlax can''t become Asleep, Confused, Paralyzed, or Poisoned. This power can''t be used if Snorlax is already Asleep, Confused, or Paralyzed.'),
-('shift','pokémon power','Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than Colorless. This power can''t be used if Venomoth is Asleep, Confused, or Paralyzed.')
+('rain dance','pokemon power','As often as you like during your turn (before your attack), you may attach 1 Water Energy card to 1 of your Water Pokémon. (This doesn''t use up your 1 Energy card attachment for the turn.) This power can''t be used if Blastoise is Asleep, Confused, or Paralyzed.'),
+('strikes back','pokemon power','Whenever your opponent''s attack damages Machamp (even if Machamp is Knocked Out), this power does 10 damage to the attacking Pokémon. (Don''t apply Weakness and Resistance.) This power can''t be used if Machamp is Asleep, Confused, or Paralyzed when your opponent attacks.'),
+('energy trans','pokemon power','As often as you like during your turn (before your attack), you may take 1 Grass Energy card attached to 1 of your Pokémon and attach it to a different one. This power can''t be used if your pokemon is Asleep, Confused, or Paralyzed.'),
+('invisible wall','pokemon power','Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can''t be used if Mr. Mime is Asleep, Confused, or Paralyzed.'),
+('thick skinned','pokemon power','Snorlax can''t become Asleep, Confused, Paralyzed, or Poisoned. This power can''t be used if Snorlax is already Asleep, Confused, or Paralyzed.'),
+('shift','pokemon power','Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than Colorless. This power can''t be used if Venomoth is Asleep, Confused, or Paralyzed.')
 GO
 
 PRINT '*** adding to ElementType Table ***'

@@ -87,7 +87,7 @@ namespace LogicLayer
             }
             catch (Exception)
             {
-                throw new ApplicationException("Failed to add booster to database.\n" +
+                throw new ApplicationException("Failed to add a booster to the database.\n" +
                     "Please make sure the booster was not already created.");
             }
 

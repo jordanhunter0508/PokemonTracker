@@ -105,7 +105,6 @@ namespace LogicLayer
             {
                 Artist artist = null;
                 int artistID = _artistAccessor.InsertArtist(givenName, surname);
-                Debug.WriteLine(artistID);
                 artist = _artistAccessor.SelectArtistByArtistID(artistID);
 
                 if (_artistAccessor != null)

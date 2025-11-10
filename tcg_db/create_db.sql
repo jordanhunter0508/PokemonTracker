@@ -878,6 +878,20 @@ AS
 	END
 GO
 
+PRINT '*** creating sp_select_abilities_by_ability_type ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_abilities_by_ability_type]
+	(
+		@AbilityType	[nvarchar](25)
+	)
+AS
+	BEGIN
+		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],[Ability].[Description]
+		FROM	[Ability]
+		WHERE	[Ability].[AbilityType] = @AbilityType;
+	END
+GO
+
 PRINT '*** creating sp_insert_ability ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_ability]
@@ -928,16 +942,17 @@ AS
 	END
 GO
 
+
+
+
 /*
 Work on booster sp
 
 When going to the create records page from the edit button
 make the other tabs not clickable.
 
-[AbilityID]				[nvarchar](30)
-[AbilityType]			[nvarchar](25)
-[Description]			[nvarchar](650)
-
+[AlternateArtID]		[nvarchar](50)
+[Description]			[nvarchar](250)
 
 
 
