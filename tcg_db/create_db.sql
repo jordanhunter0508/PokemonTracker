@@ -942,8 +942,76 @@ AS
 	END
 GO
 
+PRINT '*** creating sp_select_alternate_art_by_alternate_art_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_alternate_art_by_alternate_art_id]
+	(
+		@AlternateArtID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT 	[AlternateArt].[AlternateArtID],[AlternateArt].[Description]
+		FROM	[AlternateArt]
+		WHERE	[AlternateArt].[AlternateArtID] = @AlternateArtID;
+	END
+GO
 
+PRINT '*** creating sp_select_alternate_arts ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_alternate_arts]
+AS
+	BEGIN
+		SELECT 	[AlternateArt].[AlternateArtID],[AlternateArt].[Description]
+		FROM	[AlternateArt];
+	END
+GO
 
+PRINT '*** creating sp_insert_alternate_art ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_alternate_art]
+	(
+		@AlternateArtID		[nvarchar](50),
+		@Description		[nvarchar](250)
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[AlternateArt]
+			([AlternateArtID],[Description])
+		VALUES
+			(@AlternateArtID,@Description)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_update_alternate_art ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_alternate_art]
+	(
+		@AlternateArtID		[nvarchar](50),
+		@Description		[nvarchar](250)
+	)
+AS
+	BEGIN
+		UPDATE 	[AlternateArt]
+		SET		[AlternateArt].[Description] = @Description
+		WHERE	[AlternateArt].[AlternateArtID] = @AlternateArtID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_delete_alternate_art ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_alternate_art]
+	(
+		@AlternateArtID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		DELETE 	[AlternateArt]
+		WHERE 	[AlternateArt].[AlternateArtID] = @AlternateArtID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
 
 /*
 Work on booster sp
