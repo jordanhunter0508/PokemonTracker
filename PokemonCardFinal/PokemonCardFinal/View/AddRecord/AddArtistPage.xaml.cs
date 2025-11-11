@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
-using PokemonCardFinal.View.EditRecords;
+using PokemonCardFinal.View.ListRecords;
 
 namespace PokemonCardFinal.View.AddRecord
 {
@@ -30,18 +30,15 @@ namespace PokemonCardFinal.View.AddRecord
         bool _isEditMode;
         public AddArtistPage()
         {
-            _artistManager = new ArtistManager();
             InitializeComponent();
+            _artistManager = new ArtistManager();
         }
 
         public AddArtistPage(Artist artist, IArtistManager artistManager)
         {
-            Debug.WriteLine(artist.GivenName + ", " + artist.Surname);
-            _artistManager = artistManager;
-            _artist = artist;
-            Debug.WriteLine("Inside the paramertirized constructor");
-            Debug.WriteLine(_artist.GivenName + ", " + _artist.Surname);
             InitializeComponent();
+            _artist = artist;
+            _artistManager = artistManager;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -127,7 +124,7 @@ namespace PokemonCardFinal.View.AddRecord
                     // Brings the user back to the ArtistRecordsPage
                     if (Application.Current.MainWindow is MainWindow mainWindow)
                     {
-                        View.EditRecords.RecordContainerPage editArtistPage = new View.EditRecords.RecordContainerPage();
+                        AddEditContainerPage editArtistPage = new AddEditContainerPage();
                         mainWindow.frmMain.Navigate(editArtistPage);
                         editArtistPage.Loaded += (s, arg) =>
                         {

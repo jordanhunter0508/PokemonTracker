@@ -64,5 +64,13 @@ namespace LogicLayerInterfaces
         /// <returns>Returns true if the Ability was deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if the ability is attached to a card</exception>
         public bool DeleteAbility(string abilityID);
+
+        /// <summary>
+        /// Makes sure the first letter of the ID is capitalized and then sorts them by
+        /// AbilityID
+        /// </summary>
+        /// <param name="abilities">The IEnumerable that is being sorted</param>
+        /// <returns>Returns an IEnumberable of type Ability that is formated for dispaly.</returns>
+        public IEnumerable<Ability> FormatAbility(IEnumerable<Ability> abilities);
     }
 }

@@ -157,5 +157,21 @@ namespace LogicLayer
 
             return result;
         }
+
+        public IEnumerable<Ability> FormatAbility(IEnumerable<Ability> abilities)
+        {
+            if (abilities == null)
+            {
+                throw new ArgumentNullException("Abilities could not be formatted.");
+            }
+
+            foreach (Ability ability in abilities)
+            {
+                ability.AbilityID = char.ToUpper(ability.AbilityID[0]) + ability.AbilityID.Substring(1);
+            }
+
+            abilities = abilities.OrderBy(ability => ability.AbilityID);
+            return abilities;
+        }
     }
 }

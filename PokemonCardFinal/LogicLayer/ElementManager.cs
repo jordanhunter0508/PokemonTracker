@@ -128,6 +128,11 @@ namespace LogicLayer
         /// </summary>
         public IEnumerable<ElementType> FormatElemetTypes(IEnumerable<ElementType> elementTypes) 
         {
+            if (elementTypes == null)
+            {
+                throw new ArgumentNullException("Element Types could not be formatted.");
+            }
+
             foreach (ElementType element in elementTypes)
             {
                 element.ElementTypeID = char.ToUpper(element.ElementTypeID[0]) + element.ElementTypeID.Substring(1);

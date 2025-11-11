@@ -12,7 +12,7 @@ using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
 using PokemonCardFinal.View.AddRecord;
-using PokemonCardFinal.View.EditRecords;
+using PokemonCardFinal.View.ListRecords;
 
 namespace PokemonCardFinal.View
 {
@@ -140,13 +140,24 @@ namespace PokemonCardFinal.View
 
         private void mnuCreateRecord_Click(object sender, RoutedEventArgs e)
         {
-            // Open the create record page
-            frmMain.Navigate(new View.AddRecord.RecordContainerPage());
+            AddEditContainerPage addEditContainer = new AddEditContainerPage();
+            addEditContainer.Loaded += (s, args) =>
+            {
+                addEditContainer.IsListView = false;
+                addEditContainer.frmAbility.Navigate(new AddAbilityPage());
+            };
+            frmMain.Navigate(addEditContainer);
         }
 
         private void mnuEditRecord_Click(object sender, RoutedEventArgs e)
         {
-            frmMain.Navigate(new View.EditRecords.RecordContainerPage());
+            AddEditContainerPage addEditContainer = new AddEditContainerPage();
+            addEditContainer.Loaded += (s, args) =>
+            {
+                addEditContainer.IsListView = true;
+                addEditContainer.frmAbility.Navigate(new AbilityRecordsPage());
+            };
+            frmMain.Navigate(addEditContainer);
         }
     }
 }

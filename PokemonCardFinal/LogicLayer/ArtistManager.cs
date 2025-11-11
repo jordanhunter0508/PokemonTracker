@@ -162,6 +162,11 @@ namespace LogicLayer
         /// </summary>
         public IEnumerable<Artist> FormatArtists(IEnumerable<Artist> artists)
         {
+            if (artists == null)
+            {
+                throw new ArgumentNullException("Artists could not be formatted.");
+            }
+
             foreach (Artist artist in artists)
             {
                 artist.GivenName = char.ToUpper(artist.GivenName[0]) + artist.GivenName.Substring(1);
@@ -170,7 +175,7 @@ namespace LogicLayer
                     artist.Surname = char.ToUpper(artist.Surname[0]) + artist.GivenName.Substring(1);
                 }
             }
-            artists = artists.OrderBy(element => element.ArtistID);
+            artists = artists.OrderBy(artist => artist.ArtistID);
             return artists;
         }
     }

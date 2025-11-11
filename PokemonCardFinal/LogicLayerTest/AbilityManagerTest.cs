@@ -236,4 +236,59 @@ public class AbilityManagerTest
         // assert
         Assert.AreEqual(expectedResult, actualResult);
     }
+
+    [TestMethod]
+    public void TestFormatAbilityReturnsCorrectOrder()
+    {
+        // arrange
+        List<Ability> inputList = new List<Ability>();
+        inputList.Add(new Ability()
+        {
+            AbilityID = "test",
+            AbilityType = "type",
+            Description = "description"
+        });
+        inputList.Add(new Ability()
+        {
+            AbilityID = "another test",
+            AbilityType = "type",
+            Description = "description"
+        });
+        List<Ability> expectedList = new List<Ability>();
+        expectedList.Add(new Ability()
+        {
+            AbilityID = "Another test",
+            AbilityType = "type",
+            Description = "description"
+        });
+        expectedList.Add(new Ability()
+        {
+            AbilityID = "Test",
+            AbilityType = "type",
+            Description = "description"
+        });
+        List<Ability> actualList = null;
+
+        // act
+        actualList = _abilityManager.FormatAbility(inputList).ToList();
+
+        // assert
+        Assert.AreEqual(expectedList[0].AbilityID, actualList[0].AbilityID);
+        Assert.AreEqual(expectedList[1].AbilityID, actualList[1].AbilityID);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestFormatElementTypeThrowsArgumentNullExceptionWithNullInput()
+    {
+        // arrange
+        List<Ability> inputList = null;
+        List<Ability> outputList = new List<Ability>();
+
+        // act
+        outputList = _abilityManager.FormatAbility(inputList).ToList();
+
+        // assert
+        // do nothing
+    }
 }

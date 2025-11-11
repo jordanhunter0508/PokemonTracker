@@ -206,4 +206,19 @@ public class ElementManagerTest
         Assert.AreEqual(expectedResult[0].ElementTypeID, actualResult[0].ElementTypeID);
         Assert.AreEqual(expectedResult[1].ElementTypeID, actualResult[1].ElementTypeID);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestFormatElementTypeThrowsArgumentNullExceptionWithNullInput() 
+    {
+        // arrange
+        List<ElementType> inputList = null;
+        List<ElementType> outputList = new List<ElementType>();
+
+        // act
+        outputList = _elementManager.FormatElemetTypes(inputList).ToList();
+
+        // assert
+        // do nothing
+    }
 }

@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
-using PokemonCardFinal.View.EditRecords;
+using PokemonCardFinal.View.ListRecords;
 
 namespace PokemonCardFinal.View.AddRecord
 {
@@ -29,15 +29,15 @@ namespace PokemonCardFinal.View.AddRecord
         bool _isEditMode;
         public AddElementPage()
         {
-            _elementManager = new ElementManager();
             InitializeComponent();
+            _elementManager = new ElementManager();
         }
 
         public AddElementPage(ElementType element, IElementManager elementManager)
         {
-            _elementManager = elementManager;
-            _elementType = element;
             InitializeComponent();
+            _elementType = element;
+            _elementManager = elementManager;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -141,7 +141,7 @@ namespace PokemonCardFinal.View.AddRecord
                     // Brings the user back to the ElementRecordsPage
                     if (Application.Current.MainWindow is MainWindow mainWindow)
                     {
-                        View.EditRecords.RecordContainerPage editElementPage = new View.EditRecords.RecordContainerPage();
+                        AddEditContainerPage editElementPage = new AddEditContainerPage();
                         mainWindow.frmMain.Navigate(editElementPage);
                         editElementPage.Loaded += (s, arg) =>
                         {

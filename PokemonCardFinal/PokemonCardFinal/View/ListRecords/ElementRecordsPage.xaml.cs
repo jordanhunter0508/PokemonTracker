@@ -18,43 +18,37 @@ using LogicLayer;
 using LogicLayerInterfaces;
 using PokemonCardFinal.View.AddRecord;
 
-namespace PokemonCardFinal.View.EditRecords
+namespace PokemonCardFinal.View.ListRecords
 {
     /// <summary>
-    /// Interaction logic for ArtistRecordsPage.xaml
+    /// Interaction logic for UpdateElementPage.xaml
     /// </summary>
-    public partial class ArtistRecordsPage : Page
+    public partial class ElementRecordsPage : Page
     {
-        Artist[] _artists;
-        IArtistManager _artistManager;
-        Artist _selectedArtist;
-        public ArtistRecordsPage()
+        ElementType[] _elementTypes;
+        IElementManager _elementManager;
+        ElementType _selectedElement;
+        public ElementRecordsPage()
         {
             InitializeComponent();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            _artistManager = new ArtistManager();
-
-            try
-            {
-                _artists = _artistManager.FormatArtists(_artistManager.GetArtists()).ToArray();
-                _selectedArtist = _artists[0];
-                datArtist.ItemsSource = _artists;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            _elementManager = new ElementManager();
+            LoadList();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (_selectedElement == null)
+            {
+                return;
+            }
             // Pop up window to confirm if the admin wants to delete the record
             MessageBoxResult conformationWindow = MessageBox.Show
             (
-                "Are you sure you want to delete " + _selectedArtist.GivenName + ", " + _selectedArtist.Surname + ".",
+                "Are you sure you want to delete " + _selectedElement.ElementTypeID + ".",
                 "Confirm Delete",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning
@@ -64,21 +58,22 @@ namespace PokemonCardFinal.View.EditRecords
             {
                 try
                 {
-                    if (_artistManager.DeleteArtist(_selectedArtist.ArtistID))
+                    if (_elementManager.DeleteElementTypeByElementTypeID(_selectedElement.ElementTypeID))
                     {
-                        MessageBox.Show("The artist was successfully deleted");
+                        MessageBox.Show("The element was successfully deleted");
+                        LoadList();
                     }
                     else
                     {
-                        MessageBox.Show("The artist could not be deleted.");
+                        MessageBox.Show("The element could not be deleted.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("The artist failed to be deleted.");
+                    MessageBox.Show("The element failed to be deleted.");
                 }
             }
-            else
+            else 
             {
                 return;
             }
@@ -91,26 +86,39 @@ namespace PokemonCardFinal.View.EditRecords
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 // Navigate the main frame to the new outer page
-                View.AddRecord.RecordContainerPage addRecordPage = new View.AddRecord.RecordContainerPage();
+                AddEditContainerPage addRecordPage = new AddEditContainerPage();
                 mainWindow.frmMain.Navigate(addRecordPage);
 
                 // When the addRecordPage is loaded change the inner page
                 // to addElementPage
                 addRecordPage.Loaded += (s, args) =>
                 {
-                    addRecordPage.tabController.SelectedItem = addRecordPage.tabArtist;
-                    Debug.WriteLine(_selectedArtist.GivenName);
-                    addRecordPage.frmArtist.Navigate
+                    addRecordPage.tabController.SelectedItem = addRecordPage.tabElement;
+                    addRecordPage.frmElement.Navigate
                     (
-                        new AddArtistPage(_selectedArtist, _artistManager)
-                    );
+                        new AddElementPage(_selectedElement, _elementManager)
+                    );  
                 };
             }
         }
 
-        private void datArtist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void datElement_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _selectedArtist = datArtist.SelectedItem as Artist;
+            _selectedElement = datElement.SelectedItem as ElementType;
+        }
+
+        private void LoadList()
+        {
+            try
+            {
+                _elementTypes = _elementManager.FormatElemetTypes(_elementManager.GetElementTypes()).ToArray();
+                _selectedElement = _elementTypes[0];
+                datElement.ItemsSource = _elementTypes;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

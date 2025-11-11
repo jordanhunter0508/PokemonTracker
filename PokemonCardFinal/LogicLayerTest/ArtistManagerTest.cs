@@ -255,4 +255,19 @@ public class ArtistManagerTest
         Assert.AreEqual(expectedResult[0].ArtistID, actualResult[0].ArtistID);
         Assert.AreEqual(expectedResult[1].ArtistID, actualResult[1].ArtistID);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestFormatElementTypeThrowsArgumentNullExceptionWithNullInput()
+    {
+        // arrange
+        List<Artist> inputList = null;
+        List<Artist> outputList = new List<Artist>();
+
+        // act
+        outputList = _artistManager.FormatArtists(inputList).ToList();
+
+        // assert
+        // do nothing
+    }
 }
