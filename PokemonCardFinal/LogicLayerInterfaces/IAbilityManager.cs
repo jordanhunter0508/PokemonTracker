@@ -44,16 +44,16 @@ namespace LogicLayerInterfaces
         /// </summary>
         /// <param name="ability">New Ability object to be added to the database.</param>
         /// <returns>Returns true if the Ability was created successfully.</returns>
-        /// <exception cref="ApplicationException">Throws if  *8888888888888888888888888888888888888888888888888888888888888888.</exception>
+        /// <exception cref="ApplicationException">Throws if the abilityId is already used.</exception>
         public bool AddAbility(Ability ability);
 
         /// <summary>
         /// Passes parameters to <see href="UpdateAbiliity(Ability)"/><br/>
         /// Then returns true if the record was updated successfully.
         /// </summary>
-        /// <param name="booster">New Ability object to update the old field at abilityID</param>
+        /// <param name="ability">New Ability object to update the old field at abilityID</param>
         /// <returns>Returns true if the Ability was updated successfully.</returns>
-        /// <exception cref="ApplicationException">Throws if the8888888888888888888888888888888888888888888888888888888888888888888.</exception>
+        /// <exception cref="ApplicationException">Throws if there is an error storing the data.</exception>
         public bool EditAbility(Ability ability);
 
         /// <summary>

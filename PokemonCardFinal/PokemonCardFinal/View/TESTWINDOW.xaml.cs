@@ -34,7 +34,66 @@ namespace PokemonCardFinal.View
             //TestBooster();
             //TestPokemonRule();
             //TestAbility();
-            
+            //TestAlternateArt();
+        }
+
+        private void TestAlternateArt()
+        {
+            IAltArtManager alternateArtManager = new AltArtManager();
+
+            //AlternateArt alternateArt = alternateArtManager.GetAlternateArtByID("jumbo");
+            //lblName.Content += alternateArt.AlternateArtID + " " + alternateArt.Description;
+
+            //List<AlternateArt> alternateArts = alternateArtManager.GetAlternateArts();
+
+            //foreach (AlternateArt element in alternateArts)
+            //{
+            //    lblName.Content += element.AlternateArtID + " " + element.Description + "\n";
+            //}
+
+
+            //AlternateArt alternateArt = new AlternateArt()
+            //{
+            //    AlternateArtID = "Add Test",
+            //    Description = "This is test for the AddRule method."
+            //};
+            //if (alternateArtManager.AddAlternateArt(alternateArt))
+            //{
+            //    MessageBox.Show("Success");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Failed");
+            //}
+
+            //AlternateArt alternateArt = new AlternateArt()
+            //{
+            //    AlternateArtID = "Add Test",
+            //    Description = "This is test for the editRule method."
+            //};
+            //if (alternateArtManager.EditAlternateArt(alternateArt))
+            //{
+            //    MessageBox.Show("Success");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Failed");
+            //}
+
+            //AlternateArt alternateArt = new AlternateArt()
+            //{
+            //    AlternateArtID = "Add Test",
+            //    Description = "This is test for the AddRule method."
+            //}
+            //;
+            //if (alternateArtManager.DeleteAlternateArt(alternateArt.AlternateArtID))
+            //{
+            //    MessageBox.Show("Success");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Failed");
+            //}
         }
 
         private void TestAbility()

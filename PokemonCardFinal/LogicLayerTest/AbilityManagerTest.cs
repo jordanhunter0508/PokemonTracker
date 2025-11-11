@@ -51,7 +51,7 @@ public class AbilityManagerTest
     }
 
     [TestMethod]
-    public void TestGetBoostersWithValidInput()
+    public void TestGetAbilitesWithValidInput()
     {
         // arrange
         const int count = 5;
@@ -154,7 +154,7 @@ public class AbilityManagerTest
     }
 
     [TestMethod]
-    public void TestEditeAbilityReturnsTrueWithValidAbility()
+    public void TestEditAbilityReturnsTrueWithValidAbility()
     {
         // arrange
         Ability ability = new Ability()
@@ -173,7 +173,7 @@ public class AbilityManagerTest
         Assert.AreEqual(expectedResult, actualResult);
     }
     [TestMethod]
-    public void TestEditeAbilityReturnsFalseWithInvalidAbilityID()
+    public void TestEditAbilityReturnsFalseWithInvalidAbilityID()
     {
         // arrange
         Ability ability = new Ability()
@@ -194,7 +194,7 @@ public class AbilityManagerTest
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
-    public void TestEditeAbilityThrowsArgumentNullExceptionWithNullAbility()
+    public void TestEditAbilityThrowsArgumentNullExceptionWithNullAbility()
     {
         // arrange
         Ability ability = null;
@@ -226,9 +226,9 @@ public class AbilityManagerTest
     public void TestDeleteAbilityReturnsFalseWithInvalidInput()
     {
         // arrange
-        const string abilityID = "Ability Test 1";
-        const bool expectedResult = true;
-        bool actualResult = false;
+        const string abilityID = "Ability failed";
+        const bool expectedResult = false;
+        bool actualResult = true;
 
         // act
         actualResult = _abilityManager.DeleteAbility(abilityID);

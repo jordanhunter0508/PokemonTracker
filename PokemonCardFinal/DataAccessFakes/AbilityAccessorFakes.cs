@@ -121,21 +121,27 @@ namespace DataAccessFakes
         public int UpdateAbility(Ability ability)
         {
             int count = 0;
+            int index = 0;
             Ability updatedAbility = null;
 
-            foreach (Ability element in _abilities)
+            for (int i = 0; i < _abilities.Count; i++)
             {
-                if (element.AbilityID == ability.AbilityID)
+                if (_abilities[i].AbilityID == ability.AbilityID)
                 {
-                    updatedAbility = element;
+                    updatedAbility = _abilities[i];
+                    index = i;
                     break;
                 }
             }
 
             if (updatedAbility != null)
             {
+                updatedAbility.AbilityID = ability.AbilityID;
                 updatedAbility.AbilityType = ability.AbilityType;
                 updatedAbility.Description = ability.Description;
+
+                _abilities[index] = updatedAbility;
+
                 count++;
             }
 

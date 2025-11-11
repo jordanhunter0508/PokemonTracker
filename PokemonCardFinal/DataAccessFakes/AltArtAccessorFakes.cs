@@ -1,0 +1,142 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using DataAccessInterfaces;
+using DataDomain;
+
+namespace DataAccessFakes
+{
+    public class AltArtAccessorFakes : IAltArtAccessor
+    {
+        List<AlternateArt> _alternateArts;
+
+        /// <summary>
+        /// Fills the _alternateArts list with fake data
+        /// </summary>
+        public AltArtAccessorFakes()
+        {
+            _alternateArts = new List<AlternateArt>();
+            _alternateArts.Add(new AlternateArt()
+            {
+                AlternateArtID = "Test Alternate Art 1",
+                Description = "This is a description 1."
+            });
+            _alternateArts.Add(new AlternateArt()
+            {
+                AlternateArtID = "Test Alternate Art 2",
+                Description = "This is a description 2."
+            });
+            _alternateArts.Add(new AlternateArt()
+            {
+                AlternateArtID = "Test Alternate Art 3",
+                Description = "This is a description 3."
+            });
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/> used for testing
+        /// </summary>
+        public AlternateArt SelectAlternateArtByID(string alternateArtID)
+        {
+            AlternateArt result = null;
+
+            foreach (AlternateArt alternateArt in _alternateArts)
+            {
+                if (alternateArt.AlternateArtID == alternateArtID)
+                {
+                    result = alternateArt;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/> used for testing
+        /// </summary>
+        public List<AlternateArt> SelectAlternateArts()
+        {
+            List<AlternateArt> results;
+            results = _alternateArts;
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/> used for testing
+        /// </summary>
+        public int InsertAlternateArt(AlternateArt alternateArt)
+        {
+            int count = 0;
+
+            foreach (AlternateArt element in _alternateArts)
+            {
+                if (element.AlternateArtID == alternateArt.AlternateArtID)
+                {
+                    throw new Exception("Alternate Art ID is already used.");
+                }
+            }
+
+            _alternateArts.Add(alternateArt);
+            count++;
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/> used for testing
+        /// </summary>
+        public int UpdateAlternateArt(AlternateArt alternateArt)
+        {
+            int count = 0;
+            int index = 0;
+            AlternateArt updatedAlternateArt = null;
+
+            for(int i = 0; i < _alternateArts.Count; i++)
+            {
+                if (_alternateArts[i].AlternateArtID == alternateArt.AlternateArtID)
+                {
+                    updatedAlternateArt = _alternateArts[i];
+                    index = i;
+                    break;
+                }
+            }
+
+            if (updatedAlternateArt != null)
+            {
+                updatedAlternateArt.AlternateArtID = alternateArt.AlternateArtID;
+                updatedAlternateArt.Description = alternateArt.Description;
+                _alternateArts[index] = updatedAlternateArt;
+                count++;
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/> used for testing
+        /// </summary>
+        public int DeleteAlternateArt(string alternateArtID)
+        {
+            int count = 0;
+            AlternateArt deletedAlternateArt = null;
+
+            foreach (AlternateArt element in _alternateArts)
+            {
+                if (element.AlternateArtID == alternateArtID)
+                {
+                    count++;
+                    deletedAlternateArt = element;
+                }
+            }
+
+            if (count == 1)
+            {
+                _alternateArts.Remove(deletedAlternateArt);
+            }
+
+            return count;
+        }
+    }
+}

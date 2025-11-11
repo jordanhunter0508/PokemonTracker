@@ -9,10 +9,48 @@ namespace LogicLayerInterfaces
 {
     public interface IAltArtManager
     {
+        /// <summary>
+        /// Passes parameters to <see href="SelectAlternateArtByID(string)"/><br/>
+        /// then returns the results of the query. 
+        /// </summary>
+        /// <param name="abilityID">Used to search the database for the alternate art.</param>
+        /// <returns>Returns an AlternateArt from the database where the alternateArtID match.</returns>
+        /// <exception cref="ApplicationException">Throws if the alternateArtID could not be found.</exception>
         public AlternateArt GetAlternateArtByID(string alternateArtID);
+
+        /// <summary>
+        /// Calls the <see href="SelectAlternateArts()"/> method to get<br/>
+        /// a list of all AlternateArt from the database.
+        /// </summary>
+        /// <returns>Returns a List of all AlternateArt in the database.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data.</exception>
         public List<AlternateArt> GetAlternateArts();
+
+        /// <summary>
+        /// Passes parameters to <see href="InsertAlternateArt(AlternateArt)"/><br/>
+        /// Then returns true if the record was created successfully
+        /// </summary>
+        /// <param name="alternateArt">New AlternateArt object to be added to the database.</param>
+        /// <returns>Returns true if the AlternateArt was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the AlternateArtID is already used.</exception>
         public bool AddAlternateArt(AlternateArt alternateArt);
+
+        /// <summary>
+        /// Passes parameters to <see href="UpdateAlternateArt(AlternateArt)"/><br/>
+        /// Then returns true if the record was updated successfully.
+        /// </summary>
+        /// <param name="alternateArt">New AlternateArt object to update the old field at alternateArtID.</param>
+        /// <returns>Returns true if the AlternateArt was updated successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error storing the data.</exception>
         public bool EditAlternateArt(AlternateArt alternateArt);
+
+        /// <summary>
+        /// Passes parameters to <see href="DeleteAlternateArt(string)"/><br/>
+        /// Then returns true if the record was deleted successfully
+        /// </summary>
+        /// <param name="alternateArtID">Used to find the AlternateArt.</param>
+        /// <returns>Returns true if the AlternateArt was deleted successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the AlternateArt is attached to a card.</exception>
         public bool DeleteAlternateArt(string alternateArtID);
     }
 }
