@@ -86,17 +86,17 @@ namespace PokemonCardFinal.View.ListRecords
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 // Navigate the main frame to the new outer page
-                AddEditContainerPage addRecordPage = new AddEditContainerPage();
-                mainWindow.frmMain.Navigate(addRecordPage);
+                AddEditContainerPage containerPage = new AddEditContainerPage();
+                mainWindow.frmMain.Navigate(containerPage);
 
                 // When the addRecordPage is loaded change the inner page
                 // to addElementPage
-                addRecordPage.Loaded += (s, args) =>
+                containerPage.Loaded += (s, args) =>
                 {
-                    addRecordPage.tabController.SelectedItem = addRecordPage.tabElement;
-                    addRecordPage.frmElement.Navigate
+                    containerPage.tabController.SelectedItem = containerPage.tabElement;
+                    containerPage.frmElement.Navigate
                     (
-                        new AddElementPage(_selectedElement, _elementManager)
+                        new AddElementPage(_selectedElement, _elementManager,containerPage)
                     );  
                 };
             }
@@ -114,6 +114,9 @@ namespace PokemonCardFinal.View.ListRecords
                 _elementTypes = _elementManager.FormatElemetTypes(_elementManager.GetElementTypes()).ToArray();
                 _selectedElement = _elementTypes[0];
                 datElement.ItemsSource = _elementTypes;
+
+                datElement.Columns[0].Width = new DataGridLength(100);
+                datElement.Columns[1].Width = new DataGridLength(1,DataGridLengthUnitType.Star);
             }
             catch (Exception ex)
             {

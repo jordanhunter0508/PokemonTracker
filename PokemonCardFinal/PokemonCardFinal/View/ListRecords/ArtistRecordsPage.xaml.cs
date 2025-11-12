@@ -111,6 +111,10 @@ namespace PokemonCardFinal.View.ListRecords
                 _artists = _artistManager.FormatArtists(_artistManager.GetArtists()).ToArray();
                 _selectedArtist = _artists[0];
                 datArtist.ItemsSource = _artists;
+
+                datArtist.Columns[1].Header = "Given Name";
+
+                datArtist.Columns.RemoveAt(0);
             }
             catch (Exception ex)
             {

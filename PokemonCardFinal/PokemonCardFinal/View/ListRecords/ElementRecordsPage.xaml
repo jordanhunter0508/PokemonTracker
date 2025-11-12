@@ -9,18 +9,17 @@
       Title="Update Element" Loaded="Page_Loaded">
 
     <Grid>
-        <Grid x:Name="grdElement">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="50"/>
-            </Grid.RowDefinitions>
-            <DataGrid x:Name="datElement" Grid.Row="0" SelectionChanged="datElement_SelectionChanged"></DataGrid>
-            <Grid Grid.Row="1">
-                <Button x:Name="btnEdit" Content="Edit" Width="100" Height="35"
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <DataGrid x:Name="datElement" Grid.Row="0" SelectionChanged="datElement_SelectionChanged" SelectionMode="Single"
+                   IsReadOnly="True" HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"/>
+        <Grid Grid.Row="1">
+            <Button x:Name="btnEdit" Content="Edit" Width="100" Height="35"
                 Margin=" 0 0 120 0" HorizontalAlignment="Right" Click="btnEdit_Click"/>
-                <Button x:Name="btnDelete" Content="Delete" Width="100" Height="35"
+            <Button x:Name="btnDelete" Content="Delete" Width="100" Height="35"
                 HorizontalAlignment="Right" Click="btnDelete_Click"/>
-            </Grid>
         </Grid>
     </Grid>
 </Page>

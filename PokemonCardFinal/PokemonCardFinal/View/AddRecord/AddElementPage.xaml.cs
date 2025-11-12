@@ -26,6 +26,7 @@ namespace PokemonCardFinal.View.AddRecord
     {
         IElementManager _elementManager;
         ElementType _elementType;
+        AddEditContainerPage _containerPage;
         bool _isEditMode;
         public AddElementPage()
         {
@@ -33,14 +34,16 @@ namespace PokemonCardFinal.View.AddRecord
             _elementManager = new ElementManager();
         }
 
-        public AddElementPage(ElementType element, IElementManager elementManager)
+        public AddElementPage(ElementType element, IElementManager elementManager, AddEditContainerPage containerPage)
         {
             InitializeComponent();
             _elementType = element;
             _elementManager = elementManager;
+            _containerPage = containerPage;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+
             if (_elementType == null)
             {
                 _isEditMode = false;
@@ -49,10 +52,15 @@ namespace PokemonCardFinal.View.AddRecord
             else
             {
                 _isEditMode = true;
+                btnClearElement.Content = "Go Back";
                 txtElementTypeID.Text = _elementType.ElementTypeID;
                 txtDescription.Text = _elementType.Description;
                 txtElementTypeID.IsEnabled = false;
                 txtDescription.Focus();
+
+                // Disables all other tab items
+                DisplayTabItems(false);
+                _containerPage.tabElement.IsEnabled = true;
             }
 
             btnSaveElement.IsDefault = true;
@@ -63,12 +71,12 @@ namespace PokemonCardFinal.View.AddRecord
             if (!_isEditMode)
             {
                 ClearTextAreas();
+                txtElementTypeID.Focus();
 
             }
             else
             {
-                txtDescription.Text = "";
-                txtDescription.Focus();
+                LoadListViewPage();
             }
         }
 
@@ -90,15 +98,18 @@ namespace PokemonCardFinal.View.AddRecord
             string elementId = txtElementTypeID.Text;
             string description = txtDescription.Text;
 
-            if (elementId == "" || elementId == null || elementId.Length > 10)
+            if (elementId.Replace(" ", "") == "" || elementId == null ||
+                elementId.Length > 10 || elementId.Any(char.IsDigit))
             {
                 MessageBox.Show("The element name entered was invalid.");
+                txtElementTypeID.SelectAll();
                 txtElementTypeID.Focus();
                 return;
             }
-            if (description == "" || description == null || description.Length > 100)
+            if (description.Replace(" ","") == "" || description == null || description.Length > 100)
             {
                 MessageBox.Show("The description entered was invalid.");
+                txtDescription.SelectAll();
                 txtDescription.Focus();
                 return;
             }
@@ -109,6 +120,7 @@ namespace PokemonCardFinal.View.AddRecord
                 {
                     MessageBox.Show("The element " + elementId + " was successfully created.");
                     ClearTextAreas();
+                    txtElementTypeID.Focus();
                 }
                 else
                 {
@@ -126,9 +138,11 @@ namespace PokemonCardFinal.View.AddRecord
             string elementId = txtElementTypeID.Text;
             string description = txtDescription.Text;
 
-            if (description == null || description.Length > 100)
+            if (description.Replace(" ", "") == "" || description == null || description.Length > 100)
             {
-                MessageBox.Show("The description entered was invalid");
+                MessageBox.Show("The description entered was invalid.");
+                txtDescription.SelectAll();
+                txtDescription.Focus();
                 return;
             }
 
@@ -139,16 +153,7 @@ namespace PokemonCardFinal.View.AddRecord
                     MessageBox.Show("The element " + elementId + " was successfully updated.");
 
                     // Brings the user back to the ElementRecordsPage
-                    if (Application.Current.MainWindow is MainWindow mainWindow)
-                    {
-                        AddEditContainerPage editElementPage = new AddEditContainerPage();
-                        mainWindow.frmMain.Navigate(editElementPage);
-                        editElementPage.Loaded += (s, arg) =>
-                        {
-                            editElementPage.tabController.SelectedItem = editElementPage.tabElement;
-                            editElementPage.frmElement.Navigate(new ElementRecordsPage());
-                        };
-                    }
+                    LoadListViewPage();
                 }
                 else
                 {
@@ -166,6 +171,21 @@ namespace PokemonCardFinal.View.AddRecord
         {
             txtElementTypeID.Text = "";
             txtDescription.Text = "";
+        }
+
+        private void LoadListViewPage()
+        {
+            DisplayTabItems(true);
+            _containerPage.IsListView = true;
+            _containerPage.frmElement.Navigate(new ElementRecordsPage());
+        }
+
+        private void DisplayTabItems(bool option) 
+        {
+            foreach (TabItem tabItem in _containerPage.tabController.Items)
+            { 
+                tabItem.IsEnabled = option;
+            }
         }
     }
 }
