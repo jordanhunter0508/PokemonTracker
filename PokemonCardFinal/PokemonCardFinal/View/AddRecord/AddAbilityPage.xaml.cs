@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using PokemonCardFinal.View.ListRecords;
 
 namespace PokemonCardFinal.View.AddRecord
 {
@@ -25,43 +26,190 @@ namespace PokemonCardFinal.View.AddRecord
     {
         IAbilityManager _abilityManager;
         Ability _ability;
+        AddEditContainerPage _containerPage;
         bool _isEditMode;
 
         public AddAbilityPage()
         {
             InitializeComponent();
             _abilityManager = new AbilityManager();
+            _isEditMode = false;
         }
 
-        public AddAbilityPage(Ability ability, IAbilityManager abilityManager)
+        public AddAbilityPage(Ability ability, IAbilityManager abilityManager, AddEditContainerPage containerPage)
         {
             InitializeComponent();
             _ability = ability;
             _abilityManager = abilityManager;
+            _containerPage = containerPage;
+            _isEditMode = true;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_ability == null)
+            if (!_isEditMode)
             {
-                _isEditMode = false;
+                txtAbilityName.Focus();
             }
             else 
             {
-                _isEditMode = true;
+                btnClear.Content = "Go Back";
+
+                txtAbilityName.Text = _ability.AbilityID;
+                txtAbilityType.Text = _ability.AbilityType;
+                txtDescription.Text = _ability.Description;
+
+                txtAbilityName.IsEnabled = false;
+                txtAbilityType.Focus();
+
+                // Disables all other tab items
+                _containerPage.DisplayTabItems(false);
+                _containerPage.tabAbility.IsEnabled = true;
             }
+
+            btnSave.IsDefault = true;
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
+            if (!_isEditMode)
+            {
+                ClearTextAreas();
+                txtAbilityName.Focus();
 
+            }
+            else
+            {
+                DisplayListViewPage();
+            }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (!_isEditMode)
+            {
+                CreateModeSaveButton();
+
+            }
+            else
+            {
+                EditModeSaveButton();
+            }
+        }
+        
+        private void CreateModeSaveButton()
+        {
+            string abilityID = txtAbilityName.Text;
+            string abilityType = txtAbilityType.Text;
+            string description = txtDescription.Text;
+
+            if (abilityID.Replace(" ", "") == "" || abilityID == null ||
+                    abilityID.Length > 30)
+            {
+                MessageBox.Show("The ability name entered was invalid.");
+                txtAbilityName.SelectAll();
+                txtAbilityName.Focus();
+                return;
+            }
+            if (abilityType.Replace(" ", "") == "" || abilityType == null ||
+                        abilityType.Length > 25 || abilityType.Any(char.IsDigit))
+            {
+                MessageBox.Show("The ability type entered was invalid.");
+                txtAbilityType.SelectAll();
+                txtAbilityType.Focus();
+                return;
+            }
+            if (description.Replace(" ", "") == "" || description == null ||
+                        description.Length > 25)
+            {
+                MessageBox.Show("The ability description entered was invalid.");
+                txtDescription.SelectAll();
+                txtDescription.Focus();
+                return;
+            }
+
+            Ability ability = new Ability()
+            { 
+                AbilityID = abilityID,
+                AbilityType = abilityType,
+                Description = description,
+            };
+
+            try
+            {
+                if (_abilityManager.AddAbility(ability))
+                {
+                    MessageBox.Show("The ability " + abilityID + " was created.");
+                    ClearTextAreas();
+                    txtAbilityName.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("The ability " + abilityID + " was not created.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
 
-        
+        private void EditModeSaveButton()
+        {
+            string abilityType = txtAbilityType.Text;
+            string description = txtDescription.Text;
+
+            if (abilityType.Replace(" ", "") == "" || abilityType == null ||
+                        abilityType.Length > 25 || abilityType.Any(char.IsDigit))
+            {
+                MessageBox.Show("The ability type entered was invalid.");
+                txtAbilityType.SelectAll();
+                txtAbilityType.Focus();
+                return;
+            }
+            if (description.Replace(" ", "") == "" || description == null ||
+                        description.Length > 25)
+            {
+                MessageBox.Show("The ability description entered was invalid.");
+                txtDescription.SelectAll();
+                txtDescription.Focus();
+                return;
+            }
+
+            _ability.AbilityType = abilityType;
+            _ability.Description = description;
+
+            try
+            {
+                if (_abilityManager.EditAbility(_ability))
+                {
+                    MessageBox.Show("The ability " + _ability.AbilityID + " was updated.");
+                    DisplayListViewPage();
+                }
+                else
+                {
+                    MessageBox.Show("The ability " + _ability.AbilityID + " was not updated.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ClearTextAreas()
+        {
+            txtAbilityName.Text = "";
+            txtAbilityType.Text = "";
+            txtDescription.Text = "";
+        }
+
+        private void DisplayListViewPage()
+        {
+            _containerPage.DisplayTabItems(true);
+            _containerPage.IsListView = true;
+            _containerPage.frmAbility.Navigate(new AbilityRecordsPage());
+        }
     }
 }

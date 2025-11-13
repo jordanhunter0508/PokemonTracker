@@ -28,10 +28,12 @@ namespace PokemonCardFinal.View.AddRecord
         ElementType _elementType;
         AddEditContainerPage _containerPage;
         bool _isEditMode;
+
         public AddElementPage()
         {
             InitializeComponent();
             _elementManager = new ElementManager();
+            _isEditMode = false;
         }
 
         public AddElementPage(ElementType element, IElementManager elementManager, AddEditContainerPage containerPage)
@@ -40,26 +42,25 @@ namespace PokemonCardFinal.View.AddRecord
             _elementType = element;
             _elementManager = elementManager;
             _containerPage = containerPage;
+            _isEditMode = true;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
-            if (_elementType == null)
+            if (!_isEditMode)
             {
-                _isEditMode = false;
                 txtElementTypeID.Focus();
             }
             else
             {
-                _isEditMode = true;
+                txtDescription.Focus();
                 btnClearElement.Content = "Go Back";
                 txtElementTypeID.Text = _elementType.ElementTypeID;
                 txtDescription.Text = _elementType.Description;
                 txtElementTypeID.IsEnabled = false;
-                txtDescription.Focus();
 
                 // Disables all other tab items
-                DisplayTabItems(false);
+                _containerPage.DisplayTabItems(false);
                 _containerPage.tabElement.IsEnabled = true;
             }
 
@@ -76,7 +77,7 @@ namespace PokemonCardFinal.View.AddRecord
             }
             else
             {
-                LoadListViewPage();
+                DisplayListViewPage();
             }
         }
 
@@ -95,11 +96,11 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void CreateModeSaveButton() 
         {
-            string elementId = txtElementTypeID.Text;
+            string elementID = txtElementTypeID.Text;
             string description = txtDescription.Text;
 
-            if (elementId.Replace(" ", "") == "" || elementId == null ||
-                elementId.Length > 10 || elementId.Any(char.IsDigit))
+            if (elementID.Replace(" ", "") == "" || elementID == null ||
+                elementID.Length > 10 || elementID.Any(char.IsDigit))
             {
                 MessageBox.Show("The element name entered was invalid.");
                 txtElementTypeID.SelectAll();
@@ -116,15 +117,15 @@ namespace PokemonCardFinal.View.AddRecord
 
             try
             {
-                if (_elementManager.AddElementType(elementId, description))
+                if (_elementManager.AddElementType(elementID, description))
                 {
-                    MessageBox.Show("The element " + elementId + " was successfully created.");
+                    MessageBox.Show("The element " + elementID + " was successfully created.");
                     ClearTextAreas();
                     txtElementTypeID.Focus();
                 }
                 else
                 {
-                    MessageBox.Show("The element " + elementId + " was not created.");
+                    MessageBox.Show("The element " + elementID + " was not created.");
                 }
             }
             catch (Exception ex)
@@ -135,7 +136,7 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void EditModeSaveButton()
         {
-            string elementId = txtElementTypeID.Text;
+            string elementID = txtElementTypeID.Text;
             string description = txtDescription.Text;
 
             if (description.Replace(" ", "") == "" || description == null || description.Length > 100)
@@ -148,16 +149,16 @@ namespace PokemonCardFinal.View.AddRecord
 
             try
             {
-                if (_elementManager.EditElementDescritpionByElementTypeID(elementId, description))
+                if (_elementManager.EditElementDescritpionByElementTypeID(elementID, description))
                 {
-                    MessageBox.Show("The element " + elementId + " was successfully updated.");
+                    MessageBox.Show("The element " + elementID + " was successfully updated.");
 
                     // Brings the user back to the ElementRecordsPage
-                    LoadListViewPage();
+                    DisplayListViewPage();
                 }
                 else
                 {
-                    MessageBox.Show("The element " + elementId + " was not successfully updated.");
+                    MessageBox.Show("The element " + elementID + " was not successfully updated.");
                 }
 
             }
@@ -173,19 +174,11 @@ namespace PokemonCardFinal.View.AddRecord
             txtDescription.Text = "";
         }
 
-        private void LoadListViewPage()
+        private void DisplayListViewPage()
         {
-            DisplayTabItems(true);
+            _containerPage.DisplayTabItems(true);
             _containerPage.IsListView = true;
             _containerPage.frmElement.Navigate(new ElementRecordsPage());
-        }
-
-        private void DisplayTabItems(bool option) 
-        {
-            foreach (TabItem tabItem in _containerPage.tabController.Items)
-            { 
-                tabItem.IsEnabled = option;
-            }
         }
     }
 }

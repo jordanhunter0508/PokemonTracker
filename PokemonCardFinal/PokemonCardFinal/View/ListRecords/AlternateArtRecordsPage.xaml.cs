@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,21 +20,21 @@ using PokemonCardFinal.View.AddRecord;
 namespace PokemonCardFinal.View.ListRecords
 {
     /// <summary>
-    /// Interaction logic for UpdateElementPage.xaml
+    /// Interaction logic for AlternateArtRecordsPage.xaml
     /// </summary>
-    public partial class ElementRecordsPage : Page
+    public partial class AlternateArtRecordsPage : Page
     {
-        ElementType[] _elementTypes;
-        IElementManager _elementManager;
-        ElementType _selectedElement;
-        public ElementRecordsPage()
+        List<AlternateArt> _altArts;
+        IAltArtManager _altArtManager;
+        AlternateArt _selectedAltArt;
+        public AlternateArtRecordsPage()
         {
             InitializeComponent();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            _elementManager = new ElementManager();
+            _altArtManager = new AltArtManager();
             LoadList();
         }
 
@@ -44,39 +43,39 @@ namespace PokemonCardFinal.View.ListRecords
             // Pop up window to confirm if the admin wants to delete the record
             MessageBoxResult conformationWindow = MessageBox.Show
             (
-                "Are you sure you want to delete " + _selectedElement.ElementTypeID + ".",
+                "Are you sure you want to delete " + _selectedAltArt.AlternateArtID + ".",
                 "Confirm Delete",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning
             );
 
             if (conformationWindow != MessageBoxResult.Yes ||
-                _selectedElement == null)
+                _selectedAltArt == null)
             {
                 return;
             }
 
             try
             {
-                if (_elementManager.DeleteElementTypeByElementTypeID(_selectedElement.ElementTypeID))
+                if (_altArtManager.DeleteAlternateArt(_selectedAltArt.AlternateArtID))
                 {
-                    MessageBox.Show("The element was successfully deleted");
+                    MessageBox.Show("The alternate art was successfully be deleted.");
                     LoadList();
                 }
                 else
                 {
-                    MessageBox.Show("The element could not be deleted.");
+                    MessageBox.Show("The alternate art could not be deleted.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("The element failed to be deleted.");
+                MessageBox.Show("The alternate art failed to be deleted.");
             }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedElement == null)
+            if (_selectedAltArt == null)
             {
                 return;
             }
@@ -92,36 +91,35 @@ namespace PokemonCardFinal.View.ListRecords
                 containerPage.Loaded += (s, args) =>
                 {
                     containerPage.IsListView = false;
-                    containerPage.tabController.SelectedItem = containerPage.tabElement;
-                    containerPage.frmElement.Navigate
+                    containerPage.tabController.SelectedItem = containerPage.tabAlternate;
+                    containerPage.frmAlternate.Navigate
                     (
-                        new AddElementPage(_selectedElement, _elementManager,containerPage)
-                    );  
+                        new AddAlternateArtPage(_selectedAltArt, _altArtManager, containerPage)
+                    );
                 };
             }
         }
-
-        private void datElement_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void datAlternate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _selectedElement = datElement.SelectedItem as ElementType;
+            _selectedAltArt = datAlternate.SelectedItem as AlternateArt;
         }
 
         private void LoadList()
         {
             try
             {
-                _elementTypes = _elementManager.FormatElemetTypes(_elementManager.GetElementTypes()).ToArray();
-                _selectedElement = _elementTypes[0];
-                datElement.ItemsSource = _elementTypes;
+                _altArts = _altArtManager.GetAlternateArts();
+                _selectedAltArt = _altArts[0];
+                datAlternate.ItemsSource = _altArts;
 
-                datElement.Columns[0].Header = "Element Name";
+                datAlternate.Columns[0].Header = "Alternate Art Name";
 
-                datElement.Columns[0].Width = new DataGridLength(100);
-                datElement.Columns[1].Width = new DataGridLength(1,DataGridLengthUnitType.Star);
+                datAlternate.Columns[0].Width = new DataGridLength(150);
+                datAlternate.Columns[1].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to load the list of element types.");
+                MessageBox.Show("Failed to load the list of alternate arts.");
             }
         }
     }

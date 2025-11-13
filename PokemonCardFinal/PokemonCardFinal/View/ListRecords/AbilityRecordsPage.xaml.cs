@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using PokemonCardFinal.View.AddRecord;
 
 namespace PokemonCardFinal.View.ListRecords
 {
@@ -40,10 +41,6 @@ namespace PokemonCardFinal.View.ListRecords
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedAbility == null)
-            {
-                return;
-            }
             // Pop up window to confirm if the admin wants to delete the record
             MessageBoxResult conformationWindow = MessageBox.Show
             (
@@ -53,34 +50,54 @@ namespace PokemonCardFinal.View.ListRecords
                 MessageBoxImage.Warning
             );
 
-            if (conformationWindow == MessageBoxResult.Yes)
-            {
-                try
-                {
-                    if (_abilityManager.DeleteAbility(_selectedAbility.AbilityID))
-                    {
-                        MessageBox.Show("The ability was successfully deleted");
-                        LoadList();
-                    }
-                    else
-                    {
-                        MessageBox.Show("The ability could not be deleted.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("The ability failed to be deleted.");
-                }
-            }
-            else
+            if (conformationWindow != MessageBoxResult.Yes ||
+                _selectedAbility == null)
             {
                 return;
+            }
+            try
+            {
+                if (_abilityManager.DeleteAbility(_selectedAbility.AbilityID))
+                {
+                    MessageBox.Show("The ability was successfully deleted");
+                    LoadList();
+                }
+                else
+                {
+                    MessageBox.Show("The ability could not be deleted.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("The ability failed to be deleted.");
             }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            if (_selectedAbility == null)
+            {
+                return;
+            }
 
+            // Navigate to CreateRecordPage
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                // Navigate the main frame to the new outer page
+                AddEditContainerPage containerPage = new AddEditContainerPage();
+                mainWindow.frmMain.Navigate(containerPage);
+
+                // When the addRecordPage is loaded change the inner page
+                containerPage.Loaded += (s, args) =>
+                {
+                    containerPage.IsListView = false;
+                    containerPage.tabController.SelectedItem = containerPage.tabAbility;
+                    containerPage.frmAbility.Navigate
+                    (
+                        new AddAbilityPage(_selectedAbility, _abilityManager, containerPage)
+                    );
+                };
+            }
         }
 
         private void datAbility_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -95,11 +112,18 @@ namespace PokemonCardFinal.View.ListRecords
                 _abilities = _abilityManager.FormatAbility(_abilityManager.GetAbilities()).ToArray();
                 _selectedAbility = _abilities[0];
                 datAbility.ItemsSource = _abilities;
+
+                datAbility.Columns[0].Header = "Ability Name";
+                datAbility.Columns[1].Header = "Ability Type";
+
+                datAbility.Columns[0].Width = new DataGridLength(125);
+                datAbility.Columns[1].Width = new DataGridLength(125);
+                datAbility.Columns[2].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Failed to load the list of abilites.");
             }
-        }
+        }        
     }
 }

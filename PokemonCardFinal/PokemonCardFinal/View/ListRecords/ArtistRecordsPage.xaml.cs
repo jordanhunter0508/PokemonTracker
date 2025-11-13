@@ -50,50 +50,54 @@ namespace PokemonCardFinal.View.ListRecords
                 MessageBoxImage.Warning
             );
 
-            if (conformationWindow == MessageBoxResult.Yes)
-            {
-                try
-                {
-                    if (_artistManager.DeleteArtist(_selectedArtist.ArtistID))
-                    {
-                        MessageBox.Show("The artist was successfully deleted");
-                        LoadList();
-                    }
-                    else
-                    {
-                        MessageBox.Show("The artist could not be deleted.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("The artist failed to be deleted.");
-                }
-            }
-            else
+            if (conformationWindow != MessageBoxResult.Yes ||
+                _selectedArtist == null)
             {
                 return;
             }
 
+            try
+            {
+                if (_artistManager.DeleteArtist(_selectedArtist.ArtistID))
+                {
+                    MessageBox.Show("The artist was successfully deleted");
+                    LoadList();
+                }
+                else
+                {
+                    MessageBox.Show("The artist could not be deleted.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("The artist failed to be deleted.");
+            }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            if (_selectedArtist == null)
+            {
+                return;
+            }
+
             // Navigate to CreateRecordPage
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 // Navigate the main frame to the new outer page
-                AddEditContainerPage addRecordPage = new AddEditContainerPage();
-                mainWindow.frmMain.Navigate(addRecordPage);
+                AddEditContainerPage containerPage = new AddEditContainerPage();
+                mainWindow.frmMain.Navigate(containerPage);
 
                 // When the addRecordPage is loaded change the inner page
                 // to addElementPage
-                addRecordPage.Loaded += (s, args) =>
+                containerPage.Loaded += (s, args) =>
                 {
-                    addRecordPage.tabController.SelectedItem = addRecordPage.tabArtist;
-                    Debug.WriteLine(_selectedArtist.GivenName);
-                    addRecordPage.frmArtist.Navigate
+                    containerPage.IsListView = false;
+                    //
+                    containerPage.tabController.SelectedItem = containerPage.tabArtist;
+                    containerPage.frmArtist.Navigate
                     (
-                        new AddArtistPage(_selectedArtist, _artistManager)
+                        new AddArtistPage(_selectedArtist, _artistManager, containerPage)
                     );
                 };
             }
@@ -113,12 +117,14 @@ namespace PokemonCardFinal.View.ListRecords
                 datArtist.ItemsSource = _artists;
 
                 datArtist.Columns[1].Header = "Given Name";
+                datArtist.Columns[1].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                datArtist.Columns[2].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
 
                 datArtist.Columns.RemoveAt(0);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Failed to load the list of artists.");
             }
         }
     }

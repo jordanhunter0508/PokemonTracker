@@ -15,6 +15,10 @@
                 <Frame x:Name="frmAbility" NavigationUIVisibility="Hidden"/>
             </TabItem>
 
+            <TabItem x:Name="tabAlternate" Header="Alternate Arts">
+                <Frame x:Name="frmAlternate" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+
             <TabItem x:Name="tabArtist" Header="Artist">
                 <Frame x:Name="frmArtist" NavigationUIVisibility="Hidden"/>
             </TabItem>

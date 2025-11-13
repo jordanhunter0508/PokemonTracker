@@ -29,8 +29,9 @@ namespace PokemonCardFinal.View
 
         // Used to specify which page is loaded
         bool _isAbilityLoaded;
-        bool _isElementLoaded;
+        bool _isAlternateArtLoaded;
         bool _isArtistLoaded;
+        bool _isElementLoaded;  
         
         public AddEditContainerPage()
         {
@@ -65,6 +66,7 @@ namespace PokemonCardFinal.View
             _isAbilityLoaded = option;
             _isElementLoaded = option;
             _isArtistLoaded = option;
+            _isAlternateArtLoaded = option;
         }
 
         private void ListPages() 
@@ -75,15 +77,16 @@ namespace PokemonCardFinal.View
             }
             else if (tabController.SelectedItem == tabAbility && !_isAbilityLoaded)
             {
-                SetAllLoaded();
+                
                 _isAbilityLoaded = true;
                 frmAbility.Navigate(new AbilityRecordsPage());
             }
-            else if (tabController.SelectedItem == tabElement && !_isElementLoaded)
+            else if (tabController.SelectedItem == tabAlternate &&
+                        !_isAlternateArtLoaded)
             {
                 SetAllLoaded();
-                _isElementLoaded = true;
-                frmElement.Navigate(new ElementRecordsPage());
+                _isAlternateArtLoaded = true;
+                frmAlternate.Navigate(new AlternateArtRecordsPage());
             }
             else if (tabController.SelectedItem == tabArtist && !_isArtistLoaded)
             {
@@ -91,12 +94,19 @@ namespace PokemonCardFinal.View
                 _isArtistLoaded = true;
                 frmArtist.Navigate(new ArtistRecordsPage());
             }
+            else if (tabController.SelectedItem == tabElement && !_isElementLoaded)
+            {
+                SetAllLoaded();
+                _isElementLoaded = true;
+                frmElement.Navigate(new ElementRecordsPage());
+            }   
         }
 
-        public void AddPages() 
+        private void AddPages() 
         {
             if (tabController.SelectedItem == null)
             {
+                SetAllLoaded();
                 return;
             }
             else if (tabController.SelectedItem == tabAbility && !_isAbilityLoaded)
@@ -105,17 +115,31 @@ namespace PokemonCardFinal.View
                 _isAbilityLoaded = true;
                 frmAbility.Navigate(new AddAbilityPage());
             }
-            else if (!_isElementLoaded && tabController.SelectedItem == tabElement)
+            else if (tabController.SelectedItem == tabAlternate &&
+                        !_isAlternateArtLoaded)
             {
                 SetAllLoaded();
-                _isElementLoaded = true;
-                frmElement.Navigate(new AddElementPage());
+                _isAlternateArtLoaded = true;
+                frmAlternate.Navigate(new AddAlternateArtPage());
             }
             else if (!_isArtistLoaded && tabController.SelectedItem == tabArtist)
             {
                 SetAllLoaded();
                 _isArtistLoaded = true;
                 frmArtist.Navigate(new AddArtistPage());
+            }
+            else if (!_isElementLoaded && tabController.SelectedItem == tabElement)
+            {
+                SetAllLoaded();
+                _isElementLoaded = true;
+                frmElement.Navigate(new AddElementPage());
+            }   
+        }
+        public void DisplayTabItems(bool option)
+        {
+            foreach (TabItem tabItem in tabController.Items)
+            {
+                tabItem.IsEnabled = option;
             }
         }
     }

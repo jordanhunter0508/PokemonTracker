@@ -13,13 +13,13 @@
             <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <DataGrid x:Name="datArtist" Grid.Row="0" SelectionChanged="datArtist_SelectionChanged"
-                  SelectionMode="Single" IsReadOnly="True" HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"/>
+        <DataGrid x:Name="datArtist" Grid.Row="0" SelectionChanged="datArtist_SelectionChanged" SelectionMode="Single" 
+                IsReadOnly="True" HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"/>
         <Grid Grid.Row="1">
             <Button x:Name="btnEdit" Content="Edit" Width="100" Height="35"
-            Margin=" 0 0 120 0" HorizontalAlignment="Right" Click="btnEdit_Click"/>
+                Margin=" 0 0 120 0" HorizontalAlignment="Right" Click="btnEdit_Click"/>
             <Button x:Name="btnDelete" Content="Delete" Width="100" Height="35"
-            HorizontalAlignment="Right" Click="btnDelete_Click"/>
+                HorizontalAlignment="Right" Click="btnDelete_Click"/>
         </Grid>
     </Grid>
 </Page>

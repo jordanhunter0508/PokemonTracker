@@ -11,7 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="100"/>
-            <RowDefinition/>
+            <RowDefinition Height="150"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -19,24 +19,29 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <!--Given Name-->
-        <Label x:Name="lblGivenName" Content="First Name:" Grid.Row="0" Grid.Column="0"
-    VerticalAlignment="Center"/>
-        <TextBox x:Name="txtGivenName" Grid.Row="0" Grid.Column="0"
+        <!--Ability Name-->
+        <Label x:Name="lblAbilityName" Content="Ability Name:" Grid.Row="0" Grid.Column="0"
+            VerticalAlignment="Center"/>
+        <TextBox x:Name="txtAbilityName" Grid.Row="0" Grid.Column="0"
         Width="200" Height="25" HorizontalAlignment="Right" VerticalContentAlignment="Center" Margin="0 0 10 0"/>
 
-        <!--Surname-->
-        <Label x:Name="lblSurname" Content="Last Name:" Grid.Row="1" Grid.Column="0"
-    VerticalAlignment="Center"/>
-        <TextBox x:Name="txtSurname" Grid.Row="1" Grid.Column="0"
+        <!--Ability Type-->
+        <Label x:Name="lblAbilityType" Content="Ability Type:" Grid.Row="1" Grid.Column="0"
+            VerticalAlignment="Center"/>
+        <TextBox x:Name="txtAbilityType" Grid.Row="1" Grid.Column="0"
         Width="200" Height="25" HorizontalAlignment="Right" VerticalContentAlignment="Center" Margin="0 0 10 0"/>
-
-        <!--Artist Buttons-->
-        <Button x:Name="btnSave" Content="Save" Grid.Row="2" Grid.Column="0"
-        Width="100" Height=" 50" HorizontalAlignment="Left" Click="btnSave_Click" />
-
-        <Button x:Name="btnClear" Content="Clear" Grid.Row="2" Grid.Column="0"
-                 Width="100" Height=" 50"  HorizontalAlignment="Right" Click="btnClear_Click" />
+        
+        <!--Ability Description-->
+        <Label x:Name="lblDescription" Content="Ability Descripiton:" Grid.Row="2" Grid.Column="0"
+            VerticalAlignment="Center"/>
+        <TextBox x:Name="txtDescription" Grid.Row="2" Grid.Column="0"
+            Width="200" Height="100" HorizontalAlignment="Right" TextWrapping="Wrap" Margin="0 0 10 0"/>
+        
+        <!--Ability Buttons-->
+        <Button x:Name="btnSave" Content="Save" Grid.Row="3" Grid.Column="0"
+            Width="100" Height=" 50" HorizontalAlignment="Left" Click="btnSave_Click" />
+        <Button x:Name="btnClear" Content="Clear" Grid.Row="3" Grid.Column="0"
+            Width="100" Height=" 50"  HorizontalAlignment="Right" Click="btnClear_Click" />
 
     </Grid>
 </Page>

@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:PokemonCardFinal.View.ListRecords"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Update Element" Loaded="Page_Loaded">
+      Title="Element List View" Loaded="Page_Loaded">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -14,7 +14,7 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <DataGrid x:Name="datElement" Grid.Row="0" SelectionChanged="datElement_SelectionChanged" SelectionMode="Single"
-                   IsReadOnly="True" HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"/>
+                IsReadOnly="True" HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"/>
         <Grid Grid.Row="1">
             <Button x:Name="btnEdit" Content="Edit" Width="100" Height="35"
                 Margin=" 0 0 120 0" HorizontalAlignment="Right" Click="btnEdit_Click"/>
