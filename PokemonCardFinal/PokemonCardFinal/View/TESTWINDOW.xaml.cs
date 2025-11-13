@@ -228,7 +228,7 @@ namespace PokemonCardFinal.View
 
         private void TestBooster()
         {
-            IBoosterManger boosterManager = new BoosterManager();
+            IBoosterManager boosterManager = new BoosterManager();
 
             //Booster booster = boosterManager.GetBoosterByBoosterID("151");
 

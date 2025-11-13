@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,21 +20,21 @@ using PokemonCardFinal.View.AddRecord;
 namespace PokemonCardFinal.View.ListRecords
 {
     /// <summary>
-    /// Interaction logic for UpdateElementPage.xaml
+    /// Interaction logic for BoosterRecordsPage.xaml
     /// </summary>
-    public partial class ElementRecordsPage : Page
+    public partial class BoosterRecordsPage : Page
     {
-        ElementType[] _elementTypes;
-        IElementManager _elementManager;
-        ElementType _selectedElement;
-        public ElementRecordsPage()
+        List<Booster> _boosters;
+        IBoosterManager _boosterManger;
+        Booster _selectedBooster;
+        public BoosterRecordsPage()
         {
             InitializeComponent();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            _elementManager = new ElementManager();
+            _boosterManger = new BoosterManager();
             LoadList();
         }
 
@@ -44,39 +43,39 @@ namespace PokemonCardFinal.View.ListRecords
             // Pop up window to confirm if the admin wants to delete the record
             MessageBoxResult conformationWindow = MessageBox.Show
             (
-                "Are you sure you want to delete " + _selectedElement.ElementTypeID + ".",
+                "Are you sure you want to delete " + _selectedBooster.BoosterID + ".",
                 "Confirm Delete",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning
             );
 
             if (conformationWindow != MessageBoxResult.Yes ||
-                _selectedElement == null)
+                _selectedBooster == null)
             {
                 return;
             }
 
             try
             {
-                if (_elementManager.DeleteElementTypeByElementTypeID(_selectedElement.ElementTypeID))
+                if (_boosterManger.DeleteBooster(_selectedBooster.BoosterID))
                 {
-                    MessageBox.Show("The element was successfully deleted");
+                    MessageBox.Show("The booster was successfully deleted");
                     LoadList();
                 }
                 else
                 {
-                    MessageBox.Show("The element could not be deleted.");
+                    MessageBox.Show("The booster could not be deleted.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("The element failed to be deleted.");
+                MessageBox.Show("The booster failed to be deleted.\n" + ex.Message);
             }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedElement == null)
+            if (_selectedBooster == null)
             {
                 return;
             }
@@ -92,36 +91,39 @@ namespace PokemonCardFinal.View.ListRecords
                 containerPage.Loaded += (s, args) =>
                 {
                     containerPage.IsListView = false;
-                    containerPage.tabController.SelectedItem = containerPage.tabElement;
-                    containerPage.frmElement.Navigate
+                    containerPage.tabController.SelectedItem = containerPage.tabBooster;
+                    containerPage.frmBooster.Navigate
                     (
-                        new AddElementPage(_selectedElement, _elementManager,containerPage)
-                    );  
+                        new AddBoosterPage(_selectedBooster, _boosterManger, containerPage)
+                    );
                 };
             }
         }
 
-        private void datElement_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void datBooster_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _selectedElement = datElement.SelectedItem as ElementType;
+            _selectedBooster = datBooster.SelectedItem as Booster;
         }
 
         private void LoadList()
         {
             try
             {
-                _elementTypes = _elementManager.FormatElemetTypes(_elementManager.GetElementTypes()).ToArray();
-                _selectedElement = _elementTypes[0];
-                datElement.ItemsSource = _elementTypes;
+                _boosters = _boosterManger.GetBoosters();
+                _selectedBooster = _boosters[0];
+                datBooster.ItemsSource = _boosters;
 
-                datElement.Columns[0].Header = "Element Name";
+                datBooster.Columns[0].Header = "Booster Name";
+                datBooster.Columns[2].Header = "Release Date";
 
-                datElement.Columns[0].Width = new DataGridLength(100);
-                datElement.Columns[1].Width = new DataGridLength(1,DataGridLengthUnitType.Star);
+                datBooster.Columns[0].Width = new DataGridLength(200);
+                datBooster.Columns[1].Width = new DataGridLength(200);
+                datBooster.Columns[2].Width = new DataGridLength(200);
+                datBooster.Columns[3].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to load the list of element types.\n" + ex.Message);
+                MessageBox.Show("Failed to load the list of boosters.\n" + ex.Message);
             }
         }
     }

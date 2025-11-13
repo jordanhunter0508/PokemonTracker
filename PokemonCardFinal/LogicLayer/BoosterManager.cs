@@ -10,7 +10,7 @@ using LogicLayerInterfaces;
 
 namespace LogicLayer
 {
-    public class BoosterManager : IBoosterManger
+    public class BoosterManager : IBoosterManager
     {
         IBoosterAccessor _boosterAccessor;
 

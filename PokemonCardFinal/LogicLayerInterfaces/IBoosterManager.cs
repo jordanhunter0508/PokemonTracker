@@ -7,7 +7,7 @@ using DataDomain;
 
 namespace LogicLayerInterfaces
 {
-    public interface IBoosterManger
+    public interface IBoosterManager
     {
         /// <summary>
         /// Passes parameters to <see href="SelectBoosterByBoosterID(string)"/><br/>

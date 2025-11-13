@@ -710,7 +710,7 @@ VALUES
 	('Sword & Shield','Sword & Shield','2020-02-07','ssh'),
 	('Rebel Clash','Sword & Shield','2020-05-01','rcl'),
 	('Darkness Ablaze','Sword & Shield','2020-08-14','daa'),
-	('Champion''s Path','Sword & Shield','2929-09-25','cpa'),
+	('Champion''s Path','Sword & Shield','2020-09-25','cpa'),
 	('Vivid Voltage','Sword & Shield','2020-11-13','viv'),
 	('Shinning Fates','Sword & Shield','2021-02-19','shf'),
 	('Battle Styles','Sword & Shield','2021-04-19','bst'),

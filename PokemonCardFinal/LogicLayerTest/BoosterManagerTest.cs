@@ -8,7 +8,7 @@ namespace LogicLayerTest;
 [TestClass]
 public class BoosterManagerTest
 {
-    IBoosterManger _boosterManager;
+    IBoosterManager _boosterManager;
 
     [TestInitialize]
     public void TestSetup() 

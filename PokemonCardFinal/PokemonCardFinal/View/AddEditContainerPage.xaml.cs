@@ -31,6 +31,7 @@ namespace PokemonCardFinal.View
         bool _isAbilityLoaded;
         bool _isAlternateArtLoaded;
         bool _isArtistLoaded;
+        bool _isBoosterLoaded;
         bool _isElementLoaded;  
         
         public AddEditContainerPage()
@@ -64,9 +65,10 @@ namespace PokemonCardFinal.View
         private void SetAllLoaded(bool option = false)
         {
             _isAbilityLoaded = option;
-            _isElementLoaded = option;
             _isArtistLoaded = option;
             _isAlternateArtLoaded = option;
+            _isBoosterLoaded = option;
+            _isElementLoaded = option;
         }
 
         private void ListPages() 
@@ -93,6 +95,12 @@ namespace PokemonCardFinal.View
                 SetAllLoaded();
                 _isArtistLoaded = true;
                 frmArtist.Navigate(new ArtistRecordsPage());
+            }
+            else if (tabController.SelectedItem == tabBooster && !_isBoosterLoaded)
+            {
+                SetAllLoaded();
+                _isBoosterLoaded = true;
+                frmBooster.Navigate(new BoosterRecordsPage());
             }
             else if (tabController.SelectedItem == tabElement && !_isElementLoaded)
             {
@@ -127,6 +135,12 @@ namespace PokemonCardFinal.View
                 SetAllLoaded();
                 _isArtistLoaded = true;
                 frmArtist.Navigate(new AddArtistPage());
+            }
+            else if (tabController.SelectedItem == tabBooster && !_isBoosterLoaded)
+            {
+                SetAllLoaded();
+                _isBoosterLoaded = true;
+                frmBooster.Navigate(new AddBoosterPage());
             }
             else if (!_isElementLoaded && tabController.SelectedItem == tabElement)
             {

@@ -22,6 +22,10 @@
             <TabItem x:Name="tabArtist" Header="Artist">
                 <Frame x:Name="frmArtist" NavigationUIVisibility="Hidden"/>
             </TabItem>
+            
+            <TabItem x:Name="tabBooster" Header="Booster Packs">
+                <Frame x:Name="frmBooster" NavigationUIVisibility="Hidden"/>
+            </TabItem>
 
             <!--Start of the Element Type Tab-->
             <TabItem x:Name="tabElement" Header="Element Type">
