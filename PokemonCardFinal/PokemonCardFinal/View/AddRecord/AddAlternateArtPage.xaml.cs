@@ -27,14 +27,14 @@ namespace PokemonCardFinal.View.AddRecord
         IAltArtManager _altArtManager;
         AlternateArt _alternateArt;
         AddEditContainerPage _containerPage;
-        bool _isEditMode;
+        bool _isAddMode;
 
 
         public AddAlternateArtPage()
         {
             InitializeComponent();
             _altArtManager = new AltArtManager();
-            _isEditMode = false;
+            _isAddMode = true;
         }
 
         public AddAlternateArtPage(AlternateArt alternateArt, IAltArtManager altArtManager,
@@ -44,12 +44,12 @@ namespace PokemonCardFinal.View.AddRecord
             _alternateArt = alternateArt;
             _altArtManager = altArtManager;
             _containerPage = containerPage;
-            _isEditMode = true;
+            _isAddMode = false;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 txtAlternateID.Focus();
             }
@@ -68,7 +68,7 @@ namespace PokemonCardFinal.View.AddRecord
         }
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 ClearTextAreas();
                 txtAlternateID.Focus();
@@ -82,7 +82,7 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 CreateModeSaveButton();
 

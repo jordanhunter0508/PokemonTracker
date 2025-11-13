@@ -28,12 +28,12 @@ namespace PokemonCardFinal.View.AddRecord
         IArtistManager _artistManager;
         Artist _artist;
         AddEditContainerPage _containerPage;
-        bool _isEditMode;
+        bool _isAddMode;
         public AddArtistPage()
         {
             InitializeComponent();
             _artistManager = new ArtistManager();
-            _isEditMode = false;
+            _isAddMode = true;
         }
 
         public AddArtistPage(Artist artist, IArtistManager artistManager, AddEditContainerPage containerPage)
@@ -42,11 +42,11 @@ namespace PokemonCardFinal.View.AddRecord
             _artist = artist;
             _artistManager = artistManager;
             _containerPage = containerPage;
-            _isEditMode = true;
+            _isAddMode = false;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 //
             }
@@ -67,7 +67,7 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 ClearTextAreas();
                 txtGivenName.Focus();
@@ -97,7 +97,7 @@ namespace PokemonCardFinal.View.AddRecord
                 return;
             }
 
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 CreateModeSaveButton(givenName, surname);
 

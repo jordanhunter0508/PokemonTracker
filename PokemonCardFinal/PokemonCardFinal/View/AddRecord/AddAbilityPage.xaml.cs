@@ -27,13 +27,13 @@ namespace PokemonCardFinal.View.AddRecord
         IAbilityManager _abilityManager;
         Ability _ability;
         AddEditContainerPage _containerPage;
-        bool _isEditMode;
+        bool _isAddMode;
 
         public AddAbilityPage()
         {
             InitializeComponent();
             _abilityManager = new AbilityManager();
-            _isEditMode = false;
+            _isAddMode = true;
         }
 
         public AddAbilityPage(Ability ability, IAbilityManager abilityManager, AddEditContainerPage containerPage)
@@ -42,12 +42,12 @@ namespace PokemonCardFinal.View.AddRecord
             _ability = ability;
             _abilityManager = abilityManager;
             _containerPage = containerPage;
-            _isEditMode = true;
+            _isAddMode = false;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 txtAbilityName.Focus();
             }
@@ -72,7 +72,7 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 ClearTextAreas();
                 txtAbilityName.Focus();
@@ -86,7 +86,7 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 CreateModeSaveButton();
 

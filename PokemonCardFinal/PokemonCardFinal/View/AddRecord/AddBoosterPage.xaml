@@ -6,9 +6,51 @@
       xmlns:local="clr-namespace:PokemonCardFinal.View.AddRecord"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="AddBoosterPage">
+      Title="AddBoosterPage" Loaded="Page_Loaded">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!--Booster ID-->
+        <Label x:Name="lblBoosterID" Content="Booster Name:" Grid.Column="0" Grid.Row="0"
+                Margin="20 0" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtBoosterID" Grid.Column="0" Grid.Row="0" Width="200" Height="25" 
+                Margin="20 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+        <!--Series-->
+        <Label x:Name="lblSeries" Content="Series Name" Grid.Column="1" Grid.Row="0"
+                Margin="20 0" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtSeries" Grid.Column="1" Grid.Row="0" Width="200" Height="25" 
+                Margin="20 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
         
+        <!--Release Date-->
+        <Label x:Name="lblReleaseDate" Content="Release Date:" Grid.Column="0" Grid.Row="1"
+                Margin="20 0" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtReleaseDate" Grid.Column="0" Grid.Row="1" Width="100" Height="25" 
+                Margin="120 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+        <!--Abbreviation-->
+        <Label x:Name="lblAbbreviation" Content="Abbreviation:" Grid.Column="1" Grid.Row="1"
+                Margin="20 0" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtAbbreviation" Grid.Column="1" Grid.Row="1" Width="100" Height="25" 
+                Margin="120 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+
+        <!--Buttons-->
+        <Button x:Name="btnSaveElement" Content="Save" Grid.Row="2" Grid.Column="0" Margin="0 20"
+                Width="100" Height=" 50" HorizontalAlignment="Left" VerticalAlignment="Top"
+                Click="btnSaveElement_Click" />
+        <Button x:Name="btnClearElement" Content="Clear" Grid.Row="2" Grid.Column="0" Margin="0 20"
+                Width="100" Height=" 50"  HorizontalAlignment="Right" VerticalAlignment="Top" 
+                Click="btnClearElement_Click" />
+
     </Grid>
 </Page>

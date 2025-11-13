@@ -27,13 +27,13 @@ namespace PokemonCardFinal.View.AddRecord
         IElementManager _elementManager;
         ElementType _elementType;
         AddEditContainerPage _containerPage;
-        bool _isEditMode;
+        bool _isAddMode;
 
         public AddElementPage()
         {
             InitializeComponent();
             _elementManager = new ElementManager();
-            _isEditMode = false;
+            _isAddMode = true;
         }
 
         public AddElementPage(ElementType element, IElementManager elementManager, AddEditContainerPage containerPage)
@@ -42,12 +42,12 @@ namespace PokemonCardFinal.View.AddRecord
             _elementType = element;
             _elementManager = elementManager;
             _containerPage = containerPage;
-            _isEditMode = true;
+            _isAddMode = false;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 txtElementTypeID.Focus();
             }
@@ -69,7 +69,7 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void btnClearElement_Click(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode)
+            if (_isAddMode)
             {
                 ClearTextAreas();
                 txtElementTypeID.Focus();
@@ -83,7 +83,7 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void btnSaveElement_Click(object sender, RoutedEventArgs e)
         {
-            if (!_isEditMode) 
+            if (_isAddMode) 
             {
                 CreateModeSaveButton();
 
