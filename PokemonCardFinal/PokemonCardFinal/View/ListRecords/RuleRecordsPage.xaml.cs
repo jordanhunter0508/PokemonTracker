@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,27 +20,27 @@ using PokemonCardFinal.View.AddRecord;
 namespace PokemonCardFinal.View.ListRecords
 {
     /// <summary>
-    /// Interaction logic for ArtistRecordsPage.xaml
+    /// Interaction logic for RuleRecordsPage.xaml
     /// </summary>
-    public partial class ArtistRecordsPage : Page
+    public partial class RuleRecordsPage : Page
     {
-        Artist[] _artists;
-        IArtistManager _artistManager;
-        Artist _selectedArtist;
-        public ArtistRecordsPage()
+        List<PokemonRule> _rules;
+        IRuleManager _ruleManager;
+        PokemonRule _selectedRule;
+        public RuleRecordsPage()
         {
             InitializeComponent();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            _artistManager = new ArtistManager();
+            _ruleManager = new RuleManager();
             LoadList();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedArtist == null)
+            if (_selectedRule == null)
             {
                 return;
             }
@@ -49,7 +48,7 @@ namespace PokemonCardFinal.View.ListRecords
             // Pop up window to confirm if the admin wants to delete the record
             MessageBoxResult conformationWindow = MessageBox.Show
             (
-                "Are you sure you want to delete " + _selectedArtist.GivenName + ", " + _selectedArtist.Surname + ".",
+                "Are you sure you want to delete " + _selectedRule.RuleID + ".",
                 "Confirm Delete",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning
@@ -62,25 +61,25 @@ namespace PokemonCardFinal.View.ListRecords
 
             try
             {
-                if (_artistManager.DeleteArtist(_selectedArtist.ArtistID))
+                if (_ruleManager.DeleteRule(_selectedRule.RuleID))
                 {
-                    MessageBox.Show("The artist was successfully deleted");
+                    MessageBox.Show("The card rule was successfully deleted");
                     LoadList();
                 }
                 else
                 {
-                    MessageBox.Show("The artist could not be deleted.");
+                    MessageBox.Show("The card rule could not be deleted.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("The artist failed to be deleted.");
+                MessageBox.Show("The card rule failed to be deleted.");
             }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedArtist == null)
+            if (_selectedRule == null)
             {
                 return;
             }
@@ -93,42 +92,39 @@ namespace PokemonCardFinal.View.ListRecords
                 mainWindow.frmMain.Navigate(containerPage);
 
                 // When the addRecordPage is loaded change the inner page
-                // to addElementPage
                 containerPage.Loaded += (s, args) =>
                 {
                     containerPage.IsListView = false;
-                    //
-                    containerPage.tabController.SelectedItem = containerPage.tabArtist;
-                    containerPage.frmArtist.Navigate
+                    containerPage.tabController.SelectedItem = containerPage.tabRule;
+                    containerPage.frmRule.Navigate
                     (
-                        new AddArtistPage(_selectedArtist, _artistManager, containerPage)
+                        new AddRulePage(_selectedRule, _ruleManager, containerPage)
                     );
                 };
             }
         }
 
-        private void datArtist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void datRule_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _selectedArtist = datArtist.SelectedItem as Artist;
+            _selectedRule = datRule.SelectedItem as PokemonRule;
         }
 
         private void LoadList()
         {
             try
             {
-                _artists = _artistManager.FormatArtists(_artistManager.GetArtists()).ToArray();
-                _selectedArtist = _artists[0];
-                datArtist.ItemsSource = _artists;
+                _rules = _ruleManager.GetRules();
+                _selectedRule = _rules[0];
+                datRule.ItemsSource = _rules;
 
-                datArtist.Columns[1].Header = "Given Name";
-                datArtist.Columns[1].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
-                datArtist.Columns[2].Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                datRule.Columns[0].Header = "Rule Name";
 
-                datArtist.Columns.RemoveAt(0);
+                datRule.Columns[0].Width = new DataGridLength(175);
+                datRule.Columns[1].Width = new DataGridLength(1,DataGridLengthUnitType.Star);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to load the list of artists.");
+                MessageBox.Show("Failed to load the list of rules.\n" + ex.Message);
             }
         }
     }

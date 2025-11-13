@@ -40,6 +40,11 @@ namespace PokemonCardFinal.View.ListRecords
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (_selectedBooster == null)
+            {
+                return;
+            }
+
             // Pop up window to confirm if the admin wants to delete the record
             MessageBoxResult conformationWindow = MessageBox.Show
             (
@@ -49,8 +54,7 @@ namespace PokemonCardFinal.View.ListRecords
                 MessageBoxImage.Warning
             );
 
-            if (conformationWindow != MessageBoxResult.Yes ||
-                _selectedBooster == null)
+            if (conformationWindow != MessageBoxResult.Yes)
             {
                 return;
             }

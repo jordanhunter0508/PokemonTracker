@@ -26,15 +26,16 @@
             <TabItem x:Name="tabBooster" Header="Booster Packs">
                 <Frame x:Name="frmBooster" NavigationUIVisibility="Hidden"/>
             </TabItem>
-
-            <!--Start of the Element Type Tab-->
+            
             <TabItem x:Name="tabElement" Header="Element Type">
                 <Frame x:Name="frmElement" NavigationUIVisibility="Hidden"/>
             </TabItem>
-
-            <TabItem x:Name="tabMove" Header="Move">
-
+            
+            <TabItem x:Name="tabRule" Header="Card Rules">
+                <Frame x:Name="frmRule" NavigationUIVisibility="Hidden"/>
             </TabItem>
+            
+            
         </TabControl>
     </Grid>
 </Page>
