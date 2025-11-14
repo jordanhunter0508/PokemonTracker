@@ -45,12 +45,12 @@
 
 
         <!--Buttons-->
-        <Button x:Name="btnSaveElement" Content="Save" Grid.Row="2" Grid.Column="0" Margin="0 20"
+        <Button x:Name="btnSave" Content="Save" Grid.Row="2" Grid.Column="0" Margin="0 20"
                 Width="100" Height=" 50" HorizontalAlignment="Left" VerticalAlignment="Top"
-                Click="btnSaveElement_Click" />
-        <Button x:Name="btnClearElement" Content="Clear" Grid.Row="2" Grid.Column="0" Margin="0 20"
+                Click="btnSave_Click" />
+        <Button x:Name="btnClear" Content="Clear" Grid.Row="2" Grid.Column="0" Margin="0 20"
                 Width="100" Height=" 50"  HorizontalAlignment="Right" VerticalAlignment="Top" 
-                Click="btnClearElement_Click" />
+                Click="btnClear_Click" />
 
     </Grid>
 </Page>

@@ -33,10 +33,10 @@
                 Width="200" Height="75" HorizontalAlignment="Right" TextWrapping="Wrap" Margin="0 0 10 0"/>
 
         <!--Element Buttons-->
-        <Button x:Name="btnSaveElement" Content="Save" Grid.Row="2" Grid.Column="0"
-                Width="100" Height=" 50" HorizontalAlignment="Left" Click="btnSaveElement_Click" />
-        <Button x:Name="btnClearElement" Content="Clear" Grid.Row="2" Grid.Column="0"
-                         Width="100" Height=" 50"  HorizontalAlignment="Right" Click="btnClearElement_Click" />
+        <Button x:Name="btnSave" Content="Save" Grid.Row="2" Grid.Column="0"
+                Width="100" Height=" 50" HorizontalAlignment="Left" Click="btnSave_Click" />
+        <Button x:Name="btnClear" Content="Clear" Grid.Row="2" Grid.Column="0"
+                         Width="100" Height=" 50"  HorizontalAlignment="Right" Click="btnClear_Click" />
 
     </Grid>
 </Page>

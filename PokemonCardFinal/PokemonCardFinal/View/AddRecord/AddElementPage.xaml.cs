@@ -54,7 +54,7 @@ namespace PokemonCardFinal.View.AddRecord
             else
             {
                 txtDescription.Focus();
-                btnClearElement.Content = "Go Back";
+                btnClear.Content = "Go Back";
                 txtElementTypeID.Text = _elementType.ElementTypeID;
                 txtDescription.Text = _elementType.Description;
                 txtElementTypeID.IsEnabled = false;
@@ -64,10 +64,10 @@ namespace PokemonCardFinal.View.AddRecord
                 _containerPage.tabElement.IsEnabled = true;
             }
 
-            btnSaveElement.IsDefault = true;
+            btnSave.IsDefault = true;
         }
 
-        private void btnClearElement_Click(object sender, RoutedEventArgs e)
+        private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             if (_isAddMode)
             {
@@ -81,8 +81,13 @@ namespace PokemonCardFinal.View.AddRecord
             }
         }
 
-        private void btnSaveElement_Click(object sender, RoutedEventArgs e)
+        private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (!ValidateInput())
+            {
+                return;
+            }
+
             if (_isAddMode) 
             {
                 CreateModeSaveButton();
@@ -98,23 +103,6 @@ namespace PokemonCardFinal.View.AddRecord
         {
             string elementID = txtElementTypeID.Text;
             string description = txtDescription.Text;
-
-            if (elementID.Replace(" ", "") == "" || elementID == null ||
-                elementID.Length > 10 || elementID.Any(char.IsDigit))
-            {
-                MessageBox.Show("The element name entered was invalid.");
-                txtElementTypeID.SelectAll();
-                txtElementTypeID.Focus();
-                return;
-            }
-            if (description.Replace(" ","") == "" || description == null || description.Length > 100)
-            {
-                MessageBox.Show("The description entered was invalid.");
-                txtDescription.SelectAll();
-                txtDescription.Focus();
-                return;
-            }
-
             try
             {
                 if (_elementManager.AddElementType(elementID, description))
@@ -138,15 +126,6 @@ namespace PokemonCardFinal.View.AddRecord
         {
             string elementID = txtElementTypeID.Text;
             string description = txtDescription.Text;
-
-            if (description.Replace(" ", "") == "" || description == null || description.Length > 100)
-            {
-                MessageBox.Show("The description entered was invalid.");
-                txtDescription.SelectAll();
-                txtDescription.Focus();
-                return;
-            }
-
             try
             {
                 if (_elementManager.EditElementDescritpionByElementTypeID(elementID, description))
@@ -166,6 +145,31 @@ namespace PokemonCardFinal.View.AddRecord
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        private bool ValidateInput() 
+        {
+            bool isValid = true;
+            string elementID = txtElementTypeID.Text;
+            string description = txtDescription.Text;
+
+            if (elementID.Replace(" ", "") == "" || elementID == null ||
+                elementID.Length > 10 || elementID.Any(char.IsDigit))
+            {
+                MessageBox.Show("The element name entered was invalid.");
+                txtElementTypeID.SelectAll();
+                txtElementTypeID.Focus();
+                isValid = false;
+            }
+
+            else if (description.Replace(" ", "") == "" || description == null || description.Length > 100)
+            {
+                MessageBox.Show("The description entered was invalid.");
+                txtDescription.SelectAll();
+                txtDescription.Focus();
+                isValid = false;
+            }
+
+            return isValid;
         }
 
         private void ClearTextAreas()

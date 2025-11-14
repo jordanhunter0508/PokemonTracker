@@ -82,6 +82,11 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (!ValidateInput())
+            {
+                return;
+            }
+
             if (_isAddMode)
             {
                 CreateModeSaveButton();
@@ -95,43 +100,23 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void CreateModeSaveButton()
         { 
-            string alternateID = txtAlternateID.Text;
-            string description = txtDescription.Text;
-
-            if (alternateID.Replace(" ", "") == "" || alternateID == null ||
-                alternateID.Length > 50 || alternateID.Any(char.IsDigit))
-            {
-                MessageBox.Show("The alternate art name entered was invalid.");
-                txtAlternateID.SelectAll();
-                txtAlternateID.Focus();
-                return;
-            }
-            if (description.Replace(" ", "") == "" || description == null ||
-                description.Length > 250)
-            {
-                MessageBox.Show("The alternate art description entered was invalid.");
-                txtDescription.SelectAll();
-                txtDescription.Focus();
-                return;
-            }
-
             AlternateArt alternateArt = new AlternateArt()
             { 
-                AlternateArtID = alternateID,
-                Description = description,
+                AlternateArtID = txtAlternateID.Text,
+                Description = txtDescription.Text
             };
 
             try
             {
                 if (_altArtManager.AddAlternateArt(alternateArt))
                 {
-                    MessageBox.Show("The alternate art " + alternateID + " was successfully created.");
+                    MessageBox.Show("The alternate art " + alternateArt.AlternateArtID + " was successfully created.");
                     ClearTextAreas();
                     txtAlternateID.Focus();
                 }
                 else
                 {
-                    MessageBox.Show("The alternate art " + alternateID + " was not created.");
+                    MessageBox.Show("The alternate art " + alternateArt.AlternateArtID + " was not created.");
                 }
             }
             catch (Exception ex)
@@ -143,30 +128,22 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void EditModeSaveButton()
         {
-            string alternateID = txtAlternateID.Text;
-            string description = txtDescription.Text;
-
-            if (description.Replace(" ", "") == "" || description == null ||
-                description.Length > 250)
+            AlternateArt alternateArt = new AlternateArt()
             {
-                MessageBox.Show("The alternate art name entered was invalid.");
-                txtAlternateID.SelectAll();
-                txtAlternateID.Focus();
-                return;
-            }
-
-            _alternateArt.Description = description;
+                AlternateArtID = _alternateArt.AlternateArtID,
+                Description = txtDescription.Text
+            };
 
             try
             {
-                if (_altArtManager.EditAlternateArt(_alternateArt))
+                if (_altArtManager.EditAlternateArt(alternateArt))
                 {
-                    MessageBox.Show("The alternate art " + alternateID + " was successfully updated.");
+                    MessageBox.Show("The alternate art " + alternateArt.AlternateArtID + " was successfully updated.");
                     DisplayListViewPage();
                 }
                 else
                 {
-                    MessageBox.Show("The alternate art " + alternateID + " was not updated.");
+                    MessageBox.Show("The alternate art " + alternateArt.AlternateArtID + " was not updated.");
                 }
             }
             catch (Exception ex)
@@ -174,6 +151,33 @@ namespace PokemonCardFinal.View.AddRecord
 
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private bool ValidateInput()
+        { 
+            bool isValid = true;
+            string alternateID = txtAlternateID.Text;
+            string description = txtDescription.Text;
+
+            if (alternateID.Replace(" ", "") == "" || alternateID == null ||
+                alternateID.Length > 50 || alternateID.Any(char.IsDigit))
+            {
+                MessageBox.Show("The alternate art name entered was invalid.");
+                txtAlternateID.SelectAll();
+                txtAlternateID.Focus();
+                isValid = false;
+            }
+
+            else if (description.Replace(" ", "") == "" || description == null ||
+                description.Length > 250)
+            {
+                MessageBox.Show("The alternate art description entered was invalid.");
+                txtDescription.SelectAll();
+                txtDescription.Focus();
+                isValid = false;
+            }
+
+            return isValid;
         }
 
         private void ClearTextAreas()

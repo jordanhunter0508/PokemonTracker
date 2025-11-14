@@ -86,6 +86,11 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (!ValidateInput())
+            {
+                return;
+            }
+
             if (_isAddMode)
             {
                 CreateModeSaveButton();
@@ -99,53 +104,24 @@ namespace PokemonCardFinal.View.AddRecord
         
         private void CreateModeSaveButton()
         {
-            string abilityID = txtAbilityName.Text;
-            string abilityType = txtAbilityType.Text;
-            string description = txtDescription.Text;
-
-            if (abilityID.Replace(" ", "") == "" || abilityID == null ||
-                    abilityID.Length > 30)
-            {
-                MessageBox.Show("The ability name entered was invalid.");
-                txtAbilityName.SelectAll();
-                txtAbilityName.Focus();
-                return;
-            }
-            if (abilityType.Replace(" ", "") == "" || abilityType == null ||
-                        abilityType.Length > 25 || abilityType.Any(char.IsDigit))
-            {
-                MessageBox.Show("The ability type entered was invalid.");
-                txtAbilityType.SelectAll();
-                txtAbilityType.Focus();
-                return;
-            }
-            if (description.Replace(" ", "") == "" || description == null ||
-                        description.Length > 25)
-            {
-                MessageBox.Show("The ability description entered was invalid.");
-                txtDescription.SelectAll();
-                txtDescription.Focus();
-                return;
-            }
-
             Ability ability = new Ability()
             { 
-                AbilityID = abilityID,
-                AbilityType = abilityType,
-                Description = description,
+                AbilityID = txtAbilityName.Text,
+                AbilityType = txtAbilityType.Text,
+                Description = txtDescription.Text
             };
 
             try
             {
                 if (_abilityManager.AddAbility(ability))
                 {
-                    MessageBox.Show("The ability " + abilityID + " was created.");
+                    MessageBox.Show("The ability " + ability.AbilityID + " was created.");
                     ClearTextAreas();
                     txtAbilityName.Focus();
                 }
                 else
                 {
-                    MessageBox.Show("The ability " + abilityID + " was not created.");
+                    MessageBox.Show("The ability " + ability.AbilityID + " was not created.");
                 }
             }
             catch (Exception ex)
@@ -157,45 +133,66 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void EditModeSaveButton()
         {
-            string abilityType = txtAbilityType.Text;
-            string description = txtDescription.Text;
-
-            if (abilityType.Replace(" ", "") == "" || abilityType == null ||
-                        abilityType.Length > 25 || abilityType.Any(char.IsDigit))
+            Ability ability = new Ability()
             {
-                MessageBox.Show("The ability type entered was invalid.");
-                txtAbilityType.SelectAll();
-                txtAbilityType.Focus();
-                return;
-            }
-            if (description.Replace(" ", "") == "" || description == null ||
-                        description.Length > 25)
-            {
-                MessageBox.Show("The ability description entered was invalid.");
-                txtDescription.SelectAll();
-                txtDescription.Focus();
-                return;
-            }
-
-            _ability.AbilityType = abilityType;
-            _ability.Description = description;
+                AbilityID = _ability.AbilityID,
+                AbilityType = txtAbilityType.Text,
+                Description = txtDescription.Text
+            };
 
             try
             {
-                if (_abilityManager.EditAbility(_ability))
+                if (_abilityManager.EditAbility(ability))
                 {
-                    MessageBox.Show("The ability " + _ability.AbilityID + " was updated.");
+                    MessageBox.Show("The ability " + ability.AbilityID + " was updated.");
                     DisplayListViewPage();
                 }
                 else
                 {
-                    MessageBox.Show("The ability " + _ability.AbilityID + " was not updated.");
+                    MessageBox.Show("The ability " + ability.AbilityID + " was not updated.");
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        public bool ValidateInput() 
+        {
+            bool isValid = true;
+            string abilityID = txtAbilityName.Text;
+            string abilityType = txtAbilityType.Text;
+            string description = txtDescription.Text;
+
+            if (abilityID.Replace(" ", "") == "" || abilityID == null ||
+                    abilityID.Length > 30)
+            {
+                MessageBox.Show("The ability name entered was invalid.");
+                txtAbilityName.SelectAll();
+                txtAbilityName.Focus();
+                isValid = false;
+            }
+
+            else if (abilityType.Replace(" ", "") == "" || abilityType == null ||
+                        abilityType.Length > 25 || abilityType.Any(char.IsDigit))
+            {
+                MessageBox.Show("The ability type entered was invalid.");
+                txtAbilityType.SelectAll();
+                txtAbilityType.Focus();
+                isValid = false;
+            }
+
+            else if (description.Replace(" ", "") == "" || description == null ||
+                        description.Length > 650)
+            {
+                MessageBox.Show("The ability description entered was invalid.");
+                txtDescription.SelectAll();
+                txtDescription.Focus();
+                isValid = false;
+            }
+
+            return isValid;
         }
 
         private void ClearTextAreas()

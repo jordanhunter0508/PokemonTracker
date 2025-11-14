@@ -60,17 +60,17 @@ namespace PokemonCardFinal.View.AddRecord
                 txtSeries.Text = _booster.Series;
                 txtReleaseDate.Text = _booster.ReleaseDate.ToString("yyyy/MM/dd");
                 txtAbbreviation.Text = _booster.Abbreviation;
-                btnClearElement.Content = "Go Back";
+                btnClear.Content = "Go Back";
 
                 txtBoosterID.IsEnabled = false;
 
                 _containerPage.DisplayTabItems(false);
                 _containerPage.tabBooster.IsEnabled = true;
             }
-            btnSaveElement.IsDefault = true;
+            btnSave.IsDefault = true;
         }
 
-        private void btnClearElement_Click(object sender, RoutedEventArgs e)
+        private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             if (_isAddMode)
             {
@@ -84,7 +84,7 @@ namespace PokemonCardFinal.View.AddRecord
             }
         }
 
-        private void btnSaveElement_Click(object sender, RoutedEventArgs e)
+        private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidateInput())
             {
@@ -149,15 +149,19 @@ namespace PokemonCardFinal.View.AddRecord
                     MessageBox.Show("Failed to parse the date.\nPlease try again.");
                 }
 
-                _booster.Series = txtSeries.Text;
-                _booster.ReleaseDate = releaseDate;
-                _booster.Abbreviation = txtAbbreviation.Text;
+                Booster booster = new Booster()
+                {
+                    BoosterID = _booster.BoosterID,
+                    Series = txtSeries.Text,
+                    ReleaseDate = releaseDate,
+                    Abbreviation = txtAbbreviation.Text,
+                };
 
                 if (_boosterManager.EditBooster(_booster))
                 {
                     MessageBox.Show("The element " + _booster.BoosterID + " was successfully updated.");
 
-                    // Brings the user back to the ElementRecordsPage
+                    // Brings the user back to the BoosterRecordPage
                     DisplayListViewPage();
                 }
                 else
@@ -174,7 +178,7 @@ namespace PokemonCardFinal.View.AddRecord
 
         private bool ValidateInput()
         {
-            bool result = true;
+            bool isValid = true;
 
             string boosterID = txtBoosterID.Text;
             string series = txtSeries.Text;
@@ -187,13 +191,7 @@ namespace PokemonCardFinal.View.AddRecord
                 MessageBox.Show("The booster name entered was invalid.");
                 txtBoosterID.SelectAll();
                 txtBoosterID.Focus();
-                result = false;
-            }
-
-            else if (_booster != null && _booster.BoosterID != boosterID)
-            {
-                MessageBox.Show("The booster id was changed.\nPlease change it back to it's original value.");
-                result = false;
+                isValid = false;
             }
 
             else if (series.Replace(" ", "") == "" || series == null ||
@@ -202,7 +200,7 @@ namespace PokemonCardFinal.View.AddRecord
                 MessageBox.Show("The series name entered was invalid.");
                 txtSeries.SelectAll();
                 txtSeries.Focus();
-                result = false;
+                isValid = false;
             }
 
             else if (!DateTime.TryParse(txtReleaseDate.Text, out releaseDate))
@@ -210,7 +208,7 @@ namespace PokemonCardFinal.View.AddRecord
                 MessageBox.Show("The release year entered was invalid.");
                 txtReleaseDate.SelectAll();
                 txtReleaseDate.Focus();
-                result = false;
+                isValid = false;
             }
 
             else if (abbreviation.Replace(" ", "") == "" || abbreviation == null ||
@@ -219,10 +217,10 @@ namespace PokemonCardFinal.View.AddRecord
                 MessageBox.Show("The abbreviation entered was invalid.");
                 txtAbbreviation.SelectAll();
                 txtAbbreviation.Focus();
-                result = false;
+                isValid = false;
             }
 
-            return result;
+            return isValid;
         }
 
         private void ClearTextAreas()
