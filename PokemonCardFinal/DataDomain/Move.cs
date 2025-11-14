@@ -16,7 +16,13 @@ namespace DataDomain
 
     public class MoveVM : Move
     {
-        public List<string> ElementTypeIDs { get; set; }
-        public List<int> Quantity {  get; set; }
+        public List<MoveCost> Costs { get; set; }
+    }
+
+    public class MoveCost
+    {
+        public string MoveID { get; set; }
+        public string ElementType { get; set; }     // Could use a ElementType object if description is needed
+        public int Quantity { get; set; }
     }
 }

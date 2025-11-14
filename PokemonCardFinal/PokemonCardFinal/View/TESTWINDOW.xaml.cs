@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using Microsoft.VisualBasic;
 
 namespace PokemonCardFinal.View
 {
@@ -34,6 +35,28 @@ namespace PokemonCardFinal.View
             //TestPokemonRule();
             //TestAbility();
             //TestAlternateArt();
+
+            MoveManager moveManager = new MoveManager();
+            Move move = moveManager.GetMoveByMoveID("shadow bind");
+            //MoveVM moveVM = moveManager.GetMoveVMByMoveID("shadow bind");
+
+            //lblName.Content = moveVM.MoveID + ", " + moveVM.Damage + ", " + moveVM.Description + "\n" +
+            //moveVM.Costs[0].ElementType + ", " + moveVM.Costs[0].Quantity + "\n" +
+            //moveVM.Costs[1].ElementType + ", " + moveVM.Costs[1].Quantity;
+
+            List<MoveVM> moveVMs = moveManager.GetMoveVMs();
+            MessageBox.Show(moveVMs.Count.ToString());
+
+            foreach (MoveVM moveVM in moveVMs)
+            {
+                if (moveVM.Costs.Count == 0)
+                {
+                    lblName.Content += "\n" + moveVM.MoveID + ", " + moveVM.Damage + ", " + moveVM.Description;
+                }
+                lblName.Content += "\n" + moveVM.MoveID + ", " + moveVM.Damage + ", " + moveVM.Description + "\n" +
+                moveVM.Costs[0].ElementType + ", " + moveVM.Costs[0].Quantity;
+            }
+
         }
 
         private void TestAlternateArt()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace DataAccess
         /// </summary>
         public Move SelectMoveByMoveID(string moveID)
         {
-            Move restultMove = null;
+            Move resultMoves = null;
 
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_move_by_moveid";
@@ -38,7 +39,7 @@ namespace DataAccess
                 if (reader.HasRows)
                 {
                     reader.Read();
-                    restultMove = new Move()
+                    resultMoves = new Move()
                     {
                         MoveID = reader.GetString(0),
                         Damage = reader.GetInt32(1),
@@ -55,9 +56,115 @@ namespace DataAccess
                 conn.Close();
             }
 
-            return restultMove;
+            return resultMoves;
         }
-    
-    
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_select_move_cost_by_moveid
+        /// </summary>
+        public List<MoveCost> SelectMoveCostsByMoveID(string moveID)
+        {
+            List<MoveCost> resultMoveCosts = new List<MoveCost>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_move_cost_by_moveid";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters["@MoveID"].Value = moveID;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        resultMoveCosts.Add(new MoveCost()
+                        {
+                            MoveID = reader.GetString(0),
+                            ElementType = reader.GetString(1),
+                            Quantity = reader.GetInt32(2)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return resultMoveCosts;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_select_moves_and_cost
+        /// </summary>
+        public List<MoveVM> SelectMoveVMs()
+        {
+            Dictionary<string, MoveVM> results = new Dictionary<string, MoveVM>();
+;
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_moves_and_cost";
+            SqlCommand cmd = new SqlCommand( cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        string moveID = reader.GetString(0);
+                        Debug.WriteLine(moveID);
+
+                        // If this is the first time seeing this MoveID, add it
+                        if (!results.ContainsKey(moveID))
+                        {
+                            results[moveID] = new MoveVM
+                            {
+                                MoveID = moveID,
+                                Damage = reader.GetInt32(1),
+                                Description = reader.GetString(2),
+                                Costs = new List<MoveCost>()
+                            };
+                        }
+
+                        // Add MoveCost (each row has a cost)
+                        results[moveID].Costs.Add(new MoveCost
+                        {
+                            MoveID = moveID,
+                            ElementType = reader.GetString(3),
+                            Quantity = reader.GetInt32(4)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            { 
+                conn.Close(); 
+            }
+            return results.Values.ToList();
+        }
     }
 }

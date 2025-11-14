@@ -161,7 +161,7 @@ CREATE TABLE [dbo].[ElementType]
 	
 	CONSTRAINT [pk_elementtype_elementtypeid] PRIMARY KEY ([ElementTypeID] ASC)
 )
-Go
+GO
 
 /*
 Only stores Name, Damage, and Description because
@@ -512,35 +512,6 @@ AS
 			AND	@CurrentPasswordHash != @NewPasswordHash
 			AND	[Users].[Email] = @Email
 		RETURN 	@@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_select_move_by_moveid ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_move_by_moveid]
-	(
-		@MoveID			[nvarchar](30)
-	)
-AS
-	BEGIN
-		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description]
-		FROM	[Move]
-		WHERE	[Move].[MoveID] LIKE @MoveID;
-	END
-GO
-
-PRINT '*** creating sp_select_all_fields_for_move_by_moveid ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_all_fields_for_move_by_moveid]
-	(
-		@MoveID			[nvarchar](30)
-	)
-AS
-	BEGIN
-		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description],
-				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
-		FROM	[Move] JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
-		WHERE	[Move].[MoveID] LIKE @MoveID;
 	END
 GO
 
@@ -1010,6 +981,63 @@ AS
 		DELETE 	[AlternateArt]
 		WHERE 	[AlternateArt].[AlternateArtID] = @AlternateArtID
 		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_select_move_by_moveid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_move_by_moveid]
+	(
+		@MoveID			[nvarchar](30)
+	)
+AS
+	BEGIN
+		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description]
+		FROM	[Move]
+		WHERE	[Move].[MoveID] = @MoveID;
+	END
+GO
+
+PRINT '*** creating sp_select_move_cost_by_moveid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_move_cost_by_moveid]
+	(
+		@MoveID			[nvarchar](30)
+	)
+AS
+	BEGIN
+		SELECT	[MoveCost].[MoveID],[MoveCost].[ElementTypeID],
+				[MoveCost].[Quantity]
+		FROM	[MoveCost] JOIN [ElementType] ON 
+				[MoveCost].[ElementTypeID] = [ElementType].[ElementTypeID]
+		WHERE	[MoveCost].[MoveID] = @MoveID;
+	END
+GO
+
+PRINT '*** creating sp_select_moves_and_cost ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_moves_and_cost]
+AS
+	BEGIN
+		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description],
+				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
+		FROM	[Move] JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID];
+	END
+GO
+
+PRINT '*** creating sp_select_moves ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_moves]
+AS
+	BEGIN
+		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description]
+		FROM 	[Move] 
+		WHERE	NOT EXISTS
+			(
+				SELECT 	[MoveCost].[MoveID]
+				FROM 	[MoveCost]
+				WHERE 	[MoveCost].[MoveID] = [Move].[MoveID]
+			);
 	END
 GO
 

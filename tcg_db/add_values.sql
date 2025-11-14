@@ -132,7 +132,8 @@ INSERT INTO [dbo].[Move]
 	([MoveID],[Damage],[Description])
 VALUES
 	('shadow bind',150,'During your opponent''s next turn, the Defending Pokemon can''t retreat.'),
-	('merciless blade',110,'If your opponent''s active pokemon already has any damage counters on it, this attack does 100 damage.')
+	('merciless blade',110,'If your opponent''s active pokemon already has any damage counters on it, this attack does 100 damage.'),
+	('test',110,'This is a quick to see what heppends if it has not cost.')
 GO
 
 PRINT '*** adding to MoveCost ***'
@@ -142,7 +143,9 @@ INSERT INTO [dbo].[MoveCost]
 VALUES
 	('shadow bind','psychic',2),
 	('shadow bind','colorless',1),
-	('merciless blade','dark',2)
+	('merciless blade','dark',2),
+	('merciless blade','colorless',2),
+	('merciless blade','psychic',2)
 GO
 
 PRINT '*** adding to Artist Table ***'

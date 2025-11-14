@@ -30,29 +30,90 @@ namespace LogicLayer
             _moveAccessor = moveAccessor;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IMoveManager"/>
+        /// </summary>
         public MoveVM GetMoveVMByMoveID(string moveID)
         {
-            throw new NotImplementedException();
+            MoveVM resultMoveVM = null;
+            try
+            {
+                Move move = GetMoveByMoveID(moveID);
+
+                resultMoveVM = new MoveVM()
+                {
+                    MoveID = move.MoveID,
+                    Damage = move.Damage,
+                    Description = move.Description,
+                    Costs = GetMoveCostsByMoveID(moveID),
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Faild to get move.", ex);
+            }
+
+            if (resultMoveVM == null)
+            {
+                throw new ApplicationException("Failed to get move. Move was null.");
+            }
+
+            return resultMoveVM;
         }
 
         /// <summary>
         /// Implements from <see cref="IMoveManager"/>
         /// </summary>
-        public Move GetMovseByMoveID(string moveID)
+        public Move GetMoveByMoveID(string moveID)
         {
-            Move restultMove = null;
+            Move resultMove = null;
 
             try
             {
-                restultMove = _moveAccessor.SelectMoveByMoveID(moveID);
+                resultMove = _moveAccessor.SelectMoveByMoveID(moveID);
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to get move.", ex);
             }
 
-            return restultMove;
+            return resultMove;
         }
-    
+
+        /// <summary>
+        /// Implements from <see cref="IMoveManager"/>
+        /// </summary>
+        public List<MoveCost> GetMoveCostsByMoveID(string moveID)
+        {
+            List<MoveCost> resultMoveCosts = null;
+
+            try
+            {
+                resultMoveCosts = _moveAccessor.SelectMoveCostsByMoveID(moveID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to get move costs.", ex);
+            }
+
+            return resultMoveCosts;
+        }
+
+        public List<MoveVM> GetMoveVMs()
+        {
+            List<MoveVM> results = null;
+
+            try
+            {
+                results = _moveAccessor.SelectMoveVMs();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to get move costs.", ex);
+            }
+
+            return results;
+        }
     }
 }
