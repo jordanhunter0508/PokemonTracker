@@ -27,7 +27,7 @@ namespace DataAccess
 
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID",System.Data.SqlDbType.NVarChar,30);
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.NVarChar, 30);
             cmd.Parameters["@MoveID"].Value = moveID;
 
             try
@@ -109,15 +109,15 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IMoveAccessor"/>. Access the database
-        /// using sp_select_moves_and_cost
+        /// using sp_select_moves_with_move_cost
         /// </summary>
-        public List<MoveVM> SelectMoveVMs()
+        public List<MoveVM> SelectMoveVMsWithMoveCost()
         {
             Dictionary<string, MoveVM> results = new Dictionary<string, MoveVM>();
-;
+            ;
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_moves_and_cost";
-            SqlCommand cmd = new SqlCommand( cmdText, conn);
+            string cmdText = "sp_select_moves_with_move_cost";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             try
@@ -161,10 +161,133 @@ namespace DataAccess
                 throw ex;
             }
             finally
-            { 
-                conn.Close(); 
+            {
+                conn.Close();
             }
             return results.Values.ToList();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_select_moves_without_move_cost
+        /// </summary>
+        public List<Move> SelectMovesWithoutMoveCost()
+        {
+            List<Move> results = new List<Move>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_moves_without_move_cost";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        results.Add(new Move()
+                        {
+                            MoveID = reader.GetString(0),
+                            Damage = reader.GetInt32(1),
+                            Description = reader.GetString(2)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_insert_move
+        /// </summary>
+        public int InsertMove(Move move)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_insert_move";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@Damage", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 200);
+
+            cmd.Parameters["@MoveID"].Value = move.MoveID;
+            cmd.Parameters["@Damage"].Value = move.Damage;
+            cmd.Parameters["@Description"].Value = move.Description;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_insert_move_cost
+        /// </summary>
+        public int InsertMoveCost(MoveCost cost)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_insert_move_cost";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@ElementTypeID", System.Data.SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@MoveID"].Value = cost.MoveID;
+            cmd.Parameters["@ElementTypeID"].Value = cost.ElementType;
+            cmd.Parameters["@Quantity"].Value = cost.Quantity;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
         }
     }
 }

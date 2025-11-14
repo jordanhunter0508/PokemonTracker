@@ -32,9 +32,11 @@ namespace PokemonCardFinal.View
         bool _isAlternateArtLoaded;
         bool _isArtistLoaded;
         bool _isBoosterLoaded;
-        bool _isElementLoaded;
         bool _isRuleLoaded;
-        
+        bool _isElementLoaded;
+        bool _isMoveLoaded;
+
+
         public AddEditContainerPage()
         {
             InitializeComponent();
@@ -69,8 +71,9 @@ namespace PokemonCardFinal.View
             _isArtistLoaded = option;
             _isAlternateArtLoaded = option;
             _isBoosterLoaded = option;
-            _isElementLoaded = option;
             _isRuleLoaded = option;
+            _isElementLoaded = option;
+            _isMoveLoaded = option;
         }
 
         private void ListPages() 
@@ -104,18 +107,24 @@ namespace PokemonCardFinal.View
                 _isBoosterLoaded = true;
                 frmBooster.Navigate(new BoosterRecordsPage());
             }
-            else if (tabController.SelectedItem == tabElement && !_isElementLoaded)
-            {
-                SetAllLoaded();
-                _isElementLoaded = true;
-                frmElement.Navigate(new ElementRecordsPage());
-            }   
             else if (tabController.SelectedItem == tabRule && !_isRuleLoaded)
             {
                 SetAllLoaded();
                 _isRuleLoaded = true;
                 frmRule.Navigate(new RuleRecordsPage());
-            }   
+            }
+            else if (tabController.SelectedItem == tabElement && !_isElementLoaded)
+            {
+                SetAllLoaded();
+                _isElementLoaded = true;
+                frmElement.Navigate(new ElementRecordsPage());
+            }
+            else if (tabController.SelectedItem == tabMove && !_isMoveLoaded)
+            {
+                SetAllLoaded();
+                _isMoveLoaded = true;
+                frmMove.Navigate(new MoveRecordsPage());
+            }
         }
 
         private void AddPages() 

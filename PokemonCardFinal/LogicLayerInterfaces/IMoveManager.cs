@@ -37,13 +37,54 @@ namespace LogicLayerInterfaces
         public List<MoveCost> GetMoveCostsByMoveID(string moveID);
 
         /// <summary>
-        /// Calls the <see href="SelectMoveVMs()"/> method to get<br/>
+        /// Uses GetMoveVMsWithMoveCost and GetMovesWithoutMoveCost to create
+        /// a new list of MoveVMs that has all Moves from the database.
+        /// </summary>
+        /// <returns>Returns a List of all Moves and MoveVMs in the database</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public List<MoveVM> GetMoveVMs();
+
+        /// <summary>
+        /// Calls the <see href="SelectMoveVMsWithMoveCost()"/> method to get<br/>
         /// a list of all MoveVMs from the database.
         /// </summary>
         /// <returns>Returns a List of all MoveVMs in the database</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public List<MoveVM> GetMoveVMs();
+        public List<MoveVM> GetMoveVMsWithMoveCost();
 
-        public List<Move> GetMoves();
+        /// <summary>
+        /// Calls the <see href="SelectMovesWithoutMoveCost()"/> method to get<br/>
+        /// a list of all Moves from the database.
+        /// </summary>
+        /// <returns>Returns a List of all Moves in the database</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public List<Move> GetMovesWithoutMoveCost();
+
+        /// <summary>
+        /// Uses AddMove and AddMoveCost to insert a new MoveVM inside the database
+        /// </summary>
+        /// <param name="moveVM">New MoveVM object to be added to the database.</param>
+        /// <returns>Returns true if the Move and MoveCosts were created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if there was an error using AddMove or AddMoveCost.</exception>
+        public bool AddMoveVM(MoveVM moveVM);
+
+        /// <summary>
+        /// Passes parameters to <see href="InsertMove()"/> Then returns true
+        /// if the record was updated successfully.
+        /// </summary>
+        /// <param name="move">New Move object to be added to the database.</param>
+        /// <returns>Returns true if the Move was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the moveID is already used</exception>
+        public bool AddMove(Move move);
+
+        /// <summary>
+        /// Passes parameters to <see href="InsertMoveCost()"/> Then returns true
+        /// if the record was updated successfully.
+        /// </summary>
+        /// <param name="cost">New MoveCost object to be added to the database.</param>
+        /// <returns>Returns true if the MoveCost was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the moveID and elementyType is already used, 
+        /// MoveID or ELementType couldn't be found.</exception>
+        public bool AddMoveCost(MoveCost cost);
     }
 }

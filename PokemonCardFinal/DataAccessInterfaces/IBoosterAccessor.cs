@@ -25,7 +25,7 @@ namespace DataAccessInterfaces
 
         /// <summary>
         /// Inserts the parameters into the stored procedure to try
-        /// and create a new record for an Booster.
+        /// and create a new record for a Booster.
         /// </summary>
         /// <param name="booster">New booster object to insert.</param>
         /// <returns>Returns the number of rows affected.</returns>

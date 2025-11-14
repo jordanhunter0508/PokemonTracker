@@ -1014,9 +1014,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_moves_and_cost ***'
+PRINT '*** creating sp_select_moves_with_move_cost ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_moves_and_cost]
+CREATE PROCEDURE [dbo].[sp_select_moves_with_move_cost]
 AS
 	BEGIN
 		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description],
@@ -1025,9 +1025,9 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_moves ***'
+PRINT '*** creating sp_select_moves_without_move_cost ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_moves]
+CREATE PROCEDURE [dbo].[sp_select_moves_without_move_cost]
 AS
 	BEGIN
 		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description]
@@ -1041,15 +1041,57 @@ AS
 	END
 GO
 
+PRINT '*** creating sp_insert_move ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_move]
+	(	
+		@MoveID			[nvarchar](30),
+		@Damage			[int],
+		@Description	[nvarchar](200)
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[Move]
+			([MoveID],[Damage],[Description])
+		VALUES
+			(@MoveID,@Damage,@Description)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_insert_move_cost ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_move_cost]
+	(	
+		@MoveID			[nvarchar](30),
+		@ElementTypeID	[nvarchar](15),
+		@Quantity		[int]
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[MoveCost]
+			([MoveID],[ElementTypeID],[Quantity])
+		VALUES
+			(@MoveID,@ElementTypeID,@Quantity)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
 /*
 Work on booster sp
 
 When going to the create records page from the edit button
 make the other tabs not clickable.
 
-[AlternateArtID]		[nvarchar](50)
-[Description]			[nvarchar](250)
+Move
+[MoveID]				[nvarchar](30)
+[Damage]				[int]			
+[Description]			[nvarchar](200)
 
+Move Cost
+[MoveID]				[nvarchar](30)	
+[ElementTypeID]			[nvarchar](15)	
+[Quantity]				[int]			
 
 
 */

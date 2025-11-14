@@ -26,14 +26,20 @@
             <TabItem x:Name="tabBooster" Header="Booster Packs">
                 <Frame x:Name="frmBooster" NavigationUIVisibility="Hidden"/>
             </TabItem>
-            
+
+            <TabItem x:Name="tabRule" Header="Card Rules">
+                <Frame x:Name="frmRule" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+
             <TabItem x:Name="tabElement" Header="Element Type">
                 <Frame x:Name="frmElement" NavigationUIVisibility="Hidden"/>
             </TabItem>
             
-            <TabItem x:Name="tabRule" Header="Card Rules">
-                <Frame x:Name="frmRule" NavigationUIVisibility="Hidden"/>
+            <TabItem x:Name="tabMove" Header="Move">
+                <Frame x:Name="frmMove" NavigationUIVisibility="Hidden"/>
             </TabItem>
+            
+            
             
             
         </TabControl>

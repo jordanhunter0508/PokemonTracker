@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,7 +54,7 @@ namespace DataAccessFakes
             _moveCosts.Add(new MoveCost()
             {
                 MoveID = "test move 2",
-                ElementType = "test element",
+                ElementType = "element",
                 Quantity = 2,
             });
             _moveCosts.Add(new MoveCost()
@@ -123,11 +124,94 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IMoveAccessor"/> used for testing
         /// </summary>
-        public List<MoveVM> SelectMoveVMs()
+        public List<MoveVM> SelectMoveVMsWithMoveCost()
         {
-            List<MoveVM> results = null;
-            results = _moveVMs;
+            List<MoveVM> results = new List<MoveVM>();
+
+            foreach (MoveVM moveVM in _moveVMs)
+            {
+                // if the move does have a move cost
+                if (moveVM.Costs.Count > 0)
+                { 
+                    results.Add(moveVM);
+                    //Debug.WriteLine(moveVM.Costs.Count);
+                }
+            }
+
             return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/> used for testing
+        /// </summary>
+        public List<Move> SelectMovesWithoutMoveCost()
+        {
+            List<Move> results = new List<Move>();
+
+            foreach (MoveVM moveVM in _moveVMs)
+            {
+                // if the move does have a move cost
+                if (moveVM.Costs.Count == 0)
+                {
+                    results.Add(moveVM);
+                    //Debug.WriteLine(moveVM.Costs.Count);
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/> used for testing
+        /// </summary>
+        public int InsertMove(Move move)
+        {
+            int count = 0;
+
+            foreach (Move element in _moves)
+            {
+                if (element.MoveID == move.MoveID)
+                {
+                    throw new Exception("MoveID was already used.");
+                }
+            }
+
+            _moves.Add(move);
+            count = 1;
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/> used for testing
+        /// </summary>
+        public int InsertMoveCost(MoveCost cost)
+        {
+            int count = 0;
+
+            // Represents the ElementType table's IDs
+            string[] elements = { "element", "test element", "new element" };
+
+            if (SelectMoveByMoveID(cost.MoveID) == null)
+            { 
+                throw new Exception("MoveID does not have a corresponding Move.");
+            }
+
+            if (!elements.Contains(cost.ElementType))
+            {
+                throw new Exception("Element does not have a corresponding ElementTypeID.");
+            }
+
+            foreach (MoveCost element in _moveCosts)
+            {
+                if (element.MoveID == cost.MoveID && element.ElementType == cost.ElementType)
+                {
+                    throw new Exception("Both MoveID and ElementTypeID are duplicated.");
+                }
+            }
+
+            _moveCosts.Add(cost);
+            count = 1;
+            return count;
         }
     }
 }

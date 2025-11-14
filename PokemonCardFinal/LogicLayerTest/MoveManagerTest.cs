@@ -154,22 +154,342 @@ public class MoveManagerTest
     }
 
     [TestMethod]
-    public void TestGetMoveVMs() 
+    public void TestGetMoveVMsWithMoveCost() 
+    {
+        // arrange
+        const int expectedCount = 2;
+        const string expectedMoveID = "test move 1";
+        const int expectedCostCount = 2;
+        List<MoveVM> actualMoveVMs = null;
+
+        // act
+        actualMoveVMs = _moveManager.GetMoveVMsWithMoveCost();
+
+        // assert
+        Assert.AreEqual(expectedCount, actualMoveVMs.Count);
+        Assert.AreEqual(expectedMoveID, actualMoveVMs[0].MoveID);
+        Assert.AreEqual(expectedCostCount, actualMoveVMs[1].Costs.Count);
+    }
+
+    [TestMethod]
+    public void TestGetMovesWithoutMoveCost() 
+    {
+        // arrange
+        const int expectedCount = 1;
+        const string expectedMoveID = "test move 3";
+        List<Move> actualMoves = null;
+
+        // act
+        actualMoves = _moveManager.GetMovesWithoutMoveCost();
+
+        // assert
+        Assert.AreEqual(expectedCount, actualMoves.Count);
+        Assert.AreEqual(expectedMoveID, actualMoves[0].MoveID);
+    }
+
+    [TestMethod]
+    public void TestGetMoveVMs()
     {
         // arrange
         const int expectedCount = 3;
         const string expectedMoveID = "test move 1";
-        const int expectedCostCount = 2;
-        List<MoveVM> artists = null;
+        const int expectedCostCount = 0;
+        List<MoveVM> actualMoves = null;
 
         // act
-        artists = _moveManager.GetMoveVMs();
+        actualMoves = _moveManager.GetMoveVMs();
 
         // assert
-        Assert.AreEqual(expectedCount, artists.Count);
-        Assert.AreEqual(expectedMoveID, artists[0].MoveID);
-        Assert.AreEqual(expectedCostCount, artists[1].Costs.Count);
+        Assert.AreEqual(expectedCount, actualMoves.Count);
+        Assert.AreEqual(expectedMoveID, actualMoves[0].MoveID);
+        Assert.AreEqual(expectedCostCount, actualMoves[2].Costs.Count);
     }
 
-    //
+    [TestMethod]
+    public void TestAddMoveWithValidMove()
+    {
+        // arrange
+        Move move = new Move()
+        {
+            MoveID = "new move",
+            Damage = 100,
+            Description = "This is a new move."
+        };
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMove(move);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestAddMoveThrowsArgumentNullExceptionWithNullMove()
+    {
+        // arrange
+        Move move = null;
+        bool actualResult = true;
+
+        // act
+        actualResult = _moveManager.AddMove(move);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddMoveThrowsApplicationExceptionWithDuplicateID()
+    {
+        // arrange
+        Move move = new Move()
+        {
+            MoveID = "test move 1",
+            Damage = 100,
+            Description = "This is a new move."
+        };
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMove(move);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestAddMoveCostWithValidMove()
+    {
+        // arrange
+        MoveCost moveCost = new MoveCost()
+        {
+            MoveID = "test move 1",
+            ElementType = "new element",
+            Quantity = 2
+        };
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMoveCost(moveCost);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestAddMoveCostThrowsArgumentNullExceptionWithNullMoveCost()
+    {
+        // arrange
+        MoveCost moveCost = null;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMoveCost(moveCost);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddMoveCostThrowsApplicationExceptionWithInvalidMoveID()
+    {
+        // arrange
+        MoveCost moveCost = new MoveCost()
+        {
+            MoveID = "Failed",
+            ElementType = "element",
+            Quantity = 2
+        };
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMoveCost(moveCost);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddMoveCostThrowsApplicationExceptionWithInvalidElementTypeID()
+    {
+        // arrange
+        MoveCost moveCost = new MoveCost()
+        {
+            MoveID = "test move 1",
+            ElementType = "failed",
+            Quantity = 2
+        };
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMoveCost(moveCost);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddMoveCostThrowsApplicationExceptionWithDuplicateIDs()
+    {
+        // arrange
+        MoveCost moveCost = new MoveCost()
+        {
+            MoveID = "test move 1",
+            ElementType = "element",
+            Quantity = 2
+        };
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMoveCost(moveCost);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestAddMoveVMWithValidMoveVM()
+    {
+        // arrange
+        List<MoveCost> moveCost = new List<MoveCost>();
+        moveCost.Add(new MoveCost()
+        {
+            MoveID = "new move",
+            ElementType = "element",
+            Quantity = 2
+        });
+        moveCost.Add(new MoveCost()
+        {
+            MoveID = "new move",
+            ElementType = "new element",
+            Quantity = 1
+        });
+
+        MoveVM moveVM = new MoveVM()
+        {
+            MoveID = "new move",
+            Damage = 100,
+            Description = "This is a new move.",
+            Costs = moveCost
+        };
+
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMoveVM(moveVM);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestAddMoveVMWithEmptyMoveCostList()
+    {
+        // arrange
+        List<MoveCost> moveCost = new List<MoveCost>();
+
+        MoveVM moveVM = new MoveVM()
+        {
+            MoveID = "new move",
+            Damage = 100,
+            Description = "This is a new move.",
+            Costs = moveCost
+        };
+
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMoveVM(moveVM);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddMoveVMThrowsApplicationExceptionWithNullMoveCostList()
+    {
+        // arrange
+        List<MoveCost> moveCost = null;
+
+        MoveVM moveVM = new MoveVM()
+        {
+            MoveID = "new move",
+            Damage = 100,
+            Description = "This is a new move.",
+            Costs = moveCost
+        };
+
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMoveVM(moveVM);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddMoveVMThrowsApplicationExecptionWithDuplicateInputs()
+    {
+        // arrange
+        List<MoveCost> moveCost = new List<MoveCost>();
+
+        MoveVM moveVM = new MoveVM()
+        {
+            MoveID = "new move",
+            Damage = 100,
+            Description = "This is a new move.",
+            Costs = moveCost
+        };
+
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMoveVM(moveVM);
+        actualResult = _moveManager.AddMoveVM(moveVM);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddMoveVMThrowsApplicationExecptionWithMissingElementTypeID()
+    {
+        // arrange
+        List<MoveCost> moveCost = new List<MoveCost>();
+        moveCost.Add(new MoveCost()
+        {
+            MoveID = "new move",
+            Quantity = 2
+        });
+
+        MoveVM moveVM = new MoveVM()
+        {
+            MoveID = "new move",
+            Damage = 100,
+            Description = "This is a new move.",
+            Costs = moveCost
+        };
+
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.AddMoveVM(moveVM);
+
+        // assert
+        // do nothing
+    }
 }

@@ -25,7 +25,7 @@ namespace PokemonCardFinal.View.ListRecords
     /// </summary>
     public partial class ElementRecordsPage : Page
     {
-        ElementType[] _elementTypes;
+        List<ElementType> _elementTypes;
         IElementManager _elementManager;
         ElementType _selectedElement;
         public ElementRecordsPage()
@@ -114,7 +114,7 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                _elementTypes = _elementManager.FormatElemetTypes(_elementManager.GetElementTypes()).ToArray();
+                _elementTypes = _elementManager.FormatElemetTypes(_elementManager.GetElementTypes()).ToList();
                 _selectedElement = _elementTypes[0];
                 datElement.ItemsSource = _elementTypes;
 

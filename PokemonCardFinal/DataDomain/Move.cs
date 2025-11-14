@@ -17,6 +17,39 @@ namespace DataDomain
     public class MoveVM : Move
     {
         public List<MoveCost> Costs { get; set; }
+        public string ElementTypes 
+        { 
+            // Returns all the Element Types from Costs
+            // Joins them together using a LINQ
+            get 
+            {
+                string result = "none";
+
+                if (Costs != null &&  Costs.Count > 0)
+                {
+                    result = string.Join(", ", Costs.Select(c => c.ElementType));
+                }
+
+                return result;
+            } 
+        }
+
+        public int TotalCost
+        {
+            // Returns the sum of all Quantities
+            // from the Costs using LINQ
+            get
+            {
+                int result = 0;
+
+                if (Costs != null && Costs.Count > 0)
+                {
+                    result = Costs.Sum(c => c.Quantity);
+                }
+
+                return result;
+            }
+        }
     }
 
     public class MoveCost

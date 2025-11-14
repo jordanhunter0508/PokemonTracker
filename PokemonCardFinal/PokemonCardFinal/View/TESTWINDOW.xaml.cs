@@ -37,25 +37,38 @@ namespace PokemonCardFinal.View
             //TestAlternateArt();
 
             MoveManager moveManager = new MoveManager();
-            Move move = moveManager.GetMoveByMoveID("shadow bind");
+
+            //Move move = moveManager.GetMoveByMoveID("shadow bind");
             //MoveVM moveVM = moveManager.GetMoveVMByMoveID("shadow bind");
 
             //lblName.Content = moveVM.MoveID + ", " + moveVM.Damage + ", " + moveVM.Description + "\n" +
             //moveVM.Costs[0].ElementType + ", " + moveVM.Costs[0].Quantity + "\n" +
             //moveVM.Costs[1].ElementType + ", " + moveVM.Costs[1].Quantity;
-
-            List<MoveVM> moveVMs = moveManager.GetMoveVMs();
-            MessageBox.Show(moveVMs.Count.ToString());
-
-            foreach (MoveVM moveVM in moveVMs)
+            try
             {
-                if (moveVM.Costs.Count == 0)
+                List<MoveVM> moveVMs = moveManager.GetMoveVMs();
+                MessageBox.Show(moveVMs.Count.ToString());
+
+                foreach (MoveVM moveVM in moveVMs)
                 {
-                    lblName.Content += "\n" + moveVM.MoveID + ", " + moveVM.Damage + ", " + moveVM.Description;
+                    if (moveVM.Costs.Count == 0)
+                    {
+                        lblName.Content += "\n" + moveVM.MoveID + ", " + moveVM.Damage + ", " + moveVM.Description;
+                    }
+                    else
+                    {
+                        lblName.Content += "\n" + moveVM.MoveID + ", " + moveVM.Damage + ", " + moveVM.Description + "\n" +
+                        moveVM.Costs[0].ElementType + ", " + moveVM.Costs[0].Quantity;
+                    }
                 }
-                lblName.Content += "\n" + moveVM.MoveID + ", " + moveVM.Damage + ", " + moveVM.Description + "\n" +
-                moveVM.Costs[0].ElementType + ", " + moveVM.Costs[0].Quantity;
+
             }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            //List<Move> moves = moveManager.GetMovesWithoutMoveCost();
+            //foreach (Move move in moves)
+            //{
+            //    lblName.Content += "\n" + move.MoveID + ", " + move.Damage + ", " + move.Description;
+            //}
 
         }
 
