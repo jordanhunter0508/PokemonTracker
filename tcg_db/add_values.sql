@@ -60,13 +60,14 @@ GO
 INSERT INTO [dbo].[Ability]
 	([AbilityID],[AbilityType],[Description])
 VALUES
-
+('none','none','none'),
 ('rain dance','pokemon power','As often as you like during your turn (before your attack), you may attach 1 Water Energy card to 1 of your Water Pokémon. (This doesn''t use up your 1 Energy card attachment for the turn.) This power can''t be used if Blastoise is Asleep, Confused, or Paralyzed.'),
 ('strikes back','pokemon power','Whenever your opponent''s attack damages Machamp (even if Machamp is Knocked Out), this power does 10 damage to the attacking Pokémon. (Don''t apply Weakness and Resistance.) This power can''t be used if Machamp is Asleep, Confused, or Paralyzed when your opponent attacks.'),
 ('energy trans','pokemon power','As often as you like during your turn (before your attack), you may take 1 Grass Energy card attached to 1 of your Pokémon and attach it to a different one. This power can''t be used if your pokemon is Asleep, Confused, or Paralyzed.'),
 ('invisible wall','pokemon power','Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can''t be used if Mr. Mime is Asleep, Confused, or Paralyzed.'),
 ('thick skinned','pokemon power','Snorlax can''t become Asleep, Confused, Paralyzed, or Poisoned. This power can''t be used if Snorlax is already Asleep, Confused, or Paralyzed.'),
-('shift','pokemon power','Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than Colorless. This power can''t be used if Venomoth is Asleep, Confused, or Paralyzed.')
+('shift','pokemon power','Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than Colorless. This power can''t be used if Venomoth is Asleep, Confused, or Paralyzed.'),
+('power saver','ability','This Pokemon can''t attack unless you have 4 or more Team Rocket''s in play.')
 GO
 
 PRINT '*** adding to ElementType Table ***'
@@ -131,9 +132,10 @@ GO
 INSERT INTO [dbo].[Move]
 	([MoveID],[Damage],[Description])
 VALUES
+	('test',0,'This is a test move with no cost'),
 	('shadow bind',150,'During your opponent''s next turn, the Defending Pokemon can''t retreat.'),
 	('merciless blade',110,'If your opponent''s active pokemon already has any damage counters on it, this attack does 100 damage.'),
-	('test',110,'This is a quick to see what heppends if it has not cost.')
+	('erasure ball',160,'You may discard up to 2 Energy from your Benched Pokemon. This attack does 60 more damage for each card you discarded in this way.')
 GO
 
 PRINT '*** adding to MoveCost ***'
@@ -145,7 +147,9 @@ VALUES
 	('shadow bind','colorless',1),
 	('merciless blade','dark',2),
 	('merciless blade','colorless',2),
-	('merciless blade','psychic',2)
+	('merciless blade','psychic',2),
+	('erasure ball','psychic',2),
+	('erasure ball','colorless',1)
 GO
 
 PRINT '*** adding to Artist Table ***'
@@ -794,3 +798,35 @@ VALUES
 	('Pokemon Futsal','Miscellaneous','2020-09-11','fut20')
 GO
 
+PRINT '*** adding to Card Table ***'
+GO
+INSERT INTO [dbo].[PokemonCard]
+	(
+		[ArtistID],[AbilityID],[BoosterID],[PokemonRuleID],[ElementTypeID],
+		[Name],[BoosterNumber],[CardType],[Rarity],[WeaknessType],
+		[ResistanceType],[WeaknessValue],[ResistanceValue],[RetreatCost],
+		[Health],[Stage]
+	)
+VALUES
+	(12,'power saver','Destined Rivals','Pokemon-EX','fire','Team Rocket''s Mewtwo EX',213,'pokemon','Special Illustration Rare','dark','fighting',2,30,3,280,'basic'),
+	(14,'none','Destined Rivals','Pokemon-EX','colorless','Thi''s Card is a Test.',999,'pokemon','Special Illustration Rare','dark','fighting',2,30,3,280,'basic')
+GO
+
+PRINT '*** adding to Card Move Table ***'
+GO
+INSERT INTO [dbo].[CardMove]
+	([PokemonCardID],[MoveID])
+VALUES
+	(1,'erasure ball'),
+	(1,'test')
+GO
+
+PRINT '*** adding to Card Alternate Art Table ***'
+GO
+INSERT INTO [dbo].[CardAlternateArt]
+	([PokemonCardID],[AlternateArtID])
+VALUES
+	(1,'jumbo'),
+	(1,'reverse holo'),
+	(2,'none')
+GO

@@ -13,7 +13,7 @@ namespace DataAccessInterfaces
         /// Requests all fields from the Move table to create a Move.
         /// </summary>
         /// <param name="moveID">Used to search the database for a move</param>
-        /// <returns>Returns an Move of the specified moveID.</returns>
+        /// <returns>Returns a Move of the specified moveID.</returns>
         public Move SelectMoveByMoveID(string moveID);
 
         /// <summary>

@@ -114,7 +114,7 @@ namespace DataAccess
         public List<MoveVM> SelectMoveVMsWithMoveCost()
         {
             Dictionary<string, MoveVM> results = new Dictionary<string, MoveVM>();
-            ;
+
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_moves_with_move_cost";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
@@ -131,18 +131,17 @@ namespace DataAccess
                     while (reader.Read())
                     {
                         string moveID = reader.GetString(0);
-                        Debug.WriteLine(moveID);
 
                         // If this is the first time seeing this MoveID, add it
                         if (!results.ContainsKey(moveID))
                         {
-                            results[moveID] = new MoveVM
+                            results.Add(moveID,new MoveVM()
                             {
                                 MoveID = moveID,
                                 Damage = reader.GetInt32(1),
                                 Description = reader.GetString(2),
                                 Costs = new List<MoveCost>()
-                            };
+                            });
                         }
 
                         // Add MoveCost (each row has a cost)

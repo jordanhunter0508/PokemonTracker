@@ -159,17 +159,23 @@ namespace PokemonCardFinal.View
                 _isBoosterLoaded = true;
                 frmBooster.Navigate(new AddBoosterPage());
             }
+            else if (tabController.SelectedItem == tabRule && !_isRuleLoaded)
+            {
+                SetAllLoaded();
+                _isRuleLoaded = true;
+                frmRule.Navigate(new AddRulePage());
+            }
             else if (!_isElementLoaded && tabController.SelectedItem == tabElement)
             {
                 SetAllLoaded();
                 _isElementLoaded = true;
                 frmElement.Navigate(new AddElementPage());
             }
-            else if (tabController.SelectedItem == tabRule && !_isRuleLoaded)
+            else if (tabController.SelectedItem == tabMove && !_isMoveLoaded)
             {
                 SetAllLoaded();
-                _isRuleLoaded = true;
-                frmRule.Navigate(new AddRulePage());
+                _isMoveLoaded = true;
+                frmMove.Navigate(new AddMovePage());
             }
         }
         public void DisplayTabItems(bool option)

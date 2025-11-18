@@ -6,9 +6,45 @@
       xmlns:local="clr-namespace:PokemonCardFinal.View.AddRecord"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="AddMovePage">
+      Title="AddMovePage" Loaded="Page_Loaded">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="400"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Move ID-->
+        <Label x:Name="lblMoveID" Content="Move Name:" Grid.Row="0" Grid.Column="0"
+                VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <TextBox x:Name="txtMoveID" Grid.Row="0" Grid.Column="1" Width="200" Height="25"
+                 VerticalContentAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+
+        <!--Damage-->
+        <Label x:Name="lblDamage" Content="Damage:" Grid.Row="1" Grid.Column="0"
+               VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <TextBox x:Name="txtDamage" Grid.Row="1" Grid.Column="1" Width="200" Height="25"
+                 VerticalContentAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+
+        <!--Description-->
+        <Label x:Name="lblDescription" Content="Description:" Grid.Row="2" Grid.Column="0"
+                VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <TextBox x:Name="txtDescription" Grid.Row="2" Grid.Column="1" Width="200" Height="100"
+                VerticalContentAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+
+        <!--Buttons-->
+        <Button x:Name="btnSave" Content="Save" Grid.Row="3" Grid.Column="1"
+                Width="100" Height=" 50" HorizontalAlignment="Left"/>
+        <Button x:Name="btnClear" Content="Clear" Grid.Row="3" Grid.Column="1"
+                Width="100" Height=" 50"  HorizontalAlignment="Right"/>
+
+        <ListBox x:Name="lstElement" Grid.RowSpan="3" Grid.Column="2" Margin="20 36 20 22" SelectionMode="Extended"/>
     </Grid>
 </Page>

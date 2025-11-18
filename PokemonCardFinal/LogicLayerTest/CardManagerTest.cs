@@ -1,0 +1,175 @@
+using DataAccessFakes;
+using DataDomain;
+using LogicLayer;
+using LogicLayerInterfaces;
+
+namespace LogicLayerTest;
+
+[TestClass]
+public class CardManagerTest
+{
+    ICardManager _cardManager;
+
+    [TestInitialize]
+    public void TestSetup()
+    {
+        _cardManager = new CardManager(new CardAccessorFakes());
+    }
+
+    [TestMethod]
+    public void TestGetCardByCardIDWithValidCardID()
+    {
+        // arrange
+        const int cardID = 1;
+        Card expectedCard = new Card()
+        {
+            CardID = 1,
+            ArtistID = 1,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 1",
+            PokemonRuleID = "test pokemon rule 1",
+            ElementTypeID = "test element",
+            Name = "test 1",
+            BoosterNumber = 1,
+            CardType = "test type 1",
+            Rarity = "test rarity 1",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        Card actualCard = null;
+
+        // act
+        actualCard = _cardManager.GetCardByCardID(cardID);
+
+        // assert
+        Assert.AreEqual(expectedCard.CardID, actualCard.CardID);
+        Assert.AreEqual(expectedCard.BoosterID, actualCard.BoosterID);
+        Assert.AreEqual(expectedCard.BoosterNumber, actualCard.BoosterNumber);
+        Assert.AreEqual(expectedCard.Stage, actualCard.Stage);
+        Assert.AreEqual(expectedCard.ElementTypeID, actualCard.ElementTypeID);
+        
+    }
+
+    [TestMethod]
+    public void TestGetCardByCardIDWithInvalidCardID()
+    {
+        // arrange
+        const int cardID = 999;
+        Card expectedCard = null;
+        Card actualCard = null;
+
+        // act
+        actualCard = _cardManager.GetCardByCardID(cardID);
+
+        // assert
+        Assert.AreEqual(expectedCard, actualCard);
+    }
+
+    [TestMethod]
+    public void TestGetMovesByCardIDWithValidCardID() 
+    {
+        // arrange
+        const int cardID = 1;
+        const int count = 2;
+        const string moveName1 = "testMove1";
+        const string moveName2 = "testMove2";
+        List<MoveVM> actualMoves = null;
+
+        // act
+        actualMoves = _cardManager.GetMovesByCardID(cardID);
+
+        // assert
+        Assert.AreEqual(count, actualMoves.Count);
+        Assert.AreEqual(moveName1, actualMoves[0].MoveID);
+        Assert.AreEqual(moveName2, actualMoves[1].MoveID);
+    }
+
+    [TestMethod]
+    public void TestGetMovesByCardIDWithInvalidCardID() 
+    {
+        // arrange
+        const int cardID = 999;
+        const int count = 0;
+        List<MoveVM> actualMoves = null;
+
+        // act
+        actualMoves = _cardManager.GetMovesByCardID(cardID);
+
+        // assert
+        Assert.AreEqual(count, actualMoves.Count);
+    }
+
+    [TestMethod]
+    public void TestGetAlternateArtsByCardIDWithValidCardID()
+    {
+        // arrange
+        const int cardID = 1;
+        const int count = 2;
+        const string altArt1 = "test Alternate Art 1";
+        const string altArt2 = "test Alternate Art 2";
+        List<string> actualMoves = null;
+
+        // act
+        actualMoves = _cardManager.GetAlternateArtsByCardID(cardID);
+
+        // assert
+        Assert.AreEqual(count, actualMoves.Count);
+        Assert.AreEqual(altArt1, actualMoves[0]);
+        Assert.AreEqual(altArt2, actualMoves[1]);
+    }
+
+    [TestMethod]
+    public void TestGetAlternateArtsByCardIDWithInvalidCardID()
+    {
+        // arrange
+        const int cardID = 999;
+        const int count = 0;
+        List<string> actualMoves = null;
+
+        // act
+        actualMoves = _cardManager.GetAlternateArtsByCardID(cardID);
+
+        // assert
+        Assert.AreEqual(count, actualMoves.Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardVMByCardIDWithValidCardID() 
+    {
+        // arrange
+        const int cardID = 1;
+        const string cardName = "test 1";
+        const int costCount = 2;
+        const int altArtCount = 2;
+        CardVM actualCardVM = null;
+
+        // act
+        actualCardVM = _cardManager.GetCardVMByCardID(cardID);
+
+        // assert
+        Assert.AreEqual(cardID, actualCardVM.CardID);
+        Assert.AreEqual(costCount, actualCardVM.Moves.Count);
+        Assert.AreEqual(altArtCount, actualCardVM.AlternateArts.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestGetCardVMByCardIDThrowsApplicationExceptionWithInvaildCardID() 
+    {
+        // arrange
+        const int cardID = 999;
+        CardVM expectedVM = null;
+        CardVM actualCardVM = null;
+
+        // act
+        actualCardVM = _cardManager.GetCardVMByCardID(cardID);
+
+        // assert
+        // do nothing
+    }
+}

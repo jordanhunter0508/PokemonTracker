@@ -25,6 +25,9 @@ Need select card from booster
 Create a trigger for when an account is created add a user to to 2 collections
 1 wishlist and 1 Favorites
 
+When adding a description check if ' is used and replace it with ''
+convert evertyhing to lower case when inserting except decsription
+
 */
 
 print '' print'*** dropping the database tcg_db ***'
@@ -280,11 +283,11 @@ CREATE TABLE [dbo].[PokemonCard]
 	[AbilityID]				[nvarchar](30)		NOT NULL,	
 	[BoosterID]				[nvarchar](50)		NOT NULL,	
 	[PokemonRuleID]			[nvarchar](50)		NOT NULL,
-	[BoosterNumber]         [int]				NOT NULL,	
-	[Name]					[nvarchar](50)	    NOT NULL,	
+	[ElementTypeID]			[nvarchar](15)		NOT NULL,
+	[Name]					[nvarchar](50)	    NOT NULL,
+	[BoosterNumber]         [int]				NOT NULL,		
 	[CardType]				[nvarchar](50)    	NOT NULL,
-	[Rarity]				[nvarchar](20)		NOT NULL,
-	[Description]           [nvarchar](100)     NOT NULL	DEFAULT '',
+	[Rarity]				[nvarchar](30)		NOT NULL,
 	[WeaknessType]			[nvarchar](15)		NULL,
 	[ResistanceType]        [nvarchar](15)      NULL,
 	[WeaknessValue]         [int]               NULL,
@@ -311,7 +314,7 @@ PRINT '*** creating CardAlternateArt Table ***'
 GO
 CREATE TABLE [dbo].[CardAlternateArt]
 (
-	[PokemonCardID]			[int]				NOT NULL	IDENTITY(1,1),
+	[PokemonCardID]			[int]				NOT NULL,
 	[AlternateArtID]		[nvarchar](50)		NOT NULL,
 	
 	CONSTRAINT [pk_cardalternateart_cardalternateartid] PRIMARY KEY ([PokemonCardID],[AlternateArtID]),
@@ -1077,6 +1080,8 @@ AS
 	END
 GO
 
+
+
 /*
 Work on booster sp
 
@@ -1094,5 +1099,107 @@ Move Cost
 [Quantity]				[int]			
 
 
+
+
+
+
+
+
+select card from boosterid and booster NUMBER
+List from name
+
+
+[PokemonCardID]			[int]			
+[ArtistID]				[int]			
+[AbilityID]				[nvarchar](30)	
+[BoosterID]				[nvarchar](50)	
+[PokemonRuleID]			[nvarchar](50)
+[Name]					[nvarchar](50)	
+[BoosterNumber]         [int]				
+[CardType]				[nvarchar](50)  
+[Rarity]				[nvarchar](20)	
+[Description]           [nvarchar](100) 
+[WeaknessType]			[nvarchar](15)	
+[ResistanceType]        [nvarchar](15)  
+[WeaknessValue]         [int]           
+[ResistanceValue]       [int]           
+[RetreatCost]           [int]           
+[Health]				[int]			
+[Stage]					[nvarchar](30)
+
+
+	
 */
 
+PRINT '*** creating sp_select_card_by_card_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_card_by_card_id]
+	(
+		@PokemonCardID	[int]
+	)
+AS
+	BEGIN
+		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
+				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
+				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
+				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
+				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
+				[PokemonCard].[Health],[PokemonCard].[Stage]			
+		FROM	[PokemonCard]
+		WHERE	[PokemonCard].[PokemonCardID] = @PokemonCardID;
+	END
+GO
+
+PRINT '*** creating sp_select_moves_by_card_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_moves_by_card_id]
+	(
+		@PokemonCardID	[int]
+	)
+AS
+	BEGIN
+		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description],
+				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
+		FROM	[Move] LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
+			JOIN [CardMove] ON [Move].[MoveID] = [CardMove].[MoveID]
+		WHERE	[CardMove].[PokemonCardID] = @PokemonCardID;
+	END
+GO
+
+PRINT '*** creating sp_select_alternate_arts_by_card_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_alternate_arts_by_card_id]
+	(
+		@PokemonCardID	[int]
+	)
+AS
+	BEGIN
+		SELECT 	[CardAlternateArt].[AlternateArtID]
+		FROM	[CardAlternateArt]
+		WHERE	[CardAlternateArt].[PokemonCardID] = @PokemonCardID;
+	END
+GO
+
+PRINT '*** creating sp_select_cards ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_cards]
+	(
+		@PokemonCardID	[int]
+	)
+AS
+	BEGIN
+		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
+				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
+				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
+				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
+				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
+				[PokemonCard].[Health],[PokemonCard].[Stage],
+				[Move].[MoveID], [Move].[Damage], [Move].[Description],
+				[MoveCost].[ElementTypeID],[MoveCost].[Quantity],
+				CardAlternateArt].[AlternateArtID]
+		FROM	[PokemonCard] JOIN [CardAlternateArt] ON [PokemonCard].[PokemonCardID] = [CardAlternateArt].[PokemonCardID]
+			JOIN [CardMove] ON [PokemonCard].[PokemonCardID] = [CardMove].[PokemonCardID]
+			JOIN [Move] ON [CardMove].[MoveID] = [Move].[MoveID
+		WHERE	[PokemonCard].[PokemonCardID] = @PokemonCardID;
+	END
+GO

@@ -134,7 +134,6 @@ namespace DataAccessFakes
                 if (moveVM.Costs.Count > 0)
                 { 
                     results.Add(moveVM);
-                    //Debug.WriteLine(moveVM.Costs.Count);
                 }
             }
 
