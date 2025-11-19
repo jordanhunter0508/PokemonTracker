@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -193,6 +194,68 @@ namespace DataAccessFakes
             return results;
         }
 
+        /// <summary>
+        /// Used to help SelectMovesByCardID find the correct Move
+        /// </summary>
+        public Dictionary<int, Card> SelectCards()
+        {
+            Dictionary<int,Card> results = new Dictionary<int,Card>();
+
+            foreach (Card card in _cards)
+            {
+                results.Add(card.CardID, card);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Used to help SelectMovesByCardID find the correct Move
+        /// </summary>
+        public Dictionary<int, List<MoveVM>> SelectCardMoves()
+        {
+            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
+
+            foreach (CardMove cardMove in _cardMoves)
+            {
+                // checks if the key is already used
+                if (!results.ContainsKey(cardMove.CardID))
+                {
+                    // if not add the key and create a new list
+                    results.Add(cardMove.CardID, new List<MoveVM>());
+                }
+
+                // each row has a cardID and a moveID if the CardID is already a key
+                // then add the move at the cardID
+                results[cardMove.CardID].Add(SelectMoveVMByMoveID(cardMove.MoveID));
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Used to help SelectMovesByCardID find the correct Move
+        /// </summary>
+        public Dictionary<int, List<string>> SelectCardAlternateArts()
+        {
+            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
+
+            foreach (CardAlternateArt altArts in _cardAlternateArts)
+            {
+                // checks if the key is already used
+                if (!results.ContainsKey(altArts.CardID))
+                {
+                    // if not add the key and create a new list
+                    results.Add(altArts.CardID, new List<string>());
+                }
+
+                // each row has a cardID and a moveID if the CardID is already a key
+                // then add the move at the cardID
+                results[altArts.CardID].Add(altArts.AlternateArtID);
+            }
+
+            return results;
+        }
 
 
 

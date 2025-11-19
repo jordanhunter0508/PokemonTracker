@@ -1183,9 +1183,6 @@ GO
 PRINT '*** creating sp_select_cards ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_cards]
-	(
-		@PokemonCardID	[int]
-	)
 AS
 	BEGIN
 		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
@@ -1193,13 +1190,30 @@ AS
 				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
 				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
 				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
-				[PokemonCard].[Health],[PokemonCard].[Stage],
-				[Move].[MoveID], [Move].[Damage], [Move].[Description],
-				[MoveCost].[ElementTypeID],[MoveCost].[Quantity],
-				CardAlternateArt].[AlternateArtID]
-		FROM	[PokemonCard] JOIN [CardAlternateArt] ON [PokemonCard].[PokemonCardID] = [CardAlternateArt].[PokemonCardID]
-			JOIN [CardMove] ON [PokemonCard].[PokemonCardID] = [CardMove].[PokemonCardID]
-			JOIN [Move] ON [CardMove].[MoveID] = [Move].[MoveID
-		WHERE	[PokemonCard].[PokemonCardID] = @PokemonCardID;
+				[PokemonCard].[Health],[PokemonCard].[Stage]			
+		FROM	[PokemonCard];
 	END
 GO
+
+PRINT '*** creating sp_select_card_moves ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_card_moves]
+AS
+	BEGIN
+		SELECT 	[CardMove].[PokemonCardID],[Move].[MoveID], [Move].[Damage], [Move].[Description],
+				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
+		FROM	[Move] LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
+			JOIN [CardMove] ON [Move].[MoveID] = [CardMove].[MoveID];
+	END
+GO
+
+PRINT '*** creating sp_select_card_alternate_arts ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_card_alternate_arts]
+AS
+	BEGIN
+		SELECT 	[CardAlternateArt].[PokemonCardID], [CardAlternateArt].[AlternateArtID]
+		FROM	[CardAlternateArt];
+	END
+GO
+

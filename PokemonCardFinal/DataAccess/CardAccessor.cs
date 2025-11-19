@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -158,7 +159,176 @@ namespace DataAccess
             return results;
         }
 
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_select_cards
+        /// </summary>
+        public Dictionary<int, Card> SelectCards()
+        {
+            Dictionary<int, Card> results = new Dictionary<int, Card>();
 
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_cards";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        int cardID = reader.GetInt32(0);
+
+                        // Shoud never fail. Just a precaution
+                        if (!results.ContainsKey(cardID))
+                        {
+                            results.Add(cardID, new Card()
+                            {
+                                CardID = reader.GetInt32(0),
+                                ArtistID = reader.GetInt32(1),
+                                AbilityID = reader.GetString(2),
+                                BoosterID = reader.GetString(3),
+                                PokemonRuleID = reader.GetString(4),
+                                ElementTypeID = reader.GetString(5),
+                                Name = reader.GetString(6),
+                                BoosterNumber = reader.GetInt32(7),
+                                CardType = reader.GetString(8),
+                                Rarity = reader.GetString(9),
+                                WeaknessType = reader.GetString(10),
+                                ResistanceType = reader.GetString(11),
+                                WeaknessValue = reader.GetInt32(12),
+                                ResistanceValue = reader.GetInt32(13),
+                                RetreatCost = reader.GetInt32(14),
+                                Health = reader.GetInt32(15),
+                                Stage = reader.GetString(16)
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_select_card_moves
+        /// </summary>
+        public Dictionary<int, List<MoveVM>> SelectCardMoves()
+        {
+            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
+            Dictionary<string, MoveVM> moveVMs = new Dictionary<string, MoveVM>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_card_moves";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        int cardID = reader.GetInt32(0);
+                        string moveID = reader.GetString(1);
+
+                        // saves the cardID as the key if it hasn't been seen before
+                        if (!results.ContainsKey(cardID))
+                        {
+                            results.Add(cardID, new List<MoveVM>());
+                        }
+
+                        StoreMoveVMInDictionary(moveVMs, reader);
+
+                        // checks to see if the MoveVM is already inside the list
+                        // at cardID
+                        if (!results[cardID].Contains(moveVMs[moveID]))
+                        {
+                            results[cardID].Add(moveVMs[moveID]);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_select_card_alternate_arts
+        /// </summary>
+        public Dictionary<int, List<string>> SelectCardAlternateArts()
+        {
+            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_card_alternate_arts";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        int cardID = reader.GetInt32(0);
+                        string altArtID = reader.GetString(1);
+
+                        // Shoud never fail. Just a precaution
+                        if (!results.ContainsKey(cardID))
+                        {
+                            results.Add(cardID, new List<string>());
+                        }
+
+                        if (!results[cardID].Contains(altArtID))
+                        {
+                            results[cardID].Add(altArtID);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return results;
+        }
 
 
 
@@ -168,34 +338,38 @@ namespace DataAccess
         /// If not create a new MoveVM, then check if the ElementTypeID and Quantity for the MoveCost are Null.<br/>
         /// If not add the MoveCost to the MoveVM where the moveIDs match.
         /// </summary>
-        /// <param name="results">Saves the results into this Disctionary</param>
+        /// <param name="moveVMs">Saves the results into this Disctionary</param>
         /// <param name="reader">Reader Line to be saved</param>
-        private static void StoreMoveVMInDictionary(Dictionary<string, MoveVM> results, SqlDataReader reader)
+        private static void StoreMoveVMInDictionary(Dictionary<string, MoveVM> moveVMs, SqlDataReader reader)
         {
-            string moveID = reader.GetString(0);
+            // Uses reader.GetOrdinal instead of numbers so this
+            // method can be used by multiple of methods.
+
+            string moveID = reader.GetString(reader.GetOrdinal("MoveID"));
 
             // Checks to see if the moveID already has a MoveVM created
-            if (!results.ContainsKey(moveID))
+            if (!moveVMs.ContainsKey(moveID))
             {
-                results.Add(moveID, new MoveVM()
+                moveVMs.Add(moveID, new MoveVM()
                 {
                     MoveID = moveID,
-                    Damage = reader.GetInt32(1),
-                    Description = reader.GetString(2),
+                    Damage = reader.GetInt32(reader.GetOrdinal("Damage")),
+                    Description = reader.GetString(reader.GetOrdinal("Description")),
                     Costs = new List<MoveCost>()
                 });
             }
 
             // makes sure the moveCost is not null before adding it to the Costs
-            if (!reader.IsDBNull(3) && !reader.IsDBNull(4))
+            if (!reader.IsDBNull(reader.GetOrdinal("ElementTypeID")) && !reader.IsDBNull(reader.GetOrdinal("Quantity")))
             {
-                results[moveID].Costs.Add(new MoveCost()
+                moveVMs[moveID].Costs.Add(new MoveCost()
                 {
                     MoveID = moveID,
-                    ElementType = reader.GetString(3),
-                    Quantity = reader.GetInt32(4),
+                    ElementType = reader.GetString(reader.GetOrdinal("ElementTypeID")),
+                    Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
                 });
             }
         }
+
     }
 }

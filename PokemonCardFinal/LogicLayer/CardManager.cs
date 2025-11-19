@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,28 +43,9 @@ namespace LogicLayer
             {
                 Card card = _cardAccessor.SelectCardByCardID(cardID);
 
-                result = new CardVM()
-                {
-                    CardID = card.CardID,
-                    ArtistID = card.ArtistID,
-                    AbilityID = card.AbilityID,
-                    BoosterID = card.BoosterID,
-                    PokemonRuleID = card.PokemonRuleID,
-                    ElementTypeID = card.ElementTypeID,
-                    Name = card.Name,
-                    BoosterNumber = card.BoosterNumber,
-                    CardType = card.CardType,
-                    Rarity = card.Rarity,
-                    WeaknessType = card.WeaknessType,
-                    ResistanceType = card.ResistanceType,
-                    WeaknessValue = card.WeaknessValue,
-                    ResistanceValue = card.ResistanceValue,
-                    RetreatCost = card.RetreatCost,
-                    Health = card.Health,
-                    Stage = card.Stage,
-                    Moves = _cardAccessor.SelectMovesByCardID(cardID),
-                    AlternateArts = _cardAccessor.SelectAlternateArtsByCardID(cardID)
-                };
+                result = ConvertCardToCardVM(card);
+                result.Moves = GetMovesByCardID(cardID);
+                result.AlternateArts = GetAlternateArtsByCardID(cardID);
             }
             catch (Exception ex)
             {
@@ -138,6 +120,120 @@ namespace LogicLayer
             }
 
             return results;
+        }
+
+        public List<CardVM> GetCardVMs()
+        {
+            List<CardVM> results = new List<CardVM>();
+
+            try
+            {            
+                Dictionary<int, Card> cards = GetCards();
+                Dictionary<int, List<MoveVM>> moves = GetCardMoves();
+                Dictionary<int, List<string>> altArts = GetCardAlternateArts();
+
+                foreach (var entry in cards)
+                {
+                    int cardID = entry.Key;
+                    Card card = entry.Value;
+
+                    CardVM cardVM = ConvertCardToCardVM(card);
+
+                    if (altArts.ContainsKey(cardID))
+                    {
+                        cardVM.AlternateArts = altArts[cardID];
+                    }
+                    if (moves.ContainsKey(cardID))
+                    {
+                        cardVM.Moves = moves[cardID];
+                    }
+
+                    results.Add(cardVM);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return results;
+        }
+
+        public Dictionary<int, Card> GetCards()
+        {
+            Dictionary<int, Card> results = new Dictionary<int, Card>();
+
+            try
+            {
+                results = _cardAccessor.SelectCards();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get cards.", ex);
+            }
+            return results;
+        }
+
+        public Dictionary<int, List<MoveVM>> GetCardMoves()
+        {
+            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
+
+            try
+            {
+                results = _cardAccessor.SelectCardMoves();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get a list of moves for cards.", ex);
+            }
+            return results;
+        }
+
+        public Dictionary<int, List<string>> GetCardAlternateArts()
+        {
+            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
+
+            try
+            {
+                results = _cardAccessor.SelectCardAlternateArts();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get a list of alternate arts for cards.", ex);
+            }
+            return results;
+        }
+
+        private CardVM ConvertCardToCardVM(Card card)
+        {
+            CardVM result = null;
+            result = new CardVM
+            {
+                CardID = card.CardID,
+                ArtistID = card.ArtistID,
+                AbilityID = card.AbilityID,
+                BoosterID = card.BoosterID,
+                PokemonRuleID = card.PokemonRuleID,
+                ElementTypeID = card.ElementTypeID,
+                Name = card.Name,
+                BoosterNumber = card.BoosterNumber,
+                CardType = card.CardType,
+                Rarity = card.Rarity,
+                WeaknessType = card.WeaknessType,
+                ResistanceType = card.ResistanceType,
+                WeaknessValue = card.WeaknessValue,
+                ResistanceValue = card.ResistanceValue,
+                RetreatCost = card.RetreatCost,
+                Health = card.Health,
+                Stage = card.Stage,
+                Moves = new List<MoveVM>(),
+                AlternateArts = new List<string>(),
+            };
+            return result;
         }
     }
 }

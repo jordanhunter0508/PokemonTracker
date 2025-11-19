@@ -7,6 +7,22 @@
         mc:Ignorable="d"
         Title="TESTWINDOW" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <Label x:Name="lblName" Content=""/>
+        <!--
+        <DataGrid x:Name="datGrid" ItemsSource="{Binding}">
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="Moves:" FontWeight="Bold"/>
+                        <DataGrid ItemsSource="{Binding Moves}" AutoGenerateColumns="True"/>
+
+                        <TextBlock Text="Alternate Arts:" FontWeight="Bold"/>
+                        <ItemsControl ItemsSource="{Binding AlternateArts}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+        -->
+        
+        <DataGrid x:Name="datGrid" Grid.Row="0" SelectionMode="Single" IsReadOnly="True" />
     </Grid>
 </Window>

@@ -34,35 +34,17 @@ namespace PokemonCardFinal.View
             CardManager cardManager = new CardManager();
 
 
-            //Card card = cardManager.GetCardByCardID(1);
-            //if (card != null)
-            //{
-            //    lblName.Content = card.CardID + ", " + card.Name + ", " + card.BoosterID + ", " + card.BoosterNumber;
-            //}
-            //else
-            //{
-            //    MessageBox.Show("failed");
-            //}
+            //Dictionary<int, Card> cards = cardManager.GetCards();
+            //datGrid.ItemsSource = cards.Values.ToList();
 
+            //Dictionary<int, List<MoveVM>> moves = cardManager.GetCardMoves();
+            //datGrid.ItemsSource = moves.Values.AsEnumerable();
 
-            //List<MoveVM> moveVMs = cardManager.GetMovesByCardID(1);
-            //if (moveVMs != null)
-            //{
-            //    lblName.Content = moveVMs[0].MoveID + ", " + moveVMs[0].Damage + ", " + moveVMs[0].Description + "\n " + 
-            //        moveVMs[0].Costs.Count +", " + moveVMs[0].TotalCost + ", " + moveVMs[0].ElementTypes + "\n\n\n";
+            //Dictionary<int, List<string>> altArts = cardManager.GetCardAlternateArts();
+            //datGrid.ItemsSource = altArts.Values.AsEnumerable();
 
-            //    lblName.Content += moveVMs[1].MoveID + ", " + moveVMs[1].Damage + ", " + moveVMs[1].Description + "\n " + 
-            //        moveVMs[1].Costs.Count +", " + moveVMs[1].TotalCost + ", " + moveVMs[1].ElementTypes;
-            //}
-            //else
-            //{
-            //    MessageBox.Show("failed");
-            //}
-
-
-            List<string> altArts = cardManager.GetAlternateArtsByCardID(1);
-            lblName.Content += altArts[0] + "\n";
-            lblName.Content += altArts[1] + "\n";
+            List<CardVM> cards = cardManager.GetCardVMs();
+            datGrid.ItemsSource = cards;
         }
 
     }

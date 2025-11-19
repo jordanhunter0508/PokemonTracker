@@ -172,4 +172,85 @@ public class CardManagerTest
         // assert
         // do nothing
     }
+
+    [TestMethod]
+    public void TestGetCards()
+    {
+        // arrange
+        const int keyCount = 3;
+        const int valueCount = 3;
+        const int cardID2 = 2;
+        const string cardName1 = "test 1";
+        Dictionary<int,Card> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCards();
+
+        // assert
+        Assert.AreEqual(keyCount, actualResult.Keys.Count);
+        Assert.AreEqual(valueCount, actualResult.Values.Count);
+        Assert.AreEqual(cardName1, actualResult[1].Name);
+        Assert.AreEqual(cardID2, actualResult[2].CardID);
+    }
+
+    [TestMethod]
+    public void TestGetCardMoves()
+    {
+        // arrange
+        const int keyCount = 2;
+        const int valueCount = 2;
+        const int cardCount2 = 1;
+        const string moveID1 = "testMove1";
+        Dictionary<int,List<MoveVM>> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardMoves();
+
+        // assert
+        Assert.AreEqual(keyCount, actualResult.Keys.Count);
+        Assert.AreEqual(valueCount, actualResult.Values.Count);
+        Assert.AreEqual(moveID1, actualResult[1][0].MoveID);
+        Assert.AreEqual(cardCount2, actualResult[2].Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardAlternateArts()
+    {
+        // arrange
+        const int keyCount = 2;
+        const int valueCount = 2;
+        const int artCount2 = 1;
+        const string altArt1 = "test Alternate Art 1";
+        Dictionary<int, List<string>> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardAlternateArts();
+
+        // assert
+        Assert.AreEqual(keyCount, actualResult.Keys.Count);
+        Assert.AreEqual(valueCount, actualResult.Values.Count);
+        Assert.AreEqual(altArt1, actualResult[1][0]);
+        Assert.AreEqual(artCount2, actualResult[2].Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardVMs()
+    {
+        // arrange
+        const int count = 3;
+        const string cardName1 = "test 1";
+        const string moveID1 = "testMove1";
+        const string altArt1 = "test Alternate Art 1";
+        List<CardVM> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardVMs();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
+        Assert.AreEqual(cardName1, actualResult[0].Name);
+        Assert.AreEqual(moveID1, actualResult[0].Moves[0].MoveID);
+        Assert.AreEqual(altArt1, actualResult[0].AlternateArts[0]);
+
+    }
 }
