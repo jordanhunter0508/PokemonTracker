@@ -254,5 +254,25 @@ namespace LogicLayer
 
             return result;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveManager"/>
+        /// </summary>
+        public bool DeleteMove(string moveID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = (1 == _moveAccessor.DeleteMove(moveID));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to delete a move.", ex);
+            }
+
+            return result;
+        }
     }
 }

@@ -40,7 +40,36 @@ namespace PokemonCardFinal.View.ListRecords
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (_selectedMoveVM == null)
+            {
+                return;
+            }
 
+            // Pop up window to confirm if the admin wants to delete the record
+            MessageBoxResult conformationWindow = MessageBox.Show
+            (
+                "Are you sure you want to delete " + _selectedMoveVM.MoveID + ".",
+                "Confirm Delete",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning
+            );
+
+            try
+            {
+                if (_moveManager.DeleteMove(_selectedMoveVM.MoveID))
+                {
+                    MessageBox.Show("The move was successfully deleted");
+                    LoadList();
+                }
+                else
+                {
+                    MessageBox.Show("The move could not be deleted.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString() + "\n" + ex.InnerException.ToString);
+            }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)

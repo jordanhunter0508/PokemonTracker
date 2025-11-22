@@ -212,5 +212,30 @@ namespace DataAccessFakes
             count = 1;
             return count;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/> used for testing
+        /// </summary>
+        public int DeleteMove(string moveID)
+        {
+            int count = 0;
+            Move deletedMove = null;
+
+            foreach (Move move in _moves)
+            {
+                if (moveID == move.MoveID)
+                { 
+                    deletedMove = move;
+                }
+            }
+
+            if (deletedMove != null)
+            {
+                _moves.Remove(deletedMove);
+                count = 1;
+            }
+
+            return count;
+        }
     }
 }

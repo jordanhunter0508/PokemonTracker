@@ -53,5 +53,13 @@ namespace DataAccessInterfaces
         /// <param name="cost">New MoveCost object to insert.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public int InsertMoveCost(MoveCost cost);
+
+        /// <summary>
+        /// Deletes the row from the database where MoveID matches on in the table.<br/>
+        /// Also deletes the rows from MoveCost, CardMove
+        /// </summary>
+        /// <param name="moveID">MoveID of the row to delete.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int DeleteMove(string moveID);
     }
 }

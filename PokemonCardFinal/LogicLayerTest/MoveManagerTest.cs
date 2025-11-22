@@ -492,4 +492,34 @@ public class MoveManagerTest
         // assert
         // do nothing
     }
+
+    [TestMethod]
+    public void DeleteMoveReturnsTrueWithValidID() 
+    {
+        // arrange
+        const string moveID = "test move 1";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.DeleteMove(moveID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void DeleteMoveReturnsFalseWithInvalidID()
+    {
+        // arrange
+        const string moveID = "fail";
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _moveManager.DeleteMove(moveID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
 }

@@ -86,5 +86,14 @@ namespace LogicLayerInterfaces
         /// <exception cref="ApplicationException">Throws if the moveID and elementyType is already used, 
         /// MoveID or ELementType couldn't be found.</exception>
         public bool AddMoveCost(MoveCost cost);
+
+        /// <summary>
+        /// Passes parameters to <see href="DeleteMove(string)"/><br/>
+        /// Then returns true if the record was deleted successfully
+        /// </summary>
+        /// <param name="moveID">Used to find the Move</param>
+        /// <returns>Returns true if the Move and its related rows were deleted successfully</returns>
+        /// <exception cref="ApplicationException">Throws if there was a connection error</exception>
+        public bool DeleteMove(string moveID);
     }
 }

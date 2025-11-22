@@ -318,8 +318,8 @@ CREATE TABLE [dbo].[CardAlternateArt]
 	[AlternateArtID]		[nvarchar](50)		NOT NULL,
 	
 	CONSTRAINT [pk_cardalternateart_cardalternateartid] PRIMARY KEY ([PokemonCardID],[AlternateArtID]),
-	CONSTRAINT [fk_cardalternateart_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard] ([PokemonCardID]),
-	CONSTRAINT [fk_cardalternateart_alternateartid] FOREIGN KEY ([AlternateArtID]) REFERENCES [AlternateArt] ([AlternateArtID])
+	CONSTRAINT [fk_cardalternateart_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard] ([PokemonCardID]) ON DELETE CASCADE,
+	CONSTRAINT [fk_cardalternateart_alternateartid] FOREIGN KEY ([AlternateArtID]) REFERENCES [AlternateArt] ([AlternateArtID]) ON DELETE CASCADE
 )
 GO
 
@@ -355,8 +355,8 @@ CREATE TABLE [dbo].[MoveCost]
 	[Quantity]				[int]				NOT NULL,
 	
 	CONSTRAINT [pk_movecost_movecostid] PRIMARY KEY ([MoveID],[ElementTypeID]),
-	CONSTRAINT [fk_moveelement_moveid] FOREIGN KEY ([MoveID]) REFERENCES [Move]([MoveID]),
-	CONSTRAINT [fk_moveelement_elementtypeid] FOREIGN KEY ([ElementTypeID]) REFERENCES [ElementType]([ElementTypeID]),
+	CONSTRAINT [fk_moveelement_moveid] FOREIGN KEY ([MoveID]) REFERENCES [Move]([MoveID]) ON DELETE CASCADE,
+	CONSTRAINT [fk_moveelement_elementtypeid] FOREIGN KEY ([ElementTypeID]) REFERENCES [ElementType]([ElementTypeID])
 )
 GO
 
@@ -372,8 +372,8 @@ CREATE TABLE [dbo].[CardMove]
 	[MoveID]				[nvarchar](30)		NOT NULL,
 	
 	CONSTRAINT [pk_cardmove_cardmoveid] PRIMARY KEY ([PokemonCardID],[MoveID]),
-	CONSTRAINT [fk_cardmove_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]),
-	CONSTRAINT [fk_cardmove_moveid] FOREIGN KEY ([MoveID]) REFERENCES [Move]([MoveID])
+	CONSTRAINT [fk_cardmove_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]) ON DELETE CASCADE,
+	CONSTRAINT [fk_cardmove_moveid] FOREIGN KEY ([MoveID]) REFERENCES [Move]([MoveID]) ON DELETE CASCADE
 )
 GO
 
@@ -1081,6 +1081,19 @@ AS
 GO
 
 
+PRINT '*** creating sp_delete_move ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_move]
+	(	
+		@MoveID			[nvarchar](30)
+	)	
+AS
+	BEGIN
+		DELETE 	[dbo].[Move]
+		WHERE	[Move].[MoveID] = @MoveID
+		RETURN @@ROWCOUNT;
+	END
+GO
 
 /*
 Work on booster sp

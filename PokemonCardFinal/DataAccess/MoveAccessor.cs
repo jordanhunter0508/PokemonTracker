@@ -288,5 +288,40 @@ namespace DataAccess
 
             return count;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_delete_move
+        /// </summary>
+        public int DeleteMove(string moveID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_delete_move";
+            SqlCommand cmd = new SqlCommand(cmdText,conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters["@MoveID"].Value = moveID;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
     }
 }

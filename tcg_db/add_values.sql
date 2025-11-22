@@ -828,5 +828,6 @@ INSERT INTO [dbo].[CardAlternateArt]
 VALUES
 	(1,'jumbo'),
 	(1,'reverse holo'),
-	(2,'none')
+	(2,'none'),
+	(2,'jumbo')
 GO
