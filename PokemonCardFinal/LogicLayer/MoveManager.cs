@@ -34,7 +34,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IMoveManager"/>
         /// </summary>
-        public MoveVM GetMoveVMByMoveID(string moveID)
+        public MoveVM GetMoveVMByMoveID(int moveID)
         {
             MoveVM resultMoveVM = null;
             try
@@ -66,7 +66,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IMoveManager"/>
         /// </summary>
-        public Move GetMoveByMoveID(string moveID)
+        public Move GetMoveByMoveID(int moveID)
         {
             Move resultMove = null;
 
@@ -85,7 +85,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IMoveManager"/>
         /// </summary>
-        public List<MoveCost> GetMoveCostsByMoveID(string moveID)
+        public List<MoveCost> GetMoveCostsByMoveID(int moveID)
         {
             List<MoveCost> resultMoveCosts = null;
 
@@ -118,6 +118,7 @@ namespace LogicLayer
                     results.Add(new MoveVM()
                     {
                         MoveID = move.MoveID,
+                        Name = move.Name,
                         Damage = move.Damage,
                         Description = move.Description,
                         Costs = new List<MoveCost>()
@@ -258,7 +259,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IMoveManager"/>
         /// </summary>
-        public bool DeleteMove(string moveID)
+        public bool DeleteMove(int moveID)
         {
             bool result = false;
 

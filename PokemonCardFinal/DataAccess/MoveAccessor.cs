@@ -17,7 +17,7 @@ namespace DataAccess
         /// Implements from <see cref="IMoveAccessor"/>. Access the database
         /// using sp_select_move_by_moveid
         /// </summary>
-        public Move SelectMoveByMoveID(string moveID)
+        public Move SelectMoveByMoveID(int moveID)
         {
             Move resultMoves = null;
 
@@ -27,7 +27,7 @@ namespace DataAccess
 
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
             cmd.Parameters["@MoveID"].Value = moveID;
 
             try
@@ -41,9 +41,10 @@ namespace DataAccess
                     reader.Read();
                     resultMoves = new Move()
                     {
-                        MoveID = reader.GetString(0),
-                        Damage = reader.GetInt32(1),
-                        Description = reader.GetString(2)
+                        MoveID = reader.GetInt32(0),
+                        Name = reader.GetString(1),
+                        Damage = reader.GetInt32(2),
+                        Description = reader.GetString(3)
                     };
                 }
             }
@@ -63,7 +64,7 @@ namespace DataAccess
         /// Implements from <see cref="IMoveAccessor"/>. Access the database
         /// using sp_select_move_cost_by_moveid
         /// </summary>
-        public List<MoveCost> SelectMoveCostsByMoveID(string moveID)
+        public List<MoveCost> SelectMoveCostsByMoveID(int moveID)
         {
             List<MoveCost> resultMoveCosts = new List<MoveCost>();
 
@@ -73,7 +74,7 @@ namespace DataAccess
 
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
             cmd.Parameters["@MoveID"].Value = moveID;
 
             try
@@ -88,7 +89,7 @@ namespace DataAccess
                     {
                         resultMoveCosts.Add(new MoveCost()
                         {
-                            MoveID = reader.GetString(0),
+                            MoveID = reader.GetInt32(0),
                             ElementType = reader.GetString(1),
                             Quantity = reader.GetInt32(2)
                         });
@@ -113,7 +114,7 @@ namespace DataAccess
         /// </summary>
         public List<MoveVM> SelectMoveVMsWithMoveCost()
         {
-            Dictionary<string, MoveVM> results = new Dictionary<string, MoveVM>();
+            Dictionary<int, MoveVM> results = new Dictionary<int, MoveVM>();
 
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_moves_with_move_cost";
@@ -130,7 +131,7 @@ namespace DataAccess
                 {
                     while (reader.Read())
                     {
-                        string moveID = reader.GetString(0);
+                        int moveID = reader.GetInt32(0);
 
                         // If this is the first time seeing this MoveID, add it
                         if (!results.ContainsKey(moveID))
@@ -138,8 +139,9 @@ namespace DataAccess
                             results.Add(moveID,new MoveVM()
                             {
                                 MoveID = moveID,
-                                Damage = reader.GetInt32(1),
-                                Description = reader.GetString(2),
+                                Name = reader.GetString(1),
+                                Damage = reader.GetInt32(2),
+                                Description = reader.GetString(3),
                                 Costs = new List<MoveCost>()
                             });
                         }
@@ -148,8 +150,8 @@ namespace DataAccess
                         results[moveID].Costs.Add(new MoveCost
                         {
                             MoveID = moveID,
-                            ElementType = reader.GetString(3),
-                            Quantity = reader.GetInt32(4)
+                            ElementType = reader.GetString(4),
+                            Quantity = reader.GetInt32(5)
                         });
                     }
                 }
@@ -191,9 +193,10 @@ namespace DataAccess
                     {
                         results.Add(new Move()
                         {
-                            MoveID = reader.GetString(0),
-                            Damage = reader.GetInt32(1),
-                            Description = reader.GetString(2)
+                            MoveID = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Damage = reader.GetInt32(2),
+                            Description = reader.GetString(3)
                         });
                     }
                 }
@@ -224,11 +227,11 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 30);
             cmd.Parameters.Add("@Damage", System.Data.SqlDbType.Int);
             cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 200);
 
-            cmd.Parameters["@MoveID"].Value = move.MoveID;
+            cmd.Parameters["@Name"].Value = move.Name;
             cmd.Parameters["@Damage"].Value = move.Damage;
             cmd.Parameters["@Description"].Value = move.Description;
 
@@ -263,7 +266,7 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
             cmd.Parameters.Add("@ElementTypeID", System.Data.SqlDbType.NVarChar, 15);
             cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
 
@@ -293,7 +296,7 @@ namespace DataAccess
         /// Implements from <see cref="IMoveAccessor"/>. Access the database
         /// using sp_delete_move
         /// </summary>
-        public int DeleteMove(string moveID)
+        public int DeleteMove(int moveID)
         {
             int count = 0;
 
@@ -302,7 +305,7 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText,conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
             cmd.Parameters["@MoveID"].Value = moveID;
 
             try

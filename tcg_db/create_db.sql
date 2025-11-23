@@ -28,6 +28,11 @@ Create a trigger for when an account is created add a user to to 2 collections
 When adding a description check if ' is used and replace it with ''
 convert evertyhing to lower case when inserting except decsription
 
+MoveID should be an IDENTITY field
+some moves like bite deal different damage
+
+selectMoves by name
+
 */
 
 print '' print'*** dropping the database tcg_db ***'
@@ -174,7 +179,8 @@ PRINT '*** creating Move Table ***'
 GO
 CREATE TABLE [dbo].[Move]
 (
-	[MoveID]				[nvarchar](30)		NOT NULL,
+	[MoveID]				[int]				NOT NULL	IDENTITY(1,1),
+	[Name]					[nvarchar](30)		NOT NULL,
 	[Damage]				[int]				NOT NULL,
 	[Description]			[nvarchar](200)		NOT NULL	DEFAULT '',
 	
@@ -350,7 +356,7 @@ PRINT '*** creating MoveCost Table ***'
 GO
 CREATE TABLE [dbo].[MoveCost]
 (
-	[MoveID]				[nvarchar](30)		NOT NULL,
+	[MoveID]				[int]				NOT NULL,
 	[ElementTypeID]			[nvarchar](15)		NOT NULL,
 	[Quantity]				[int]				NOT NULL,
 	
@@ -369,7 +375,7 @@ GO
 CREATE TABLE [dbo].[CardMove]
 (
 	[PokemonCardID]			[int]				NOT NULL,
-	[MoveID]				[nvarchar](30)		NOT NULL,
+	[MoveID]				[int]				NOT NULL,
 	
 	CONSTRAINT [pk_cardmove_cardmoveid] PRIMARY KEY ([PokemonCardID],[MoveID]),
 	CONSTRAINT [fk_cardmove_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]) ON DELETE CASCADE,
@@ -991,11 +997,11 @@ PRINT '*** creating sp_select_move_by_moveid ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_move_by_moveid]
 	(
-		@MoveID			[nvarchar](30)
+		@MoveID			[int]
 	)
 AS
 	BEGIN
-		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description]
+		SELECT 	[Move].[MoveID],[Move].[Name], [Move].[Damage], [Move].[Description]
 		FROM	[Move]
 		WHERE	[Move].[MoveID] = @MoveID;
 	END
@@ -1005,11 +1011,11 @@ PRINT '*** creating sp_select_move_cost_by_moveid ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_move_cost_by_moveid]
 	(
-		@MoveID			[nvarchar](30)
+		@MoveID			[int]
 	)
 AS
 	BEGIN
-		SELECT	[MoveCost].[MoveID],[MoveCost].[ElementTypeID],
+		SELECT	[MoveCost].[MoveID], [MoveCost].[ElementTypeID],
 				[MoveCost].[Quantity]
 		FROM	[MoveCost] JOIN [ElementType] ON 
 				[MoveCost].[ElementTypeID] = [ElementType].[ElementTypeID]
@@ -1022,7 +1028,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_moves_with_move_cost]
 AS
 	BEGIN
-		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description],
+		SELECT 	[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
 				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
 		FROM	[Move] JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID];
 	END
@@ -1033,7 +1039,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_moves_without_move_cost]
 AS
 	BEGIN
-		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description]
+		SELECT 	[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description]
 		FROM 	[Move] 
 		WHERE	NOT EXISTS
 			(
@@ -1048,16 +1054,16 @@ PRINT '*** creating sp_insert_move ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_move]
 	(	
-		@MoveID			[nvarchar](30),
+		@Name			[nvarchar](30),
 		@Damage			[int],
 		@Description	[nvarchar](200)
 	)	
 AS
 	BEGIN
 		INSERT INTO [dbo].[Move]
-			([MoveID],[Damage],[Description])
+			([Name],[Damage],[Description])
 		VALUES
-			(@MoveID,@Damage,@Description)
+			(@Name,@Damage,@Description)
 		RETURN @@ROWCOUNT;
 	END
 GO
@@ -1066,7 +1072,7 @@ PRINT '*** creating sp_insert_move_cost ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_move_cost]
 	(	
-		@MoveID			[nvarchar](30),
+		@MoveID			[int],
 		@ElementTypeID	[nvarchar](15),
 		@Quantity		[int]
 	)	
@@ -1085,7 +1091,7 @@ PRINT '*** creating sp_delete_move ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_move]
 	(	
-		@MoveID			[nvarchar](30)
+		@MoveID			[int]
 	)	
 AS
 	BEGIN
@@ -1171,7 +1177,7 @@ CREATE PROCEDURE [dbo].[sp_select_moves_by_card_id]
 	)
 AS
 	BEGIN
-		SELECT 	[Move].[MoveID], [Move].[Damage], [Move].[Description],
+		SELECT 	[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
 				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
 		FROM	[Move] LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
 			JOIN [CardMove] ON [Move].[MoveID] = [CardMove].[MoveID]
@@ -1213,7 +1219,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_card_moves]
 AS
 	BEGIN
-		SELECT 	[CardMove].[PokemonCardID],[Move].[MoveID], [Move].[Damage], [Move].[Description],
+		SELECT 	[CardMove].[PokemonCardID],[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
 				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
 		FROM	[Move] LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
 			JOIN [CardMove] ON [Move].[MoveID] = [CardMove].[MoveID];

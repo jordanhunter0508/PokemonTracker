@@ -85,8 +85,8 @@ public class CardManagerTest
 
         // assert
         Assert.AreEqual(count, actualMoves.Count);
-        Assert.AreEqual(moveName1, actualMoves[0].MoveID);
-        Assert.AreEqual(moveName2, actualMoves[1].MoveID);
+        Assert.AreEqual(moveName1, actualMoves[0].Name);
+        Assert.AreEqual(moveName2, actualMoves[1].Name);
     }
 
     [TestMethod]
@@ -200,7 +200,7 @@ public class CardManagerTest
         const int keyCount = 2;
         const int valueCount = 2;
         const int cardCount2 = 1;
-        const string moveID1 = "testMove1";
+        const int moveID1 = 1;
         Dictionary<int,List<MoveVM>> actualResult = null;
 
         // act
@@ -239,7 +239,7 @@ public class CardManagerTest
         // arrange
         const int count = 3;
         const string cardName1 = "test 1";
-        const string moveID1 = "testMove1";
+        const int moveID1 = 1;
         const string altArt1 = "test Alternate Art 1";
         List<CardVM> actualResult = null;
 

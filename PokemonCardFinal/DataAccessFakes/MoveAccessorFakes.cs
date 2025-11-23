@@ -22,44 +22,47 @@ namespace DataAccessFakes
         {
             _moves.Add(new Move()
             {
-                MoveID = "test move 1",
+                MoveID = 1,
+                Name = "test move 1",
                 Damage = 10,
                 Description = "This is a test move."
             });
             _moves.Add(new Move()
             {
-                MoveID = "test move 2",
+                MoveID = 2,
+                Name = "test move 2",
                 Damage = 100,
                 Description = "This is a test move."
             });
             _moves.Add(new Move()
             {
-                MoveID = "test move 3",
+                MoveID = 3,
+                Name = "test move 3",
                 Damage = 0,
                 Description = "This is a test move."
             });
 
             _moveCosts.Add(new MoveCost()
             {
-                MoveID = "test move 1",
+                MoveID = 1,
                 ElementType = "element",
                 Quantity = 1,
             });
             _moveCosts.Add(new MoveCost()
             {
-                MoveID = "test move 1",
+                MoveID = 1,
                 ElementType = "test element",
                 Quantity = 2,
             });
             _moveCosts.Add(new MoveCost()
             {
-                MoveID = "test move 2",
+                MoveID = 2,
                 ElementType = "element",
                 Quantity = 2,
             });
             _moveCosts.Add(new MoveCost()
             {
-                MoveID = "test move 2",
+                MoveID = 2,
                 ElementType = "test element",
                 Quantity = 2,
             });
@@ -68,6 +71,7 @@ namespace DataAccessFakes
             _moveVMs.Add(new MoveVM()
             { 
                 MoveID = _moves[0].MoveID,
+                Name = _moves[0].Name,
                 Damage = _moves[0].Damage,
                 Description = _moves[0].Description,
                 Costs = SelectMoveCostsByMoveID(_moves[0].MoveID),
@@ -75,6 +79,7 @@ namespace DataAccessFakes
             _moveVMs.Add(new MoveVM()
             { 
                 MoveID = _moves[1].MoveID,
+                Name = _moves[1].Name,
                 Damage = _moves[1].Damage,
                 Description = _moves[1].Description,
                 Costs = SelectMoveCostsByMoveID(_moves[1].MoveID),
@@ -82,6 +87,7 @@ namespace DataAccessFakes
             _moveVMs.Add(new MoveVM()
             { 
                 MoveID = _moves[2].MoveID,
+                Name = _moves[2].Name,
                 Damage = _moves[2].Damage,
                 Description = _moves[2].Description,
                 Costs = SelectMoveCostsByMoveID(_moves[2].MoveID),
@@ -91,7 +97,7 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IMoveAccessor"/> used for testing
         /// </summary>
-        public Move SelectMoveByMoveID(string moveID)
+        public Move SelectMoveByMoveID(int moveID)
         {
             Move resultMove = null;
             foreach (Move move in _moves)
@@ -108,7 +114,7 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IMoveAccessor"/> used for testing
         /// </summary>
-        public List<MoveCost> SelectMoveCostsByMoveID(string moveID)
+        public List<MoveCost> SelectMoveCostsByMoveID(int moveID)
         {
             List<MoveCost> resultMoveCosts = new List<MoveCost>();
             foreach (MoveCost moveCost in _moveCosts)
@@ -216,7 +222,7 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IMoveAccessor"/> used for testing
         /// </summary>
-        public int DeleteMove(string moveID)
+        public int DeleteMove(int moveID)
         {
             int count = 0;
             Move deletedMove = null;

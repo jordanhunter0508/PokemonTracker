@@ -17,7 +17,7 @@
         <DataGrid x:Name="datMove" Grid.Row="0" SelectionChanged="datMove_SelectionChanged" SelectionMode="Single"
                 IsReadOnly="True" HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Move Name" Binding="{Binding MoveID}"/>
+                <DataGridTextColumn Header="Move Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Damage" Binding="{Binding Damage}"/>
                 <DataGridTextColumn Header="Element Types" Binding="{Binding ElementTypes}"/>
                 <DataGridTextColumn Header="Total Cost" Binding="{Binding TotalCost}"/>

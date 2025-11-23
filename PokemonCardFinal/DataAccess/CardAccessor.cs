@@ -80,7 +80,7 @@ namespace DataAccess
         /// </summary>
         public List<MoveVM> SelectMovesByCardID(int cardID)
         {
-            Dictionary<string, MoveVM> results = new Dictionary<string, MoveVM>();
+            Dictionary<int, MoveVM> results = new Dictionary<int, MoveVM>();
 
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_moves_by_card_id";
@@ -230,7 +230,7 @@ namespace DataAccess
         public Dictionary<int, List<MoveVM>> SelectCardMoves()
         {
             Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
-            Dictionary<string, MoveVM> moveVMs = new Dictionary<string, MoveVM>();
+            Dictionary<int, MoveVM> moveVMs = new Dictionary<int, MoveVM>();
 
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_card_moves";
@@ -248,7 +248,7 @@ namespace DataAccess
                     while (reader.Read())
                     {
                         int cardID = reader.GetInt32(0);
-                        string moveID = reader.GetString(1);
+                        int moveID = reader.GetInt32(1);
 
                         // saves the cardID as the key if it hasn't been seen before
                         if (!results.ContainsKey(cardID))
@@ -340,12 +340,12 @@ namespace DataAccess
         /// </summary>
         /// <param name="moveVMs">Saves the results into this Disctionary</param>
         /// <param name="reader">Reader Line to be saved</param>
-        private static void StoreMoveVMInDictionary(Dictionary<string, MoveVM> moveVMs, SqlDataReader reader)
+        private static void StoreMoveVMInDictionary(Dictionary<int, MoveVM> moveVMs, SqlDataReader reader)
         {
             // Uses reader.GetOrdinal instead of numbers so this
             // method can be used by multiple of methods.
 
-            string moveID = reader.GetString(reader.GetOrdinal("MoveID"));
+            int moveID = reader.GetInt32(reader.GetOrdinal("MoveID"));
 
             // Checks to see if the moveID already has a MoveVM created
             if (!moveVMs.ContainsKey(moveID))

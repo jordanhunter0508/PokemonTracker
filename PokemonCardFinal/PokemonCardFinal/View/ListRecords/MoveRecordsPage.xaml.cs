@@ -48,7 +48,7 @@ namespace PokemonCardFinal.View.ListRecords
             // Pop up window to confirm if the admin wants to delete the record
             MessageBoxResult conformationWindow = MessageBox.Show
             (
-                "Are you sure you want to delete " + _selectedMoveVM.MoveID + ".",
+                "Are you sure you want to delete " + _selectedMoveVM.Name + ".",
                 "Confirm Delete",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning

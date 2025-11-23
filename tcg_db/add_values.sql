@@ -130,12 +130,31 @@ GO
 PRINT '*** adding to Move Table ***'
 GO
 INSERT INTO [dbo].[Move]
-	([MoveID],[Damage],[Description])
+	([Name],[Damage],[Description])
 VALUES
-	('test',0,'This is a test move with no cost'),
-	('shadow bind',150,'During your opponent''s next turn, the Defending Pokemon can''t retreat.'),
-	('merciless blade',110,'If your opponent''s active pokemon already has any damage counters on it, this attack does 100 damage.'),
-	('erasure ball',160,'You may discard up to 2 Energy from your Benched Pokemon. This attack does 60 more damage for each card you discarded in this way.')
+	('Shadow Bind',150,'During your opponent''s next turn, the Defending Pokemon can''t retreat.'),
+	('Merciless Blade',110,'If your opponent''s active pokemon already has any damage counters on it, this attack does 100 damage.'),
+	('Erasure Ball',160,'You may discard up to 2 Energy from your Benched Pokemon. This attack does 60 more damage for each card you discarded in this way.'),
+	('Reckless Charge',30,'This Pokemon also does 10 damage to itself.'),
+	('Roasting Heat',80,'If your opponent'' Active Pokemon is Burned, this attack does 160 more damage.'),
+	('Volcanic Meteor',280,'Discard 2 Energy from this Pokemon.'),
+	('Mega Ascension',0,'Search your deck for M Rayquaza-EX, reveal it, and put it into your hand. Shuffle your deck afterward.'),
+	('Aeroscream',130,'Flip a coin. If tails, discard 2 Energy attached to this Pokemon.'),
+	('Dragon Claw',120,'none'),
+	('Sonic Strike',0,'Discard 3 Energy from this Pokemon. This attack does 220 damage to 1 of your opponenet''s Pokemon. (Don''t apply Weakness and Resistance for Benched Pokemon.)'),
+	('Gaia Volcano',100,'If there is any Stadium card in play, this attack does 100 more damage. Discaard hat Stadium card.'),
+	('Dragon Ascent',300,'Discard 2 Energy attached to this Pokemon.'),
+	('Sonic Ace',0,'Discard 2 Energy attached to this Pokemon. This attack does 120 damage to 1 of your opponenet''s Pokemon. (Don''t apply Weakness and Resistance for Benched Pokemon.)'),
+	('Wild Blaze',300,'Discard the top 5 of your deck.'),
+	('V-Force',120,'If you have 4 or fewer Benched Pokemon, this attack does nothing.'),
+	('Heart Stamp',10,'none'),
+	('Bite',50,'none'),
+	('Snarl',100,'During your opponenet''s next turn, attacks used by the Defending Pokemon do 100 less damage (before applying Weakness and Resistance.)'),
+	('Strike Down',0,'If your opponenet''s Actiove Pokemon has 4 or more damage ccounters on it, that Pokemon is Knocked Out.'),
+	('Massive Rend',140,'none'),
+	('G-Max Pulverization',220,'This attack''s damage isn''t affected by any effects on your opponent''s Active Pokemon.'),
+	('Powerful Rage',20,'This attack does 20 damage of each damage counter on this Pokemon.'),
+	('Virtuous Flame',170,'none')
 GO
 
 PRINT '*** adding to MoveCost ***'
@@ -143,13 +162,13 @@ GO
 INSERT INTO [dbo].[MoveCost]
 	([MoveID],[ElementTypeID],[Quantity])
 VALUES
-	('shadow bind','psychic',2),
-	('shadow bind','colorless',1),
-	('merciless blade','dark',2),
-	('merciless blade','colorless',2),
-	('merciless blade','psychic',2),
-	('erasure ball','psychic',2),
-	('erasure ball','colorless',1)
+	(1,'psychic',2),
+	(1,'colorless',1),
+	(2,'dark',2),
+	(2,'colorless',2),
+	(2,'psychic',2),
+	(3,'psychic',2),
+	(3,'colorless',1)
 GO
 
 PRINT '*** adding to Artist Table ***'
@@ -817,8 +836,7 @@ GO
 INSERT INTO [dbo].[CardMove]
 	([PokemonCardID],[MoveID])
 VALUES
-	(1,'erasure ball'),
-	(1,'test')
+	(1,3)
 GO
 
 PRINT '*** adding to Card Alternate Art Table ***'

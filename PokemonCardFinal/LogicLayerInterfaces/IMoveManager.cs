@@ -16,7 +16,7 @@ namespace LogicLayerInterfaces
         /// <param name="moveID">Used to search the database for the Move and MoveCost</param>
         /// <returns>Returns a MoveVM from the database where the moveID match in MoveCost, and Move.</returns>
         /// <exception cref="ApplicationException">Throws if there was an error retrieving the data</exception>
-        public MoveVM GetMoveVMByMoveID(string moveID);
+        public MoveVM GetMoveVMByMoveID(int moveID);
 
         /// <summary>
         /// Passes parameters to <see href="SelectMoveByMoveID(string)"/><br/>
@@ -25,7 +25,7 @@ namespace LogicLayerInterfaces
         /// <param name="moveID">Used to search the database for the move</param>
         /// <returns>Returns a Move from the database where the moveIDs match</returns>
         /// <exception cref="ApplicationException">Throws if there was an error retrieving the data</exception>
-        public Move GetMoveByMoveID(string moveID);
+        public Move GetMoveByMoveID(int moveID);
 
         /// <summary>
         /// Passes parameters to <see href="SelectMoveCostsByMoveID(string)"/><br/>
@@ -34,7 +34,7 @@ namespace LogicLayerInterfaces
         /// <param name="moveID">Used to search the database for the MoveCost</param>
         /// <returns>Returns a MoveCost from the database where the moveIDs match</returns>
         /// <exception cref="ApplicationException">Throws if there was an error retrieving the data</exception>
-        public List<MoveCost> GetMoveCostsByMoveID(string moveID);
+        public List<MoveCost> GetMoveCostsByMoveID(int moveID);
 
         /// <summary>
         /// Uses GetMoveVMsWithMoveCost and GetMovesWithoutMoveCost to create
@@ -94,6 +94,6 @@ namespace LogicLayerInterfaces
         /// <param name="moveID">Used to find the Move</param>
         /// <returns>Returns true if the Move and its related rows were deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if there was a connection error</exception>
-        public bool DeleteMove(string moveID);
+        public bool DeleteMove(int moveID);
     }
 }

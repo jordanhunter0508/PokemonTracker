@@ -9,7 +9,8 @@ namespace DataDomain
 {
     public class Move
     {
-        public string MoveID { get; set; }
+        public int MoveID { get; set; }
+        public string Name { get; set; }
         public int Damage { get; set; }
         public string Description { get; set; }
     }
@@ -54,7 +55,7 @@ namespace DataDomain
 
     public class MoveCost
     {
-        public string MoveID { get; set; }
+        public int MoveID { get; set; }
         public string ElementType { get; set; }     // Could use a ElementType object if description is needed
         public int Quantity { get; set; }
     }

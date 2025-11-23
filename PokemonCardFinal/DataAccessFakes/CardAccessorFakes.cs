@@ -88,19 +88,22 @@ namespace DataAccessFakes
             _moves = new List<MoveVM>();
             _moves.Add(new MoveVM()
             { 
-                MoveID = "testMove1",
+                MoveID = 1,
+                Name = "testMove1",
                 Damage = 1,
                 Description = "This is a test move for card 1."
             });
             _moves.Add(new MoveVM()
             { 
-                MoveID = "testMove2",
+                MoveID = 2,
+                Name = "testMove2",
                 Damage = 1,
                 Description = "This is a test move for card 1."
             });
             _moves.Add(new MoveVM()
             { 
-                MoveID = "testMove3",
+                MoveID = 3,
+                Name = "testMove3",
                 Damage = 1,
                 Description = "This is a test move for card 22."
             });
@@ -109,17 +112,17 @@ namespace DataAccessFakes
             _cardMoves.Add(new CardMove()
             {
                 CardID = 1,
-                MoveID = "testMove1"
+                MoveID = 1
             });
             _cardMoves.Add(new CardMove()
             {
                 CardID = 1,
-                MoveID = "testMove2"
+                MoveID = 2
             });
             _cardMoves.Add(new CardMove()
             {
                 CardID = 2,
-                MoveID = "testMove2"
+                MoveID = 2
             });
 
             _cardAlternateArts = new List<CardAlternateArt>();
@@ -170,9 +173,9 @@ namespace DataAccessFakes
                 if (cardMove.CardID == cardID)
                 {
                     results.Add(SelectMoveVMByMoveID(cardMove.MoveID));
-                }
+                }  
             }
-
+            Console.WriteLine(results.Count);
             return results;
         }
 
@@ -265,15 +268,17 @@ namespace DataAccessFakes
         /// <summary>
         /// Used to help SelectMovesByCardID find the correct Move
         /// </summary>
-        private MoveVM SelectMoveVMByMoveID(string moveID)
+        private MoveVM SelectMoveVMByMoveID(int moveID)
         {
             MoveVM resultMove = null;
 
             foreach (MoveVM move in _moves)
             {
+                //Console.WriteLine("Test");
                 if (move.MoveID == moveID)
                 {
                     resultMove = move;
+                    Console.WriteLine("Test");
                     break;
                 }
             }
@@ -287,7 +292,7 @@ namespace DataAccessFakes
     internal class CardMove 
     {
         public int CardID { get; set; }
-        public string MoveID { get; set; }
+        public int MoveID { get; set; }
     }
 
     // Used to represent the join table from the database

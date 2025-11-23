@@ -14,7 +14,7 @@ namespace DataAccessInterfaces
         /// </summary>
         /// <param name="moveID">Used to search the database for a move</param>
         /// <returns>Returns a Move of the specified moveID.</returns>
-        public Move SelectMoveByMoveID(string moveID);
+        public Move SelectMoveByMoveID(int moveID);
 
         /// <summary>
         /// Requests all fields from the MoveCost table to
@@ -22,7 +22,7 @@ namespace DataAccessInterfaces
         /// </summary>
         /// <param name="moveID">Used to search the database for matching moveCosts</param>
         /// <returns>Returns a List of MoveCosts where moveID mathces in the database.</returns>
-        public List<MoveCost> SelectMoveCostsByMoveID(string moveID);
+        public List<MoveCost> SelectMoveCostsByMoveID(int moveID);
 
         /// <summary>
         /// Requests all fields from the Move and MoveCost tables to
@@ -60,6 +60,6 @@ namespace DataAccessInterfaces
         /// </summary>
         /// <param name="moveID">MoveID of the row to delete.</param>
         /// <returns>Returns the number of rows affected.</returns>
-        public int DeleteMove(string moveID);
+        public int DeleteMove(int moveID);
     }
 }

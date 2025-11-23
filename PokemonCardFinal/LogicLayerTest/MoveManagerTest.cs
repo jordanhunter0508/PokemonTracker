@@ -21,8 +21,8 @@ public class MoveManagerTest
     public void TestGetMoveByMoveIDWithValidMoveID()
     {
         // arrange
-        const string inputedMoveID = "test move 1";
-        const string expectedMoveID = "test move 1";
+        const int inputedMoveID = 1;
+        const int expectedMoveID = 1;
         const int expectedDamage = 10;
         const string expectedDescription = "This is a test move.";
         Move actualMove = null;
@@ -40,7 +40,7 @@ public class MoveManagerTest
     public void TestGetMoveByMoveIDWithInvalidInputReturnsEmptyList()
     {
         // arrange
-        const string inputedMoveID = "test";
+        const int inputedMoveID = 999;
         Move expectedMove = null;
         Move actualMove;
 
@@ -55,7 +55,7 @@ public class MoveManagerTest
     public void TestGetMoveCostByMoveIDWithValidMoveID()
     {
         // arrange
-        const string moveID = "test move 1";
+        const int moveID = 1;
         const int expectedCount = 2;
         const string elementType1 = "element";
         const string elementType2 = "test element";
@@ -74,7 +74,7 @@ public class MoveManagerTest
     public void TestGetMoveCostByMoveIDWithInvalidMoveID()
     {
         // arrange
-        const string moveID = "test";
+        const int moveID = 999;
         List<MoveCost> expectedMove = new List<MoveCost>();
         List<MoveCost> actualMoveCost;
 
@@ -89,7 +89,7 @@ public class MoveManagerTest
     public void TestGetMoveCostByMoveIDWithMoveIDWithNoMoveCost()
     {
         // arrange
-        const string moveID = "test move 3";
+        const int moveID = 3;
         List<MoveCost> expectedMoveCost = new List<MoveCost>();
         List<MoveCost> actualMoveCost;
 
@@ -104,7 +104,7 @@ public class MoveManagerTest
     public void TestGetMoveVMByMoveIDWithValidMoveID()
     {
         // arrange
-        const string moveID = "test move 1";
+        const int moveID = 1;
         const int costCount = 2;
         const int damage = 10;
         const string moveCostElementType1 = "element";
@@ -124,7 +124,7 @@ public class MoveManagerTest
     public void TestGetMoveVMByMoveIDWithValidMoveIDAndNoMoveCost()
     {
         // arrange
-        const string moveID = "test move 3";
+        const int moveID = 3;
         const int costCount = 0;
         const int damage = 0;
         MoveVM actualMoveVM;
@@ -143,7 +143,7 @@ public class MoveManagerTest
     public void TestGetMoveVMByMoveIDThrowsApplicationExceptionWithInvalidMoveID()
     {
         // arrange
-        const string moveID = "test failed";
+        const int moveID = 999;
         MoveVM actualMoveVM;
 
         // act
@@ -158,7 +158,7 @@ public class MoveManagerTest
     {
         // arrange
         const int expectedCount = 2;
-        const string expectedMoveID = "test move 1";
+        const int expectedMoveID = 1;
         const int expectedCostCount = 2;
         List<MoveVM> actualMoveVMs = null;
 
@@ -176,7 +176,7 @@ public class MoveManagerTest
     {
         // arrange
         const int expectedCount = 1;
-        const string expectedMoveID = "test move 3";
+        const int expectedMoveID = 3;
         List<Move> actualMoves = null;
 
         // act
@@ -192,7 +192,7 @@ public class MoveManagerTest
     {
         // arrange
         const int expectedCount = 3;
-        const string expectedMoveID = "test move 1";
+        const int expectedMoveID = 1;
         const int expectedCostCount = 0;
         List<MoveVM> actualMoves = null;
 
@@ -211,7 +211,8 @@ public class MoveManagerTest
         // arrange
         Move move = new Move()
         {
-            MoveID = "new move",
+            MoveID = 4,
+            Name = "new move",
             Damage = 100,
             Description = "This is a new move."
         };
@@ -241,32 +242,12 @@ public class MoveManagerTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ApplicationException))]
-    public void TestAddMoveThrowsApplicationExceptionWithDuplicateID()
-    {
-        // arrange
-        Move move = new Move()
-        {
-            MoveID = "test move 1",
-            Damage = 100,
-            Description = "This is a new move."
-        };
-        bool actualResult = false;
-
-        // act
-        actualResult = _moveManager.AddMove(move);
-
-        // assert
-        // do nothing
-    }
-
-    [TestMethod]
     public void TestAddMoveCostWithValidMove()
     {
         // arrange
         MoveCost moveCost = new MoveCost()
         {
-            MoveID = "test move 1",
+            MoveID = 1,
             ElementType = "new element",
             Quantity = 2
         };
@@ -302,7 +283,7 @@ public class MoveManagerTest
         // arrange
         MoveCost moveCost = new MoveCost()
         {
-            MoveID = "Failed",
+            MoveID = 999,
             ElementType = "element",
             Quantity = 2
         };
@@ -322,7 +303,7 @@ public class MoveManagerTest
         // arrange
         MoveCost moveCost = new MoveCost()
         {
-            MoveID = "test move 1",
+            MoveID = 1,
             ElementType = "failed",
             Quantity = 2
         };
@@ -342,7 +323,7 @@ public class MoveManagerTest
         // arrange
         MoveCost moveCost = new MoveCost()
         {
-            MoveID = "test move 1",
+            MoveID = 1,
             ElementType = "element",
             Quantity = 2
         };
@@ -362,20 +343,21 @@ public class MoveManagerTest
         List<MoveCost> moveCost = new List<MoveCost>();
         moveCost.Add(new MoveCost()
         {
-            MoveID = "new move",
+            MoveID = 4,
             ElementType = "element",
             Quantity = 2
         });
         moveCost.Add(new MoveCost()
         {
-            MoveID = "new move",
+            MoveID = 4,
             ElementType = "new element",
             Quantity = 1
         });
 
         MoveVM moveVM = new MoveVM()
         {
-            MoveID = "new move",
+            MoveID = 4,
+            Name = "new move",
             Damage = 100,
             Description = "This is a new move.",
             Costs = moveCost
@@ -399,7 +381,8 @@ public class MoveManagerTest
 
         MoveVM moveVM = new MoveVM()
         {
-            MoveID = "new move",
+            MoveID = 4,
+            Name = "new move",
             Damage = 100,
             Description = "This is a new move.",
             Costs = moveCost
@@ -424,7 +407,8 @@ public class MoveManagerTest
 
         MoveVM moveVM = new MoveVM()
         {
-            MoveID = "new move",
+            MoveID = 4,
+            Name = "new move",
             Damage = 100,
             Description = "This is a new move.",
             Costs = moveCost
@@ -448,7 +432,8 @@ public class MoveManagerTest
 
         MoveVM moveVM = new MoveVM()
         {
-            MoveID = "new move",
+            MoveID = 4,
+            Name = "new move",
             Damage = 100,
             Description = "This is a new move.",
             Costs = moveCost
@@ -472,13 +457,14 @@ public class MoveManagerTest
         List<MoveCost> moveCost = new List<MoveCost>();
         moveCost.Add(new MoveCost()
         {
-            MoveID = "new move",
+            MoveID = 4,
             Quantity = 2
         });
 
         MoveVM moveVM = new MoveVM()
         {
-            MoveID = "new move",
+            MoveID = 4,
+            Name = "new move",
             Damage = 100,
             Description = "This is a new move.",
             Costs = moveCost
@@ -497,7 +483,7 @@ public class MoveManagerTest
     public void DeleteMoveReturnsTrueWithValidID() 
     {
         // arrange
-        const string moveID = "test move 1";
+        const int moveID = 1;
         const bool expectedResult = true;
         bool actualResult = false;
 
@@ -512,7 +498,7 @@ public class MoveManagerTest
     public void DeleteMoveReturnsFalseWithInvalidID()
     {
         // arrange
-        const string moveID = "fail";
+        const int moveID = 999;
         const bool expectedResult = false;
         bool actualResult = true;
 
