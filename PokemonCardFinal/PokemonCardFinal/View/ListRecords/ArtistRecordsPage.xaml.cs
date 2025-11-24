@@ -25,9 +25,9 @@ namespace PokemonCardFinal.View.ListRecords
     /// </summary>
     public partial class ArtistRecordsPage : Page
     {
-        Artist[] _artists;
         IArtistManager _artistManager;
         Artist _selectedArtist;
+
         public ArtistRecordsPage()
         {
             InitializeComponent();
@@ -92,8 +92,8 @@ namespace PokemonCardFinal.View.ListRecords
                 AddEditContainerPage containerPage = new AddEditContainerPage();
                 mainWindow.frmMain.Navigate(containerPage);
 
-                // When the addRecordPage is loaded change the inner page
-                // to addElementPage
+                // When the outer page is loaded change the inner page
+                // to AddArtistPage
                 containerPage.Loaded += (s, args) =>
                 {
                     containerPage.IsListView = false;
@@ -116,9 +116,8 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                _artists = _artistManager.FormatArtists(_artistManager.GetArtists()).ToArray();
-                _selectedArtist = _artists[0];
-                datArtist.ItemsSource = _artists;
+                datArtist.ItemsSource = _artistManager.FormatArtists(_artistManager.GetArtists());
+                _selectedArtist = datArtist.SelectedItem as Artist;
 
                 datArtist.Columns[1].Header = "Given Name";
                 datArtist.Columns[1].Width = new DataGridLength(1, DataGridLengthUnitType.Star);

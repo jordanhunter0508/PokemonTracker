@@ -23,7 +23,6 @@ namespace PokemonCardFinal.View.ListRecords
     /// </summary>
     public partial class MoveRecordsPage : Page
     {
-        List<MoveVM> _moveVMs;
         IMoveManager _moveManager;
         MoveVM _selectedMoveVM;
 
@@ -53,6 +52,11 @@ namespace PokemonCardFinal.View.ListRecords
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning
             );
+
+            if (conformationWindow != MessageBoxResult.Yes)
+            {
+                return;
+            }
 
             try
             {
@@ -86,10 +90,9 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                _moveVMs = _moveManager.GetMoveVMs();
-                _selectedMoveVM = _moveVMs[0];
                 datMove.AutoGenerateColumns = false;
-                datMove.ItemsSource = _moveVMs;
+                datMove.ItemsSource = _moveManager.GetMoveVMs();
+                _selectedMoveVM = datMove.SelectedItem as MoveVM;
 
                 datMove.Columns[0].Width = new DataGridLength(125);
                 datMove.Columns[1].Width = new DataGridLength(75);

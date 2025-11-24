@@ -24,9 +24,9 @@ namespace PokemonCardFinal.View.ListRecords
     /// </summary>
     public partial class RuleRecordsPage : Page
     {
-        List<PokemonRule> _rules;
         IRuleManager _ruleManager;
         PokemonRule _selectedRule;
+
         public RuleRecordsPage()
         {
             InitializeComponent();
@@ -84,14 +84,14 @@ namespace PokemonCardFinal.View.ListRecords
                 return;
             }
 
-            // Navigate to CreateRecordPage
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 // Navigate the main frame to the new outer page
                 AddEditContainerPage containerPage = new AddEditContainerPage();
                 mainWindow.frmMain.Navigate(containerPage);
 
-                // When the addRecordPage is loaded change the inner page
+                // When the outer page is loaded change the inner page
+                // to AddRulePage
                 containerPage.Loaded += (s, args) =>
                 {
                     containerPage.IsListView = false;
@@ -113,9 +113,8 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                _rules = _ruleManager.GetRules();
-                _selectedRule = _rules[0];
-                datRule.ItemsSource = _rules;
+                datRule.ItemsSource = _ruleManager.GetRules();
+                _selectedRule = datRule.SelectedItem as PokemonRule;
 
                 datRule.Columns[0].Header = "Rule Name";
 

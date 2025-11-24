@@ -24,9 +24,9 @@ namespace PokemonCardFinal.View.ListRecords
     /// </summary>
     public partial class AlternateArtRecordsPage : Page
     {
-        List<AlternateArt> _altArts;
         IAltArtManager _altArtManager;
         AlternateArt _selectedAltArt;
+
         public AlternateArtRecordsPage()
         {
             InitializeComponent();
@@ -84,14 +84,14 @@ namespace PokemonCardFinal.View.ListRecords
                 return;
             }
 
-            // Navigate to CreateRecordPage
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 // Navigate the main frame to the new outer page
                 AddEditContainerPage containerPage = new AddEditContainerPage();
                 mainWindow.frmMain.Navigate(containerPage);
 
-                // When the addRecordPage is loaded change the inner page
+                // When the outer page is loaded change the inner page
+                // to AddAlternateArtPage
                 containerPage.Loaded += (s, args) =>
                 {
                     containerPage.IsListView = false;
@@ -112,9 +112,8 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                _altArts = _altArtManager.GetAlternateArts();
-                _selectedAltArt = _altArts[0];
-                datAlternate.ItemsSource = _altArts;
+                datAlternate.ItemsSource = _altArtManager.GetAlternateArts();
+                _selectedAltArt = datAlternate.SelectedItem as AlternateArt;
 
                 datAlternate.Columns[0].Header = "Alternate Art Name";
 

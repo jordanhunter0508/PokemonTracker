@@ -39,7 +39,7 @@ namespace DataAccessInterfaces
         public int UpdateBooster(Booster booster);
 
         /// <summary>
-        /// Deletes the row from the database where boosterID matches on in the table.
+        /// Deletes the row from the database where boosterID matches in the table.
         /// </summary>
         /// <param name="boosterID">BoosterID of the row to delete.</param>
         /// <returns>Returns the number of rows affected.</returns>

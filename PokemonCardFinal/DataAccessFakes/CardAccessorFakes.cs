@@ -198,7 +198,7 @@ namespace DataAccessFakes
         }
 
         /// <summary>
-        /// Used to help SelectMovesByCardID find the correct Move
+        /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
         public Dictionary<int, Card> SelectCards()
         {
@@ -213,7 +213,7 @@ namespace DataAccessFakes
         }
 
         /// <summary>
-        /// Used to help SelectMovesByCardID find the correct Move
+        /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
         public Dictionary<int, List<MoveVM>> SelectCardMoves()
         {
@@ -237,7 +237,7 @@ namespace DataAccessFakes
         }
 
         /// <summary>
-        /// Used to help SelectMovesByCardID find the correct Move
+        /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
         public Dictionary<int, List<string>> SelectCardAlternateArts()
         {
@@ -260,8 +260,31 @@ namespace DataAccessFakes
             return results;
         }
 
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
+        public int DeleteCard(int cardID)
+        {
+            int count = 0;
+            Card deletedCard = null;
 
+            foreach (Card card in _cards)
+            {
+                if (card.CardID == cardID)
+                {
+                    deletedCard = card;
+                    break;
+                }
+            }
 
+            if (deletedCard != null)
+            {
+                _cards.Remove(deletedCard);
+                count = 1;
+            }
+
+            return count;
+        }
 
 
 

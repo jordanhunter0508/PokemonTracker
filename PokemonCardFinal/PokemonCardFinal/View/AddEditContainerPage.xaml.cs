@@ -32,6 +32,7 @@ namespace PokemonCardFinal.View
         bool _isAlternateArtLoaded;
         bool _isArtistLoaded;
         bool _isBoosterLoaded;
+        bool _isCardLoaded;
         bool _isRuleLoaded;
         bool _isElementLoaded;
         bool _isMoveLoaded;
@@ -71,6 +72,7 @@ namespace PokemonCardFinal.View
             _isArtistLoaded = option;
             _isAlternateArtLoaded = option;
             _isBoosterLoaded = option;
+            _isCardLoaded = option;
             _isRuleLoaded = option;
             _isElementLoaded = option;
             _isMoveLoaded = option;
@@ -106,6 +108,12 @@ namespace PokemonCardFinal.View
                 SetAllLoaded();
                 _isBoosterLoaded = true;
                 frmBooster.Navigate(new BoosterRecordsPage());
+            }
+            else if (tabController.SelectedItem == tabCard && ! _isCardLoaded)
+            {
+                SetAllLoaded();
+                _isCardLoaded = true;
+                frmCard.Navigate(new CardRecordsPage());
             }
             else if (tabController.SelectedItem == tabRule && !_isRuleLoaded)
             {
@@ -158,6 +166,12 @@ namespace PokemonCardFinal.View
                 SetAllLoaded();
                 _isBoosterLoaded = true;
                 frmBooster.Navigate(new AddBoosterPage());
+            }
+            else if (tabController.SelectedItem == tabCard && !_isCardLoaded)
+            {
+                SetAllLoaded();
+                _isCardLoaded = true;
+                frmCard.Navigate(new AddCardPage());
             }
             else if (tabController.SelectedItem == tabRule && !_isRuleLoaded)
             {

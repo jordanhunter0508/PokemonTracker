@@ -253,4 +253,34 @@ public class CardManagerTest
         Assert.AreEqual(altArt1, actualResult[0].AlternateArts[0]);
 
     }
+
+    [TestMethod]
+    public void TestDeleteCardReturnsTrueWithValidID()
+    {
+        // arrange
+        const int cardID = 1;
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _cardManager.DeleteCard(cardID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeleteCardReturnsFalseWithInvalidID()
+    {
+        // arrange
+        const int cardID = 999;
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _cardManager.DeleteCard(cardID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
 }

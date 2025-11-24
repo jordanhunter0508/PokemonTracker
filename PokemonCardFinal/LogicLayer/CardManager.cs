@@ -122,6 +122,9 @@ namespace LogicLayer
             return results;
         }
 
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
         public List<CardVM> GetCardVMs()
         {
             List<CardVM> results = new List<CardVM>();
@@ -160,6 +163,9 @@ namespace LogicLayer
             return results;
         }
 
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
         public Dictionary<int, Card> GetCards()
         {
             Dictionary<int, Card> results = new Dictionary<int, Card>();
@@ -176,6 +182,9 @@ namespace LogicLayer
             return results;
         }
 
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
         public Dictionary<int, List<MoveVM>> GetCardMoves()
         {
             Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
@@ -192,6 +201,9 @@ namespace LogicLayer
             return results;
         }
 
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
         public Dictionary<int, List<string>> GetCardAlternateArts()
         {
             Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
@@ -208,6 +220,31 @@ namespace LogicLayer
             return results;
         }
 
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public bool DeleteCard(int cardID)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                isDeleted = (1 == _cardAccessor.DeleteCard(cardID));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to delete a card.",ex);
+            }
+
+            return isDeleted;
+        }
+
+        /// <summary>
+        /// Creates a card VM from the inputted Card.
+        /// </summary>
+        /// <param name="card">Card desired to be a CardVM</param>
+        /// <returns>Returns a new CardVM with empty Move and Alt Art lists.</returns>
         private CardVM ConvertCardToCardVM(Card card)
         {
             CardVM result = null;
@@ -235,5 +272,7 @@ namespace LogicLayer
             };
             return result;
         }
+
+        
     }
 }

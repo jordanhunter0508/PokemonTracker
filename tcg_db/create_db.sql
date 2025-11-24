@@ -1236,3 +1236,16 @@ AS
 	END
 GO
 
+PRINT '*** creating sp_delete_card ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_card]
+	(
+		@PokemonCardID	[int]
+	)
+AS
+	BEGIN
+		DELETE 	[PokemonCard]
+		WHERE	[PokemonCardID] = @PokemonCardID;
+		RETURN @@ROWCOUNT;
+	END
+GO

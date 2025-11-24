@@ -25,9 +25,9 @@ namespace PokemonCardFinal.View.ListRecords
     /// </summary>
     public partial class ElementRecordsPage : Page
     {
-        List<ElementType> _elementTypes;
         IElementManager _elementManager;
         ElementType _selectedElement;
+
         public ElementRecordsPage()
         {
             InitializeComponent();
@@ -85,14 +85,14 @@ namespace PokemonCardFinal.View.ListRecords
                 return;
             }
 
-            // Navigate to CreateRecordPage
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 // Navigate the main frame to the new outer page
                 AddEditContainerPage containerPage = new AddEditContainerPage();
                 mainWindow.frmMain.Navigate(containerPage);
 
-                // When the addRecordPage is loaded change the inner page
+                // When the outer page is loaded change the inner page
+                // to AddElementPage
                 containerPage.Loaded += (s, args) =>
                 {
                     containerPage.IsListView = false;
@@ -114,9 +114,8 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                _elementTypes = _elementManager.FormatElemetTypes(_elementManager.GetElementTypes()).ToList();
-                _selectedElement = _elementTypes[0];
-                datElement.ItemsSource = _elementTypes;
+                datElement.ItemsSource = _elementManager.FormatElemetTypes(_elementManager.GetElementTypes());
+                _selectedElement = datElement.SelectedItem as ElementType;
 
                 datElement.Columns[0].Header = "Element Name";
 

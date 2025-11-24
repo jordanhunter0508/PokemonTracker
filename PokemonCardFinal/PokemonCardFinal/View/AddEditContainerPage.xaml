@@ -23,11 +23,15 @@
                 <Frame x:Name="frmArtist" NavigationUIVisibility="Hidden"/>
             </TabItem>
             
-            <TabItem x:Name="tabBooster" Header="Booster Packs">
+            <TabItem x:Name="tabBooster" Header="Booster Pack">
                 <Frame x:Name="frmBooster" NavigationUIVisibility="Hidden"/>
             </TabItem>
+            
+            <TabItem x:Name="tabCard" Header="Card">
+                <Frame x:Name="frmCard" NavigationUIVisibility="Hidden"/>
+            </TabItem>
 
-            <TabItem x:Name="tabRule" Header="Card Rules">
+            <TabItem x:Name="tabRule" Header="Card Rule">
                 <Frame x:Name="frmRule" NavigationUIVisibility="Hidden"/>
             </TabItem>
 

@@ -330,7 +330,40 @@ namespace DataAccess
             return results;
         }
 
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_delete_card
+        /// </summary>
+        public int DeleteCard(int cardID)
+        {
+            int count = 0;
 
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_delete_card";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@PokemonCardID",System.Data.SqlDbType.Int);
+            cmd.Parameters["@PokemonCardID"].Value = cardID;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
 
         /// <summary>
         /// Stores the data into the parameter resutls
@@ -372,5 +405,6 @@ namespace DataAccess
             }
         }
 
+        
     }
 }

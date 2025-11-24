@@ -77,5 +77,14 @@ namespace LogicLayerInterfaces
         /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
         public Dictionary<int,List<string>> GetCardAlternateArts();
+
+        /// <summary>
+        /// Passes parameters to <see href="DeleteCard(int)"/><br/>
+        /// Then returns true if the record was deleted successfully
+        /// </summary>
+        /// <param name="cardID">Used to find the Card</param>
+        /// <returns>Returns true if the Card, and it's components was deleted successfully</returns>
+        /// <exception cref="ApplicationException">Throws if there was a problem connecting to the database.</exception>
+        public bool DeleteCard(int cardID);
     }
 }

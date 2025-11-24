@@ -25,7 +25,6 @@ namespace PokemonCardFinal.View.ListRecords
     public partial class AbilityRecordsPage : Page
     {
         IAbilityManager _abilityManager;
-        Ability[] _abilities;
         Ability _selectedAbility;
 
         public AbilityRecordsPage()
@@ -84,14 +83,14 @@ namespace PokemonCardFinal.View.ListRecords
                 return;
             }
 
-            // Navigate to CreateRecordPage
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 // Navigate the main frame to the new outer page
                 AddEditContainerPage containerPage = new AddEditContainerPage();
                 mainWindow.frmMain.Navigate(containerPage);
 
-                // When the addRecordPage is loaded change the inner page
+                // When the outer page is loaded change the inner page
+                // to AddAbilityPage
                 containerPage.Loaded += (s, args) =>
                 {
                     containerPage.IsListView = false;
@@ -113,9 +112,8 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                _abilities = _abilityManager.FormatAbility(_abilityManager.GetAbilities()).ToArray();
-                _selectedAbility = _abilities[0];
-                datAbility.ItemsSource = _abilities;
+                datAbility.ItemsSource = _abilityManager.FormatAbility(_abilityManager.GetAbilities());
+                _selectedAbility = datAbility.SelectedItem as Ability;
 
                 datAbility.Columns[0].Header = "Ability Name";
                 datAbility.Columns[1].Header = "Ability Type";

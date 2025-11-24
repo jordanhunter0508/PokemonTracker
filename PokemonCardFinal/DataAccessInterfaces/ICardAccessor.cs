@@ -49,5 +49,12 @@ namespace DataAccessInterfaces
         /// </summary>
         /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
         public Dictionary<int, List<string>> SelectCardAlternateArts();
+
+        /// <summary>
+        /// Deletes the row from the database where cardID matches in the table.
+        /// </summary>
+        /// <param name="cardID">CardID of the row to delete.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int DeleteCard(int cardID);
     }
 }

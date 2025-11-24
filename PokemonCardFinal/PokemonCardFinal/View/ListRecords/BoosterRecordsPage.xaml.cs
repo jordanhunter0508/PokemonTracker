@@ -24,7 +24,6 @@ namespace PokemonCardFinal.View.ListRecords
     /// </summary>
     public partial class BoosterRecordsPage : Page
     {
-        List<Booster> _boosters;
         IBoosterManager _boosterManger;
         Booster _selectedBooster;
         public BoosterRecordsPage()
@@ -84,14 +83,14 @@ namespace PokemonCardFinal.View.ListRecords
                 return;
             }
 
-            // Navigate to CreateRecordPage
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 // Navigate the main frame to the new outer page
                 AddEditContainerPage containerPage = new AddEditContainerPage();
                 mainWindow.frmMain.Navigate(containerPage);
 
-                // When the addRecordPage is loaded change the inner page
+                // When the outer page is loaded change the inner page
+                // to AddBoosterPage
                 containerPage.Loaded += (s, args) =>
                 {
                     containerPage.IsListView = false;
@@ -113,9 +112,9 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                _boosters = _boosterManger.GetBoosters();
-                _selectedBooster = _boosters[0];
-                datBooster.ItemsSource = _boosters;
+
+                datBooster.ItemsSource = _boosterManger.GetBoosters();
+                _selectedBooster = datBooster.SelectedItem as Booster;
 
                 datBooster.Columns[0].Header = "Booster Name";
                 datBooster.Columns[2].Header = "Release Date";
