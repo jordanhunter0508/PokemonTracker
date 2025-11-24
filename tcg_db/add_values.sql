@@ -49,6 +49,8 @@ INSERT INTO [dbo].[AlternateArt]
 	([AlternateArtID],[Description])
 VALUES
 	('none','standard card'),
+	('promo','varies between card.'),
+	('pokemon center','stamp on the right side that has a pokemon center logo.'),
 	('jumbo','oversized cards that come in special boxes.'),
 	('reverse holo','same as a standard card but the background has foil rather than the picture.'),
 	('reverse holo pokeball','same as reverse holo but has pokeballs on the foil.'),
@@ -60,14 +62,23 @@ GO
 INSERT INTO [dbo].[Ability]
 	([AbilityID],[AbilityType],[Description])
 VALUES
-('none','none','none'),
-('rain dance','pokemon power','As often as you like during your turn (before your attack), you may attach 1 Water Energy card to 1 of your Water Pokémon. (This doesn''t use up your 1 Energy card attachment for the turn.) This power can''t be used if Blastoise is Asleep, Confused, or Paralyzed.'),
-('strikes back','pokemon power','Whenever your opponent''s attack damages Machamp (even if Machamp is Knocked Out), this power does 10 damage to the attacking Pokémon. (Don''t apply Weakness and Resistance.) This power can''t be used if Machamp is Asleep, Confused, or Paralyzed when your opponent attacks.'),
-('energy trans','pokemon power','As often as you like during your turn (before your attack), you may take 1 Grass Energy card attached to 1 of your Pokémon and attach it to a different one. This power can''t be used if your pokemon is Asleep, Confused, or Paralyzed.'),
-('invisible wall','pokemon power','Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can''t be used if Mr. Mime is Asleep, Confused, or Paralyzed.'),
-('thick skinned','pokemon power','Snorlax can''t become Asleep, Confused, Paralyzed, or Poisoned. This power can''t be used if Snorlax is already Asleep, Confused, or Paralyzed.'),
-('shift','pokemon power','Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than Colorless. This power can''t be used if Venomoth is Asleep, Confused, or Paralyzed.'),
-('power saver','ability','This Pokemon can''t attack unless you have 4 or more Team Rocket''s in play.')
+	('none','none','none'),
+	('Rain Dance','pokemon power','As often as you like during your turn (before your attack), you may attach 1 Water Energy card to 1 of your Water Pokémon. (This doesn''t use up your 1 Energy card attachment for the turn.) This power can''t be used if Blastoise is Asleep, Confused, or Paralyzed.'),
+	('Strikes Back','pokemon power','Whenever your opponent''s attack damages Machamp (even if Machamp is Knocked Out), this power does 10 damage to the attacking Pokémon. (Don''t apply Weakness and Resistance.) This power can''t be used if Machamp is Asleep, Confused, or Paralyzed when your opponent attacks.'),
+	('Energy Trans','pokemon power','As often as you like during your turn (before your attack), you may take 1 Grass Energy card attached to 1 of your Pokémon and attach it to a different one. This power can''t be used if your pokemon is Asleep, Confused, or Paralyzed.'),
+	('Invisible Wall','pokemon power','Whenever an attack (including your own) does 30 or more damage to Mr. Mime (after applying Weakness and Resistance), prevent that damage. (Any other effects of attacks still happen.) This power can''t be used if Mr. Mime is Asleep, Confused, or Paralyzed.'),
+	('Thick Skinned','pokemon power','Snorlax can''t become Asleep, Confused, Paralyzed, or Poisoned. This power can''t be used if Snorlax is already Asleep, Confused, or Paralyzed.'),
+	('Shift','pokemon power','Once during your turn (before your attack), you may change the type of Venomoth to the type of any other Pokémon in play other than Colorless. This power can''t be used if Venomoth is Asleep, Confused, or Paralyzed.'),
+	('Power Saver','ability','This Pokemon can''t attack unless you have 4 or more Team Rocket''s in play.'),
+	('Cursed Blast','ability','Once during your turn, you may put 13 damage counters on 1 of your opponent''s Pokemon. If you use this Ability, this Pokemon is Knocked Out.'),
+	('Boosted Evolution','ability','As long as this Pokemon is in the Active Spot, it can evolve during your first turn or the turn you play it.'),
+	('Skyscraper','ability','Prevent all damage done to this Pokemon by attacks form your opponent''s Pokemon that have Special Energy attached.'),
+	('Moon Cleave Star','ability','During your turn, you may put 4 damage counters on 1 of your opponent''s Pokemon. (You can''t use more than 1 VSTAR Power in a game).'),
+	('Sun Energy','ability','Once during your turn, you may attach a Psychic Energy card from your discard pile to 1 of your Lunatone.'),
+	('Witch''s Domain','ability','Once during your turn, you may move up to 2 damage counters from your Pokemon to your opponent''s Active Pokemon.'),
+	('Star Guardian','ability','During your turn, if your opponenet has exactly 1 Prize card remaining, you may choose 1 of your opponent''s Benched Pokemon. They discard that Pokemon and all attached cards. (You can''t use more than 1 VSTAR Power in a game.)'),
+	('Team Rocket''s Archer','supporter','You can use this card only if any of your Team Rocket''s Pokemon were Knocked Out during your opponenet''s last turn. Each player shuffles thier hand into their deck. Then, you draw 5 cards, and your opponenet draws 3 cards.'),
+	('Team Rocket''s Ariana','supporter','Draw cards until you have 5 cards in your hand. If all of your Pokemon in play are Team Rocket''s Pokemon, draw cards until you have 8 cards in your hand.')
 GO
 
 PRINT '*** adding to ElementType Table ***'
@@ -112,6 +123,8 @@ GO
 INSERT INTO [dbo].[PokemonRule]
 	([PokemonRuleID],[Description])
 VALUES
+	('none','none'),
+	('Supporter','You may play only 1 Supporter card during your turn.'),
 	('Pokemon-EX','When a Pokemon-EX has been Knocked Out, your opponent takes 2 prize cards.'),
 	('Mega Evolution','When 1 of your Pokemon becomes a Mega Evolution Pokemon, your turn ends.'),
 	('Primal Reversion','When 1 of your Pokemon becomes primal your turn ends.'),
@@ -133,8 +146,6 @@ INSERT INTO [dbo].[Move]
 	([Name],[Damage],[Description])
 VALUES
 	('Shadow Bind',150,'During your opponent''s next turn, the Defending Pokemon can''t retreat.'),
-	('Merciless Blade',110,'If your opponent''s active pokemon already has any damage counters on it, this attack does 100 damage.'),
-	('Erasure Ball',160,'You may discard up to 2 Energy from your Benched Pokemon. This attack does 60 more damage for each card you discarded in this way.'),
 	('Reckless Charge',30,'This Pokemon also does 10 damage to itself.'),
 	('Roasting Heat',80,'If your opponent'' Active Pokemon is Burned, this attack does 160 more damage.'),
 	('Volcanic Meteor',280,'Discard 2 Energy from this Pokemon.'),
@@ -154,7 +165,28 @@ VALUES
 	('Massive Rend',140,'none'),
 	('G-Max Pulverization',220,'This attack''s damage isn''t affected by any effects on your opponent''s Active Pokemon.'),
 	('Powerful Rage',20,'This attack does 20 damage of each damage counter on this Pokemon.'),
-	('Virtuous Flame',170,'none')
+	('Virtuous Flame',170,'none'),
+	('Headbutt',10,'none'),
+	('Invade',30,'none'),
+	('Aura Jab',130,' Attach up to 3 Basic Fighting Energy cards from your discard pile to your Benched Pokemon in any way you like.'),
+	('Mega Brave',270,'During your next turn, this Pokemon can''t use Mega Brave.'),
+	('Salt Coating',0,'Heal 20 damage from 1 of your Pokemon.'),
+	('Tackle',30,'none'),
+	('Photon Wave',30,'During your opponent''s next turn, any damage done by attacks from the Defending Pokemon is reduced by 30 (beofre applying Weakness and Resistance).'),
+	('Psyburn',120,'none'),
+	('Piercing Gaze',120,'Your opponenet reveals their hand. Discard a card you find there.'),
+	('Volt Strike',250,'Discard all Energy from this Pokemon.'),
+	('Hold Still',0,'Heal 30 damage fro this Pokemon.'),
+	('Razor Fin',20,'none'),
+	('Skill Dive',0,'This attack does 50 damage to 1 of your opponent''s Pokemon. (Don''t apply Weakness and Resistance for Benched Pokemon).'),
+	('Jet Headbutt',110,'none'),
+	('Shell Press',10,'During your opponenet''s next turn, this Pokemon takes 10 less damage from attacks (after applying Weakness and Resistance).'),
+	('Merciless Blade',110,'If your opponent''s Active Pokemon already has any damage counters on it, this attack does 110 more damage.'),
+	('Spinning Attack',50,'none'),
+	('Meteor Mash',60,'During your next turn, this Pokemon''s Meteor Mash attack does 60 more damage (before applying Weakness and Resistance).'),
+	('Luster Blast',200,'Discard 2 Energy from this Pokemon.'),
+	('G-Max Smite',150,'Your opponent''s Active Pokemon is now Confused.'),
+	('Giga Impact',230,'During your next turn, this Pokemon can''t attack.')
 GO
 
 PRINT '*** adding to MoveCost ***'
@@ -164,12 +196,71 @@ INSERT INTO [dbo].[MoveCost]
 VALUES
 	(1,'psychic',2),
 	(1,'colorless',1),
-	(2,'dark',2),
-	(2,'colorless',2),
-	(2,'psychic',2),
-	(3,'psychic',2),
-	(3,'colorless',1)
-GO
+	(2,'Colorless',2),
+	(3,'fire',1),
+	(4,'fire',1),
+	(4,'colorless',3),
+	(5,'colorless',2),
+	(6,'colorless',4),
+	(7,'water',1),
+	(7,'fighting',1),
+	(7,'colorless',1),
+	(8,'water',1),
+	(8,'fighting',2),
+	(8,'colorless',1),
+	(9,'fighting',3),
+	(9,'colorless',1),
+	(10,'fire',3),
+	(10,'electric',1),
+	(10,'colorless',1),
+	(11,'water',1),
+	(11,'psychic',1),
+	(11,'colorless',1),
+	(12,'fire',2),
+	(12,'dark',1),
+	(12,'colorless',2),
+	(13,'fire',2),
+	(14,'colorless',1),
+	(15,'colorless',2),
+	(16,'fire',1),
+	(16,'colorless',2),
+	(17,'steel',1),
+	(18,'steel',1),
+	(18,'colorless',2),
+	(19,'fighting',1),
+	(19,'steel',2),
+	(20,'fire',1),
+	(20,'electric',1),
+	(21,'fire',2),
+	(21,'electric',1),
+	(21,'colorless',1),
+	(22,'dark',1),
+	(23,'dark',2),
+	(24,'fighting',1),
+	(25,'fighting',2),
+	(26,'fighting',1),
+	(27,'fighting',2),
+	(28,'colorless',2),
+	(29,'psychic',2),
+	(29,'colorless',2),
+	(30,'colorless',2),
+	(31,'electric',2),
+	(32,'water',1),
+	(33,'colorless',2),
+	(34,'psychic',1),
+	(34,'colorless',1),
+	(35,'psychic',2),
+	(35,'colorless',1),
+	(36,'water',1),
+	(37,'dark',2),
+	(38,'fighting',1),
+	(38,'colorless',1),
+	(38,'steel',1),
+	(39,'steel',1),
+	(39,'colorless',31),
+	(41,'psychic',1),
+	(41,'colorless',2),
+	(42,'colorless',3)
 
 PRINT '*** adding to Artist Table ***'
 GO
@@ -827,8 +918,36 @@ INSERT INTO [dbo].[PokemonCard]
 		[Health],[Stage]
 	)
 VALUES
-	(12,'power saver','Destined Rivals','Pokemon-EX','fire','Team Rocket''s Mewtwo EX',213,'pokemon','Special Illustration Rare','dark','fighting',2,30,3,280,'basic'),
-	(14,'none','Destined Rivals','Pokemon-EX','colorless','Thi''s Card is a Test.',999,'pokemon','Special Illustration Rare','dark','fighting',2,30,3,280,'basic')
+		(1,'Cursed Blast','Shrouded Fable','none','psychic','Dusknoir',70,'Pokemon','Illustration Rare','dark','fighting',2,30,3,160,'Stage 2'),
+		(1,'Boosted Evolution','Scarlet & Violet Promo','none','colorless','Eevee',173,'Pokemon','Illustration Rare','fighting','none',2,0,1,50,'Basic'),
+		(1,'none','Mega Evolution','Mega Evolution','fire','Mega Camerupt EX', 156,'Pokemon','Ultra Rare','water','none',2,0,4,340,'Stage 1'),
+		(1,'none','XY Promo','Pokemon-EX','colorless','Rayquaza EX', 69, 'Pokemon','Rare','electric','fighting',2,20,2,170,'Basic'),
+		(1,'none','Astral Radiance','Pokemon V','dragon','Garchomp V',23,'Pokemon','Gallery','none','none',0,0,0,200,'Basic'),
+		(1,'none','Ancient Origins','Pokemon-EX','Fighting','Primal Groudon EX',97,'Pokemon','Full Art','grass','none',2,0,4,240,'Mega'),
+		(1,'none','Roaring Skies','Pokemon-EX','dragon','M Rayquaza EX',61,'Pokemon','Rare','fairy','none',2,0,2,230,'Mega'),
+		(1,'none','Roaring Skies','Pokemon-EX','dragon','M Latios EX',102,'Pokemon','Full Art','fairy','none',2,0,0,220,'Mega'),
+		(1,'none','Flashfire','Pokemon-EX','dragon','M Charizard EX',108,'Pokemon','Secret Rare','fairy','none',2,0,3,230,'Mega'),
+		(1,'none','Scarlet & Violet Promo','none','fire','Victini',208,'Pokemon','Illustration Rare','water','none',2,0,1,80,'Basic'),
+		(1,'none','White Flare','none','psychic','Woobat',119,'Pokemon','Illustration Rare','electric','fighting',2,30,1,60,'Basic'),
+		(1,'none','Shrouded Fable','none','fire','Houndoom',66,'Pokemon','Illustration Rare','water','none',2,0,2,120,'Stage 1'),
+		(1,'none','Scarlet & Violet Promo','none','steel','Kingambit',130,'Pokemon','Illustration Rare','fire','grass',2,30,4,180,'Stage 2'),
+		(1,'Skyscraper','Crown Zenith','Pokemon VMAX','dragon','Duraludon VMAX',104,'Pokemon','Full Art','none','none',0,0,3,330,'VMAX'),
+		(1,'none','Journey Together','none','dragon','N''s Reshiram',167,'Pokemon','Illustration Rare','none','none',0,0,2,130,'Basic'),
+		(1,'none','White Flare','none','dark','Scraggy',138,'Pokemon','Illustration Rare','grass','none',2,0,1,70,'Basic'),
+		(1,'none','Mega Evolution','Mega Evolution','fighting','Mega Lucario EX',77,'Pokemon','Rare','psychic','none',2,0,2,340,'Stage 1'),
+		(1,'none','Paldea Evolved','none','fighting','Nacli',220,'Pokemon','Illustration Rare','grass','none',2,0,3,70,'Basic'),
+		(1,'none','BREAKthrough','Pokemon-EX','psychic','Mewtwo Ex',163,'Pokemon','Secret Rare','psychic','none',2,0,2,170,'Basic'),
+		(1,'none','Twilight Masquerade','Pokemon-EX','electric','Luxray EX',195,'Pokemon','Ultra Rare','fighting','none',2,0,1,310,'Stage 2'),
+		(1,'none','Shrouded Fable','none','water','Horsea',67,'Pokemon','Illustration Rare','electric','none',2,0,1,60,'Basic'),
+		(1,'none','Surging Spark','none','psychic','Latios',203,'Pokemon','Illustration Rare','dark','fighting',2,30,2,120,'Basic'),
+		(1,'none','Destined Rivals','none','water','Clamperl',195,'Pokemon','Illustration Rare','electric','none',2,0,2,60,'Basic'),
+		(1,'Moon Cleave Star','Crown Zenith','Pokemon VSTAR','dark','Hisuian Samurott VSTAR',52,'Pokemon','Gallery','grass','none',2,0,2,270,'VSTAR'),
+		(1,'Sun Energy','Crown Zenith','none','fighting','Solrock',15,'Pokemon','Gallery','grass','none',2,0,1,90,'Basic'),
+		(1,'none','Temporal Forces','none','steel','Metagross',178,'Pokemon','Illustration Rare','fire','grass',2,30,3,180,'Stage 2'),
+		(1,'Witch''s Domain','Crown Zenith','Pokemon VMAX','psychic','Hatterene VMAX',47,'Pokemon','Gallery','dark','fighting',2,30,2,320,'VMAX'),
+		(1,'Star Guardian','Crown Zenith','Pokemon VSTAR','colorless','Regigigas VSTAR',55,'Pokemon','Gallery','fighting','none',2,0,4,300,'VSTAR'),
+		(1,'Team Rocket''s Archer','Destined Rivals','Supporter','colorless','Team Rocket''s Archer',223,'Trainer','Ultra Rare','none','none',0,0,0,0,'Supporter'),
+		(1,'Team Rocket''s Ariana','Destined Rivals','Supporter','colorless','Team Rocket''s Ariana',224,'Trainer','Ultra Rare','none','none',0,0,0,0,'Supporter')
 GO
 
 PRINT '*** adding to Card Move Table ***'
@@ -836,7 +955,48 @@ GO
 INSERT INTO [dbo].[CardMove]
 	([PokemonCardID],[MoveID])
 VALUES
-	(1,3)
+	(1,1),
+	(2,2),
+	(3,3),
+	(3,4),
+	(4,5),
+	(4,6),
+	(5,7),
+	(5,8),
+	(6,9),
+	(7,10),
+	(8,11),
+	(9,12),
+	(10,13),
+	(11,14),
+	(12,15),
+	(12,16),
+	(13,17),
+	(13,18),
+	(14,19),
+	(15,20),
+	(15,21),
+	(16,22),
+	(16,23),
+	(17,24),
+	(17,25),
+	(18,26),
+	(18,27),
+	(19,28),
+	(19,29),
+	(20,30),
+	(20,31),
+	(21,32),
+	(21,33),
+	(22,34),
+	(22,35),
+	(23,36),
+	(24,37),
+	(25,38),
+	(26,39),
+	(26,40),
+	(27,41),
+	(28,42)
 GO
 
 PRINT '*** adding to Card Alternate Art Table ***'
@@ -844,8 +1004,34 @@ GO
 INSERT INTO [dbo].[CardAlternateArt]
 	([PokemonCardID],[AlternateArtID])
 VALUES
-	(1,'jumbo'),
-	(1,'reverse holo'),
+	(1,'none'),
 	(2,'none'),
-	(2,'jumbo')
+	(3,'none'),
+	(4,'none'),
+	(5,'none'),
+	(6,'none'),
+	(7,'none'),
+	(8,'none'),
+	(9,'none'),
+	(10,'none'),
+	(11,'none'),
+	(12,'none'),
+	(13,'none'),
+	(14,'none'),
+	(15,'none'),
+	(16,'none'),
+	(17,'none'),
+	(18,'none'),
+	(19,'none'),
+	(20,'none'),
+	(21,'none'),
+	(22,'none'),
+	(23,'none'),
+	(24,'none'),
+	(25,'none'),
+	(26,'none'),
+	(27,'none'),
+	(28,'none'),
+	(29,'none'),
+	(30,'none')
 GO

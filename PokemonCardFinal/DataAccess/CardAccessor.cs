@@ -353,6 +353,7 @@ namespace DataAccess
                 moveVMs.Add(moveID, new MoveVM()
                 {
                     MoveID = moveID,
+                    Name = reader.GetString(reader.GetOrdinal("Name")),
                     Damage = reader.GetInt32(reader.GetOrdinal("Damage")),
                     Description = reader.GetString(reader.GetOrdinal("Description")),
                     Costs = new List<MoveCost>()
