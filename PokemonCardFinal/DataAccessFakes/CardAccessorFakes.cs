@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using DataAccessInterfaces;
 using DataDomain;
 
@@ -55,7 +56,7 @@ namespace DataAccessFakes
                 Name = "test 2",
                 BoosterNumber = 2,
                 CardType = "test type 1",
-                Rarity = "test rarity 1",
+                Rarity = "test rarity 2",
                 WeaknessType = "weakness 2",
                 ResistanceType = "resistance 2",
                 WeaknessValue = 1,
@@ -175,7 +176,6 @@ namespace DataAccessFakes
                     results.Add(SelectMoveVMByMoveID(cardMove.MoveID));
                 }  
             }
-            Console.WriteLine(results.Count);
             return results;
         }
 
@@ -202,7 +202,7 @@ namespace DataAccessFakes
         /// </summary>
         public Dictionary<int, Card> SelectCards()
         {
-            Dictionary<int,Card> results = new Dictionary<int,Card>();
+            Dictionary<int, Card> results = new Dictionary<int, Card>();
 
             foreach (Card card in _cards)
             {
@@ -210,6 +210,32 @@ namespace DataAccessFakes
             }
 
             return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
+        public Dictionary<int, Card> SelectCardsByCardName(string name)
+        {
+            Dictionary<int, Card> results = new Dictionary<int, Card>();
+
+            foreach (Card card in _cards)
+            {
+                if (card.Name.Contains(name))
+                {
+                    results.Add(card.CardID, card);
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
+        public Dictionary<int, Card> SelectCardsByBoosterID(string boosterID)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -239,6 +265,32 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
+        public Dictionary<int, List<MoveVM>> SelectCardMovesByCardName(string name)
+        {
+            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
+
+            foreach (Card card in _cards)
+            {
+                if (card.Name.Contains(name))
+                {
+                    results.Add(card.CardID, SelectMovesByCardID(card.CardID));
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
+        public Dictionary<int, List<MoveVM>> SelectCardMovesByBoosterID(string boosterID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
         public Dictionary<int, List<string>> SelectCardAlternateArts()
         {
             Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
@@ -263,45 +315,9 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
-        public Dictionary<int, Card> SelectCardsByCardName(string name)
-        {
-            Dictionary<int, Card> results = new Dictionary<int, Card>();
-
-            foreach (Card card in _cards)
-            {
-                if (card.Name.Contains(name))
-                {
-                    results.Add(card.CardID, card);
-                }
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public Dictionary<int, List<MoveVM>> SelectCardMovesByCardName(string name)
-        {
-            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
-
-            foreach (Card card in _cards)
-            {
-                if (card.Name.Contains(name))
-                {
-                    results.Add(card.CardID,SelectMovesByCardID(card.CardID));
-                }
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
         public Dictionary<int, List<string>> SelectCardAlternateArtsByCardName(string name)
         {
-            Dictionary<int,List<string>> results = new Dictionary<int, List<string>>();
+            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
 
             foreach (Card card in _cards)
             {
@@ -312,6 +328,14 @@ namespace DataAccessFakes
             }
 
             return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
+        public Dictionary<int, List<string>> SelectCardAlternateArtsByBoosterID(string boosterID)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -351,11 +375,9 @@ namespace DataAccessFakes
 
             foreach (MoveVM move in _moves)
             {
-                //Console.WriteLine("Test");
                 if (move.MoveID == moveID)
                 {
                     resultMove = move;
-                    Console.WriteLine("Test");
                     break;
                 }
             }

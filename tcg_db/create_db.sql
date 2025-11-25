@@ -1264,6 +1264,57 @@ AS
 	END
 GO
 
+PRINT '*** creating sp_select_cards_by_rarity ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_cards_by_rarity]
+	(
+		@BoosterID			[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
+				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
+				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
+				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
+				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
+				[PokemonCard].[Health],[PokemonCard].[Stage]			
+		FROM	[PokemonCard]
+		WHERE	[PokemonCard].[BoosterID] = @BoosterID;
+	END
+GO
+
+PRINT '*** creating sp_select_card_moves_by_rarity ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_card_moves_by_rarity]
+	(
+		@BoosterID			[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT 	[PokemonCard].[PokemonCardID],[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
+				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
+		FROM	[Move] LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
+			JOIN [CardMove] ON [Move].[MoveID] = [CardMove].[MoveID]
+			JOIN [PokemonCard] ON [CardMove].[PokemonCardID] = [PokemonCard].[PokemonCardID]
+		WHERE	[PokemonCard].[BoosterID] = @BoosterID;
+	END
+GO
+
+PRINT '*** creating sp_select_card_alternate_arts_by_rarity ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_card_alternate_arts_by_rarity]
+	(
+		@BoosterID			[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT 	[PokemonCard].[PokemonCardID], [CardAlternateArt].[AlternateArtID]
+		FROM	[CardAlternateArt] JOIN [PokemonCard]
+			ON [PokemonCard].[PokemonCardID] = [CardAlternateArt].[PokemonCardID]
+		WHERE	[PokemonCard].[BoosterID] = @BoosterID;
+	END
+GO
+
 PRINT '*** creating sp_delete_card ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_card]

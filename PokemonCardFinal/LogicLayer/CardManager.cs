@@ -164,6 +164,43 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
+        public List<CardVM> GetCardVMsByCardName(string name)
+        {
+            List<CardVM> results = new List<CardVM>();
+
+            if (name == null) 
+            {
+                throw new ArgumentNullException("Failed to get list of cards by name. Name was null.");
+            }
+
+            try
+            {
+                Dictionary<int, Card> cards = GetCardsByCardName(name);
+                Dictionary<int, List<MoveVM>> moves = GetCardMovesByCardName(name);
+                Dictionary<int, List<string>> altArts = GetCardAlternateArtsByCardName(name);
+
+                results = SaveCards(cards, moves, altArts);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get a list of cards by name.",ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public List<CardVM> GetCardVMsByBoosterID(string boosterID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
         public Dictionary<int, Card> GetCards()
         {
             Dictionary<int, Card> results = new Dictionary<int, Card>();
@@ -183,101 +220,11 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
-        public Dictionary<int, List<MoveVM>> GetCardMoves()
-        {
-            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
-
-            try
-            {
-                results = _cardAccessor.SelectCardMoves();
-            }
-            catch (Exception ex)
-            {
-
-                throw new ApplicationException("Failed to get a list of moves for cards.", ex);
-            }
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardManager"/>
-        /// </summary>
-        public Dictionary<int, List<string>> GetCardAlternateArts()
-        {
-            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
-
-            try
-            {
-                results = _cardAccessor.SelectCardAlternateArts();
-            }
-            catch (Exception ex)
-            {
-
-                throw new ApplicationException("Failed to get a list of alternate arts for cards.", ex);
-            }
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardManager"/>
-        /// </summary>
-        public IOrderedEnumerable<CardVM> GetCardVMsByCardName(IEnumerable<CardVM> cards, string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardManager"/>
-        /// </summary>
-        public List<CardVM> GetCardVMsByCardName(string name)
-        {
-            List<CardVM> results = new List<CardVM>();
-
-            if (name == null) 
-            {
-                throw new ArgumentNullException("Failed to get list of cards by name. Name was null.");
-            }
-
-            try
-            {
-                Dictionary<int, Card> cards = GetCardsByCardName(name);
-                Dictionary<int, List<MoveVM>> moves = GetCardMovesByCardName(name);
-                Dictionary<int, List<string>> altArts = GetCardAlternateArtsByCardName(name);
-                
-                foreach (var entry in cards)
-                {
-                    int cardID = entry.Key;
-                    CardVM cardVM = ConvertCardToCardVM(entry.Value);
-
-                    if (moves.ContainsKey(cardID))
-                    { 
-                        cardVM.Moves = moves[cardID];
-                    }
-                    if (altArts.ContainsKey(cardID))
-                    {
-                        cardVM.AlternateArts = altArts[cardID];
-                    }
-
-                    results.Add(cardVM);
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw new ApplicationException("Failed to get a list of cards by name.",ex);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardManager"/>
-        /// </summary>
         public Dictionary<int, Card> GetCardsByCardName(string name)
         {
-            Dictionary<int,Card> results = new Dictionary<int, Card>();
+            Dictionary<int, Card> results = new Dictionary<int, Card>();
 
-            if (name == null) 
+            if (name == null)
             {
                 throw new ArgumentNullException("Failed to get cards by name. Name was null");
             }
@@ -292,6 +239,33 @@ namespace LogicLayer
                 throw new ApplicationException("Failed to get cards by name.", ex);
             }
 
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public Dictionary<int, Card> GetCardsByBoosterID(string boosterID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public Dictionary<int, List<MoveVM>> GetCardMoves()
+        {
+            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
+
+            try
+            {
+                results = _cardAccessor.SelectCardMoves();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get a list of moves for cards.", ex);
+            }
             return results;
         }
 
@@ -324,9 +298,36 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
+        public Dictionary<int, List<MoveVM>> GetCardMovesByBoosterID(string boosterID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public Dictionary<int, List<string>> GetCardAlternateArts()
+        {
+            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
+
+            try
+            {
+                results = _cardAccessor.SelectCardAlternateArts();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get a list of alternate arts for cards.", ex);
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
         public Dictionary<int, List<string>> GetCardAlternateArtsByCardName(string name)
         {
-            Dictionary<int,List<string>> results = new Dictionary<int, List<string>>();
+            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
 
             if (name == null)
             {
@@ -349,6 +350,14 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
+        public Dictionary<int, List<string>> GetCardAlternateArtsByBoosterID(string boosterID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
         public bool DeleteCard(int cardID)
         {
             bool isDeleted = false;
@@ -360,11 +369,84 @@ namespace LogicLayer
             catch (Exception ex)
             {
 
-                throw new ApplicationException("Failed to delete a card.",ex);
+                throw new ApplicationException("Failed to delete a card.", ex);
             }
 
             return isDeleted;
         }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public IOrderedEnumerable<CardVM> GetCardVMsByCardName(IEnumerable<CardVM> cards, string name)
+        {
+            IOrderedEnumerable<CardVM> results = null;
+
+            if (name == null)
+            {
+                throw new ArgumentNullException("Failed to get card list by name. Name was null.");
+            }
+            if (cards == null)
+            {
+                throw new ArgumentNullException("Failed to get card list by name. Cards was null.");
+            }
+
+            results = from card in cards
+                      where card.Name.Contains(name)
+                      orderby card.Name
+                      select card;
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public IOrderedEnumerable<CardVM> GetCardVMsByRarity(IEnumerable<CardVM> cards, string rarity)
+        {
+            IOrderedEnumerable<CardVM> results = null;
+
+            if (rarity == null)
+            {
+                throw new ArgumentNullException("Failed to get card list by name. Name was null.");
+            }
+            if (cards == null)
+            {
+                throw new ArgumentNullException("Failed to get card list by name. Cards was null.");
+            }
+
+            results = from card in cards
+                      where card.Rarity == rarity
+                      orderby card.Name
+                      select card;
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public IOrderedEnumerable<CardVM> GetCardVMsByBoosterID(IEnumerable<CardVM> cards, string boosterID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public IOrderedEnumerable<CardVM> GetCardVMsByCardType(IEnumerable<CardVM> cards, string cardType)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public IOrderedEnumerable<CardVM> GetCardVMsByElementTypeID(IEnumerable<CardVM> cards, string elementTypeID)
+        {
+            throw new NotImplementedException();
+        }
+
 
 
         /// <summary>
@@ -400,5 +482,26 @@ namespace LogicLayer
             return result;
         }
 
+        private List<CardVM> SaveCards(Dictionary<int, Card> cards, Dictionary<int, List<MoveVM>> moves, Dictionary<int, List<string>> altArts) 
+        {
+            List<CardVM> results = new List<CardVM>();
+            foreach (var entry in cards)
+            {
+                int cardID = entry.Key;
+                CardVM cardVM = ConvertCardToCardVM(entry.Value);
+
+                if (moves.ContainsKey(cardID))
+                {
+                    cardVM.Moves = moves[cardID];
+                }
+                if (altArts.ContainsKey(cardID))
+                {
+                    cardVM.AlternateArts = altArts[cardID];
+                }
+
+                results.Add(cardVM);
+            }
+            return results;
+        }
     }
 }

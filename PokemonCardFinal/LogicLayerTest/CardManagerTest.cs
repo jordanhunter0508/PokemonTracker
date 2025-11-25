@@ -476,7 +476,7 @@ public class CardManagerTest
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
-    public void TestGetCardVMsByCardName()
+    public void TestGetCardVMsByCardNameThrowsArgumentNullExceptionWithNullName()
     {
         // arrange
         const string name = null;
@@ -489,6 +489,142 @@ public class CardManagerTest
         // do nothing
 
     }
-}
 
-// need null and invalid
+    [TestMethod]
+    public void TestGetCardVMsByCardNameWithValidIEnumerable()
+    {
+        // arrange
+        const string name = "test 1";
+        const int count = 2;
+        const int cardID2 = 3;
+        List<CardVM> cards = new List<CardVM>();
+        List<CardVM> actualResult = new List<CardVM>();
+
+        // act
+        cards = _cardManager.GetCardVMs();
+        actualResult = _cardManager.GetCardVMsByCardName(cards,name).ToList();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
+        Assert.AreEqual(cardID2, actualResult[1].CardID);
+    }
+
+    [TestMethod]
+    public void TestGetCardVMsByCardNameWithEmptyIEnumerable()
+    {
+        // arrange
+        const string name = "failed";
+        const int count = 0;
+        const int cardID2 = 3;
+        List<CardVM> cards = new List<CardVM>();
+        List<CardVM> actualResult = new List<CardVM>();
+
+        // act
+        actualResult = _cardManager.GetCardVMsByCardName(cards, name).ToList();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException (typeof(ArgumentNullException))]
+    public void TestGetCardVMsByCardNameThrowsArgumentNullExceptionWithNullIEnumberable()
+    {
+        // arrange
+        const string name = "test 1";
+        List<CardVM> cards = null;
+        List<CardVM> actualResult = new List<CardVM>();
+
+        // act
+        actualResult = _cardManager.GetCardVMsByCardName(cards, name).ToList();
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException (typeof(ArgumentNullException))]
+    public void TestGetCardVMsByCardNameThrowsArgumentNullExceptionWithNullInput()
+    {
+        // arrange
+        const string name = null;
+        List<CardVM> cards = new List<CardVM>();
+        List<CardVM> actualResult = new List<CardVM>();
+
+        // act
+        cards = _cardManager.GetCardVMs();
+        actualResult = _cardManager.GetCardVMsByCardName(cards, name).ToList();
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestGetCardVMsByRarityWithValidIEnumerable()
+    {
+        // arrange
+        const string rarity = "test rarity 1";
+        const int count = 2;
+        const int cardID2 = 3;
+        List<CardVM> cards = new List<CardVM>();
+        List<CardVM> actualResult = new List<CardVM>();
+
+        // act
+        cards = _cardManager.GetCardVMs();
+        actualResult = _cardManager.GetCardVMsByRarity(cards, rarity).ToList();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
+        Assert.AreEqual(cardID2, actualResult[1].CardID);
+    }
+
+    [TestMethod]
+    public void TestGetCardVMsByRarityWithEmptyIEnumerable()
+    {
+        // arrange
+        const string rarity = "failed";
+        const int count = 0;
+        const int cardID2 = 3;
+        List<CardVM> cards = new List<CardVM>();
+        List<CardVM> actualResult = new List<CardVM>();
+
+        // act
+        actualResult = _cardManager.GetCardVMsByRarity(cards, rarity).ToList();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetCardVMsByRarityThrowsArgumentNullExceptionWithNullIEnumberable()
+    {
+        // arrange
+        const string rarity = "test rarity 1";
+        List<CardVM> cards = null;
+        List<CardVM> actualResult = new List<CardVM>();
+
+        // act
+        actualResult = _cardManager.GetCardVMsByRarity(cards, rarity).ToList();
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetCardVMsByRarityThrowsArgumentNullExceptionWithNullInput()
+    {
+        // arrange
+        const string rarity = null;
+        List<CardVM> cards = new List<CardVM>();
+        List<CardVM> actualResult = new List<CardVM>();
+
+        // act
+        cards = _cardManager.GetCardVMs();
+        actualResult = _cardManager.GetCardVMsByRarity(cards, rarity).ToList();
+
+        // assert
+        // do nothing
+    }
+}
