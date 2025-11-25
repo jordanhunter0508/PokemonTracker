@@ -23,14 +23,40 @@ namespace PokemonCardFinal.View.AddRecord
     /// </summary>
     public partial class AddMovePage : Page
     {
+        IMoveManager _moveManager;
+        Move _move;
+        AddEditContainerPage _containterPage;
+        bool _isAddMode;
+
         public AddMovePage()
         {
             InitializeComponent();
+            _moveManager = new MoveManager();
+            _isAddMode = true;
+        }
+
+        public AddMovePage(IMoveManager moveManager, Move move,
+            AddEditContainerPage containerPage)
+        {
+            InitializeComponent();
+            _moveManager = moveManager;
+            _move = move;
+            _containterPage = containerPage;
+            _isAddMode = false;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             LoadElementGrid();
+
+            if (_isAddMode)
+            {
+                //
+            }
+            else 
+            {
+                //
+            }
         }
 
         private void LoadElementGrid()

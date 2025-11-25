@@ -64,12 +64,16 @@
                     <ColumnDefinition Width="120"/>
                     <ColumnDefinition Width="120"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="txtSearch" Grid.Column="0" Width="200" Height="24" Margin="120 0 0 0"
-                         HorizontalAlignment="Left" VerticalAlignment="Center" Text="Search..." KeyDown="txtSearch_KeyDown"/>
+                
+                <!--Search-->
+                <TextBox x:Name="txtSearch" Grid.Column="0" Width="200" Height="24" Margin="120 0 0 0" VerticalContentAlignment="Center"
+                         HorizontalAlignment="Left" VerticalAlignment="Center" Text="Search..." GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus"/>
                 <Label x:Name="lblSearch" Content="Find a Card" Grid.Column="0" FontSize="16" Margin="15 0 0 0"
                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Button x:Name="btnSearch" Content="Search" Grid.Column="0" Width="50" Height="24" Margin="340 0 0 0"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnSearch_Click"/>
+                
+                <!--Log In-->
                 <Button x:Name="btnLogIn" Content="Log In" Grid.Column="2" Width="100" Height="40" Focusable="False"
                         HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnLogIn_Click"/>
                 <Button x:Name="btnSignUp" Content="Sign Up" Grid.Column="1" Width="100" Height="40" 

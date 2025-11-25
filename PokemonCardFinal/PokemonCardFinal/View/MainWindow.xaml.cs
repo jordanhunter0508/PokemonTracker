@@ -35,15 +35,6 @@ namespace PokemonCardFinal.View
             LoggedOutView();
         }
 
-        // Clears the search box when the user enters a value a character
-        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (txtSearch.Text.Equals("Search..."))
-            {
-                txtSearch.Text = string.Empty;
-            }
-        }
-
         private void btnLogIn_Click(object sender, RoutedEventArgs e)
         {
             if (btnLogIn.Content == "Log In")
@@ -103,7 +94,6 @@ namespace PokemonCardFinal.View
         private void UserLoggedOut()
         {
             if (_accessToken != null)
-            if (_accessToken != null)
             {
                 _accessToken = null;
                 LoggedOutView();
@@ -158,6 +148,34 @@ namespace PokemonCardFinal.View
                 addEditContainer.frmAbility.Navigate(new AbilityRecordsPage());
             };
             frmMain.Navigate(addEditContainer);
+        }
+
+        private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //txtSearch.SelectAll();
+            if (txtSearch.Text == "Search...")
+            {
+                txtSearch.Text = "";
+            }
+            btnSearch.IsDefault = true;
+        }
+
+        private void txtSearch_LostFocus(object sender, RoutedEventArgs e)
+        {
+            btnSearch.IsDefault = false;
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            string search = txtSearch.Text;
+
+            if (search.Replace(" ", "") == "" || search == null
+                || search == "Search...")
+            {
+                return;
+            }
+
+            frmMain.Navigate(new SearchResultsPage(search));
         }
     }
 }

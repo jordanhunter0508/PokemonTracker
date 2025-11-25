@@ -1,0 +1,37 @@
+﻿<Page x:Class="PokemonCardFinal.View.SearchResultsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PokemonCardFinal.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SearchResultsPage" Loaded="Page_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!--Filter Boxes-->
+        <ComboBox x:Name="cmbRarity" Width="150" Height="30" HorizontalAlignment="Left"
+                  VerticalContentAlignment="Center">
+        </ComboBox>
+        <ComboBox x:Name="cmbBooster" Width="150" Height="30" HorizontalAlignment="Left"
+                  Margin="185 0" VerticalContentAlignment="Center" ItemsSource="{Binding boosters.BoosterID}">
+        </ComboBox>
+        <ComboBox x:Name="cmbCardType" Width="150" Height="30" HorizontalAlignment="Right"
+                  Margin="185 0" VerticalContentAlignment="Center">
+            <ComboBoxItem Content="Card Type" Selector.IsSelected="True" Visibility="Collapsed"/>
+        </ComboBox>
+        <ComboBox x:Name="cmbElementType" Width="150" Height="30" HorizontalAlignment="Right"
+                  VerticalContentAlignment="Center">
+            <ComboBoxItem Content="Element Type" Selector.IsSelected="True" Visibility="Collapsed"/>
+        </ComboBox>
+
+        <!--Search Results-->
+        <DataGrid x:Name="datSearch" Grid.Row="1"/>
+        <TextBlock x:Name="lblNoResult" Text="There are not cards with the name " Visibility="Collapsed"/>
+    </Grid>
+</Page>

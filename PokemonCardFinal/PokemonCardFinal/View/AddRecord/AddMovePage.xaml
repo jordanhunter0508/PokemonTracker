@@ -45,6 +45,8 @@
         <Button x:Name="btnClear" Content="Clear" Grid.Row="3" Grid.Column="1"
                 Width="100" Height=" 50"  HorizontalAlignment="Right"/>
 
-        <ListBox x:Name="lstElement" Grid.RowSpan="3" Grid.Column="2" Margin="20 36 20 22" SelectionMode="Extended"/>
+        <!--Element Types-->
+        <ListBox x:Name="lstElement" Grid.RowSpan="3" Grid.Column="2" Margin="20 36 20 22" SelectionMode="Multiple"/>
+
     </Grid>
 </Page>
