@@ -283,4 +283,212 @@ public class CardManagerTest
         // assert
         Assert.AreEqual(expectedResult, actualResult);
     }
+
+    [TestMethod]
+    public void TestGetCardsByCardNameWithValidName()
+    {
+        // arrange
+        const string name = "test 1";
+        const int keyCount = 2;
+        const int valueCount = 2;
+        const int cardID3 = 3;
+        const string cardName1 = "test 1";
+        Dictionary<int, Card> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardsByCardName(name);
+
+        // assert
+        Assert.AreEqual(keyCount, actualResult.Keys.Count);
+        Assert.AreEqual(valueCount, actualResult.Values.Count);
+        Assert.AreEqual(cardName1, actualResult[1].Name);
+        Assert.AreEqual(cardID3, actualResult[3].CardID);
+
+    }
+
+    [TestMethod]
+    public void TestGetCardsByCardNameWithInvalidName()
+    {
+        // arrange
+        const string name = "fail";
+        const int keyCount = 0;
+        const int valueCount = 0;
+
+        Dictionary<int, Card> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardsByCardName(name);
+
+        // assert
+        Assert.AreEqual(keyCount, actualResult.Keys.Count);
+        Assert.AreEqual(valueCount, actualResult.Values.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetCardsByCardNameThrowsArgumentNullExceptionWithNullName()
+    {
+        // arrange
+        const string name = null;
+        Dictionary<int, Card> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardsByCardName(name);
+
+        // assert
+        // do nothing
+
+    }
+
+    [TestMethod]
+    public void TestGetCardMovesByCardNameWithValidName()
+    {
+        // arrange
+        const string name = "test 1";
+        const int keyCount = 2;
+        const int valueCount = 2;
+        Dictionary<int, List<MoveVM>> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardMovesByCardName(name);
+
+        // assert
+        Assert.AreEqual(keyCount, actualResult.Keys.Count);
+        Assert.AreEqual(valueCount, actualResult.Values.Count);
+
+    }
+
+    [TestMethod]
+    public void TestGetCardMovesByCardNameWithInvalidName()
+    {
+        // arrange
+        const string name = "fail";
+        const int keyCount = 0;
+        const int valueCount = 0;
+        Dictionary<int, List<MoveVM>> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardMovesByCardName(name);
+
+        // assert
+        Assert.AreEqual(keyCount, actualResult.Keys.Count);
+        Assert.AreEqual(valueCount, actualResult.Values.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetCardMovesByCardNameThrowsArgumentNullExceptionWithNullName()
+    {
+        // arrange
+        const string name = null;
+        Dictionary<int, List<MoveVM>> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardMovesByCardName(name);
+
+        // assert
+        // do nothing
+
+    }
+
+    [TestMethod]
+    public void TestGetCardAlternateArtsByCardNameWithValidName()
+    {
+        // arrange
+        const string name = "test 1";
+        const int keyCount = 2;
+        const int valueCount = 2;
+        Dictionary<int, List<string>> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardAlternateArtsByCardName(name);
+
+        // assert
+        Assert.AreEqual(keyCount, actualResult.Keys.Count);
+        Assert.AreEqual(valueCount, actualResult.Values.Count);
+
+    }
+
+    [TestMethod]
+    public void TestGetCardAlternateArtsByCardNameWithInvalidName()
+    {
+        // arrange
+        const string name = "fail";
+        const int keyCount = 0;
+        const int valueCount = 0;
+        Dictionary<int, List<string>> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardAlternateArtsByCardName(name);
+
+        // assert
+        Assert.AreEqual(keyCount, actualResult.Keys.Count);
+        Assert.AreEqual(valueCount, actualResult.Values.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetCardAlternateArtsByCardNameThrowsArgumentNullExceptionWithNullName()
+    {
+        // arrange
+        const string name = null;
+        Dictionary<int, List<string>> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardAlternateArtsByCardName(name);
+
+        // assert
+        // do nothing
+
+    }
+
+    [TestMethod]
+    public void TestGetCardVMsByCardNameWithValidName()
+    {
+        // arrange
+        const string name = "test 1";
+        const int count = 2;
+        List<CardVM> actualResult = new List<CardVM>();
+
+        // act
+        actualResult = _cardManager.GetCardVMsByCardName(name);
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
+
+    }
+
+    [TestMethod]
+    public void TestGetCardVMsByCardNameWithInvalidName()
+    {
+        // arrange
+        const string name = "fail";
+        const int count = 0;
+
+        List<CardVM> actualResult = new List<CardVM>();
+
+        // act
+        actualResult = _cardManager.GetCardVMsByCardName(name);
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetCardVMsByCardName()
+    {
+        // arrange
+        const string name = null;
+        List<CardVM> actualResult = null;
+
+        // act
+        actualResult = _cardManager.GetCardVMsByCardName(name);
+
+        // assert
+        // do nothing
+
+    }
 }
+
+// need null and invalid

@@ -263,6 +263,60 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
+        public Dictionary<int, Card> SelectCardsByCardName(string name)
+        {
+            Dictionary<int, Card> results = new Dictionary<int, Card>();
+
+            foreach (Card card in _cards)
+            {
+                if (card.Name.Contains(name))
+                {
+                    results.Add(card.CardID, card);
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
+        public Dictionary<int, List<MoveVM>> SelectCardMovesByCardName(string name)
+        {
+            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
+
+            foreach (Card card in _cards)
+            {
+                if (card.Name.Contains(name))
+                {
+                    results.Add(card.CardID,SelectMovesByCardID(card.CardID));
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
+        public Dictionary<int, List<string>> SelectCardAlternateArtsByCardName(string name)
+        {
+            Dictionary<int,List<string>> results = new Dictionary<int, List<string>>();
+
+            foreach (Card card in _cards)
+            {
+                if (card.Name.Contains(name))
+                {
+                    results.Add(card.CardID, SelectAlternateArtsByCardID(card.CardID));
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
         public int DeleteCard(int cardID)
         {
             int count = 0;

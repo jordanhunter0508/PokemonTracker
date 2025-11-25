@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="TESTWINDOW" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <!--
+        
         <DataGrid x:Name="datGrid" ItemsSource="{Binding}">
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
@@ -20,9 +20,9 @@
                     </StackPanel>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
-        </DataGrid> -->
+        </DataGrid>
 
 
-        <DataGrid x:Name="datGrid" Grid.Row="0" SelectionMode="Single" IsReadOnly="True" />
+        <!--<DataGrid x:Name="datGrid" Grid.Row="0" SelectionMode="Single" IsReadOnly="True" />-->
     </Grid>
 </Window>

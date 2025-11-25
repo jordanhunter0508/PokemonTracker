@@ -42,9 +42,15 @@ namespace PokemonCardFinal.View
 
             //Dictionary<int, List<string>> altArts = cardManager.GetCardAlternateArts();
             //datGrid.ItemsSource = altArts.Values.AsEnumerable();
+            Dictionary<int, List<string>> cards = cardManager.GetCardAlternateArtsByCardName("r");
+            List<string> cardList = new List<string>();
 
-            List<CardVM> cards = cardManager.GetCardVMs();
-            datGrid.ItemsSource = cards;
+            //foreach (var card in cards)
+            //{
+            //    cardList.Add(cards.Value);
+            //}
+
+            datGrid.ItemsSource = cardManager.GetCardVMsByCardName("r");
         }
 
     }

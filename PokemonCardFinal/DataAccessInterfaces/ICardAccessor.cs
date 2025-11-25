@@ -33,7 +33,7 @@ namespace DataAccessInterfaces
         public List<string> SelectAlternateArtsByCardID(int cardID);
 
         /// <summary>
-        /// Request all dields from the PokemonCard table
+        /// Request all fields from the PokemonCard table
         /// </summary>
         /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
         public Dictionary<int, Card> SelectCards();
@@ -49,6 +49,27 @@ namespace DataAccessInterfaces
         /// </summary>
         /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
         public Dictionary<int, List<string>> SelectCardAlternateArts();
+
+        /// <summary>
+        /// Request all fields from the PokemonCard table
+        /// </summary>
+        /// <param name="name">Gets the rows with the matching name in the card table</param>
+        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
+        public Dictionary<int, Card> SelectCardsByCardName(string name);
+
+        /// <summary>
+        /// Request all fields from the Move and MoveCost tables
+        /// </summary>
+        /// <param name="name">Gets the rows with the matching name in the card table</param>
+        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
+        public Dictionary<int, List<MoveVM>> SelectCardMovesByCardName(string name);
+
+        /// <summary>
+        /// Request all Alternate arts from CardAlternateArt table
+        /// </summary>
+        /// <param name="name">Gets the rows with the matching name in the card table</param>
+        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
+        public Dictionary<int, List<string>> SelectCardAlternateArtsByCardName(string name);
 
         /// <summary>
         /// Deletes the row from the database where cardID matches in the table.

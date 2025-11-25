@@ -1102,11 +1102,6 @@ AS
 GO
 
 /*
-Work on booster sp
-
-When going to the create records page from the edit button
-make the other tabs not clickable.
-
 Move
 [MoveID]				[nvarchar](30)
 [Damage]				[int]			
@@ -1121,33 +1116,15 @@ Move Cost
 
 
 
+Name
 
+filter options
 
+booster
+rarity
+card type
+element type
 
-select card from boosterid and booster NUMBER
-List from name
-
-
-[PokemonCardID]			[int]			
-[ArtistID]				[int]			
-[AbilityID]				[nvarchar](30)	
-[BoosterID]				[nvarchar](50)	
-[PokemonRuleID]			[nvarchar](50)
-[Name]					[nvarchar](50)	
-[BoosterNumber]         [int]				
-[CardType]				[nvarchar](50)  
-[Rarity]				[nvarchar](20)	
-[Description]           [nvarchar](100) 
-[WeaknessType]			[nvarchar](15)	
-[ResistanceType]        [nvarchar](15)  
-[WeaknessValue]         [int]           
-[ResistanceValue]       [int]           
-[RetreatCost]           [int]           
-[Health]				[int]			
-[Stage]					[nvarchar](30)
-
-
-	
 */
 
 PRINT '*** creating sp_select_card_by_card_id ***'
@@ -1233,6 +1210,57 @@ AS
 	BEGIN
 		SELECT 	[CardAlternateArt].[PokemonCardID], [CardAlternateArt].[AlternateArtID]
 		FROM	[CardAlternateArt];
+	END
+GO
+
+PRINT '*** creating sp_select_cards_by_card_name ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_cards_by_card_name]
+	(
+		@Name			[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
+				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
+				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
+				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
+				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
+				[PokemonCard].[Health],[PokemonCard].[Stage]			
+		FROM	[PokemonCard]
+		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%');
+	END
+GO
+
+PRINT '*** creating sp_select_card_moves_by_card_name ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_card_moves_by_card_name]
+	(
+		@Name			[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT 	[PokemonCard].[PokemonCardID],[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
+				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
+		FROM	[Move] LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
+			JOIN [CardMove] ON [Move].[MoveID] = [CardMove].[MoveID]
+			JOIN [PokemonCard] ON [CardMove].[PokemonCardID] = [PokemonCard].[PokemonCardID]
+		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%');
+	END
+GO
+
+PRINT '*** creating sp_select_card_alternate_arts_by_card_name ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_card_alternate_arts_by_card_name]
+	(
+		@Name			[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT 	[PokemonCard].[PokemonCardID], [CardAlternateArt].[AlternateArtID]
+		FROM	[CardAlternateArt] JOIN [PokemonCard]
+			ON [PokemonCard].[PokemonCardID] = [CardAlternateArt].[PokemonCardID]
+		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%');
 	END
 GO
 

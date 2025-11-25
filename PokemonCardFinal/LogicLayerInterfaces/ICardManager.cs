@@ -79,6 +79,51 @@ namespace LogicLayerInterfaces
         public Dictionary<int,List<string>> GetCardAlternateArts();
 
         /// <summary>
+        /// Filters a IEnumberable<CardVM> with a specified name using linq.<br/>
+        /// Used when a list of Cards is already created.
+        /// </summary>
+        /// <param name="cards">IEnumerable of CardVM to filter</param>
+        /// <param name="name">Gets the cards with the matching name</param>
+        /// <returns>Returns an IOrderedEnumerable of cards with the specified card name</returns>
+        public IOrderedEnumerable<CardVM> GetCardVMsByCardName(IEnumerable<CardVM> cards, string name);
+
+        /// <summary>
+        /// Uses GetCardVMsByCardName(string), GetCardsByCardName(string),<br/>
+        /// and GetCardAlternateArtsByCardName(string) to create a list of CardVMs
+        /// </summary>
+        /// <param name="name">Gets the cards with the matching name</param>
+        /// <returns>Returns a list of cardVMs</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public List<CardVM> GetCardVMsByCardName(string name);
+
+        /// <summary>
+        /// Calls the <see href="SelectCardsByCardName(string)"/> method to get<br/>
+        /// a list of all Cards from the database.
+        /// </summary>
+        /// <param name="name">Gets the cards with the matching name</param>
+        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public Dictionary<int, Card> GetCardsByCardName(string name);
+
+        /// <summary>
+        /// Calls the <see href="SelectCardMovesByCardName(string)"/> method to get<br/>
+        /// a list of all Moves related to cards from the database.
+        /// </summary>
+        /// <param name="name">Gets the cards with the matching name</param>
+        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public Dictionary<int, List<MoveVM>> GetCardMovesByCardName(string name);
+
+        /// <summary>
+        /// Calls the <see href="SelectCardAlternateArtsByCardName(string)"/> method to get<br/>
+        /// a list of all Alternate Arts related to cards from the database.
+        /// </summary>
+        /// <param name="name">Gets the cards with the matching name</param>
+        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public Dictionary<int, List<string>> GetCardAlternateArtsByCardName(string name);
+
+        /// <summary>
         /// Passes parameters to <see href="DeleteCard(int)"/><br/>
         /// Then returns true if the record was deleted successfully
         /// </summary>

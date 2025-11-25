@@ -332,6 +332,186 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_select_cards_by_card_name
+        /// </summary>
+        public Dictionary<int, Card> SelectCardsByCardName(string name)
+        {
+            Dictionary<int, Card> results = new Dictionary<int, Card>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_cards_by_card_name";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@Name",System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@Name"].Value = name;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        int cardID = reader.GetInt32(0);
+
+                        // Shoud never fail. Just a precaution
+                        if (!results.ContainsKey(cardID))
+                        {
+                            results.Add(cardID, new Card()
+                            {
+                                CardID = reader.GetInt32(0),
+                                ArtistID = reader.GetInt32(1),
+                                AbilityID = reader.GetString(2),
+                                BoosterID = reader.GetString(3),
+                                PokemonRuleID = reader.GetString(4),
+                                ElementTypeID = reader.GetString(5),
+                                Name = reader.GetString(6),
+                                BoosterNumber = reader.GetInt32(7),
+                                CardType = reader.GetString(8),
+                                Rarity = reader.GetString(9),
+                                WeaknessType = reader.GetString(10),
+                                ResistanceType = reader.GetString(11),
+                                WeaknessValue = reader.GetInt32(12),
+                                ResistanceValue = reader.GetInt32(13),
+                                RetreatCost = reader.GetInt32(14),
+                                Health = reader.GetInt32(15),
+                                Stage = reader.GetString(16)
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_select_card_moves_by_card_name
+        /// </summary>
+        public Dictionary<int, List<MoveVM>> SelectCardMovesByCardName(string name)
+        {
+            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
+            Dictionary<int, MoveVM> moveVMs = new Dictionary<int, MoveVM>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_card_moves_by_card_name";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@Name"].Value = name;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        int cardID = reader.GetInt32(0);
+                        int moveID = reader.GetInt32(1);
+
+                        // saves the cardID as the key if it hasn't been seen before
+                        if (!results.ContainsKey(cardID))
+                        {
+                            results.Add(cardID, new List<MoveVM>());
+                        }
+
+                        StoreMoveVMInDictionary(moveVMs, reader);
+
+                        // checks to see if the MoveVM is already inside the list
+                        // at cardID
+                        if (!results[cardID].Contains(moveVMs[moveID]))
+                        {
+                            results[cardID].Add(moveVMs[moveID]);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_select_card_alternate_arts_by_card_name
+        /// </summary>
+        public Dictionary<int, List<string>> SelectCardAlternateArtsByCardName(string name)
+        {
+            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_card_alternate_arts_by_card_name";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters["@Name"].Value = name;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        int cardID = reader.GetInt32(0);
+                        string altArtID = reader.GetString(1);
+
+                        // Shoud never fail. Just a precaution
+                        if (!results.ContainsKey(cardID))
+                        {
+                            results.Add(cardID, new List<string>());
+                        }
+
+                        if (!results[cardID].Contains(altArtID))
+                        {
+                            results[cardID].Add(altArtID);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
         /// using sp_delete_card
         /// </summary>
         public int DeleteCard(int cardID)
