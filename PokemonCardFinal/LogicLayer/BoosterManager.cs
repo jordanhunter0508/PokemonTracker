@@ -10,6 +10,7 @@ using LogicLayerInterfaces;
 
 namespace LogicLayer
 {
+
     public class BoosterManager : IBoosterManager
     {
         IBoosterAccessor _boosterAccessor;
@@ -64,6 +65,27 @@ namespace LogicLayer
             catch (Exception)
             {
                 throw new ApplicationException("Failed to retrieve a list of boosters.");
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IBoosterManager"/>
+        /// </summary>
+        public List<string> GetBoosterIDs()
+        {
+            List<string> results = new List<string>();
+
+            try
+            {
+                results = (from booster in GetBoosters()
+                          select booster.BoosterID).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get booster ids.", ex);
             }
 
             return results;
@@ -138,5 +160,7 @@ namespace LogicLayer
 
             return result;
         }
+
+        
     }
 }

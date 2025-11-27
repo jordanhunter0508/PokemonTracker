@@ -72,7 +72,7 @@ namespace DataAccessFakes
                 AbilityID = "test ability 1",
                 BoosterID = "test booster 3",
                 PokemonRuleID = "test pokemon rule 3",
-                ElementTypeID = "test element",
+                ElementTypeID = "test element 2",
                 Name = "test 1",
                 BoosterNumber = 1,
                 CardType = "test type 3",

@@ -8,6 +8,7 @@ using DataAccess;
 using DataAccessInterfaces;
 using DataDomain;
 using LogicLayerInterfaces;
+using Microsoft.VisualBasic;
 
 namespace LogicLayer
 {
@@ -378,9 +379,9 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
-        public IOrderedEnumerable<CardVM> GetCardVMsByCardName(IEnumerable<CardVM> cards, string name)
+        public IEnumerable<CardVM> GetCardVMsByCardName(IEnumerable<CardVM> cards, string name)
         {
-            IOrderedEnumerable<CardVM> results = null;
+            IEnumerable<CardVM> results = null;
 
             if (name == null)
             {
@@ -392,7 +393,7 @@ namespace LogicLayer
             }
 
             results = from card in cards
-                      where card.Name.Contains(name)
+                      where card.Name.ToLower().Contains(name.ToLower())
                       orderby card.Name
                       select card;
 
@@ -402,22 +403,22 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
-        public IOrderedEnumerable<CardVM> GetCardVMsByRarity(IEnumerable<CardVM> cards, string rarity)
+        public IEnumerable<CardVM> GetCardVMsByRarity(IEnumerable<CardVM> cards, string rarity)
         {
-            IOrderedEnumerable<CardVM> results = null;
+            IEnumerable<CardVM> results = null;
 
             if (rarity == null)
             {
-                throw new ArgumentNullException("Failed to get card list by name. Name was null.");
+                throw new ArgumentNullException("Failed to get card list by rarity. Rarity was null.");
             }
             if (cards == null)
             {
-                throw new ArgumentNullException("Failed to get card list by name. Cards was null.");
+                throw new ArgumentNullException("Failed to get card list by rarity. Cards was null.");
             }
 
             results = from card in cards
-                      where card.Rarity == rarity
-                      orderby card.Name
+                      where card.Rarity.ToLower() == rarity.ToLower()
+                      orderby card.BoosterID, card.BoosterNumber
                       select card;
 
             return results;
@@ -426,25 +427,73 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
-        public IOrderedEnumerable<CardVM> GetCardVMsByBoosterID(IEnumerable<CardVM> cards, string boosterID)
+        public IEnumerable<CardVM> GetCardVMsByBoosterID(IEnumerable<CardVM> cards, string boosterID)
         {
-            throw new NotImplementedException();
+            IEnumerable<CardVM> results = null;
+
+            if (boosterID == null)
+            {
+                throw new ArgumentNullException("Failed to get card list by booster id. BoosterID was null.");
+            }
+            if (cards == null)
+            {
+                throw new ArgumentNullException("Failed to get card list by booster id. Cards was null.");
+            }
+
+            results = from card in cards
+                      where card.BoosterID.ToLower() == boosterID.ToLower()
+                      orderby card.BoosterID, card.BoosterNumber
+                      select card;
+
+            return results;
         }
 
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
-        public IOrderedEnumerable<CardVM> GetCardVMsByCardType(IEnumerable<CardVM> cards, string cardType)
+        public IEnumerable<CardVM> GetCardVMsByCardType(IEnumerable<CardVM> cards, string cardType)
         {
-            throw new NotImplementedException();
+            IEnumerable<CardVM> results = null;
+
+            if (cardType == null)
+            {
+                throw new ArgumentNullException("Failed to get card list by card type. CardType was null.");
+            }
+            if (cards == null)
+            {
+                throw new ArgumentNullException("Failed to get card list by card type. Cards was null.");
+            }
+
+            results = from card in cards
+                      where card.CardType.ToLower() == cardType.ToLower()
+                      orderby card.BoosterID, card.BoosterNumber
+                      select card;
+
+            return results;
         }
 
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
-        public IOrderedEnumerable<CardVM> GetCardVMsByElementTypeID(IEnumerable<CardVM> cards, string elementTypeID)
+        public IEnumerable<CardVM> GetCardVMsByElementTypeID(IEnumerable<CardVM> cards, string elementTypeID)
         {
-            throw new NotImplementedException();
+            IEnumerable<CardVM> results = null;
+
+            if (elementTypeID == null)
+            {
+                throw new ArgumentNullException("Failed to get card list by element type id. ElementTypeID was null.");
+            }
+            if (cards == null)
+            {
+                throw new ArgumentNullException("Failed to get card list by element type id. Cards was null.");
+            }
+
+            results = from card in cards
+                      where card.ElementTypeID.ToLower() == elementTypeID.ToLower()
+                      orderby card.BoosterID, card.BoosterNumber
+                      select card;
+
+            return results;
         }
 
 

@@ -221,4 +221,20 @@ public class ElementManagerTest
         // assert
         // do nothing
     }
+
+    [TestMethod]
+    public void TestGetBoosterIDs()
+    {
+        // arrange
+        const int count = 3;
+        const string elementTypeID1 = "TestElement1";
+        List<string> actualResult = new List<string>();
+
+        // act
+        actualResult = _elementManager.GetElementTypeIDs();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
+        Assert.AreEqual(elementTypeID1, actualResult[0]);
+    }
 }

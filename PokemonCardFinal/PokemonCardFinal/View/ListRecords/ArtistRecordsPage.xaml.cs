@@ -85,26 +85,24 @@ namespace PokemonCardFinal.View.ListRecords
                 return;
             }
 
-            // Navigate to CreateRecordPage
-            if (Application.Current.MainWindow is MainWindow mainWindow)
-            {
-                // Navigate the main frame to the new outer page
-                AddEditContainerPage containerPage = new AddEditContainerPage();
-                mainWindow.frmMain.Navigate(containerPage);
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
 
-                // When the outer page is loaded change the inner page
-                // to AddArtistPage
-                containerPage.Loaded += (s, args) =>
-                {
-                    containerPage.IsListView = false;
-                    //
-                    containerPage.tabController.SelectedItem = containerPage.tabArtist;
-                    containerPage.frmArtist.Navigate
-                    (
-                        new AddArtistPage(_selectedArtist, _artistManager, containerPage)
-                    );
-                };
-            }
+            // Navigate the main frame to the new outer page
+            AddEditContainerPage containerPage = new AddEditContainerPage();
+            mainWindow.frmMain.Navigate(containerPage);
+
+            // When the outer page is loaded change the inner page
+            // to AddArtistPage
+            containerPage.Loaded += (s, args) =>
+            {
+                containerPage.IsListView = false;
+                //
+                containerPage.tabController.SelectedItem = containerPage.tabArtist;
+                containerPage.frmArtist.Navigate
+                (
+                    new AddArtistPage(_selectedArtist, _artistManager, containerPage)
+                );
+            };
         }
 
         private void datArtist_SelectionChanged(object sender, SelectionChangedEventArgs e)

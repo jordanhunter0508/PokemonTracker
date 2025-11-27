@@ -27,6 +27,14 @@ namespace LogicLayerInterfaces
         public List<ElementType> GetElementTypes();
 
         /// <summary>
+        /// Calls the <see href="GetElementTypes()"/> method to get<br/>
+        /// a list of all ElementTypes from the database. Then returns a list of the IDs.
+        /// </summary>
+        /// <returns>Returns a List of all ElementTypeIDs in the database</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public List<string> GetElementTypeIDs();
+
+        /// <summary>
         /// Passes parameters to <see href="InsertElementType(string,string)"/><br/>
         /// Then returns true if the record was created successfully
         /// </summary>

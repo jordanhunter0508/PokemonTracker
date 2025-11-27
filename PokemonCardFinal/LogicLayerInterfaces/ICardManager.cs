@@ -166,7 +166,7 @@ namespace LogicLayerInterfaces
         /// <param name="cards">IEnumerable of CardVM to filter</param>
         /// <param name="name">Gets the cards with the matching name</param>
         /// <returns>Returns an IOrderedEnumerable of cards with the specified card name</returns>
-        public IOrderedEnumerable<CardVM> GetCardVMsByCardName(IEnumerable<CardVM> cards, string name);
+        public IEnumerable<CardVM> GetCardVMsByCardName(IEnumerable<CardVM> cards, string name);
 
         /// <summary>
         /// Filters a IEnumberable<CardVM> with a specified rarity using linq.<br/>
@@ -175,7 +175,7 @@ namespace LogicLayerInterfaces
         /// <param name="cards">IEnumerable of CardVM to filter</param>
         /// <param name="rarity">Gets the cards with the matching rarity</param>
         /// <returns>Returns an IOrderedEnumerable of cards with the specified card rarity</returns>
-        public IOrderedEnumerable<CardVM> GetCardVMsByRarity(IEnumerable<CardVM> cards, string rarity);
+        public IEnumerable<CardVM> GetCardVMsByRarity(IEnumerable<CardVM> cards, string rarity);
 
         /// <summary>
         /// Filters a IEnumberable<CardVM> with a specified boosterID using linq.<br/>
@@ -184,7 +184,7 @@ namespace LogicLayerInterfaces
         /// <param name="cards">IEnumerable of CardVM to filter</param>
         /// <param name="boosterID">Gets the cards with the matching boosterID</param>
         /// <returns>Returns an IOrderedEnumerable of cards with the specified card boosterID</returns>
-        public IOrderedEnumerable<CardVM> GetCardVMsByBoosterID(IEnumerable<CardVM> cards, string boosterID);
+        public IEnumerable<CardVM> GetCardVMsByBoosterID(IEnumerable<CardVM> cards, string boosterID);
 
         /// <summary>
         /// Filters a IEnumberable<CardVM> with a specified cardType using linq.<br/>
@@ -193,7 +193,7 @@ namespace LogicLayerInterfaces
         /// <param name="cards">IEnumerable of CardVM to filter</param>
         /// <param name="cardType">Gets the cards with the matching cardType</param>
         /// <returns>Returns an IOrderedEnumerable of cards with the specified cardType</returns>
-        public IOrderedEnumerable<CardVM> GetCardVMsByCardType(IEnumerable<CardVM> cards, string cardType);
+        public IEnumerable<CardVM> GetCardVMsByCardType(IEnumerable<CardVM> cards, string cardType);
 
         /// <summary>
         /// Filters a IEnumberable<CardVM> with a specified elementTypeID using linq.<br/>
@@ -202,6 +202,6 @@ namespace LogicLayerInterfaces
         /// <param name="cards">IEnumerable of CardVM to filter</param>
         /// <param name="elementTypeID">Gets the cards with the matching elementTypeID</param>
         /// <returns>Returns an IOrderedEnumerable of cards with the specified card elementTypeID</returns>
-        public IOrderedEnumerable<CardVM> GetCardVMsByElementTypeID(IEnumerable<CardVM> cards, string elementTypeID);
+        public IEnumerable<CardVM> GetCardVMsByElementTypeID(IEnumerable<CardVM> cards, string elementTypeID);
     }
 }

@@ -27,6 +27,14 @@ namespace LogicLayerInterfaces
         public List<Booster> GetBoosters();
 
         /// <summary>
+        /// Calls the <see href="GetBoosters()"/> method to get<br/>
+        /// a list of all Boosters from the database. Then returns the ids.
+        /// </summary>
+        /// <returns>Returns a List of all BoosterIDs in the database</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public List<string> GetBoosterIDs();
+
+        /// <summary>
         /// Passes parameters to <see href="InsertBooster()"/> Then returns true
         /// if the record was updated successfully.
         /// </summary>

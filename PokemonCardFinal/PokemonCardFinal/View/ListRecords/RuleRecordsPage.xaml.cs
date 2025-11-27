@@ -84,24 +84,24 @@ namespace PokemonCardFinal.View.ListRecords
                 return;
             }
 
-            if (Application.Current.MainWindow is MainWindow mainWindow)
-            {
-                // Navigate the main frame to the new outer page
-                AddEditContainerPage containerPage = new AddEditContainerPage();
-                mainWindow.frmMain.Navigate(containerPage);
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
 
-                // When the outer page is loaded change the inner page
-                // to AddRulePage
-                containerPage.Loaded += (s, args) =>
-                {
-                    containerPage.IsListView = false;
-                    containerPage.tabController.SelectedItem = containerPage.tabRule;
-                    containerPage.frmRule.Navigate
-                    (
-                        new AddRulePage(_selectedRule, _ruleManager, containerPage)
-                    );
-                };
-            }
+            // Navigate the main frame to the new outer page
+            AddEditContainerPage containerPage = new AddEditContainerPage();
+            mainWindow.frmMain.Navigate(containerPage);
+
+            // When the outer page is loaded change the inner page
+            // to AddRulePage
+            containerPage.Loaded += (s, args) =>
+            {
+                containerPage.IsListView = false;
+                containerPage.tabController.SelectedItem = containerPage.tabRule;
+                containerPage.frmRule.Navigate
+                (
+                    new AddRulePage(_selectedRule, _ruleManager, containerPage)
+                );
+            };
+            
         }
 
         private void datRule_SelectionChanged(object sender, SelectionChangedEventArgs e)

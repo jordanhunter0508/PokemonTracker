@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DataDomain;
 
 namespace PokemonCardFinal.View.AddRecord
 {
@@ -20,9 +21,16 @@ namespace PokemonCardFinal.View.AddRecord
     /// </summary>
     public partial class AddCardPage : Page
     {
+        bool _isAddMode;
         public AddCardPage()
         {
             InitializeComponent();
+            _isAddMode = true;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

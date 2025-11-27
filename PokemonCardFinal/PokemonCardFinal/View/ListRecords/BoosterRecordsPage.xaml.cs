@@ -83,24 +83,23 @@ namespace PokemonCardFinal.View.ListRecords
                 return;
             }
 
-            if (Application.Current.MainWindow is MainWindow mainWindow)
-            {
-                // Navigate the main frame to the new outer page
-                AddEditContainerPage containerPage = new AddEditContainerPage();
-                mainWindow.frmMain.Navigate(containerPage);
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
 
-                // When the outer page is loaded change the inner page
-                // to AddBoosterPage
-                containerPage.Loaded += (s, args) =>
-                {
-                    containerPage.IsListView = false;
-                    containerPage.tabController.SelectedItem = containerPage.tabBooster;
-                    containerPage.frmBooster.Navigate
-                    (
-                        new AddBoosterPage(_selectedBooster, _boosterManger, containerPage)
-                    );
-                };
-            }
+            // Navigate the main frame to the new outer page
+            AddEditContainerPage containerPage = new AddEditContainerPage();
+            mainWindow.frmMain.Navigate(containerPage);
+
+            // When the outer page is loaded change the inner page
+            // to AddBoosterPage
+            containerPage.Loaded += (s, args) =>
+            {
+                containerPage.IsListView = false;
+                containerPage.tabController.SelectedItem = containerPage.tabBooster;
+                containerPage.frmBooster.Navigate
+                (
+                    new AddBoosterPage(_selectedBooster, _boosterManger, containerPage)
+                );
+            };
         }
 
         private void datBooster_SelectionChanged(object sender, SelectionChangedEventArgs e)

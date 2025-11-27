@@ -71,6 +71,28 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/>
         /// </summary>
+        public List<string> GetElementTypeIDs()
+        {
+            List<string> results = new List<string>();
+
+            try
+            {
+                // Formats the ElementIDs before selecting them
+                results = (from element in FormatElemetTypes(GetElementTypes())
+                           select element.ElementTypeID).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get a list of element type ids.",ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/>
+        /// </summary>
         public bool AddElementType(string elementTypeID, string description)
         {
             bool result = false;
@@ -140,5 +162,7 @@ namespace LogicLayer
             elementTypes = elementTypes.OrderBy(element => element.ElementTypeID);
             return elementTypes;
         }
+
+        
     }
 }

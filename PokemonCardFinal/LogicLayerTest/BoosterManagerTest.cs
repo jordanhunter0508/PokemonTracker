@@ -232,4 +232,20 @@ public class BoosterManagerTest
         // assert
         Assert.AreEqual(expectedResult, actualResult);
     }
+
+    [TestMethod]
+    public void TestGetBoosterIDs() 
+    {
+        // arrange
+        const int count = 3;
+        const string boosterID1 = "Test Booster 1";
+        List<string> actualResult = new List<string>();
+
+        // act
+        actualResult = _boosterManager.GetBoosterIDs();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
+        Assert.AreEqual(boosterID1, actualResult[0]);
+    }
 }

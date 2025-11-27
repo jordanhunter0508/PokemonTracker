@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:PokemonCardFinal.View.AddRecord"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="AddCardPage">
+      Title="AddCardPage" Loaded="Page_Loaded">
 
     <Grid>
         

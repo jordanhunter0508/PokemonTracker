@@ -177,5 +177,10 @@ namespace PokemonCardFinal.View
 
             frmMain.Navigate(new SearchResultsPage(search));
         }
+
+        private void mnuAllCards_Click(object sender, RoutedEventArgs e)
+        {
+            frmMain.Navigate(new SearchResultsPage());
+        }
     }
 }

@@ -83,24 +83,23 @@ namespace PokemonCardFinal.View.ListRecords
                 return;
             }
 
-            if (Application.Current.MainWindow is MainWindow mainWindow)
-            {
-                // Navigate the main frame to the new outer page
-                AddEditContainerPage containerPage = new AddEditContainerPage();
-                mainWindow.frmMain.Navigate(containerPage);
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+            // Navigate the main frame to the new outer page
+            AddEditContainerPage containerPage = new AddEditContainerPage();
+            mainWindow.frmMain.Navigate(containerPage);
 
-                // When the outer page is loaded change the inner page
-                // to AddAbilityPage
-                containerPage.Loaded += (s, args) =>
-                {
-                    containerPage.IsListView = false;
-                    containerPage.tabController.SelectedItem = containerPage.tabAbility;
-                    containerPage.frmAbility.Navigate
-                    (
-                        new AddAbilityPage(_selectedAbility, _abilityManager, containerPage)
-                    );
-                };
-            }
+            // When the outer page is loaded change the inner page
+            // to AddAbilityPage
+            containerPage.Loaded += (s, args) =>
+            {
+                containerPage.IsListView = false;
+                containerPage.tabController.SelectedItem = containerPage.tabAbility;
+                containerPage.frmAbility.Navigate
+                (
+                    new AddAbilityPage(_selectedAbility, _abilityManager, containerPage)
+                );
+            };
+            
         }
 
         private void datAbility_SelectionChanged(object sender, SelectionChangedEventArgs e)
