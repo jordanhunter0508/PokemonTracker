@@ -13,6 +13,7 @@ using LogicLayerInterfaces;
 
 namespace LogicLayer
 {
+
     public class UserManager : IUserManager
     {
         IUserAccessor _userAccessor;
@@ -236,6 +237,26 @@ namespace LogicLayer
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to assign user a role.");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IUserManager"/>
+        /// </summary>
+        public bool AddDefaultUserCollections(int userID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = (0 == _userAccessor.InsertDefaultUserCollections(userID));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to add collections to user.", ex);
             }
 
             return result;

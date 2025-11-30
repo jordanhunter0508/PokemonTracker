@@ -78,17 +78,8 @@ namespace LogicLayerInterfaces
         /// </summary>
         /// <param name="email">Used to search the database for matches</param>
         /// <returns>The number of users with a specified email</returns>
-        /// /// <exception cref="ApplicationException">Throws there is an error reaching the database</exception>
+        /// <exception cref="ApplicationException">Throws there is an error reaching the database</exception>
         public int GetUserCountByEmail(string email);
-
-        /// <summary>
-        /// Passes parameters to <see href="InsertUserIntoRole"/> then returns true <br/>
-        /// if the number of rows is 0
-        /// </summary>
-        /// <param name="userID">Specified user to add to roles</param>
-        /// <param name="roleID">Role the user is being assigned</param>
-        /// <returns>Returns true if the number of effected rows is 0, false otherwise</returns>
-        public bool AddUserToRole(int userID, string roleID = "General");
 
         /// <summary>
         /// Passes parameters to <see href="UpdatePasswordHashByEmail"/> uses the int it returns <br/>
@@ -100,5 +91,23 @@ namespace LogicLayerInterfaces
         /// <returns>true if the password was reset false otherwise</returns>
         /// <exception cref="ApplicationException">Throws if the email is not found in the database</exception>
         public bool ResetPassword(string email, string currentPassword, string newPassword);
+
+        /// <summary>
+        /// Passes parameters to <see href="InsertUserIntoRole"/> then returns true <br/>
+        /// if the number of rows is 0
+        /// </summary>
+        /// <param name="userID">Specified user to add to roles</param>
+        /// <param name="roleID">Role the user is being assigned</param>
+        /// <returns>Returns true if the number of effected rows is 0, false otherwise</returns>
+        /// <exception cref="ApplicationException">Throws if there was an error connection to the database.</exception>
+        public bool AddUserToRole(int userID, string roleID = "General");
+
+        /// <summary>
+        /// Adds a user collection for all cards, adds a favorites, and wishlist collection.
+        /// </summary>
+        /// <param name="userID">Specified user to add the collections to</param>
+        /// <returns>Returns true if the collections were created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if failed to add to the collection.</exception>
+        public bool AddDefaultUserCollections(int userID);
     }
 }

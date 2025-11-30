@@ -49,6 +49,15 @@ namespace DataAccessInterfaces
         public int SelectUserCountByEmail(string email);
 
         /// <summary>
+        /// Updates the password hash of the user with a matching email.
+        /// </summary>
+        /// <param name="email">Email of the user to update</param>
+        /// <param name="currentPassword">Users current password hash</param>
+        /// <param name="newPassword">Users new password hash</param>
+        /// <returns>Returns the number of rows affected</returns>
+        public int UpdatePasswordHashByEmail(string email, string currentPassword, string newPassword);
+
+        /// <summary>
         /// Inserts a user and role to the UserRole table
         /// Used when creating an account.
         /// </summary>
@@ -58,12 +67,11 @@ namespace DataAccessInterfaces
         public int InsertUserIntoRole(int userID, string roleID = "General");
 
         /// <summary>
-        /// Updates the password hash of the user with a matching email.
+        /// Insert a user collection for all cards,favorites, and wishlist.
         /// </summary>
-        /// <param name="email">Email of the user to update</param>
-        /// <param name="currentPassword">Users current password hash</param>
-        /// <param name="newPassword">Users new password hash</param>
-        /// <returns>Returns the number of rows affected</returns>
-        public int UpdatePasswordHashByEmail(string email, string currentPassword, string newPassword);
+        /// <param name="userID">Specified user to add the collections to</param>
+        /// <returns>Returns true if the collections were created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if failed to add to the collection.</exception>
+        public int InsertDefaultUserCollections(int userID);
     }
 }

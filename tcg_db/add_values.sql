@@ -111,8 +111,9 @@ GO
 INSERT INTO [dbo].[CollectionType]
 	([CollectionTypeID],[Description],[MaxSize])
 VALUES
-	('General','',100),
-	('Wishlist','',100),
+	('user','This is a collection of all the users cards.',100000),
+	('Custom','',250),
+	('Wishlist','',250),
 	('Favorites','',100),
 	('Deck','',60)
 GO
@@ -1035,3 +1036,64 @@ VALUES
 	(29,'none'),
 	(30,'none')
 GO
+
+PRINT '*** adding to Collection Table ***'
+GO
+INSERT INTO [dbo].[Collection]
+	([UserID],[CollectionTypeID],[Name],[Description])
+VALUES
+	(10000,'user','My Cards','A list of all my cards.'),
+	(10001,'user','My Cards','A list of all my cards.'),
+	(10002,'user','My Cards','A list of all my cards.'),
+	(10003,'user','My Cards','A list of all my cards.'),
+	(10004,'user','My Cards','A list of all my cards.'),
+	(10000,'Wishlist','Wishlist','List of cards I want to get.'),
+	(10001,'Wishlist','Wishlist','List of cards I want to get.'),
+	(10002,'Wishlist','Wishlist','List of cards I want to get.'),
+	(10003,'Wishlist','Wishlist','List of cards I want to get.'),
+	(10004,'Wishlist','Wishlist','List of cards I want to get.'),
+	(10000,'Favorites','Favorites','List of my favorite cards.'),
+	(10001,'Favorites','Favorites','List of my favorite cards.'),
+	(10002,'Favorites','Favorites','List of my favorite cards.'),
+	(10003,'Favorites','Favorites','List of my favorite cards.'),
+	(10004,'Favorites','Favorites','List of my favorite cards.')
+GO
+
+PRINT '*** adding to Collection Card Table ***'
+GO
+INSERT INTO [dbo].[CollectionCard]
+	([PokemonCardID],[CollectionID],[Quantity],[Owned])
+VALUES
+	(1,1,1,1),
+	(2,1,2,1),
+	(13,1,1,1),
+GO
+
+
+/*
+		
+[UserID]				[int]						
+[CollectionTypeID]		[nvarchar](25)	
+[Name]					[nvarchar](50)	
+[Description]			[nvarchar](50)	
+[Active]				[bit]			
+
+
+
+[PokemonCardID]			[int]
+[CollectionID]			[int]
+[Quantity]				[int]
+[Owned]					[bit]
+
+
+
+
+PRINT '*** adding to Collection Card Table ***'
+GO
+INSERT INTO [dbo].[CollectionCard]
+	([PokemonCardID],[CollectionID],[CollectionID],[Quantity],[Owned])
+VALUES
+	()
+GO
+
+*/

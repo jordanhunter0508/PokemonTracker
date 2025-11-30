@@ -138,7 +138,7 @@ namespace DataAccess
             string cmdText = "sp_select_role_by_user_email";
 
             // Create command object from the string and connection
-            SqlCommand cmd = new SqlCommand(cmdText,conn);
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -175,7 +175,7 @@ namespace DataAccess
 
             // Close connection after use
             finally
-            { 
+            {
                 conn.Close();
             }
 
@@ -209,7 +209,7 @@ namespace DataAccess
             cmd.Parameters.Add("@PasswordHash", System.Data.SqlDbType.NVarChar, 100);
 
             cmd.Parameters["@GivenName"].Value = givenName;
-            cmd.Parameters["@Surname"].Value = surname;      
+            cmd.Parameters["@Surname"].Value = surname;
             cmd.Parameters["@Email"].Value = email;
             cmd.Parameters["@PasswordHash"].Value = passwordHash;
 
@@ -382,6 +382,40 @@ namespace DataAccess
             finally
             {
                 conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>. Access the database
+        /// using sp_insert_default_user_collections
+        /// </summary>
+        public int InsertDefaultUserCollections(int userID)
+        {
+            int count = -1;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_insert_default_user_collections";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally 
+            { 
+                conn.Close(); 
             }
 
             return count;

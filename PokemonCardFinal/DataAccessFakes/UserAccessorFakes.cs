@@ -10,8 +10,9 @@ namespace DataAccessFakes
 {
     public class UserAccessorFakes : IUserAccessor
     {
-        List<User> _users = new List<User>();
-        List<UserVM> _userVMs = new List<UserVM>();
+        List<User> _users;
+        List<UserVM> _userVMs;
+        List<Collection> _collections;
         string _passwordHash;
 
         /// <summary>
@@ -19,6 +20,7 @@ namespace DataAccessFakes
         /// </summary>
         public UserAccessorFakes() 
         {
+            _users = new List<User>();
             // Fake User objects
             _users.Add(new User()
             {
@@ -62,6 +64,7 @@ namespace DataAccessFakes
             });
 
             // Fake UserVM objects
+            _userVMs = new List<UserVM>();
             _userVMs.Add(new UserVM()
             {
                 UserID = _users[0].UserID,
@@ -91,6 +94,33 @@ namespace DataAccessFakes
             });
 
             _passwordHash = "9c9064c59f1ffa2e174ee754d2979be80dd30db552ec03e7e327e9b1a4bd594e";
+
+            // Collection Fakes
+            _collections = new List<Collection>();
+            _collections.Add(new Collection()
+            { 
+                CollectionID = 1,
+                UserID = 1,
+                CollectionType = "test 1",
+                Name = "Name",
+                Description = "Description",
+            });
+            _collections.Add(new Collection()
+            {
+                CollectionID = 1,
+                UserID = 1,
+                CollectionType = "test 2",
+                Name = "Name",
+                Description = "Description",
+            });
+            _collections.Add(new Collection()
+            {
+                CollectionID = 1,
+                UserID = 1,
+                CollectionType = "test 3",
+                Name = "Name",
+                Description = "Description",
+            });
         }
 
         /// <summary>
@@ -242,5 +272,37 @@ namespace DataAccessFakes
             return rows;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>  used for testing
+        /// </summary>
+        public int InsertDefaultUserCollections(int userID)
+        {
+            int result = 0;
+            int count = 0;
+
+            foreach (UserVM user in _userVMs)
+            {
+                if (user.UserID != userID)
+                {
+                    count++;
+                }
+            }
+
+            foreach (Collection collection in _collections)
+            {
+                if (collection.UserID == userID)
+                {
+                    throw new ApplicationException("The user has a collection already.");
+                }
+            }
+
+            // checks if the user is in the "database"
+            if (count == _userVMs.Count)
+            {
+                throw new ApplicationException("The user is not in the system.");
+            }
+
+            return result;
+        }
     }
 }

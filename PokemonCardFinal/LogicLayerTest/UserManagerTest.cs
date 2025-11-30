@@ -411,4 +411,49 @@ public class UserManagerTest
         // assert
         Assert.AreEqual(expectedResult, actualResult);
     }
+
+    [TestMethod]
+    public void TestAddDefaultUserCollectionReturnsTrue() 
+    {
+        // arrange
+        const int userID = 2;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _userManager.AddDefaultUserCollections(userID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddDefaultUserCollectionThrowsApplicationExceptionWithInvalidID()
+    {
+        // arrange
+        const int userID = -1;
+        bool actual = false;
+
+        // act
+        actual = _userManager.AddDefaultUserCollections(userID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddDefaultUserCollectionThrowsApplicationExceptionWithDuplicateID()
+    {
+        // arrange
+        const int userID = 1;
+        bool actual = false;
+
+        // act
+        actual = _userManager.AddDefaultUserCollections(userID);
+
+        // assert
+        // do nothing
+    }
 }

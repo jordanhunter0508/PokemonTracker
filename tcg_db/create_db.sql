@@ -197,7 +197,7 @@ GO
 CREATE TABLE [dbo].[CollectionType]
 (
 	[CollectionTypeID]		[nvarchar](25)		NOT NULL,
-	[Description]			[nvarchar](25)		NOT NULL	DEFAULT '',
+	[Description]			[nvarchar](150)		NOT NULL	DEFAULT '',
 	[MaxSize]				[int]				NOT NULL,	
 	
 	CONSTRAINT [pk_collectiontype_collectiontypeid] PRIMARY KEY ([CollectionTypeID] ASC)
@@ -217,11 +217,12 @@ CREATE TABLE [dbo].[Collection]
 	[CollectionTypeID]		[nvarchar](25)		NOT NULL,
 	[Name]					[nvarchar](50)		NOT NULL,
 	[Description]			[nvarchar](50)		NOT NULL	DEFAULT '',
-	[Active]				[bit]				NOT NULL	DEFAULT 1,
 	
 	CONSTRAINT [pk_collection_collectionid] PRIMARY KEY ([CollectionID] ASC),
 	CONSTRAINT [fk_collection_userid] FOREIGN KEY ([UserID]) REFERENCES [Users] ([UserID]),
-	CONSTRAINT [fk_collection_collectiontypeid] FOREIGN KEY ([CollectionTypeID]) REFERENCES [CollectionType] ([CollectionTypeID])
+	CONSTRAINT [fk_collection_collectiontypeid] FOREIGN KEY ([CollectionTypeID]) REFERENCES [CollectionType] ([CollectionTypeID]),
+	CONSTRAINT [ak_collection_userID_collectiontypeid_name] UNIQUE ([UserID],[CollectionTypeID],[Name])
+
 )
 GO
 
@@ -309,6 +310,7 @@ CREATE TABLE [dbo].[PokemonCard]
 	CONSTRAINT [fk_pokemoncard_abilityid] FOREIGN KEY ([AbilityID]) REFERENCES [Ability] ([AbilityID]),
 	CONSTRAINT [fk_pokemoncard_boosterid] FOREIGN KEY ([BoosterID]) REFERENCES [Booster] ([BoosterID]),
 	CONSTRAINT [fk_pokemoncard_pokemonruleid] FOREIGN KEY ([PokemonRuleID]) REFERENCES [PokemonRule] ([PokemonRuleID]),
+	CONSTRAINT [fk_pokemoncard_elementtypeid] FOREIGN KEY ([ElementTypeID]) REFERENCES [ElementType] ([ElementTypeID]),
 	CONSTRAINT [ak_pokemoncard_alternateid_boosterid_boosternumber] UNIQUE ([BoosterID],[BoosterNumber],[Rarity])
 )
 GO
@@ -326,25 +328,6 @@ CREATE TABLE [dbo].[CardAlternateArt]
 	CONSTRAINT [pk_cardalternateart_cardalternateartid] PRIMARY KEY ([PokemonCardID],[AlternateArtID]),
 	CONSTRAINT [fk_cardalternateart_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard] ([PokemonCardID]) ON DELETE CASCADE,
 	CONSTRAINT [fk_cardalternateart_alternateartid] FOREIGN KEY ([AlternateArtID]) REFERENCES [AlternateArt] ([AlternateArtID]) ON DELETE CASCADE
-)
-GO
-
-/*
-Joins the user and the pokemon cards
-Used to keep track of which card each user has
-*/
-PRINT '*** creating UserCard Table ***'
-GO
-CREATE TABLE [dbo].[UserCard]
-(
-	[UserID]				[int]				NOT NULL,
-	[PokemonCardID]			[int]				NOT NULL,
-	[Quantity]				[int]				NOT NULL, /*Quantity prevents duplicate entries*/
-	[Active]				[bit]				NOT NULL	DEFAULT 1, /* If the user sells the card and wants to remove it from there card list*/
-	
-	CONSTRAINT [pk_usercard_usercardid] PRIMARY KEY ([UserID], [PokemonCardID]),
-	CONSTRAINT [fk_usercard_userid] FOREIGN KEY ([UserID]) REFERENCES [Users]([UserID]),
-	CONSTRAINT [fk_usercard_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]),
 )
 GO
 
@@ -397,9 +380,10 @@ CREATE TABLE [dbo].[CollectionCard]
 	[Quantity]				[int]				NOT NULL,
 	[Owned]					[bit]				NOT NULL	DEFAULT 0,
 	
-	CONSTRAINT [pk_collectionlist_collectioncardid] PRIMARY KEY ([CollectionCardID]),
-	CONSTRAINT [fk_collectionlist_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]),
-	CONSTRAINT [fk_collectionlist_collectionid] FOREIGN KEY ([CollectionID]) REFERENCES [Collection]([CollectionID])
+	CONSTRAINT [pk_collectioncard_collectioncardid] PRIMARY KEY ([CollectionCardID]),
+	CONSTRAINT [fk_collectioncard_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]),
+	CONSTRAINT [fk_collectioncard_collectionid] FOREIGN KEY ([CollectionID]) REFERENCES [Collection]([CollectionID]),
+	CONSTRAINT [1k_collectioncard_cardid_collectionid] UNIQUE ([PokemonCardID],[CollectionID])
 )
 GO
 
@@ -1264,57 +1248,6 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_cards_by_rarity ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_cards_by_rarity]
-	(
-		@BoosterID			[nvarchar](50)
-	)
-AS
-	BEGIN
-		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
-				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
-				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
-				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
-				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
-				[PokemonCard].[Health],[PokemonCard].[Stage]			
-		FROM	[PokemonCard]
-		WHERE	[PokemonCard].[BoosterID] = @BoosterID;
-	END
-GO
-
-PRINT '*** creating sp_select_card_moves_by_rarity ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_card_moves_by_rarity]
-	(
-		@BoosterID			[nvarchar](50)
-	)
-AS
-	BEGIN
-		SELECT 	[PokemonCard].[PokemonCardID],[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
-				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
-		FROM	[Move] LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
-			JOIN [CardMove] ON [Move].[MoveID] = [CardMove].[MoveID]
-			JOIN [PokemonCard] ON [CardMove].[PokemonCardID] = [PokemonCard].[PokemonCardID]
-		WHERE	[PokemonCard].[BoosterID] = @BoosterID;
-	END
-GO
-
-PRINT '*** creating sp_select_card_alternate_arts_by_rarity ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_card_alternate_arts_by_rarity]
-	(
-		@BoosterID			[nvarchar](50)
-	)
-AS
-	BEGIN
-		SELECT 	[PokemonCard].[PokemonCardID], [CardAlternateArt].[AlternateArtID]
-		FROM	[CardAlternateArt] JOIN [PokemonCard]
-			ON [PokemonCard].[PokemonCardID] = [CardAlternateArt].[PokemonCardID]
-		WHERE	[PokemonCard].[BoosterID] = @BoosterID;
-	END
-GO
-
 PRINT '*** creating sp_delete_card ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_card]
@@ -1326,5 +1259,51 @@ AS
 		DELETE 	[PokemonCard]
 		WHERE	[PokemonCardID] = @PokemonCardID;
 		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_insert_default_user_collections ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_default_user_collections]
+	(
+		@UserID			[int]
+	)
+AS
+	BEGIN
+		INSERT INTO [dbo].[Collection]
+	([UserID],[CollectionTypeID],[Name],[Description])
+	VALUES
+	(@UserID,'user','My Cards','A list of all my cards.'),
+	(@UserID,'Wishlist','Wishlist','List of cards I want to get.'),
+	(@UserID,'Favorites','Favorites','List of my favorite cards.')
+	END
+GO
+
+
+PRINT '*** creating sp_select_cards_by_collection_id ***'
+GO
+	CREATE PROCEDURE [dbo].[sp_select_cards_by_collection_id]
+	(
+		@CollectionID			[int]
+	)
+AS
+	BEGIN
+		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
+				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
+				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
+				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
+				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
+				[PokemonCard].[Health],[PokemonCard].[Stage],[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
+				[MoveCost].[ElementTypeID],[MoveCost].[Quantity],[CardAlternateArt].[AlternateArtID]
+				
+		FROM	[PokemonCard] 
+			JOIN [CardAlternateArt] ON [PokemonCard].[PokemonCardID] = [CardAlternateArt].[PokemonCardID]
+			JOIN [CardMove] ON [CardMove].[PokemonCardID] = [PokemonCard].[PokemonCardID]
+			JOIN [Move] ON [Move].[MoveID] = [CardMove].[MoveID]
+			LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
+			JOIN [CollectionCard] ON [CollectionCard].[PokemonCardID] = [PokemonCard].[PokemonCardID]
+		
+		WHERE	[CollectionCard].[CollectionID] = @CollectionID
+			
 	END
 GO

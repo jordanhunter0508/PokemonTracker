@@ -90,7 +90,8 @@ namespace PokemonCardFinal.View
                 if (isRegistered)
                 {
                     AccessToken = _userManager.LogInUser(email, password);
-                    if (!_userManager.AddUserToRole(AccessToken.UserID))
+                    if (_userManager.AddUserToRole(AccessToken.UserID) &&
+                        _userManager.AddDefaultUserCollections(AccessToken.UserID))
                     {
                         MessageBox.Show("There was an error creating your account.");
                     }
