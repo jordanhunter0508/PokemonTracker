@@ -73,5 +73,14 @@ namespace DataAccessInterfaces
         /// <returns>Returns true if the collections were created successfully.</returns>
         /// <exception cref="ApplicationException">Throws if failed to add to the collection.</exception>
         public int InsertDefaultUserCollections(int userID);
+
+        /// <summary>
+        /// Request from the database the CollectionIDs. 
+        /// Where the userID parameter matches one stored in the database.
+        /// </summary>
+        /// <param name="userID">Compared against the userID stored in the collection table</param>
+        /// <returns>Returns a list of int that are collectionIDs of a specific user</returns>
+        public List<int> SelectCollectionIDsByUserID(int userID);
+
     }
 }

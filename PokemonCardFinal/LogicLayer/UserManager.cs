@@ -142,7 +142,8 @@ namespace LogicLayer
                         Surname = user.Surname,
                         Email = user.Email,
                         Active = user.Active,
-                        Roles = GetRolesForUser(email)
+                        Roles = GetRolesForUser(email),
+                        CollectionIDs = GetCollectionIDsByUserID(user.UserID)
                     };
                 }
             }
@@ -260,6 +261,25 @@ namespace LogicLayer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IUserManager"/>
+        /// </summary>
+        public List<int> GetCollectionIDsByUserID(int userID)
+        {
+            List<int> results = null;
+
+            try
+            {
+                results = _userAccessor.SelectCollectionIDsByUserID(userID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("User not found.", ex);
+            }
+
+            return results;
         }
     }
 }

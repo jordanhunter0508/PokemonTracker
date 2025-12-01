@@ -18,7 +18,7 @@ namespace DataAccessFakes
         /// <summary>
         /// Fills the _users list with fake data
         /// </summary>
-        public UserAccessorFakes() 
+        public UserAccessorFakes()
         {
             _users = new List<User>();
             // Fake User objects
@@ -72,7 +72,8 @@ namespace DataAccessFakes
                 Surname = _users[0].Surname,
                 Email = _users[0].Email,
                 Active = _users[0].Active,
-                Roles = new List<String>() { "testRole1", "testRole2" }
+                Roles = new List<String>() { "testRole1", "testRole2" },
+                CollectionIDs = new List<int>() { 1, 2 }
             });
             _userVMs.Add(new UserVM()
             {
@@ -81,7 +82,9 @@ namespace DataAccessFakes
                 Surname = _users[1].Surname,
                 Email = _users[1].Email,
                 Active = _users[1].Active,
-                Roles = new List<String>() { "testRole3", "testRole4" }
+                Roles = new List<String>() { "testRole3", "testRole4" },
+                CollectionIDs = new List<int>() { 3, 4 }
+
             });
             _userVMs.Add(new UserVM()
             {
@@ -90,7 +93,9 @@ namespace DataAccessFakes
                 Surname = _users[2].Surname,
                 Email = _users[2].Email,
                 Active = _users[2].Active,
-                Roles = new List<String>() { }
+                Roles = new List<String>() { },
+                CollectionIDs = new List<int>() { }
+
             });
 
             _passwordHash = "9c9064c59f1ffa2e174ee754d2979be80dd30db552ec03e7e327e9b1a4bd594e";
@@ -98,7 +103,7 @@ namespace DataAccessFakes
             // Collection Fakes
             _collections = new List<Collection>();
             _collections.Add(new Collection()
-            { 
+            {
                 CollectionID = 1,
                 UserID = 1,
                 CollectionType = "test 1",
@@ -133,7 +138,7 @@ namespace DataAccessFakes
             {
                 if ((user.Email.Equals(email) && _passwordHash.Equals(passwordHash))
                     && user.Active)
-                { 
+                {
                     result++;
                 }
             }
@@ -202,7 +207,7 @@ namespace DataAccessFakes
                 Email = email,
                 Active = true,
             };
-            
+
             _users.Add(newuser);
 
             userID = newuser.UserID;
@@ -265,7 +270,7 @@ namespace DataAccessFakes
                 }
             }
             catch (Exception)
-            { 
+            {
                 throw new ArgumentException("Invalid email or password.");
             }
 
@@ -303,6 +308,30 @@ namespace DataAccessFakes
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>  used for testing
+        /// </summary>
+        public List<int> SelectCollectionIDsByUserID(int userID)
+        {
+
+            List<int> results = null;
+
+            foreach (UserVM userVM in _userVMs)
+            {
+                if (userVM.UserID == userID)
+                {
+                    results = userVM.CollectionIDs;
+                }
+            }
+
+            if (results == null)
+            {
+                throw new ArgumentException("UserID not found.");
+            }
+
+            return results;
         }
     }
 }

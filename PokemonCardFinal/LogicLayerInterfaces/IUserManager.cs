@@ -109,5 +109,14 @@ namespace LogicLayerInterfaces
         /// <returns>Returns true if the collections were created successfully.</returns>
         /// <exception cref="ApplicationException">Throws if failed to add to the collection.</exception>
         public bool AddDefaultUserCollections(int userID);
+
+        /// <summary>
+        /// Passes parameters to <see href="SelectCollectionIDsByUserID(int)"/> then returns <br/>
+        /// a list of ints of the user collectionIDs.
+        /// </summary>
+        /// <param name="userID">Used to search the database for a matching userID in collection table</param>
+        /// <returns>Returns a list of int that are collectionIDs of a specific user</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connecting to the database</exception>
+        public List<int> GetCollectionIDsByUserID(int userID);
     }
 }

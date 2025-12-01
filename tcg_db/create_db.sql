@@ -1282,28 +1282,38 @@ GO
 
 PRINT '*** creating sp_select_cards_by_collection_id ***'
 GO
-	CREATE PROCEDURE [dbo].[sp_select_cards_by_collection_id]
+	CREATE PROCEDURE [dbo].[sp_select_collection_cards_by_collection_id]
 	(
 		@CollectionID			[int]
 	)
 AS
 	BEGIN
-		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
+		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],
 				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
 				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
 				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
 				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
-				[PokemonCard].[Health],[PokemonCard].[Stage],[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
-				[MoveCost].[ElementTypeID],[MoveCost].[Quantity],[CardAlternateArt].[AlternateArtID]
+				[PokemonCard].[Health],[PokemonCard].[Stage],
+				[CollectionCard].[Quantity],[CollectionCard].[Owned]
 				
 		FROM	[PokemonCard] 
-			JOIN [CardAlternateArt] ON [PokemonCard].[PokemonCardID] = [CardAlternateArt].[PokemonCardID]
-			JOIN [CardMove] ON [CardMove].[PokemonCardID] = [PokemonCard].[PokemonCardID]
-			JOIN [Move] ON [Move].[MoveID] = [CardMove].[MoveID]
-			LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
 			JOIN [CollectionCard] ON [CollectionCard].[PokemonCardID] = [PokemonCard].[PokemonCardID]
 		
 		WHERE	[CollectionCard].[CollectionID] = @CollectionID
 			
+	END
+GO
+
+PRINT '*** creating sp_select_collection_ids_by_user_id ***'
+GO
+	CREATE PROCEDURE [sp_select_collection_ids_by_user_id]
+	(
+		@UserID					[int]
+	)
+AS
+	BEGIN
+		SELECT	[Collection].[CollectionID]
+		FROM	[Collection]
+		WHERE	[Collection].[UserID] = @UserID;
 	END
 GO

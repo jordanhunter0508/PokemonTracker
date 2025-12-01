@@ -18,5 +18,6 @@ namespace DataDomain
     public class UserVM : User 
     {
         public List<string> Roles { get; set; }
+        public List<int> CollectionIDs { get; set; }
     }
 }

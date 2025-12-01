@@ -1066,7 +1066,7 @@ INSERT INTO [dbo].[CollectionCard]
 VALUES
 	(1,1,1,1),
 	(2,1,2,1),
-	(13,1,1,1),
+	(13,1,1,1)
 GO
 
 

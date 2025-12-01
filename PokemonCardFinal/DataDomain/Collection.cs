@@ -25,7 +25,7 @@ namespace DataDomain
 
     public class CollectionCard
     {
-        public CardVM Card { get; set; }
+        public Card Card { get; set; }
         public int Quantity { get; set; }
         public bool Owned { get; set; }
     }

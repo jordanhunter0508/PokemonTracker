@@ -50,7 +50,10 @@ namespace PokemonCardFinal.View
             //    cardList.Add(cards.Value);
             //}
 
-            datGrid.ItemsSource = cardManager.GetCardVMsByCardName("r");
+            UserManager userManager = new UserManager();
+            UserVM userVM = userManager.LogInUser("john@mail.com", "newuser");
+
+            txtBlock.Text = userVM.CollectionIDs[0].ToString();
         }
 
     }

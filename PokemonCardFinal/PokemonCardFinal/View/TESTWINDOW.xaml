@@ -22,6 +22,7 @@
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
 
+        <TextBlock x:Name="txtBlock"></TextBlock>
 
         <!--<DataGrid x:Name="datGrid" Grid.Row="0" SelectionMode="Single" IsReadOnly="True" />-->
     </Grid>

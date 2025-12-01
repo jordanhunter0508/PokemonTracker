@@ -420,5 +420,64 @@ namespace DataAccess
 
             return count;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IUserAccessor"/>. Access the database
+        /// using sp_select_collection_ids_by_user_id
+        /// </summary>
+        public List<int> SelectCollectionIDsByUserID(int userID)
+        {
+            List<int> results = new List<int>();
+
+            // Establish a connection
+            SqlConnection conn = DBConnection.GetConnection();
+
+            // Command text
+            string cmdText = "sp_select_collection_ids_by_user_id";
+
+            // Create command object from the string and connection
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+
+            // Set the command type
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            // Add parameters
+            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
+
+            // Set paramaters
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                // Open Connection
+                conn.Open();
+
+                // Creates a reader object
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    // Loop through rows
+                    while (reader.Read())
+                    {
+                        // Add to results
+                        results.Add(reader.GetInt32(0));
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            // Close connection after use
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
     }
 }
