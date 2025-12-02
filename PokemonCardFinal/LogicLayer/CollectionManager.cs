@@ -155,13 +155,16 @@ namespace LogicLayer
             return result;
         }
 
+        /// <summary>
+        /// Implements from <see cref="ICollectionManager"/>
+        /// </summary>
         public int GetCollectionIDByCollectionType(UserVM user,string collectionTypeID)
         {
             int collectionID = -1;
 
             foreach (var collection in user.Collections)
             {
-                if (collectionTypeID.ToLower() == collectionTypeID.ToLower())
+                if (collection.CollectionTypeID.ToLower() == collectionTypeID.ToLower())
                 {
                     collectionID = collection.CollectionID;
                 }
@@ -173,6 +176,37 @@ namespace LogicLayer
             }
 
             return collectionID;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionManager"/>
+        /// </summary>
+        public List<CollectionCardVM> ConvertCollectionCardToVM(List<CollectionCard> collectionCards)
+        {
+            List<CollectionCardVM> results = new List<CollectionCardVM>();
+
+            if (collectionCards == null)
+            {
+                throw new ApplicationException("Faild to convert CollectionCards to a VM. CollectionCard was null.");
+            }
+
+            foreach (var collectionCard in collectionCards)
+            {
+                results.Add(new CollectionCardVM() 
+                {
+                    CardType = collectionCard.Card.CardType,
+                    Name = collectionCard.Card.Name,
+                    BoosterID = collectionCard.Card.BoosterID,
+                    BoosterNumber = collectionCard.Card.BoosterNumber,
+                    Rarity = collectionCard.Card.Rarity,
+                    CollectionCardID = collectionCard.CollectionCardID,
+                    CollectionID = collectionCard.CollectionCardID,
+                    Quantity = collectionCard.Quantity,
+                    Owned = collectionCard.Owned,
+                });
+            }
+
+            return results;
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Azure.Core;
 using DataDomain;
 using LogicLayerInterfaces;
 
@@ -22,9 +23,38 @@ namespace PokemonCardFinal.View.Profile
     /// </summary>
     public partial class UserCardsPage : Page
     {
-        public UserCardsPage(IUserManager userManager, UserVM accessToken, int collectionID)
+        ICollectionManager _collectionManager;
+        CollectionVM _collectionVM;
+        int _collectionID;
+        public UserCardsPage(ICollectionManager collectionManager, int collectionID)
         {
             InitializeComponent();
+            _collectionManager = collectionManager;
+            _collectionID = collectionID;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _collectionVM = _collectionManager.GetCollectionVMByCollectionID(_collectionID);
+
+                List<CollectionCardVM> collectionCardVM = _collectionManager.ConvertCollectionCardToVM(_collectionVM.Cards);
+
+                if (collectionCardVM == null || collectionCardVM.Count == 0)
+                {
+                    datCard.Visibility = Visibility.Collapsed;
+                    grdEmpty.Visibility = Visibility.Visible;
+                }
+
+                datCard.AutoGenerateColumns = false;
+                datCard.ItemsSource = collectionCardVM;
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

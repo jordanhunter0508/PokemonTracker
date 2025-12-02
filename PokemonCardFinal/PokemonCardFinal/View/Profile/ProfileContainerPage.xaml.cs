@@ -64,7 +64,7 @@ namespace PokemonCardFinal.View.Profile
                     SetAllLoaded(false);
                     _isUserCardPage = true;
                     collectionID = _collectionManager.GetCollectionIDByCollectionType(_accessToken, "user");
-                    frmUserCard.Navigate(new UserCardsPage(_userManager, _accessToken, collectionID));
+                    frmUserCard.Navigate(new UserCardsPage(_collectionManager, collectionID));
                 }
                 else if (tabController.SelectedItem == tabUserDeck && !_isUserDeckPage)
                 {
@@ -76,15 +76,15 @@ namespace PokemonCardFinal.View.Profile
                 {
                     SetAllLoaded(false);
                     _isUserFavoritePage = true;
-                    collectionID = _collectionManager.GetCollectionIDByCollectionType(_accessToken, "favorite");
-                    frmFavorite.Navigate(new UserCardsPage(_userManager, _accessToken, collectionID));
+                    collectionID = _collectionManager.GetCollectionIDByCollectionType(_accessToken, "favorites");
+                    frmFavorite.Navigate(new UserCardsPage(_collectionManager, collectionID));
                 }
                 else if (tabController.SelectedItem == tabWishlist && !_isUserWishlistPage)
                 {
                     SetAllLoaded(false);
                     _isUserWishlistPage = true;
                     collectionID = _collectionManager.GetCollectionIDByCollectionType(_accessToken, "wishlist");
-                    frmWishlist.Navigate(new UserCardsPage(_userManager, _accessToken, collectionID));
+                    frmWishlist.Navigate(new UserCardsPage(_collectionManager, collectionID));
                 }
                 else if (tabController.SelectedItem == tabAccount && !_isAccountInfoPage)
                 {
@@ -98,7 +98,7 @@ namespace PokemonCardFinal.View.Profile
 
                 MessageBox.Show(ex.Message);
             }
-            
+
         }
 
         private void SetAllLoaded(bool option = false)

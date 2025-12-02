@@ -6,9 +6,28 @@
       xmlns:local="clr-namespace:PokemonCardFinal.View.Profile"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="UserCardsPage">
+      Title="UserCardsPage" Loaded="Page_Loaded">
 
     <Grid>
+        <DataGrid x:Name="datCard" Grid.Row="0" SelectionMode="Single" IsReadOnly="True" 
+                  HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Card Type" Binding="{Binding CardType}"/>
+                <DataGridTextColumn Header="Card Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Booster" Binding="{Binding BoosterID}"/>
+                <DataGridTextColumn Header="Booster Number" Binding="{Binding BoosterNumber}"/>
+                <DataGridTextColumn Header="Rarity" Binding="{Binding Rarity}"/>
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}"/>
+                <DataGridTextColumn Header="Owned" Binding="{Binding Owned}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid x:Name="grdEmpty" Visibility="Collapsed">
+            <TextBlock FontSize="16" Margin="10"
+                    Text="You don't have any cards in this collection."/>
+            <TextBlock FontSize="16" Margin="10 50"
+                    Text="You can add cards to the collection by searching for one or clicking all cards."/>
+        </Grid>
         
     </Grid>
 </Page>

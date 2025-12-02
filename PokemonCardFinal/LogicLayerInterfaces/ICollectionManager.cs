@@ -63,5 +63,13 @@ namespace LogicLayerInterfaces
         /// <returns>Returns the CollectionID of where the collectionTypeID matches a type in user.Collections</returns>
         /// <exception cref="ApplicationException">Throws if there was an error matching the type to the user's collection</exception>
         public int GetCollectionIDByCollectionType(UserVM user,string collectionTypeID);
+
+        /// <summary>
+        /// Uses the Card within the CollectionCard to create a CollectionCardVM
+        /// </summary>
+        /// <param name="collectionCards">List of CollectionCards to convert</param>
+        /// <returns>Returns a list of CollectionCardVMs from the original CollectionCard list</returns>
+        /// <exception cref="ApplicationException">Throws if there was an error converting the card</exception>
+        public List<CollectionCardVM> ConvertCollectionCardToVM(List<CollectionCard> collectionCards);
     }
 }

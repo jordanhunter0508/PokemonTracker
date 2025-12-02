@@ -63,6 +63,8 @@ namespace DataAccessFakes
                         Card = new Card()
                         {
                             CardID = 1,
+                            Name = "test1",
+                            Rarity = "rarity1"
                         },
                         CollectionCardID = 1,
                         Quantity = 1,
@@ -73,6 +75,9 @@ namespace DataAccessFakes
                         Card = new Card()
                         {
                             CardID = 2,
+                            Name= "test2",
+                            Rarity = "rarity2"
+
                         },
                         Quantity = 4,
                         CollectionCardID = 1,
@@ -95,6 +100,8 @@ namespace DataAccessFakes
                         Card = new Card()
                         {
                             CardID = 3,
+                            Name = "test3",
+                            Rarity = "rarity3"
                         },
                         Quantity = 1,
                         CollectionCardID = 2,

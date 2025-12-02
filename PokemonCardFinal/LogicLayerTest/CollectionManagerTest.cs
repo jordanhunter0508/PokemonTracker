@@ -226,4 +226,118 @@ public class CollectionManagerTest
         //Assert
         // do nothing
     }
+
+    [TestMethod]
+    public void TestGetCollectionIDByCollectionTypeReturnsValidID()
+    {
+        // arrange
+        const string collectionType = "testType1";
+        UserVM user = new UserVM()
+        {
+            Collections = new List<Collection>() 
+            {
+                new Collection()
+                {
+                    CollectionID = 1,
+                    CollectionTypeID = "testType1"
+                },
+                new Collection()
+                {
+                    CollectionID = 1,
+                    CollectionTypeID = "testType2"
+                }
+            }
+        };
+        const int expected = 1;
+        int actual = 0;
+
+        // act
+        actual = _collectionManager.GetCollectionIDByCollectionType(user, collectionType);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException (typeof(ApplicationException))]
+    public void TestGetCollectionIDByCollectionTypeThrowsAppplicationExceptionWithInvalidCollectionType()
+    {
+        // arrange
+        const string collectionType = "fail";
+        UserVM user = new UserVM()
+        {
+            Collections = new List<Collection>() 
+            {
+                new Collection()
+                {
+                    CollectionID = 1,
+                    CollectionTypeID = "testType1"
+                },
+                new Collection()
+                {
+                    CollectionID = 2,
+                    CollectionTypeID = "testType2"
+                },
+            }
+        };
+        const int expected = 1;
+        int actual = 0;
+
+        // act
+        actual = _collectionManager.GetCollectionIDByCollectionType(user, collectionType);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestConvertCollectionCardToVMWithValidList()
+    {
+        // arrange
+        List<CollectionCard> collectionCards = new List<CollectionCard>();
+        const int collectionID = 1;
+        const int count = 2;
+        const string cardName1 = "test1";
+        const string rarity2 = "rarity2";
+        List<CollectionCardVM> actual = new List<CollectionCardVM>();
+
+        // act
+        collectionCards = _collectionManager.GetCollectionCardsByCollectionID(1);
+        actual = _collectionManager.ConvertCollectionCardToVM(collectionCards);
+
+        // assert
+        Assert.AreEqual(count, actual.Count);
+        Assert.AreEqual(cardName1, actual[0].Name);
+        Assert.AreEqual(rarity2, actual[1].Rarity);
+    }
+
+    [TestMethod]
+    public void TestConvertCollectionCardToVMWithEmptyInput()
+    {
+        // arrange
+        List<CollectionCard> collectionCards = new List<CollectionCard>();
+        const int count = 0;
+        List<CollectionCardVM> actual = new List<CollectionCardVM>();
+
+        // act
+        actual = _collectionManager.ConvertCollectionCardToVM(collectionCards);
+
+        // assert
+        Assert.AreEqual(count, actual.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException (typeof(ApplicationException))]
+    public void TestConvertCollectionCardToVMThrowsApplicationExceptionWithNullInput()
+    {
+        // arrange
+        List<CollectionCard> collectionCards = null;
+        List<CollectionCardVM> actual = new List<CollectionCardVM>();
+
+        // act
+        actual = _collectionManager.ConvertCollectionCardToVM(collectionCards);
+
+        // assert
+        // do nothing
+    }
 }

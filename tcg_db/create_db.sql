@@ -1,4 +1,7 @@
 /*
+
+Add Artist to detailed view
+
 Trigger on UserCard if Quantity is 0 then change bit field to 0
 Trigger for owned in collection
 

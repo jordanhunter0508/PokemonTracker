@@ -22,13 +22,4 @@ namespace DataDomain
         public int MaxSize { get; set; }
 
     }
-
-    public class CollectionCard
-    {
-        public Card Card { get; set; }
-        public int CollectionCardID { get; set; }
-        public int CollectionID { get; set; }
-        public int Quantity { get; set; }
-        public bool Owned { get; set; }
-    }
 }
