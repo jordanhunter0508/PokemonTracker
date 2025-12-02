@@ -1293,8 +1293,8 @@ AS
 				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
 				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
 				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
-				[PokemonCard].[Health],[PokemonCard].[Stage],
-				[CollectionCard].[Quantity],[CollectionCard].[Owned]
+				[PokemonCard].[Health],[PokemonCard].[Stage],[CollectionCard].[CollectionCardID],
+				[CollectionCard].[CollectionID],[CollectionCard].[Quantity],[CollectionCard].[Owned]
 				
 		FROM	[PokemonCard] 
 			JOIN [CollectionCard] ON [CollectionCard].[PokemonCardID] = [PokemonCard].[PokemonCardID]
@@ -1315,5 +1315,48 @@ AS
 		SELECT	[Collection].[CollectionID]
 		FROM	[Collection]
 		WHERE	[Collection].[UserID] = @UserID;
+	END
+GO
+
+PRINT '*** creating sp_select_max_size_by_collection_type_id ***'
+GO
+	CREATE PROCEDURE [sp_select_max_size_by_collection_type_id]
+	(
+		@CollectionTypeID		[nvarchar](25)
+	)
+AS
+	BEGIN
+		SELECT	[CollectionType].[MaxSize]
+		FROM	[CollectionType]
+		WHERE	[CollectionType].[CollectionTypeID] = @CollectionTypeID;
+	END
+GO
+
+PRINT '*** creating sp_select_collection_elements_by_collection_id ***'
+GO
+	CREATE PROCEDURE [sp_select_collection_elements_by_collection_id]
+	(
+		@CollectionID		[int]
+	)
+AS
+	BEGIN
+		SELECT	[CollectionElement].[ElementTypeID]
+		FROM	[CollectionElement]
+		WHERE	[CollectionElement].[CollectionID] = @CollectionID;
+	END
+GO
+
+PRINT '*** creating sp_select_collection_by_collection_id ***'
+GO
+	CREATE PROCEDURE [sp_select_collection_by_collection_id]
+	(
+		@CollectionID		[int]
+	)
+AS
+	BEGIN
+		SELECT	[Collection].[CollectionID],[Collection].[UserID],[Collection].[CollectionTypeID],
+				[Collection].[Name],[Collection].[Description]
+		FROM	[Collection]
+		WHERE	[Collection].[CollectionID] = @CollectionID;
 	END
 GO

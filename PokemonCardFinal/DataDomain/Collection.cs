@@ -10,7 +10,7 @@ namespace DataDomain
     {
         public int CollectionID { get; set; }
         public int UserID { get; set; }
-        public string CollectionType { get; set; }
+        public string CollectionTypeID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
@@ -26,6 +26,8 @@ namespace DataDomain
     public class CollectionCard
     {
         public Card Card { get; set; }
+        public int CollectionCardID { get; set; }
+        public int CollectionID { get; set; }
         public int Quantity { get; set; }
         public bool Owned { get; set; }
     }

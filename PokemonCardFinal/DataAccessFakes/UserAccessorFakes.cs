@@ -106,7 +106,7 @@ namespace DataAccessFakes
             {
                 CollectionID = 1,
                 UserID = 1,
-                CollectionType = "test 1",
+                CollectionTypeID = "test 1",
                 Name = "Name",
                 Description = "Description",
             });
@@ -114,7 +114,7 @@ namespace DataAccessFakes
             {
                 CollectionID = 1,
                 UserID = 1,
-                CollectionType = "test 2",
+                CollectionTypeID = "test 2",
                 Name = "Name",
                 Description = "Description",
             });
@@ -122,7 +122,7 @@ namespace DataAccessFakes
             {
                 CollectionID = 1,
                 UserID = 1,
-                CollectionType = "test 3",
+                CollectionTypeID = "test 3",
                 Name = "Name",
                 Description = "Description",
             });

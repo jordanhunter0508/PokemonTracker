@@ -50,10 +50,32 @@ namespace PokemonCardFinal.View
             //    cardList.Add(cards.Value);
             //}
 
-            UserManager userManager = new UserManager();
-            UserVM userVM = userManager.LogInUser("john@mail.com", "newuser");
+            
 
-            txtBlock.Text = userVM.CollectionIDs[0].ToString();
+            try
+            {
+                CollectionManager collectionManager = new CollectionManager();
+
+                //List<string> cc = collectionManager.GetCollectionElementsByCollectionID(1);
+                //datGrid.ItemsSource = cc;
+
+                DataDomain.Collection collection = collectionManager.GetCollectionByCollectionID(1);
+                CollectionVM collectionVM = collectionManager.GetCollectionVMByCollectionID(1);
+
+                txtBlock.Text = collectionVM.Name;
+                datGrid.ItemsSource = collectionVM.Cards;
+
+
+                //txtBlock.Text = collectionManager.GetCollectionTypeMaxSize("user").ToString();
+
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+            }
+            
         }
 
     }
