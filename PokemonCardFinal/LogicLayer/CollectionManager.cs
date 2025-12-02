@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Core;
 using DataAccess;
 using DataAccessInterfaces;
 using DataDomain;
@@ -154,5 +155,24 @@ namespace LogicLayer
             return result;
         }
 
+        public int GetCollectionIDByCollectionType(UserVM user,string collectionTypeID)
+        {
+            int collectionID = -1;
+
+            foreach (var collection in user.Collections)
+            {
+                if (collectionTypeID.ToLower() == collectionTypeID.ToLower())
+                {
+                    collectionID = collection.CollectionID;
+                }
+            }
+
+            if (collectionID == -1)
+            {
+                throw new ApplicationException("Failed to get Collection ID by Collection Type.");
+            }
+
+            return collectionID;
+        }
     }
 }

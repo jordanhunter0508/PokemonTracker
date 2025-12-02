@@ -42,10 +42,6 @@
             <TabItem x:Name="tabMove" Header="Move">
                 <Frame x:Name="frmMove" NavigationUIVisibility="Hidden"/>
             </TabItem>
-            
-            
-            
-            
         </TabControl>
     </Grid>
 </Page>

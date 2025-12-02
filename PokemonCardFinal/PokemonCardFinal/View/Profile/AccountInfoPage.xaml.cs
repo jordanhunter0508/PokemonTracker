@@ -12,23 +12,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Azure.Core;
 using DataDomain;
 using LogicLayerInterfaces;
 
-namespace PokemonCardFinal.View
+namespace PokemonCardFinal.View.Profile
 {
     /// <summary>
-    /// Interaction logic for ProfilePage.xaml
+    /// Interaction logic for AccountInfoPage.xaml
     /// </summary>
-    public partial class ProfilePage : Page
+    public partial class AccountInfoPage : Page
     {
         IUserManager _userManager;
         UserVM _accessToken;
-        public ProfilePage(UserVM accessToken, IUserManager userManager)
+
+        public AccountInfoPage(IUserManager userManager, UserVM accessToken)
         {
+            InitializeComponent();
             _userManager = userManager;
             _accessToken = accessToken;
-            InitializeComponent();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

@@ -13,6 +13,7 @@ using LogicLayer;
 using LogicLayerInterfaces;
 using PokemonCardFinal.View.AddRecord;
 using PokemonCardFinal.View.ListRecords;
+using PokemonCardFinal.View.Profile;
 
 namespace PokemonCardFinal.View
 {
@@ -124,7 +125,7 @@ namespace PokemonCardFinal.View
             }
             if (btnSignUp.Content == "View Profile")
             {
-                frmMain.Navigate(new ProfilePage(_accessToken,_userManager));
+                frmMain.Navigate(new ProfileContainerPage(_accessToken,_userManager));
             }
         }
 

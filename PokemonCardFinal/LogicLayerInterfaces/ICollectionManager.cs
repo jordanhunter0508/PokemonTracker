@@ -54,5 +54,14 @@ namespace LogicLayerInterfaces
         /// Collection, CollectionType, and CollectionCard tables.</returns>
         /// <exception cref="ApplicationException">Throws if there was an error connecting</exception>
         public CollectionVM GetCollectionVMByCollectionID(int collectionID);
+
+        /// <summary>
+        /// Gets the CollectionID from the user's Collection list. Where the collectionTypeID matches.
+        /// </summary>
+        /// <param name="user">User to search through the collectuions for</param>
+        /// <param name="collectionTypeID">Used to search the collectionTypeID of the user's collections</param>
+        /// <returns>Returns the CollectionID of where the collectionTypeID matches a type in user.Collections</returns>
+        /// <exception cref="ApplicationException">Throws if there was an error matching the type to the user's collection</exception>
+        public int GetCollectionIDByCollectionType(UserVM user,string collectionTypeID);
     }
 }
