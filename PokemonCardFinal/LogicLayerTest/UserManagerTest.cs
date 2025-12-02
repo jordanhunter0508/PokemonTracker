@@ -465,15 +465,15 @@ public class UserManagerTest
         const int listSize = 2;
         const int id1 = 1;
         const int id2 = 2;
-        List<int> actualList;
+        List<Collection> actualList;
 
         // act
-        actualList = _userManager.GetCollectionIDsByUserID(userID);
+        actualList = _userManager.GetCollectionsByUserID(userID);
 
         // assert
         Assert.AreEqual(listSize, actualList.Count);
-        Assert.AreEqual(id1, actualList[0]);
-        Assert.AreEqual(id2, actualList[1]);
+        Assert.AreEqual(id1, actualList[0].CollectionID);
+        Assert.AreEqual(id2, actualList[1].CollectionID);
     }
 
     [TestMethod]
@@ -482,10 +482,10 @@ public class UserManagerTest
         // arrange
         const int userID = 3;
         const int listSize = 0;
-        List<int> actualList;
+        List<Collection> actualList;
 
         // act
-        actualList = _userManager.GetCollectionIDsByUserID(userID);
+        actualList = _userManager.GetCollectionsByUserID(userID);
 
         // assert
         Assert.AreEqual(listSize, actualList.Count);
@@ -497,10 +497,10 @@ public class UserManagerTest
     {
         // arrange
         const int userID = 999;
-        List<int> actualList;
+        List<Collection> actualList;
 
         // act
-        actualList = _userManager.GetCollectionIDsByUserID(userID);
+        actualList = _userManager.GetCollectionsByUserID(userID);
 
         // assert
         // do nothing

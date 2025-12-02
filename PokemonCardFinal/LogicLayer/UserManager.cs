@@ -143,7 +143,7 @@ namespace LogicLayer
                         Email = user.Email,
                         Active = user.Active,
                         Roles = GetRolesForUser(email),
-                        CollectionIDs = GetCollectionIDsByUserID(user.UserID)
+                        Collections = GetCollectionsByUserID(user.UserID)
                     };
                 }
             }
@@ -266,13 +266,13 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IUserManager"/>
         /// </summary>
-        public List<int> GetCollectionIDsByUserID(int userID)
+        public List<Collection> GetCollectionsByUserID(int userID)
         {
-            List<int> results = null;
+            List<Collection> results = null;
 
             try
             {
-                results = _userAccessor.SelectCollectionIDsByUserID(userID);
+                results = _userAccessor.SelectCollectionsByUserID(userID);
             }
             catch (Exception ex)
             {

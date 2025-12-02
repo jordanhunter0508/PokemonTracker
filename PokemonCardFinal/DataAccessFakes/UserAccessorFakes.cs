@@ -73,7 +73,17 @@ namespace DataAccessFakes
                 Email = _users[0].Email,
                 Active = _users[0].Active,
                 Roles = new List<String>() { "testRole1", "testRole2" },
-                CollectionIDs = new List<int>() { 1, 2 }
+                Collections = new List<Collection>() 
+                {
+                    new Collection()
+                    { 
+                        CollectionID = 1
+                    },
+                    new Collection()
+                    { 
+                        CollectionID = 2
+                    }
+                }
             });
             _userVMs.Add(new UserVM()
             {
@@ -83,7 +93,17 @@ namespace DataAccessFakes
                 Email = _users[1].Email,
                 Active = _users[1].Active,
                 Roles = new List<String>() { "testRole3", "testRole4" },
-                CollectionIDs = new List<int>() { 3, 4 }
+                Collections = new List<Collection>() 
+                {
+                    new Collection()
+                    {
+                        CollectionID = 3
+                    },
+                    new Collection()
+                    {
+                        CollectionID = 4
+                    }
+                }
 
             });
             _userVMs.Add(new UserVM()
@@ -94,7 +114,7 @@ namespace DataAccessFakes
                 Email = _users[2].Email,
                 Active = _users[2].Active,
                 Roles = new List<String>() { },
-                CollectionIDs = new List<int>() { }
+                Collections = new List<Collection>() { }
 
             });
 
@@ -313,16 +333,16 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IUserAccessor"/>  used for testing
         /// </summary>
-        public List<int> SelectCollectionIDsByUserID(int userID)
+        public List<Collection> SelectCollectionsByUserID(int userID)
         {
 
-            List<int> results = null;
+            List<Collection> results = null;
 
             foreach (UserVM userVM in _userVMs)
             {
                 if (userVM.UserID == userID)
                 {
-                    results = userVM.CollectionIDs;
+                    results = userVM.Collections;
                 }
             }
 

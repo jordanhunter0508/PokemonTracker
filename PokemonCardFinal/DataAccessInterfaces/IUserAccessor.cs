@@ -79,8 +79,8 @@ namespace DataAccessInterfaces
         /// Where the userID parameter matches one stored in the database.
         /// </summary>
         /// <param name="userID">Compared against the userID stored in the collection table</param>
-        /// <returns>Returns a list of int that are collectionIDs of a specific user</returns>
-        public List<int> SelectCollectionIDsByUserID(int userID);
+        /// <returns>Returns a list of Collections that are specific user</returns>
+        public List<Collection> SelectCollectionsByUserID(int userID);
 
     }
 }

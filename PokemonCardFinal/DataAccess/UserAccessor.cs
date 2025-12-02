@@ -423,17 +423,17 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IUserAccessor"/>. Access the database
-        /// using sp_select_collection_ids_by_user_id
+        /// using sp_select_collection_by_user_id
         /// </summary>
-        public List<int> SelectCollectionIDsByUserID(int userID)
+        public List<Collection> SelectCollectionsByUserID(int userID)
         {
-            List<int> results = new List<int>();
+            List<Collection> results = new List<Collection>();
 
             // Establish a connection
             SqlConnection conn = DBConnection.GetConnection();
 
             // Command text
-            string cmdText = "sp_select_collection_ids_by_user_id";
+            string cmdText = "sp_select_collection_by_user_id";
 
             // Create command object from the string and connection
             SqlCommand cmd = new SqlCommand(cmdText, conn);
@@ -461,7 +461,14 @@ namespace DataAccess
                     while (reader.Read())
                     {
                         // Add to results
-                        results.Add(reader.GetInt32(0));
+                        results.Add(new Collection
+                        {
+                            CollectionID = reader.GetInt32(0),
+                            UserID = reader.GetInt32(1),
+                            CollectionTypeID = reader.GetString(2),
+                            Name = reader.GetString(3),
+                            Description = reader.GetString(4)
+                        });
                     }
                 }
 

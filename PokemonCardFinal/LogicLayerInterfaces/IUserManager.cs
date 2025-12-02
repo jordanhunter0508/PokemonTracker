@@ -117,6 +117,6 @@ namespace LogicLayerInterfaces
         /// <param name="userID">Used to search the database for a matching userID in collection table</param>
         /// <returns>Returns a list of int that are collectionIDs of a specific user</returns>
         /// <exception cref="ApplicationException">Throws if there is an error connecting to the database</exception>
-        public List<int> GetCollectionIDsByUserID(int userID);
+        public List<Collection> GetCollectionsByUserID(int userID);
     }
 }

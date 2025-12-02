@@ -1304,15 +1304,16 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_collection_ids_by_user_id ***'
+PRINT '*** creating sp_select_collection_by_user_id ***'
 GO
-	CREATE PROCEDURE [sp_select_collection_ids_by_user_id]
+	CREATE PROCEDURE [sp_select_collection_by_user_id]
 	(
 		@UserID					[int]
 	)
 AS
 	BEGIN
-		SELECT	[Collection].[CollectionID]
+		SELECT	[Collection].[CollectionID],[Collection].[UserID],[Collection].[CollectionTypeID],
+				[Collection].[Name],[Collection].[Description]
 		FROM	[Collection]
 		WHERE	[Collection].[UserID] = @UserID;
 	END
