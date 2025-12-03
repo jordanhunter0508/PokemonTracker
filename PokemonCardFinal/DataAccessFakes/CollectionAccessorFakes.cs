@@ -40,6 +40,15 @@ namespace DataAccessFakes
             });
             _collections.Add(new Collection()
             {
+                CollectionID = 4,
+                UserID = 1,
+                CollectionTypeID = "type2",
+                Name = "test",
+                Description = "test description.",
+
+            });
+            _collections.Add(new Collection()
+            {
                 CollectionID = 3,
                 UserID = 2,
                 CollectionTypeID = "type2",
@@ -112,13 +121,13 @@ namespace DataAccessFakes
             });
 
             _collectionTypes = new List<CollectionType>();
-            _collectionTypes.Add(new CollectionType() 
+            _collectionTypes.Add(new CollectionType()
             {
                 CollectionTypeID = "type1",
                 Description = "Test collection type 1",
                 MaxSize = 100,
             });
-            _collectionTypes.Add(new CollectionType() 
+            _collectionTypes.Add(new CollectionType()
             {
                 CollectionTypeID = "type2",
                 Description = "Test collection type 2",
@@ -154,7 +163,7 @@ namespace DataAccessFakes
             foreach (var collection in _collectionVMs)
             {
                 if (collection.CollectionID == collectionID)
-                { 
+                {
                     results = collection.ElementTypeIDs;
                 }
             }
@@ -172,7 +181,7 @@ namespace DataAccessFakes
             foreach (var collectionType in _collectionTypes)
             {
                 if (collectionType.CollectionTypeID == collectionTypeID)
-                { 
+                {
                     result = collectionType.MaxSize;
                 }
             }
@@ -190,17 +199,45 @@ namespace DataAccessFakes
             foreach (var collection in _collections)
             {
                 if (collection.CollectionID == collectionID)
-                { 
+                {
                     result = collection;
                 }
             }
 
             return result;
         }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionAccessor"/> used for testing
+        /// </summary>
+        public Dictionary<int, Collection> SelectDecksByUserID(int userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionAccessor"/> used for testing
+        /// </summary>
+        public Dictionary<int, List<string>> SelectDeckElementsByUserID(int userID)
+        {
+            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
+
+            foreach (CollectionVM collection in _collectionVMs)
+            {
+                // type1 is used in place of deck in the stored procedure
+                if (collection.UserID == userID && collection.CollectionTypeID == "type1")
+                {
+                    results.Add(collection.CollectionID, collection.ElementTypeIDs);
+
+                }
+            }
+
+            return results;
+        }
     }
 
     internal class CollectionType
-    { 
+    {
         public string CollectionTypeID { get; set; }
         public string Description { get; set; }
         public int MaxSize { get; set; }

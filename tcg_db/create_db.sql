@@ -1364,3 +1364,34 @@ AS
 		WHERE	[Collection].[CollectionID] = @CollectionID;
 	END
 GO
+
+PRINT '*** creating sp_select_decks_by_user_id ***'
+GO
+	CREATE PROCEDURE [sp_select_decks_by_user_id]
+	(
+		@UserID				[int]
+	)
+AS
+	BEGIN
+		SELECT	[Collection].[CollectionID],[Collection].[UserID],[Collection].[CollectionTypeID],
+				[Collection].[Name],[Collection].[Description]
+		FROM	[Collection]
+		WHERE	[Collection].[UserID] = @UserID
+			AND	[Collection].[CollectionTypeID] = 'Deck';
+	END
+GO
+
+PRINT '*** creating sp_select_deck_elements_by_user_id ***'
+GO
+	CREATE PROCEDURE [sp_select_deck_elements_by_user_id]
+	(
+		@UserID		[int]
+	)
+AS
+	BEGIN
+		SELECT	[Collection].[CollectionID],[CollectionElement].[ElementTypeID]
+		FROM	[Collection] JOIN [CollectionElement]
+			ON	[Collection].[CollectionID] = [CollectionElement].[CollectionID]
+		WHERE	[Collection].[UserID] = @UserID;
+	END
+GO

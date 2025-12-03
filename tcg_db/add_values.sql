@@ -1043,6 +1043,7 @@ INSERT INTO [dbo].[Collection]
 	([UserID],[CollectionTypeID],[Name],[Description])
 VALUES
 	(10000,'user','My Cards','A list of all my cards.'),
+	(10000,'Deck','My First Deck','My first deck.'),
 	(10001,'user','My Cards','A list of all my cards.'),
 	(10002,'user','My Cards','A list of all my cards.'),
 	(10003,'user','My Cards','A list of all my cards.'),
@@ -1066,7 +1067,19 @@ INSERT INTO [dbo].[CollectionCard]
 VALUES
 	(1,1,1,1),
 	(2,1,2,1),
-	(13,1,1,1)
+	(13,1,1,1),
+	(1,2,1,1),
+	(21,2,1,1),
+	(12,2,4,1),
+	(22,2,3,1)
+GO
+
+PRINT '*** adding to Collection Element Table ***'
+GO
+INSERT INTO [dbo].[CollectionElement]
+	([[CollectionID],[ElementTypeID])
+VALUES
+	(2,"fire")
 GO
 
 

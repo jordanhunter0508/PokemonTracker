@@ -340,4 +340,38 @@ public class CollectionManagerTest
         // assert
         // do nothing
     }
+
+    [TestMethod]
+    public void TestGetDeckElementsByUserIDWithValidInput() 
+    {
+        // arrange
+        const int userID = 1;
+        const int keyCount = 2;
+        const int valueCount = 2;
+        Dictionary<int, List<string>> actual = new Dictionary<int, List<string>>();
+
+        // act
+        actual = _collectionManager.GetDeckElementsByUserID(userID);
+
+        // assert
+        Assert.AreEqual(keyCount, actual.Keys.Count);
+        Assert.AreEqual(valueCount, actual.Values.Count);
+    }
+
+    [TestMethod]
+    public void TestGetDeckElementsByUserIDWithInvalidInput() 
+    {
+        // arrange
+        const int userID = 999;
+        const int keyCount = 0;
+        const int valueCount = 0;
+        Dictionary<int, List<string>> actual = new Dictionary<int, List<string>>();
+
+        // act
+        actual = _collectionManager.GetDeckElementsByUserID(userID);
+
+        // assert
+        Assert.AreEqual(keyCount, actual.Keys.Count);
+        Assert.AreEqual(valueCount, actual.Values.Count);
+    }
 }

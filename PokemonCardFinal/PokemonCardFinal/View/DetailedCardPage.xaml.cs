@@ -24,8 +24,9 @@ namespace PokemonCardFinal.View
     public partial class DetailedCardPage : Page
     {
         CardVM _card;
-        SearchResultsPage _previousPage;
-        public DetailedCardPage(CardVM card, SearchResultsPage previousPage)
+        Page _previousPage;
+
+        public DetailedCardPage(CardVM card, Page previousPage)
         {
             InitializeComponent();
             _card = card;
@@ -34,6 +35,14 @@ namespace PokemonCardFinal.View
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            // Used just incase a blank card is inserted
+            if (_card == null || _card.Name == null)
+            {
+                MessageBox.Show("Failed to load card details.");
+                // Hide all
+                return;
+            }
+
             DisplayCardInfo();
             DisplayCardStats();
             DisplayAltArt();

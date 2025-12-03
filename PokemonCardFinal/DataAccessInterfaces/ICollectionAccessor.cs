@@ -37,5 +37,19 @@ namespace DataAccessInterfaces
         /// <param name="collectionID">Used to search the database for the collection</param>
         /// <returns>Returns a Collection from the database where the collectionIDs match</returns>
         public Collection SelectCollectionByCollectionID(int collectionID);
+
+        /// <summary>
+        /// Request all fields from the Collection table
+        /// </summary>
+        /// <param name="userID">Gets the rows with the matching userID in the collection table</param>
+        /// <returns>Returns a Dictionary where the collectionID is the key and the Collection is the value</returns>
+        public Dictionary<int, Collection> SelectDecksByUserID(int userID);
+
+        /// <summary>
+        /// Request ElementTypeID from the CollectionElement table
+        /// </summary>
+        /// <param name="userID">Gets the rows with the matching userID in the collection table</param>
+        /// <returns>Returns a Dictionary where the collectionID is the key and the ElementTypeID is the value</returns>
+        public Dictionary<int, List<string>> SelectDeckElementsByUserID(int userID);
     }
 }

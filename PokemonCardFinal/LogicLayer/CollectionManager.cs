@@ -199,11 +199,40 @@ namespace LogicLayer
                     BoosterID = collectionCard.Card.BoosterID,
                     BoosterNumber = collectionCard.Card.BoosterNumber,
                     Rarity = collectionCard.Card.Rarity,
+                    Card = collectionCard.Card,
                     CollectionCardID = collectionCard.CollectionCardID,
                     CollectionID = collectionCard.CollectionCardID,
                     Quantity = collectionCard.Quantity,
                     Owned = collectionCard.Owned,
                 });
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionManager"/>
+        /// </summary>
+        public List<Collection> GetDecksByUserID(int userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionManager"/>
+        /// </summary>
+        public Dictionary<int, List<string>> GetDeckElementsByUserID(int userID)
+        {
+            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
+
+            try
+            {
+                results = _collectionAccessor.SelectDeckElementsByUserID(userID);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get deck elements.", ex);
             }
 
             return results;

@@ -213,5 +213,61 @@ namespace DataAccess
 
             return result;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/>. Access the database
+        /// using sp_select_decks_by_user_id
+        /// </summary>
+        public Dictionary<int, Collection> SelectDecksByUserID(int userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/>. Access the database
+        /// using sp_select_deck_elements_by_user_id
+        /// </summary>
+        public Dictionary<int, List<string>> SelectDeckElementsByUserID(int userID)
+        {
+            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_deck_elements_by_user_id";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@UserID"].Value = userID;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        if (!results.ContainsKey(reader.GetInt32(0)))
+                        { 
+                            results.Add(userID, new List<string>());
+                        }
+                        results[reader.GetInt32(0)].Add(reader.GetString(1));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
     }
 }

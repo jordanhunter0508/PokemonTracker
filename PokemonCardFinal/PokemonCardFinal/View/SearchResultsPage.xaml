@@ -34,7 +34,7 @@
 
         <!--Search Results-->
         <Grid x:Name="grdData" Grid.Row="1" Margin="0 10">
-            <TextBlock x:Name="lblNoResult" Text="There are not cards with the name " Visibility="Collapsed"/>
+            <TextBlock x:Name="lblNoResult" Text="There are no cards with the name." Visibility="Collapsed"/>
 
             <DataGrid x:Name="datSearch" SelectionMode="Single" IsReadOnly="True" AutoGenerateColumns="False"
                       HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" MouseDoubleClick="datSearch_MouseDoubleClick">

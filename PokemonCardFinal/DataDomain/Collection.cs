@@ -20,6 +20,5 @@ namespace DataDomain
         public List<CollectionCard> Cards { get; set; }
         public List<string> ElementTypeIDs { get; set; }
         public int MaxSize { get; set; }
-
     }
 }

@@ -71,5 +71,21 @@ namespace LogicLayerInterfaces
         /// <returns>Returns a list of CollectionCardVMs from the original CollectionCard list</returns>
         /// <exception cref="ApplicationException">Throws if there was an error converting the card</exception>
         public List<CollectionCardVM> ConvertCollectionCardToVM(List<CollectionCard> collectionCards);
+
+        /// <summary>
+        /// Calls the <see href="SelectDecksByUserID(int)"/> method to get<br/>
+        /// a dictionary of all Collections a user has in the database.
+        /// </summary>
+        /// <returns>Returns a list of decks the user has.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public List<Collection> GetDecksByUserID(int userID);
+
+        /// <summary>
+        /// Calls the <see href="SelectDeckElementsByUserID(int)"/> method to get<br/>
+        /// a dictionary of ElementTypeIDs that relate to a collection.
+        /// </summary>
+        /// <returns>Returns a Dictionary where the collectionID is the key and the ElementTypeID is the value</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public Dictionary<int, List<string>> GetDeckElementsByUserID(int userID);
     }
 }
