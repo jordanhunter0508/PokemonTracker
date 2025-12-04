@@ -41,7 +41,7 @@ namespace PokemonCardFinal.View.Profile
             _isDeckMode = false;
         }
 
-        public UserCardsPage(ICollectionManager collectionManager, CollectionVM collectionVM , UserVM accessToken)
+        public UserCardsPage(ICollectionManager collectionManager, CollectionVM collectionVM, UserVM accessToken)
         {
             InitializeComponent();
             _collectionManager = collectionManager;
@@ -96,7 +96,39 @@ namespace PokemonCardFinal.View.Profile
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-            // remove the card from the collection
+            string name = _selectedCard.Name;
+
+            // Pop up window to confirm if the user wants to delete the deck
+            MessageBoxResult conformationWindow = MessageBox.Show
+            (
+                "Are you sure you want to delete " + name + " from " + _collectionVM.Name + ".",
+                "Confirm Delete",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning
+            );
+
+            if (conformationWindow != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                if (_collectionManager.DeleteCollectionCard(_selectedCard.CollectionCardID))
+                {
+                    MessageBox.Show("The card " + name + " was deleted.");
+                    LoadCards();
+                }
+                else
+                {
+                    MessageBox.Show("The card " + name + " could not be deleted.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+            }
         }
 
         private void LoadCards()
