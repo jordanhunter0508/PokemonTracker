@@ -9,6 +9,15 @@
       Title="UserDeckPage" Loaded="Page_Loaded">
 
     <Grid>
-        <DataGrid x:Name="datDeck"></DataGrid>
+        <DataGrid x:Name="datDeck" SelectionMode="Single" IsReadOnly="True" SelectionChanged="datDeck_SelectionChanged" AutoGenerateColumns="False"
+          HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" MouseDoubleClick="datDeck_MouseDoubleClick" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Deck Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Current Size" Binding="{Binding CurrentSize}"/>
+                <DataGridTextColumn Header="Max Size" Binding="{Binding MaxSize}"/>
+                <DataGridTextColumn Header="Deck Elements" Binding="{Binding Elements}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

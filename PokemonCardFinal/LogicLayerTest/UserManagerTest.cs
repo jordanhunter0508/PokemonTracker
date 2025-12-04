@@ -505,4 +505,51 @@ public class UserManagerTest
         // assert
         // do nothing
     }
+
+    [TestMethod]
+    public void TestGetUserDecksWithValidInput() 
+    {
+        // arrange
+        const int userID = 1;
+        const int count = 1;
+        List<Collection> userCollection = new List<Collection>();
+        List<CollectionVM> actual = null;
+
+        // act
+        userCollection = _userManager.GetCollectionsByUserID(userID);
+        actual = _userManager.GetUserDecks(userCollection);
+
+        // assert
+        Assert.AreEqual(count, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestGetUserDecksReturnsBlankArray() 
+    {
+        // arrange
+        const int count = 0;
+        List<Collection> userCollection = new List<Collection>();
+        List<CollectionVM> actual = null;
+
+        // act
+        actual = _userManager.GetUserDecks(userCollection);
+
+        // assert
+        Assert.AreEqual(count, actual.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException (typeof(ArgumentNullException))]
+    public void TestGetUserDecksThrowsArgumentNullException() 
+    {
+        // arrange
+        const int userID = 1;
+        List<CollectionVM> actual = null;
+
+        // act
+        actual = _userManager.GetUserDecks(null);
+
+        // assert
+        // do nothing
+    }
 }

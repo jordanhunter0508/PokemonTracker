@@ -25,8 +25,6 @@ namespace PokemonCardFinal.View
     /// </summary>
     public partial class SearchResultsPage : Page
     {
-        DetailedCardPage _detailedCardPage;
-
         ICardManager _cardManager;
         List<CardVM> _cards;
         List<CardVM> _filteredCards;
@@ -38,7 +36,6 @@ namespace PokemonCardFinal.View
             InitializeComponent();
             _cardManager = new CardManager();
             _isSearchMode = false;
-            _detailedCardPage = new DetailedCardPage(new CardVM(),this);
         }
 
         public SearchResultsPage(string search)
@@ -47,7 +44,6 @@ namespace PokemonCardFinal.View
             _cardManager = new CardManager();
             _search = search;
             _isSearchMode = true;
-            _detailedCardPage = new DetailedCardPage(new CardVM(), this);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -215,10 +211,15 @@ namespace PokemonCardFinal.View
 
         private void datSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (datSearch.SelectedItem == null)
+            {
+                return;
+            }
+
             // load the detailed page
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
             CardVM selectedCard = datSearch.SelectedItem as CardVM;
-            mainWindow.frmMain.Navigate(new DetailedCardPage(selectedCard,this));
+            mainWindow.frmMain.Navigate(new DetailedCardPage(selectedCard));
         }
 
     }

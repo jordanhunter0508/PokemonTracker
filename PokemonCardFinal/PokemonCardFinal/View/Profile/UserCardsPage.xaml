@@ -20,10 +20,13 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition/>
+                <ColumnDefinition Width="120"/>
             </Grid.ColumnDefinitions>
             
             <Label x:Name="lblName" Grid.Column="0"/>
             <TextBlock x:Name="txtDescription" Grid.Column="1" TextWrapping="Wrap"/>
+            <Button x:Name="btnDeleteDeck" Content="Delete Deck" Width="100" Height="35" Grid.Column="2" Visibility="Hidden"
+                Margin="10 0" HorizontalAlignment="Right" Click="btnDeleteDeck_Click"/>
         </Grid>
         
         <!--Data grid for cards in the collection-->
@@ -52,8 +55,10 @@
         
         <!--Used to remove a card from the collection-->
         <Grid x:Name="grdButton" Grid.Row="2">
-            <Button x:Name="btnRemove" Content="Remove" Width="100" Height="35"
+            <Button x:Name="btnRemove" Content="Remove" Width="100" Height="35" Margin="10 0"
                 HorizontalAlignment="Right" Click="btnRemove_Click"/>
+            <Button x:Name="btnGoBack" Content="Go Back" Width="100" Height="35" Margin="140 0" Visibility="Hidden"
+                HorizontalAlignment="Right" Click="btnGoBack_Click"/>
         </Grid>
         
     </Grid>

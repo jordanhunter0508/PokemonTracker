@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -205,34 +206,6 @@ namespace DataAccessFakes
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICollectionAccessor"/> used for testing
-        /// </summary>
-        public Dictionary<int, Collection> SelectDecksByUserID(int userID)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICollectionAccessor"/> used for testing
-        /// </summary>
-        public Dictionary<int, List<string>> SelectDeckElementsByUserID(int userID)
-        {
-            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
-
-            foreach (CollectionVM collection in _collectionVMs)
-            {
-                // type1 is used in place of deck in the stored procedure
-                if (collection.UserID == userID && collection.CollectionTypeID == "type1")
-                {
-                    results.Add(collection.CollectionID, collection.ElementTypeIDs);
-
-                }
-            }
-
-            return results;
         }
     }
 

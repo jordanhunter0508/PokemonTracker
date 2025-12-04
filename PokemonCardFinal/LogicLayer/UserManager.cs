@@ -281,5 +281,38 @@ namespace LogicLayer
 
             return results;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IUserManager"/>
+        /// </summary>
+        public List<CollectionVM> GetUserDecks(List<Collection> collections)
+        {
+            List<CollectionVM> results = new List<CollectionVM>();
+
+            ICollectionManager collectionManager = new CollectionManager();
+
+            if (collections == null)
+            {
+                throw new ArgumentNullException("Failed to get user decks. Collections was null.");
+            }
+
+            try
+            {
+                foreach (Collection collection in collections)
+                {
+                    if (collection.CollectionTypeID.ToLower() == "deck")
+                    {
+                        results.Add(collectionManager.GetCollectionVMByCollectionID(collection.CollectionID));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get user decks.", ex);
+            }
+
+            return results;
+        }
     }
 }

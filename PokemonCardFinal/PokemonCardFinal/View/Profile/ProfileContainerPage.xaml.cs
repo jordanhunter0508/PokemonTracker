@@ -70,7 +70,7 @@ namespace PokemonCardFinal.View.Profile
                 {
                     SetAllLoaded(false);
                     _isUserDeckPage = true;
-                    frmUserDeck.Navigate(new UserDeckPage(_collectionManager,_accessToken));
+                    frmUserDeck.Navigate(new UserDeckPage(_userManager, _accessToken, this));
                 }
                 else if (tabController.SelectedItem == tabFavorite && !_isUserFavoritePage)
                 {

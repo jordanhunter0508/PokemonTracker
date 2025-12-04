@@ -1077,7 +1077,7 @@ GO
 PRINT '*** adding to Collection Element Table ***'
 GO
 INSERT INTO [dbo].[CollectionElement]
-	([[CollectionID],[ElementTypeID])
+	([CollectionID],[ElementTypeID])
 VALUES
 	(2,"fire")
 GO

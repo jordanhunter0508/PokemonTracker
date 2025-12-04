@@ -118,5 +118,13 @@ namespace LogicLayerInterfaces
         /// <returns>Returns a list of int that are collectionIDs of a specific user</returns>
         /// <exception cref="ApplicationException">Throws if there is an error connecting to the database</exception>
         public List<Collection> GetCollectionsByUserID(int userID);
+
+        /// <summary>
+        /// Creates a List of CollectionVMs that are the decks related to the user.
+        /// </summary>
+        /// <param name="collections">List of user collections</param>
+        /// <returns>Returns a list of decks the user has.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public List<CollectionVM> GetUserDecks(List<Collection> collections);
     }
 }

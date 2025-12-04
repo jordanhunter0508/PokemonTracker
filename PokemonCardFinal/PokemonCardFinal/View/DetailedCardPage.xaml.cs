@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using PokemonCardFinal.View.Profile;
 
 namespace PokemonCardFinal.View
 {
@@ -23,14 +24,14 @@ namespace PokemonCardFinal.View
     /// </summary>
     public partial class DetailedCardPage : Page
     {
-        CardVM _card;
-        Page _previousPage;
+        public bool IsCollectionView = false;
 
-        public DetailedCardPage(CardVM card, Page previousPage)
+        CardVM _card;
+
+        public DetailedCardPage(CardVM card)
         {
             InitializeComponent();
             _card = card;
-            _previousPage = previousPage;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -41,6 +42,11 @@ namespace PokemonCardFinal.View
                 MessageBox.Show("Failed to load card details.");
                 // Hide all
                 return;
+            }
+
+            if (IsCollectionView)
+            { 
+                btnAddCard.Visibility = Visibility.Collapsed;
             }
 
             DisplayCardInfo();
@@ -56,7 +62,10 @@ namespace PokemonCardFinal.View
             try
             {
                 string series = boosterManager.GetBoosterByBoosterID(_card.BoosterID).Series;
+                Artist artist = new ArtistManager().GetArtistByArtistID(_card.ArtistID);
+
                 lblCardName.Content = _card.Name;
+                lblArtist.Content = "Artist: " + artist.GivenName + ", " + artist.Surname;
                 lblRarity.Content = "Rarity: " + _card.Rarity;
                 lblBooster.Content = series + ": " + _card.BoosterID + ", " + _card.BoosterNumber;
             }
@@ -166,9 +175,13 @@ namespace PokemonCardFinal.View
 
         private void btnGoBack_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow main = Window.GetWindow(this) as MainWindow;
-            main.frmMain.Navigate(_previousPage);
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+            mainWindow.frmMain.GoBack();
         }
 
+        private void btnAddCard_Click(object sender, RoutedEventArgs e)
+        {
+            // save the card to user cards
+        }
     }
 }

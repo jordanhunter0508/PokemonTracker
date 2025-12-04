@@ -77,11 +77,13 @@ namespace DataAccessFakes
                 {
                     new Collection()
                     { 
-                        CollectionID = 1
+                        CollectionID = 1,
+                        CollectionTypeID = "deck",
                     },
                     new Collection()
                     { 
-                        CollectionID = 2
+                        CollectionID = 2,
+                        CollectionTypeID = "user",
                     }
                 }
             });

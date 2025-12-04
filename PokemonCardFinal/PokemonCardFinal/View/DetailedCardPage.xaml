@@ -17,7 +17,7 @@
         <!--Card Text Grid-->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="125"/>
+                <RowDefinition Height="155"/>
                 <RowDefinition Height="175"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -29,11 +29,13 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <Label x:Name="lblCardInfo" Grid.Row="0" FontSize="18" Content="Card Info"/>
+                <Label x:Name="lblArtist" Grid.Row="2" Margin="10 0" Content="Artist: "/>
                 <Label x:Name="lblCardName" Grid.Row="1" Margin="10 0" Content="Card Name"/>
-                <Label x:Name="lblRarity" Grid.Row="2" Margin="10 0" Content="Rarity"/>
-                <Label x:Name="lblBooster" Grid.Row="3" Margin="10 0" Content="Booster Series: BoosterID, BoosterNumber"/>
+                <Label x:Name="lblRarity" Grid.Row="3" Margin="10 0" Content="Rarity"/>
+                <Label x:Name="lblBooster" Grid.Row="4" Margin="10 0" Content="Booster Series: BoosterID, BoosterNumber"/>
             </Grid> <!--End of Card Info Grid-->
             
 
@@ -68,7 +70,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Label x:Name="lblAltArt" Grid.Row="0" FontSize="18"  Content="Alternate Arts"/>
-                <ListView x:Name="lstAltArt" Grid.Row="1" Width="200" Height="100" Margin="15 10"
+                <ListView x:Name="lstAltArt" Grid.Row="1" Width="200" Height="75" Margin="15 10"
                         VerticalAlignment="Top" HorizontalAlignment="Left" IsHitTestVisible="False"/>
             </Grid> <!--End of Alternate Art Grid-->
         </Grid>
@@ -117,9 +119,17 @@
                            TextWrapping="Wrap"/>
 
             </Grid>
-            
-            <Button x:Name="btnGoBack" Grid.Row="5" Content="Go Back" Width="100" Height="50" Margin=" 10"
-                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btnGoBack_Click"/>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="btnAddCard" Grid.Column="0" Content="Add to Collection" Width="100" Height="50" Margin=" 10"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btnAddCard_Click" />
+                <Button x:Name="btnGoBack" Grid.Column="1" Content="Go Back" Width="100" Height="50" Margin=" 10"
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btnGoBack_Click"/>
+            </Grid>
         </Grid>
         
     </Grid>

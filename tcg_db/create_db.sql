@@ -241,7 +241,7 @@ CREATE TABLE [dbo].[CollectionElement]
 	[ElementTypeID]			[nvarchar](15)		NOT NULL,
 	
 	CONSTRAINT [pk_collectiontype_collectionelementid] PRIMARY KEY ([CollectionID],[ElementTypeID]),
-	CONSTRAINT [fk_collectiontype_collectionid] FOREIGN KEY ([CollectionID]) REFERENCES [Collection]([CollectionID]),
+	CONSTRAINT [fk_collectiontype_collectionid] FOREIGN KEY ([CollectionID]) REFERENCES [Collection]([CollectionID]) ON DELETE CASCADE,
 	CONSTRAINT [fk_collectiontype_elementtypeid] FOREIGN KEY ([ElementTypeID]) REFERENCES [ElementType]([ElementTypeID])
 )
 GO
@@ -384,9 +384,9 @@ CREATE TABLE [dbo].[CollectionCard]
 	[Owned]					[bit]				NOT NULL	DEFAULT 0,
 	
 	CONSTRAINT [pk_collectioncard_collectioncardid] PRIMARY KEY ([CollectionCardID]),
-	CONSTRAINT [fk_collectioncard_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]),
-	CONSTRAINT [fk_collectioncard_collectionid] FOREIGN KEY ([CollectionID]) REFERENCES [Collection]([CollectionID]),
-	CONSTRAINT [1k_collectioncard_cardid_collectionid] UNIQUE ([PokemonCardID],[CollectionID])
+	CONSTRAINT [fk_collectioncard_pokemoncardid] FOREIGN KEY ([PokemonCardID]) REFERENCES [PokemonCard]([PokemonCardID]) ON DELETE CASCADE,
+	CONSTRAINT [fk_collectioncard_collectionid] FOREIGN KEY ([CollectionID]) REFERENCES [Collection]([CollectionID]) ON DELETE CASCADE,
+	CONSTRAINT [ak_collectioncard_cardid_collectionid] UNIQUE ([PokemonCardID],[CollectionID])
 )
 GO
 
@@ -1365,33 +1365,30 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_decks_by_user_id ***'
+PRINT '*** creating sp_delete_collection_card ***'
 GO
-	CREATE PROCEDURE [sp_select_decks_by_user_id]
+	CREATE PROCEDURE [sp_delete_collection_card]
 	(
-		@UserID				[int]
+		@CollectionCardID	[int]
 	)
 AS
 	BEGIN
-		SELECT	[Collection].[CollectionID],[Collection].[UserID],[Collection].[CollectionTypeID],
-				[Collection].[Name],[Collection].[Description]
-		FROM	[Collection]
-		WHERE	[Collection].[UserID] = @UserID
-			AND	[Collection].[CollectionTypeID] = 'Deck';
+		DELETE	[dbo].[CollectionCard]
+		WHERE	[CollectionCard].[CollectionCardID] = @CollectionCardID
+		RETURN 	@@ROWCOUNT;
 	END
 GO
 
-PRINT '*** creating sp_select_deck_elements_by_user_id ***'
+PRINT '*** creating sp_delete_collection ***'
 GO
-	CREATE PROCEDURE [sp_select_deck_elements_by_user_id]
+	CREATE PROCEDURE [sp_delete_collection]
 	(
-		@UserID		[int]
+		@CollectionID	[int]
 	)
 AS
 	BEGIN
-		SELECT	[Collection].[CollectionID],[CollectionElement].[ElementTypeID]
-		FROM	[Collection] JOIN [CollectionElement]
-			ON	[Collection].[CollectionID] = [CollectionElement].[CollectionID]
-		WHERE	[Collection].[UserID] = @UserID;
+		DELETE	[dbo].[Collection]
+		WHERE	[Collection].[CollectionID] = @CollectionID
+		RETURN 	@@ROWCOUNT;
 	END
 GO
