@@ -39,7 +39,7 @@ namespace DataAccess
                 {
                     while (reader.Read())
                     {
-                        results.Add(new CollectionCard() 
+                        results.Add(new CollectionCard()
                         {
                             Card = new Card()
                             {
@@ -149,7 +149,7 @@ namespace DataAccess
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
-                { 
+                {
                     reader.Read();
                     count = reader.GetInt32(0);
                 }
@@ -193,7 +193,7 @@ namespace DataAccess
                 {
                     reader.Read();
                     result = new Collection()
-                    { 
+                    {
                         CollectionID = reader.GetInt32(0),
                         UserID = reader.GetInt32(1),
                         CollectionTypeID = reader.GetString(2),
@@ -211,6 +211,78 @@ namespace DataAccess
                 conn.Close();
             }
             return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/>. Access the database
+        /// using sp_delete_collection
+        /// </summary>
+        public int DeleteCollection(int collectionID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_delete_collection";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@CollectionID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@CollectionID"].Value = collectionID;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            { 
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/>. Access the database
+        /// using sp_delete_collection_card
+        /// </summary>
+        public int DeleteCollectionCard(int collectionCardID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_delete_collection_card";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@CollectionCardID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@CollectionCardID"].Value = collectionCardID;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
         }
     }
 }

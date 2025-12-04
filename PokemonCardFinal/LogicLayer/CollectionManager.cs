@@ -209,5 +209,45 @@ namespace LogicLayer
 
             return results;
         }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionManager"/>
+        /// </summary>
+        public bool DeleteCollection(int collectionID)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                isDeleted = (1 == _collectionAccessor.DeleteCollection(collectionID));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to delete collection", ex);
+            }
+
+            return isDeleted;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionManager"/>
+        /// </summary>
+        public bool DeleteCollectionCard(int collectionCardID)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                isDeleted = (1 == _collectionAccessor.DeleteCollectionCard(collectionCardID));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to delete collection", ex);
+            }
+
+            return isDeleted;
+        }
     }
 }

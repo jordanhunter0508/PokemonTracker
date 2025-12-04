@@ -71,5 +71,23 @@ namespace LogicLayerInterfaces
         /// <returns>Returns a list of CollectionCardVMs from the original CollectionCard list</returns>
         /// <exception cref="ApplicationException">Throws if there was an error converting the card</exception>
         public List<CollectionCardVM> ConvertCollectionCardToVM(List<CollectionCard> collectionCards);
+
+        /// <summary>
+        /// Passes parameters to <see href="DeleteCollection(int)"/><br/>
+        /// Then returns true if the record was deleted successfully
+        /// </summary>
+        /// <param name="collectionID">Used to find the Collection</param>
+        /// <returns>Returns true if the Collection and its related rows were deleted successfully</returns>
+        /// <exception cref="ApplicationException">Throws if there was a connection error</exception>
+        public bool DeleteCollection(int collectionID);
+
+        /// <summary>
+        /// Passes parameters to <see href="DeleteCollectionCard(int)"/><br/>
+        /// Then returns true if the record was deleted successfully
+        /// </summary>
+        /// <param name="collectionCardID">Used to find the CollectionCard</param>
+        /// <returns>Returns true if the CollectionCard was deleted successfully</returns>
+        /// <exception cref="ApplicationException">Throws if there was a connection error</exception>
+        public bool DeleteCollectionCard(int collectionCardID);
     }
 }

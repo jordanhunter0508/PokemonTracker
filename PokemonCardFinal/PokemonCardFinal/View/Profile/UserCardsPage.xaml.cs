@@ -28,6 +28,7 @@ namespace PokemonCardFinal.View.Profile
         ICollectionManager _collectionManager;
         CollectionVM _collectionVM;
         CollectionCardVM _selectedCard;
+        UserVM _accessToken;
         int _collectionID;
 
         bool _isDeckMode;
@@ -40,11 +41,12 @@ namespace PokemonCardFinal.View.Profile
             _isDeckMode = false;
         }
 
-        public UserCardsPage(ICollectionManager collectionManager, CollectionVM collectionVM)
+        public UserCardsPage(ICollectionManager collectionManager, CollectionVM collectionVM , UserVM accessToken)
         {
             InitializeComponent();
             _collectionManager = collectionManager;
             _collectionVM = collectionVM;
+            _accessToken = accessToken;
             _isDeckMode = true;
         }
 
@@ -101,17 +103,10 @@ namespace PokemonCardFinal.View.Profile
         {
             try
             {
-                // the starting value in the database is 1
-                // the only way for 0 is if it wasn't set.
-                if (_collectionID == 0)
-                {
-                    _collectionVM = _collectionManager.GetCollectionVMByCollectionID(_collectionVM.CollectionID);
-                }
-                else
+                if (!_isDeckMode)
                 {
                     _collectionVM = _collectionManager.GetCollectionVMByCollectionID(_collectionID);
                 }
-
 
                 List<CollectionCardVM> collectionCardVM = _collectionManager.ConvertCollectionCardToVM(_collectionVM.Cards);
 
@@ -140,16 +135,80 @@ namespace PokemonCardFinal.View.Profile
         {
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
             mainWindow.frmMain.GoBack();
-
-            //_containerPage.Loaded += (s, args) =>
-            //{ 
-            //    _containerPage.frmUserDeck.Navigate(_previousDeck);
-            //};
         }
 
         private void btnDeleteDeck_Click(object sender, RoutedEventArgs e)
         {
-            // remove deck from user then return them to the UserDeckPage
+            if (!_isDeckMode)
+            {
+                return;
+            }
+
+            string name = _collectionVM.Name;
+
+            // Pop up window to confirm if the user wants to delete the deck
+            MessageBoxResult conformationWindow = MessageBox.Show
+            (
+                "Are you sure you want to delete " + name + ".",
+                "Confirm Delete",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning
+            );
+
+            if (conformationWindow != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+
+            try
+            {
+                if (_collectionManager.DeleteCollection(_collectionVM.CollectionID))
+                {
+                    RemoveCollectionFromUser();
+                    MessageBox.Show("The collection " + name + " was deleted.");
+                    LoadUserDeckPage();
+                }
+                else
+                {
+                    MessageBox.Show("The collection " + name + " could not be deleted.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+            }
+        }
+
+        private void RemoveCollectionFromUser()
+        {
+            int index = -1;
+            for (int i = 0; i < _accessToken.Collections.Count; i++)
+            {
+                if (_accessToken.Collections[i].CollectionID == _collectionVM.CollectionID)
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index != -1)
+            {
+                _accessToken.Collections.RemoveAt(index);
+            }
+        }
+
+        private void LoadUserDeckPage()
+        {
+            MainWindow mainWindow = MainWindow.GetWindow(this) as MainWindow;
+            ProfileContainerPage containerPage = new ProfileContainerPage(_accessToken, new UserManager());
+            mainWindow.frmMain.Navigate(containerPage);
+            containerPage.Loaded += (s, args) =>
+            {
+                containerPage.tabController.SelectedItem = containerPage.tabUserDeck;
+                containerPage.frmUserDeck.Navigate(new UserDeckPage(new UserManager(), _accessToken));
+            };
         }
     }
 }

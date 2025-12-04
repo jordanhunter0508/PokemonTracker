@@ -9,6 +9,13 @@
       Title="UserDeckPage" Loaded="Page_Loaded">
 
     <Grid>
+        <Grid x:Name="grdEmpty" Visibility="Collapsed">
+            <TextBlock FontSize="16" Margin="10"
+            Text="You don't have any decks created."/>
+            <TextBlock FontSize="16" Margin="10 50"
+            Text="You can create a deck by adding a card to a collection."/>
+        </Grid>
+        
         <DataGrid x:Name="datDeck" SelectionMode="Single" IsReadOnly="True" SelectionChanged="datDeck_SelectionChanged" AutoGenerateColumns="False"
           HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" MouseDoubleClick="datDeck_MouseDoubleClick" >
             <DataGrid.Columns>

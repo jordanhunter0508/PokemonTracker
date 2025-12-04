@@ -28,14 +28,12 @@ namespace PokemonCardFinal.View.Profile
         UserVM _accessToken;
         List<CollectionVM> _decks;
         CollectionVM _selectedCollection;
-        ProfileContainerPage _containerPage;
 
-        public UserDeckPage(IUserManager userManager, UserVM accessToken, ProfileContainerPage containerPage)
+        public UserDeckPage(IUserManager userManager, UserVM accessToken)
         {
             InitializeComponent();
             _userManager = userManager;
             _accessToken = accessToken;
-            _containerPage = containerPage;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -48,6 +46,14 @@ namespace PokemonCardFinal.View.Profile
             try
             {
                 _decks = _userManager.GetUserDecks(_accessToken.Collections);
+
+                if (_decks.Count == 0)
+                {
+                    datDeck.Visibility = Visibility.Collapsed;
+                    grdEmpty.Visibility = Visibility.Visible;
+                    return;
+                }
+
                 datDeck.ItemsSource = _decks;
             }
             catch (Exception ex)
@@ -66,7 +72,6 @@ namespace PokemonCardFinal.View.Profile
             
             try
             {
-                Debug.WriteLine("From UserDeckPage collectionID: " + _selectedCollection.CollectionID.ToString());
                 MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
                 ProfileContainerPage containerPage = new ProfileContainerPage(_accessToken, _userManager);
                 mainWindow.frmMain.Navigate(containerPage);
@@ -76,7 +81,7 @@ namespace PokemonCardFinal.View.Profile
                     containerPage.tabController.SelectedItem = containerPage.tabUserDeck;
                     containerPage.frmUserDeck.Navigate
                     (
-                        new UserCardsPage(new CollectionManager(), _selectedCollection)
+                        new UserCardsPage(new CollectionManager(), _selectedCollection, _accessToken)
                     );
                 };
             }

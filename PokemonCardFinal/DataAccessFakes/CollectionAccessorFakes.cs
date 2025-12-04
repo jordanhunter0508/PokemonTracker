@@ -207,6 +207,60 @@ namespace DataAccessFakes
 
             return result;
         }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionAccessor"/> used for testing
+        /// </summary>
+        public int DeleteCollection(int collectionID)
+        {
+            int count = 0;
+            Collection deletedCollection = null;
+
+            foreach (var collection in _collections)
+            {
+                if (collection.CollectionID == collectionID)
+                { 
+                    deletedCollection = collection;
+                }
+            }
+
+            if (deletedCollection != null)
+            { 
+                _collections.Remove(deletedCollection);
+                count = 1;
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionAccessor"/> used for testing
+        /// </summary>
+        public int DeleteCollectionCard(int collectionCardID)
+        {
+            int count = 0;
+            CollectionCard deletedCard = null;
+            int index = -1;
+
+            foreach (var collectionVM in _collectionVMs)
+            {
+                foreach (var card in collectionVM.Cards)
+                {
+                    if (card.CollectionCardID == collectionCardID)
+                    { 
+                        deletedCard = card;
+                    }
+                }
+            }
+
+            if (deletedCard != null || index > -1)
+            {
+                _collectionVMs[0].Cards.Remove(deletedCard);
+                count = 1;
+            }
+
+            return count;
+        }
     }
 
     internal class CollectionType

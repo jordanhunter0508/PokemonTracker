@@ -37,5 +37,20 @@ namespace DataAccessInterfaces
         /// <param name="collectionID">Used to search the database for the collection</param>
         /// <returns>Returns a Collection from the database where the collectionIDs match</returns>
         public Collection SelectCollectionByCollectionID(int collectionID);
+
+        /// <summary>
+        /// Deletes the row from the database where collectionID matches on in the table.<br/>
+        /// Also deletes the rows from CollectionCard, and CollectionElement
+        /// </summary>
+        /// <param name="collectionID">CollectionID of the row to delete.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int DeleteCollection(int collectionID);
+
+        /// <summary>
+        /// Deletes the row from the database where CollectionCardID matches on in the table.<br/>
+        /// </summary>
+        /// <param name="collectionCardID">CollectionCardID of the row to delete.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int DeleteCollectionCard(int collectionCardID);
     }
 }

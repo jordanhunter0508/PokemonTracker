@@ -340,5 +340,64 @@ public class CollectionManagerTest
         // assert
         // do nothing
     }
+
+    [TestMethod]
+    public void TestDeleteCollectionReturnsTrueWithValidID()
+    {
+        // arrange
+        const int collectionID = 1;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.DeleteCollection(collectionID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeleteCollectionReturnsFalseWithInvalidID()
+    {
+        // arrange
+        const int collectionID = 999;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _collectionManager.DeleteCollection(collectionID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeleteCollectionCardReturnsTrueWithValidID()
+    {
+        // arrange
+        const int collectionID = 1;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.DeleteCollectionCard(collectionID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeleteCollectionCardReturnsFalseWithInvalidID()
+    {
+        // arrange
+        const int collectionID = 999;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _collectionManager.DeleteCollectionCard(collectionID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
 }
-// null, blank, valid
