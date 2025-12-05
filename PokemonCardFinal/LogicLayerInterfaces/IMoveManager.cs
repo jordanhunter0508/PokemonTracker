@@ -75,7 +75,7 @@ namespace LogicLayerInterfaces
         /// <param name="move">New Move object to be added to the database.</param>
         /// <returns>Returns true if the Move was created successfully.</returns>
         /// <exception cref="ApplicationException">Throws if the moveID is already used</exception>
-        public bool AddMove(Move move);
+        public int AddMove(Move move);
 
         /// <summary>
         /// Passes parameters to <see href="InsertMoveCost()"/> Then returns true

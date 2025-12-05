@@ -15,7 +15,7 @@ using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
 
-namespace PokemonCardFinal
+namespace PokemonCardFinal.View
 {
     /// <summary>
     /// Interaction logic for AddCollectionCardWindow.xaml

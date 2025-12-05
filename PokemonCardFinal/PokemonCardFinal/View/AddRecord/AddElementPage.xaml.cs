@@ -146,6 +146,7 @@ namespace PokemonCardFinal.View.AddRecord
                 MessageBox.Show(ex.Message);
             }
         }
+        
         private bool ValidateInput() 
         {
             bool isValid = true;

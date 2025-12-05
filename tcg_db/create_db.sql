@@ -1050,8 +1050,9 @@ AS
 		INSERT INTO [dbo].[Move]
 			([Name],[Damage],[Description])
 		VALUES
-			(@Name,@Damage,@Description)
-		RETURN @@ROWCOUNT;
+			(@Name,@Damage,@Description);
+			
+		SELECT SCOPE_IDENTITY();
 	END
 GO
 

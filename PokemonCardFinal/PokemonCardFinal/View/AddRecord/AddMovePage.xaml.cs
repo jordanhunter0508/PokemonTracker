@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using PokemonCardFinal.View.ListRecords;
 
 namespace PokemonCardFinal.View.AddRecord
 {
@@ -24,8 +13,8 @@ namespace PokemonCardFinal.View.AddRecord
     public partial class AddMovePage : Page
     {
         IMoveManager _moveManager;
-        Move _move;
-        AddEditContainerPage _containterPage;
+        MoveVM _moveVM;
+        AddEditContainerPage _containerPage;
         bool _isAddMode;
 
         public AddMovePage()
@@ -35,29 +24,149 @@ namespace PokemonCardFinal.View.AddRecord
             _isAddMode = true;
         }
 
-        public AddMovePage(IMoveManager moveManager, Move move,
+        public AddMovePage(IMoveManager moveManager, MoveVM move,
             AddEditContainerPage containerPage)
         {
             InitializeComponent();
             _moveManager = moveManager;
-            _move = move;
-            _containterPage = containerPage;
+            _moveVM = move;
+            _containerPage = containerPage;
             _isAddMode = false;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             LoadElementGrid();
+            if (!_isAddMode)
+            {
+                txtName.Focus();
+                txtName.Text = _moveVM.Name;
+                txtDamage.Text = _moveVM.Damage.ToString();
+                txtDescription.Text = _moveVM.Description;
+                DisplayCmbElement();
+                btnClear.Content = "Go Back";
+
+                // Disables all other tab items
+                _containerPage.DisplayTabItems(false);
+                _containerPage.tabMove.IsEnabled = true;
+            }
+
+            txtName.Focus();
+            btnSave.IsDefault = true;
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isAddMode)
+            {
+                ClearTextAreas();
+                txtName.Focus();
+
+            }
+            else
+            {
+                DisplayListViewPage();
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidateInput())
+            {
+                return;
+            }
 
             if (_isAddMode)
             {
-                //
+                CreateModeSaveButton();
+
             }
-            else 
+            else
             {
-                //
+                EditModeSaveButton();
             }
         }
+
+        private void cmbElement_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbElement1.SelectedIndex > 0)
+            {
+                txtElement1.IsEnabled = true;
+            }
+            else
+            {
+                txtElement1.IsEnabled = false;
+            }
+
+            if (cmbElement2.SelectedIndex > 0)
+            {
+                txtElement2.IsEnabled = true;
+            }
+            else
+            {
+                txtElement2.IsEnabled = false;
+            }
+
+            if (cmbElement3.SelectedIndex > 0)
+            {
+                txtElement3.IsEnabled = true;
+            }
+            else
+            {
+                txtElement3.IsEnabled = false;
+            }
+
+        }
+
+        private void EditModeSaveButton()
+        {
+            //try
+            //{
+            //    string name = txtName.Text;
+            //    MoveVM moveVM = BuildMoveVM();
+
+            //    if (_moveManager.EditMove(moveVM))
+            //    {
+            //        MessageBox.Show("The move " + name + " was successfully created.");
+            //        ClearTextAreas();
+            //        txtName.Focus();
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("The move " + name + " was not created.");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
+        }
+
+        private void CreateModeSaveButton()
+        {
+            try
+            {
+                string name = txtName.Text;
+                BuildMoveVM();
+
+                if (_moveManager.AddMoveVM(_moveVM))
+                {
+                    MessageBox.Show("The move " + name + " was successfully created.");
+                    ClearTextAreas();
+                    txtName.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("The move " + name + " was not created.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        
 
         private void LoadElementGrid()
         {
@@ -67,18 +176,167 @@ namespace PokemonCardFinal.View.AddRecord
             {
                 elementManager = new ElementManager();
                 elements = elementManager.GetElementTypes();
-                List<string> elementTypes = new List<string>();
-                foreach (ElementType element in elements)
-                {
-                    elementTypes.Add(element.ElementTypeID);
-                }
 
-                lstElement.ItemsSource = elementTypes;
+                List<string> elementTypes = (from element in elements
+                                             select element.ElementTypeID.ToLower()).ToList();
+
+                elementTypes.Insert(0, "Element Type");
+                cmbElement1.ItemsSource = elementTypes;
+                cmbElement1.SelectedIndex = 0;
+                cmbElement2.ItemsSource = elementTypes;
+                cmbElement2.SelectedIndex = 0;
+                cmbElement3.ItemsSource = elementTypes;
+                cmbElement3.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
 
                 MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+            }
+        }
+
+        public bool ValidateInput()
+        {
+            bool isValid = true;
+            string name = txtName.Text;
+            string description = txtDescription.Text;
+            int damage;
+            int quantity;
+
+            if (name.Replace(" ", "") == "" || name == null ||
+                name.Length > 30 || name.Any(char.IsDigit))
+            {
+                MessageBox.Show("The element name entered was invalid.");
+                txtName.SelectAll();
+                txtName.Focus();
+                isValid = false;
+            }
+            else if (description.Replace(" ", "") == "" || description == null || description.Length > 200)
+            {
+                MessageBox.Show("The description entered was invalid.");
+                txtDescription.SelectAll();
+                txtDescription.Focus();
+                isValid = false;
+            }
+            else if (!int.TryParse(txtDamage.Text, out damage))
+            {
+                MessageBox.Show("Please enter a valid number for Damage.");
+                txtDamage.SelectAll();
+                txtDamage.Focus();
+                isValid = false;
+            }
+            else if (txtElement1.IsEnabled && !int.TryParse(txtElement1.Text, out quantity))
+            {
+                MessageBox.Show("Quantity field 1 must be a whole number.");
+                txtElement1.SelectAll();
+                txtElement1.Focus();
+                isValid = false;
+            }
+            else if (txtElement2.IsEnabled && !int.TryParse(txtElement2.Text, out quantity))
+            {
+                MessageBox.Show("Quantity field 2 must be a whole number.");
+                txtElement2.SelectAll();
+                txtElement2.Focus();
+                isValid = false;
+            }
+            else if (txtElement3.IsEnabled && !int.TryParse(txtElement3.Text, out quantity))
+            {
+                MessageBox.Show("Quantity field 3 must be a whole number.");
+                txtElement3.SelectAll();
+                txtElement3.Focus();
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        private void ClearTextAreas()
+        {
+            txtName.Text = "";
+            txtDamage.Text = "";
+            txtDescription.Text = "";
+
+            txtElement1.Text = "";
+            txtElement2.Text = "";
+            txtElement3.Text = "";
+
+            cmbElement1.SelectedIndex = 0;
+            cmbElement2.SelectedIndex = 0;
+            cmbElement3.SelectedIndex = 0;
+        }
+
+        private void DisplayListViewPage()
+        {
+            _containerPage.DisplayTabItems(true);
+            _containerPage.IsListView = true;
+            _containerPage.frmMove.Navigate(new MoveRecordsPage());
+        }
+
+        private void BuildMoveVM()
+        {
+            string name = txtName.Text;
+            string description = txtDescription.Text;
+            int damage = Convert.ToInt32(txtDamage.Text);
+
+            _moveVM = new MoveVM()
+            {
+                Name = name,
+                Damage = damage,
+                Description = description,
+                Costs = CreateMoveCost()
+            };
+        }
+
+        private List<MoveCost> CreateMoveCost()
+        {
+            List<MoveCost> results = new List<MoveCost>();
+
+            if (txtElement1.IsEnabled)
+            {
+                results.Add(new MoveCost()
+                {
+                    MoveID = 1,
+                    ElementType = cmbElement1.SelectedItem as string,
+                    Quantity = Convert.ToInt32(txtElement1.Text)
+                });
+            }
+            if (txtElement2.IsEnabled)
+            {
+                results.Add(new MoveCost()
+                {
+                    MoveID = 1,
+                    ElementType = cmbElement2.SelectedItem as string,
+                    Quantity = Convert.ToInt32(txtElement2.Text)
+                });
+            }
+            if (txtElement3.IsEnabled)
+            {
+                results.Add(new MoveCost()
+                {
+                    MoveID = 1,
+                    ElementType = cmbElement3.SelectedItem as string,
+                    Quantity = Convert.ToInt32(txtElement3.Text)
+                });
+            }
+            return results;
+        }
+
+        private void DisplayCmbElement()
+        {
+            if (_moveVM.Costs.Count >= 1)
+            {
+                txtElement1.Text = _moveVM.Costs[0].Quantity.ToString();
+                cmbElement1.SelectedValue = _moveVM.Costs[0].ElementType.ToString().ToLower();
+            }
+            if (_moveVM.Costs.Count >= 2)
+            {
+                txtElement2.Text = _moveVM.Costs[1].Quantity.ToString();
+                cmbElement2.SelectedValue = _moveVM.Costs[1].ElementType.ToString().ToLower();
+            }
+            if (_moveVM.Costs.Count >= 3)
+            {
+                txtElement3.Text = _moveVM.Costs[2].Quantity.ToString();
+                cmbElement3.SelectedValue = _moveVM.Costs[2].ElementType.ToString().ToLower();
             }
         }
     }

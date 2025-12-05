@@ -216,8 +216,8 @@ public class MoveManagerTest
             Damage = 100,
             Description = "This is a new move."
         };
-        const bool expectedResult = true;
-        bool actualResult = false;
+        const int expectedResult = 4;
+        int actualResult = 0;
 
         // act
         actualResult = _moveManager.AddMove(move);
@@ -232,7 +232,7 @@ public class MoveManagerTest
     {
         // arrange
         Move move = null;
-        bool actualResult = true;
+        int actualResult = 0;
 
         // act
         actualResult = _moveManager.AddMove(move);

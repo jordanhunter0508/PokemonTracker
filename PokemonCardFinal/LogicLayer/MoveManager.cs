@@ -17,7 +17,7 @@ namespace LogicLayer
         /// <summary>
         /// General MoveManager for the presentation layer
         /// </summary>
-        public MoveManager() 
+        public MoveManager()
         {
             _moveAccessor = new MoveAccessor();
         }
@@ -26,7 +26,7 @@ namespace LogicLayer
         /// Used for testing to pass in fakes
         /// </summary>
         /// <param name="moveAccessor">Used to set the _moveAccessor to a specific IMoveAccessor</param>
-        public MoveManager(IMoveAccessor moveAccessor) 
+        public MoveManager(IMoveAccessor moveAccessor)
         {
             _moveAccessor = moveAccessor;
         }
@@ -181,13 +181,13 @@ namespace LogicLayer
 
             try
             {
-                if (!AddMove(moveVM))
-                {
-                    valid = false;
-                }
+                int moveID = AddMove(moveVM);
+                Debug.WriteLine("moveID in AddMoveVM: " + moveID);
 
                 foreach (MoveCost cost in moveVM.Costs)
                 {
+                    // Makes sure the moveCost is going to the correct move
+                    cost.MoveID = moveID;
                     if (!AddMoveCost(cost))
                     {
                         valid = false;
@@ -211,9 +211,9 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IMoveManager"/>
         /// </summary>
-        public bool AddMove(Move move)
+        public int AddMove(Move move)
         {
-            bool result = false;
+            int result = -1;
 
             if (move == null)
             {
@@ -222,7 +222,12 @@ namespace LogicLayer
 
             try
             {
-                result = (1 == _moveAccessor.InsertMove(move));
+                result = _moveAccessor.InsertMove(move);
+
+                if (result == -1)
+                {
+                    throw new ApplicationException("Faild to add a move to the database.");
+                }
             }
             catch (Exception ex)
             {

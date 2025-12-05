@@ -22,9 +22,9 @@
         </Grid.ColumnDefinitions>
 
         <!--Move ID-->
-        <Label x:Name="lblMoveID" Content="Move Name:" Grid.Row="0" Grid.Column="0"
+        <Label x:Name="lblName" Content="Move Name:" Grid.Row="0" Grid.Column="0"
                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-        <TextBox x:Name="txtMoveID" Grid.Row="0" Grid.Column="1" Width="200" Height="25"
+        <TextBox x:Name="txtName" Grid.Row="0" Grid.Column="1" Width="200" Height="25"
                  VerticalContentAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"/>
 
         <!--Damage-->
@@ -37,16 +37,45 @@
         <Label x:Name="lblDescription" Content="Description:" Grid.Row="2" Grid.Column="0"
                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         <TextBox x:Name="txtDescription" Grid.Row="2" Grid.Column="1" Width="200" Height="100"
-                VerticalContentAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                VerticalContentAlignment="Top" HorizontalAlignment="Center" TextWrapping="Wrap"/>
 
         <!--Buttons-->
         <Button x:Name="btnSave" Content="Save" Grid.Row="3" Grid.Column="1"
-                Width="100" Height=" 50" HorizontalAlignment="Left"/>
+                Width="100" Height=" 50" HorizontalAlignment="Left" Click="btnSave_Click"/>
         <Button x:Name="btnClear" Content="Clear" Grid.Row="3" Grid.Column="1"
-                Width="100" Height=" 50"  HorizontalAlignment="Right"/>
+                Width="100" Height=" 50"  HorizontalAlignment="Right" Click="btnClear_Click"/>
 
         <!--Element Types-->
-        <ListBox x:Name="lstElement" Grid.RowSpan="3" Grid.Column="2" Margin="20 36 20 22" SelectionMode="Multiple"/>
+        <Grid Grid.RowSpan="2" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <ComboBox x:Name="cmbElement1" Grid.Row="1" Grid.Column="0" Width="120" Height="25"
+                    HorizontalAlignment="Left" Margin="10 0" SelectionChanged="cmbElement_SelectionChanged"/>
+            <Label x:Name="lblElement1" Grid.Row="1" Grid.Column="1" Content="Quantity:" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtElement1" Grid.Row="1" Grid.Column="1" Width="50" Height="25"/>
+
+
+            <ComboBox x:Name="cmbElement2" Grid.Row="2" Grid.Column="0" Width="120" Height="25"
+                    HorizontalAlignment="Left" Margin="10 0" SelectionChanged="cmbElement_SelectionChanged"/>
+            <Label x:Name="lblElement2" Grid.Row="2" Grid.Column="1" Content="Quantity:" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtElement2" Grid.Row="2" Grid.Column="1" Width="50" Height="25"/>
+
+            <ComboBox x:Name="cmbElement3" Grid.Row="3" Grid.Column="0" Width="120" Height="25"
+                    HorizontalAlignment="Left" Margin="10 0" SelectionChanged="cmbElement_SelectionChanged"/>
+            <Label x:Name="lblElement3" Grid.Row="3" Grid.Column="1" Content="Quantity:" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtElement3" Grid.Row="3" Grid.Column="1" Width="50" Height="25"/>
+
+        </Grid>
+        
 
     </Grid>
 </Page>

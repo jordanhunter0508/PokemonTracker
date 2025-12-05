@@ -181,7 +181,7 @@ namespace DataAccessFakes
             }
 
             _moves.Add(move);
-            count = 1;
+            count = move.MoveID;
             return count;
         }
 

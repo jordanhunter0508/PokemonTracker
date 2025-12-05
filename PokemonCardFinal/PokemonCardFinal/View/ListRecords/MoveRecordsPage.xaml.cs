@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using PokemonCardFinal.View.AddRecord;
 
 namespace PokemonCardFinal.View.ListRecords
 {
@@ -78,7 +79,27 @@ namespace PokemonCardFinal.View.ListRecords
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            if (_selectedMoveVM == null)
+            {
+                return;
+            }
 
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+            // Navigate the main frame to the new outer page
+            AddEditContainerPage containerPage = new AddEditContainerPage();
+            mainWindow.frmMain.Navigate(containerPage);
+
+            // When the outer page is loaded change the inner page
+            // to AddMovePage
+            containerPage.Loaded += (s, args) =>
+            {
+                containerPage.IsListView = false;
+                containerPage.tabController.SelectedItem = containerPage.tabMove;
+                containerPage.frmMove.Navigate
+                (
+                    new AddMovePage(_moveManager, _selectedMoveVM, containerPage)
+                );
+            };
         }
 
         private void datMove_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -86,7 +107,7 @@ namespace PokemonCardFinal.View.ListRecords
             _selectedMoveVM = datMove.SelectedItem as MoveVM;
         }
 
-        private void LoadList() 
+        private void LoadList()
         {
             try
             {

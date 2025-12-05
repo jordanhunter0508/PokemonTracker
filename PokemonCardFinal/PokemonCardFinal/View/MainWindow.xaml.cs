@@ -86,6 +86,12 @@ namespace PokemonCardFinal.View
                 mnuCreateRecord.Visibility = Visibility.Visible;
                 mnuEditRecord.Visibility = Visibility.Visible;
             }
+
+            if (_accessToken.Roles.Contains("General"))
+            {
+                mnuUserCard.Visibility = Visibility.Visible;
+                mnuUserDeck.Visibility = Visibility.Visible;
+            }
         }
 
         /// <summary>
@@ -105,7 +111,7 @@ namespace PokemonCardFinal.View
         /// Updates the disaply of the main window
         /// to match what a user should see when logged out
         /// </summary>
-        private void LoggedOutView() 
+        private void LoggedOutView()
         {
             btnLogIn.Content = "Log In";
             btnSignUp.Content = "Sign Up";
@@ -125,7 +131,7 @@ namespace PokemonCardFinal.View
             }
             if (btnSignUp.Content == "View Profile")
             {
-                frmMain.Navigate(new ProfileContainerPage(_accessToken,_userManager));
+                frmMain.Navigate(new ProfileContainerPage(_accessToken, _userManager));
             }
         }
 
@@ -197,6 +203,31 @@ namespace PokemonCardFinal.View
             {
                 frmMain.Navigate(new SearchResultsPage());
             }
+        }
+
+        private void mnuUserCard_Click(object sender, RoutedEventArgs e)
+        {
+            ICollectionManager collectionManager = new CollectionManager();
+            ProfileContainerPage containerPage = new ProfileContainerPage(_accessToken, _userManager);
+
+            frmMain.Navigate(containerPage);
+            containerPage.Loaded += (s, args) =>
+            {
+                int collectionID = collectionManager.GetCollectionIDByCollectionType(_accessToken, "user");
+                containerPage.frmUserCard.Navigate(new UserCardsPage(collectionManager, collectionID, _accessToken));
+            };
+        }
+
+        private void mnuUserDeck_Click(object sender, RoutedEventArgs e)
+        {
+            ProfileContainerPage containerPage = new ProfileContainerPage(_accessToken, _userManager);
+
+            frmMain.Navigate(containerPage);
+            containerPage.Loaded += (s, args) =>
+            {
+                containerPage.tabController.SelectedItem = containerPage.tabUserDeck;
+                containerPage.frmUserCard.Navigate(new UserDeckPage(_userManager, _accessToken));
+            };
         }
     }
 }
