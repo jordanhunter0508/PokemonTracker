@@ -219,13 +219,13 @@ namespace DataAccessFakes
             foreach (var collection in _collections)
             {
                 if (collection.CollectionID == collectionID)
-                { 
+                {
                     deletedCollection = collection;
                 }
             }
 
             if (deletedCollection != null)
-            { 
+            {
                 _collections.Remove(deletedCollection);
                 count = 1;
             }
@@ -247,7 +247,7 @@ namespace DataAccessFakes
                 foreach (var card in collectionVM.Cards)
                 {
                     if (card.CollectionCardID == collectionCardID)
-                    { 
+                    {
                         deletedCard = card;
                     }
                 }
@@ -259,6 +259,48 @@ namespace DataAccessFakes
                 count = 1;
             }
 
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionAccessor"/> used for testing
+        /// </summary>
+        public int InsertCollectionCard(CollectionCard collectionCard)
+        {
+            int count = 0;
+            int index = 0;
+
+            // Represents the PokemonCard table's IDs
+            int[] cardIDs = { 1, 2, 3, 4, 5, 6, 7, 9, 10 };
+
+            // Checks the CollectionID is valid
+            if (SelectCollectionByCollectionID(collectionCard.CollectionID) == null)
+            {
+                throw new Exception("MoveID does not have a corresponding Move.");
+            }
+
+            // Checks if the card has a valid value or not
+            if (!cardIDs.Contains(collectionCard.Card.CardID))
+            {
+                throw new Exception("CardID is not valid.");
+            }
+
+            // used for the CollectionVMs list
+            for (int i = 0; i < _collectionVMs.Count; i++)
+            {
+                // used for the List of CollectionCards inside the CollectionVM
+                for (int j = 0; j < _collectionVMs.Count; j++)
+                {
+                    if (_collectionVMs[i].CollectionID == collectionCard.CollectionID &&
+                    _collectionVMs[i].Cards[j].Card.CardID == collectionCard.Card.CardID)
+                    {
+                        throw new Exception("Both CollectionID and CardID are duplicated.");
+                    }
+                }
+            }
+
+            _collectionVMs[0].Cards.Add(collectionCard);
+            count = 1;
             return count;
         }
     }

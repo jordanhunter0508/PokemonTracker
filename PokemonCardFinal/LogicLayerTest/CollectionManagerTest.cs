@@ -10,7 +10,7 @@ public class CollectionManagerTest
 {
     ICollectionManager _collectionManager;
     [TestInitialize]
-    public void TestSetup() 
+    public void TestSetup()
     {
         _collectionManager = new CollectionManager(new CollectionAccessorFakes());
     }
@@ -93,7 +93,7 @@ public class CollectionManagerTest
     }
 
     [TestMethod]
-    public void TestGetCollectionTypeMaxSizeWithValidInput() 
+    public void TestGetCollectionTypeMaxSizeWithValidInput()
     {
         // arrange
         const string collectionType = "type1";
@@ -109,7 +109,7 @@ public class CollectionManagerTest
 
     [TestMethod]
     [ExpectedException(typeof(ApplicationException))]
-    public void TestGetCollectionTypeMaxSizeThrowsApplicationExceptionWithInvalidInput() 
+    public void TestGetCollectionTypeMaxSizeThrowsApplicationExceptionWithInvalidInput()
     {
         // arrange
         const string collectionType = "fail";
@@ -125,7 +125,7 @@ public class CollectionManagerTest
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
-    public void TestGetCollectionTypeMaxSizeThrowsArgumentNullExceptionWithBlankinput() 
+    public void TestGetCollectionTypeMaxSizeThrowsArgumentNullExceptionWithBlankinput()
     {
         // arrange
         const string collectionType = " ";
@@ -141,7 +141,7 @@ public class CollectionManagerTest
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
-    public void TestGetCollectionTypeMaxSizeThrowsArgumentNullExceptionWithNullInput() 
+    public void TestGetCollectionTypeMaxSizeThrowsArgumentNullExceptionWithNullInput()
     {
         // arrange
         const string collectionType = null;
@@ -186,7 +186,7 @@ public class CollectionManagerTest
         actual = _collectionManager.GetCollectionByCollectionID(collectionID);
 
         //Assert
-        Assert.AreEqual(expected,actual);
+        Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
@@ -234,7 +234,7 @@ public class CollectionManagerTest
         const string collectionType = "testType1";
         UserVM user = new UserVM()
         {
-            Collections = new List<Collection>() 
+            Collections = new List<Collection>()
             {
                 new Collection()
                 {
@@ -259,14 +259,14 @@ public class CollectionManagerTest
     }
 
     [TestMethod]
-    [ExpectedException (typeof(ApplicationException))]
+    [ExpectedException(typeof(ApplicationException))]
     public void TestGetCollectionIDByCollectionTypeThrowsAppplicationExceptionWithInvalidCollectionType()
     {
         // arrange
         const string collectionType = "fail";
         UserVM user = new UserVM()
         {
-            Collections = new List<Collection>() 
+            Collections = new List<Collection>()
             {
                 new Collection()
                 {
@@ -327,7 +327,7 @@ public class CollectionManagerTest
     }
 
     [TestMethod]
-    [ExpectedException (typeof(ApplicationException))]
+    [ExpectedException(typeof(ApplicationException))]
     public void TestConvertCollectionCardToVMThrowsApplicationExceptionWithNullInput()
     {
         // arrange
@@ -399,5 +399,124 @@ public class CollectionManagerTest
 
         // assert
         Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestAddCollectionCardReturnTrueWithValidInput()
+    {
+        // arrange
+        CollectionCard card = new CollectionCard()
+        {
+            CollectionCardID = 1,
+            Card = new Card()
+            {
+                CardID = 10,
+            },
+            CollectionID = 1,
+            Quantity = 1,
+            Owned = true
+        };
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.AddCollectionCard(card);
+
+        // assert
+        Assert.AreEqual(expected,actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCollectionCardThrowsApplicationExceptionWithNullCollectionCard()
+    {
+        // arrange
+        CollectionCard card = null;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.AddCollectionCard(card);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCollectionCardThrowsApplicationExceptionWithInvalidCardID()
+    {
+        // arrange
+        CollectionCard card = new CollectionCard()
+        {
+            CollectionCardID = 1,
+            Card = new Card()
+            {
+                CardID = 999,
+            },
+            CollectionID = 1,
+            Quantity = 1,
+            Owned = true
+        };
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.AddCollectionCard(card);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCollectionCardThrowsApplicationExceptionWithInvalidCollectionID()
+    {
+        // arrange
+        CollectionCard card = new CollectionCard()
+        {
+            CollectionCardID = 1,
+            Card = new Card()
+            {
+                CardID = 1,
+            },
+            CollectionID = 999,
+            Quantity = 1,
+            Owned = true
+        };
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.AddCollectionCard(card);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCollectionCardThrowsApplicationExceptionWithDuplicateIDs()
+    {
+        // arrange
+        CollectionCard collectionCard = new CollectionCard()
+        {
+            CollectionCardID = 1,
+            Card = new Card()
+            {
+                CardID = 1,
+            },
+            CollectionID = 1,
+            Quantity = 1,
+            Owned = true
+        };
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.AddCollectionCard(collectionCard);
+
+        // assert
+        // do nothing
     }
 }

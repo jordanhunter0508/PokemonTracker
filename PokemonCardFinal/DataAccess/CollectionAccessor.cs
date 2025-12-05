@@ -284,5 +284,47 @@ namespace DataAccess
 
             return count;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/>. Access the database
+        /// using sp_insert_collection_card
+        /// </summary>
+        public int InsertCollectionCard(CollectionCard collectionCard)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_insert_collection_card";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@CollectionID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@Owned", System.Data.SqlDbType.Bit);
+
+            cmd.Parameters["@PokemonCardID"].Value = collectionCard.Card.CardID;
+            cmd.Parameters["@CollectionID"].Value = collectionCard.CollectionID;
+            cmd.Parameters["@Quantity"].Value = collectionCard.Quantity;
+            cmd.Parameters["@Owned"].Value = collectionCard.Owned;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
     }
 }

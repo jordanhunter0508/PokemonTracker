@@ -52,5 +52,13 @@ namespace DataAccessInterfaces
         /// <param name="collectionCardID">CollectionCardID of the row to delete.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public int DeleteCollectionCard(int collectionCardID);
+
+        /// <summary>
+        /// Inserts the parameters into the stored procedure to try
+        /// and create a new record for a CollectionCard.
+        /// </summary>
+        /// <param name="card">New CollectionCard object to insert.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int InsertCollectionCard(CollectionCard collectionCard);
     }
 }

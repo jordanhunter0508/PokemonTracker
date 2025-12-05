@@ -28,6 +28,7 @@ namespace PokemonCardFinal.View
         ICardManager _cardManager;
         List<CardVM> _cards;
         List<CardVM> _filteredCards;
+        UserVM _accessToken;
         string _search;
         bool _isSearchMode;
 
@@ -46,6 +47,23 @@ namespace PokemonCardFinal.View
             _isSearchMode = true;
         }
 
+        public SearchResultsPage(UserVM accessToken)
+        {
+            InitializeComponent();
+            _cardManager = new CardManager();
+            _accessToken = accessToken;
+            _isSearchMode = false;
+        }
+
+        public SearchResultsPage(string search, UserVM accessToken)
+        {
+            InitializeComponent();
+            _cardManager = new CardManager();
+            _search = search;
+            _accessToken = accessToken;
+            _isSearchMode = true;
+        }
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Load the filter combo boxes
@@ -55,6 +73,11 @@ namespace PokemonCardFinal.View
             LoadElementTypeComboBox();
 
             LoadList();
+
+            if (_accessToken == null)
+            {
+                grdButton.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -206,7 +229,18 @@ namespace PokemonCardFinal.View
 
         private void btnCollection_Click(object sender, RoutedEventArgs e)
         {
-            // give user a prompt to add a card to a collection
+            if (datSearch.SelectedItem == null) 
+            {
+                return;
+            }
+
+            if (_accessToken != null)
+            {
+                CardVM selectedCard = datSearch.SelectedItem as CardVM;
+                AddCollectionCardWindow collectionWindow = new AddCollectionCardWindow(_accessToken, selectedCard);
+                collectionWindow.Owner = Window.GetWindow(this);
+                collectionWindow.ShowDialog();
+            }
         }
 
         private void datSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -219,7 +253,7 @@ namespace PokemonCardFinal.View
             // load the detailed page
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
             CardVM selectedCard = datSearch.SelectedItem as CardVM;
-            mainWindow.frmMain.Navigate(new DetailedCardPage(selectedCard));
+            mainWindow.frmMain.Navigate(new DetailedCardPage(selectedCard, _accessToken));
         }
 
     }

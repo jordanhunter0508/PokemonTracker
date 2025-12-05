@@ -33,11 +33,12 @@ namespace PokemonCardFinal.View.Profile
 
         bool _isDeckMode;
 
-        public UserCardsPage(ICollectionManager collectionManager, int collectionID)
+        public UserCardsPage(ICollectionManager collectionManager, int collectionID, UserVM accessToken)
         {
             InitializeComponent();
             _collectionManager = collectionManager;
             _collectionID = collectionID;
+            _accessToken = accessToken;
             _isDeckMode = false;
         }
 
@@ -77,8 +78,7 @@ namespace PokemonCardFinal.View.Profile
 
                 int cardID = _selectedCard.Card.CardID;
                 CardVM selectedCard = cardManager.GetCardVMByCardID(cardID);
-
-                DetailedCardPage detailedCardPage = new DetailedCardPage(selectedCard);
+                DetailedCardPage detailedCardPage = new DetailedCardPage(selectedCard,_accessToken);
                 detailedCardPage.IsCollectionView = true;
                 mainWindow.frmMain.Navigate(detailedCardPage);
             }

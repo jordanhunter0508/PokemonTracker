@@ -49,7 +49,7 @@
 
 
                     <!-- Button Column -->
-                    <DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="grdButton">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button x:Name="btnCollection" Content="+" Click="btnCollection_Click" VerticalAlignment="Center"

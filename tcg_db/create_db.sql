@@ -1392,3 +1392,22 @@ AS
 		RETURN 	@@ROWCOUNT;
 	END
 GO
+
+PRINT '*** creating sp_insert_collection_card ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_collection_card]
+	(	
+		@PokemonCardID		[int],
+		@CollectionID		[int],
+		@Quantity			[int],
+		@Owned				[bit]
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[CollectionCard]
+			([PokemonCardID],[CollectionID],[Quantity],[Owned])
+		VALUES
+			(@PokemonCardID,@CollectionID,@Quantity,@Owned)
+		RETURN @@ROWCOUNT;
+	END
+GO

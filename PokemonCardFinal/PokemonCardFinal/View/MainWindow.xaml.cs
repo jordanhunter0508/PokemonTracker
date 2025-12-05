@@ -176,12 +176,27 @@ namespace PokemonCardFinal.View
                 return;
             }
 
-            frmMain.Navigate(new SearchResultsPage(search));
+            if (_accessToken != null)
+            {
+                frmMain.Navigate(new SearchResultsPage(search, _accessToken));
+            }
+            else
+            {
+                frmMain.Navigate(new SearchResultsPage(search));
+            }
+
         }
 
         private void mnuAllCards_Click(object sender, RoutedEventArgs e)
         {
-            frmMain.Navigate(new SearchResultsPage());
+            if (_accessToken != null)
+            {
+                frmMain.Navigate(new SearchResultsPage(_accessToken));
+            }
+            else
+            {
+                frmMain.Navigate(new SearchResultsPage());
+            }
         }
     }
 }

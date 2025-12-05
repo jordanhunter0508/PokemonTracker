@@ -89,5 +89,14 @@ namespace LogicLayerInterfaces
         /// <returns>Returns true if the CollectionCard was deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if there was a connection error</exception>
         public bool DeleteCollectionCard(int collectionCardID);
+
+        /// <summary>
+        /// Passes parameters to <see href="InsertCollectionCard()"/> Then returns true
+        /// if the record was updated successfully.
+        /// </summary>
+        /// <param name="card">New CollectionCard object to be added to the database.</param>
+        /// <returns>Returns true if the CollectionCard was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the card is already in the collection</exception>
+        public bool AddCollectionCard(CollectionCard collectionCard);
     }
 }

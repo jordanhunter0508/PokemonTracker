@@ -27,11 +27,19 @@ namespace PokemonCardFinal.View
         public bool IsCollectionView = false;
 
         CardVM _card;
+        UserVM _accessToken;
 
         public DetailedCardPage(CardVM card)
         {
             InitializeComponent();
             _card = card;
+        }
+
+        public DetailedCardPage(CardVM card, UserVM accessToken)
+        {
+            InitializeComponent();
+            _card = card;
+            _accessToken = accessToken;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -44,7 +52,7 @@ namespace PokemonCardFinal.View
                 return;
             }
 
-            if (IsCollectionView)
+            if (IsCollectionView || _accessToken == null)
             { 
                 btnAddCard.Visibility = Visibility.Collapsed;
             }
@@ -181,7 +189,12 @@ namespace PokemonCardFinal.View
 
         private void btnAddCard_Click(object sender, RoutedEventArgs e)
         {
-            // save the card to user cards
+            if (_accessToken != null)
+            {
+                AddCollectionCardWindow collectionWindow = new AddCollectionCardWindow(_accessToken,_card);
+                collectionWindow.Owner = Window.GetWindow(this);
+                collectionWindow.ShowDialog();
+            }
         }
     }
 }

@@ -64,7 +64,7 @@ namespace PokemonCardFinal.View.Profile
                     SetAllLoaded(false);
                     _isUserCardPage = true;
                     collectionID = _collectionManager.GetCollectionIDByCollectionType(_accessToken, "user");
-                    frmUserCard.Navigate(new UserCardsPage(_collectionManager, collectionID));
+                    frmUserCard.Navigate(new UserCardsPage(_collectionManager, collectionID, _accessToken));
                 }
                 else if (tabController.SelectedItem == tabUserDeck && !_isUserDeckPage)
                 {
@@ -77,14 +77,14 @@ namespace PokemonCardFinal.View.Profile
                     SetAllLoaded(false);
                     _isUserFavoritePage = true;
                     collectionID = _collectionManager.GetCollectionIDByCollectionType(_accessToken, "favorites");
-                    frmFavorite.Navigate(new UserCardsPage(_collectionManager, collectionID));
+                    frmFavorite.Navigate(new UserCardsPage(_collectionManager, collectionID, _accessToken));
                 }
                 else if (tabController.SelectedItem == tabWishlist && !_isUserWishlistPage)
                 {
                     SetAllLoaded(false);
                     _isUserWishlistPage = true;
                     collectionID = _collectionManager.GetCollectionIDByCollectionType(_accessToken, "wishlist");
-                    frmWishlist.Navigate(new UserCardsPage(_collectionManager, collectionID));
+                    frmWishlist.Navigate(new UserCardsPage(_collectionManager, collectionID, _accessToken));
                 }
                 else if (tabController.SelectedItem == tabAccount && !_isAccountInfoPage)
                 {

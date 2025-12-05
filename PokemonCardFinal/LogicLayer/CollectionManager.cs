@@ -249,5 +249,30 @@ namespace LogicLayer
 
             return isDeleted;
         }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionManager"/>
+        /// </summary>
+        public bool AddCollectionCard(CollectionCard collectionCard)
+        {
+            bool isAdded = false;
+
+            try
+            {
+                if (collectionCard == null)
+                {
+                    throw new ArgumentNullException("Collection Card is not valid. CollectionCard is null.");
+                }
+
+                isAdded = (1 == _collectionAccessor.InsertCollectionCard(collectionCard));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to add a card to a collection.\nPlease check it's not already in the collection.",ex);
+            }
+
+            return isAdded;
+        }
     }
 }
