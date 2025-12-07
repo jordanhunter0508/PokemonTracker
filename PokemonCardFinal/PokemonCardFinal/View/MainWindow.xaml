@@ -39,7 +39,7 @@
 
             <!--Menu Items-->
             <StackPanel Grid.Row ="1">
-                <MenuItem x:Name="mnuNewestSet" Header="Newest Set" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25"/>
+                <MenuItem x:Name="mnuNewestSet" Header="Newest Set" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25" Click="mnuNewestSet_Click"/>
                 <MenuItem x:Name="mnuAllCards" Header="All Cards" FontSize="20" HorizontalAlignment="Center" Margin="0 0 0 25" Click="mnuAllCards_Click"/>
                 <MenuItem x:Name="mnuUserCard" Header="My Cards" FontSize="20" HorizontalAlignment="Center" 
                         Margin="0 0 0 25" Visibility="Collapsed" Click="mnuUserCard_Click"/>

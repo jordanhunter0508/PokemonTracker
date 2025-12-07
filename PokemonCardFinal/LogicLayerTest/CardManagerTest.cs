@@ -1014,4 +1014,34 @@ public class CardManagerTest
         // assert
         // do nothing
     }
+
+    [TestMethod]
+    public void TestGetCardsByReleaseDateWithValidReleaseDate()
+    {
+        // arrange
+        DateTime releaseDate = DateTime.Parse("2025-11-06");
+        const int count = 2;
+        List<Card> actual = null;
+
+        // act
+        actual = _cardManager.GetCardsByReleaseDate(releaseDate);
+
+        // assert
+        Assert.AreEqual(count, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardsByReleaseDateWithInvalidReleaseDate()
+    {
+        // arrange
+        DateTime releaseDate = DateTime.Parse("1999-01-01");
+        const int count = 0;
+        List<Card> actual = null;
+
+        // act
+        actual = _cardManager.GetCardsByReleaseDate(releaseDate);
+
+        // assert
+        Assert.AreEqual(count, actual.Count);
+    }
 }

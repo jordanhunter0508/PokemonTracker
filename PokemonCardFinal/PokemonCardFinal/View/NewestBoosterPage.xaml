@@ -6,9 +6,31 @@
       xmlns:local="clr-namespace:PokemonCardFinal.View"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="NewestBoosterPage">
+      Title="NewestBoosterPage" Loaded="Page_Loaded">
 
     <Grid>
-        
+        <DataGrid x:Name="datCard" SelectionMode="Single" IsReadOnly="True" AutoGenerateColumns="False"
+          HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" MouseDoubleClick="datCard_MouseDoubleClick">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Card Type" Binding="{Binding CardType}"/>
+                <DataGridTextColumn Header="Card Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Booster" Binding="{Binding BoosterID}"/>
+                <DataGridTextColumn Header="Booster Number" Binding="{Binding BoosterNumber}" />
+                <DataGridTextColumn Header="Element" Binding="{Binding ElementTypeID}"/>
+                <DataGridTextColumn Header="Rarity" Binding="{Binding Rarity}"/>
+
+                <!-- Button Column -->
+                <DataGridTemplateColumn x:Name="grdButton">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="btnCollection" Content="+" Click="btnCollection_Click" VerticalAlignment="Center"
+                            HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+
+        </DataGrid>
     </Grid>
 </Page>

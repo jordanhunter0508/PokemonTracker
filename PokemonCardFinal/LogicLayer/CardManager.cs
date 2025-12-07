@@ -86,6 +86,26 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
+        public List<Card> GetCardsByReleaseDate(DateTime releaseDate)
+        {
+            List<Card> results = new List<Card>();
+
+            try
+            {
+                results = _cardAccessor.SelectCardsByReleaseDate(releaseDate);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get cards by release date.", ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
         public List<MoveVM> GetMovesByCardID(int cardID)
         {
             List<MoveVM> results = new List<MoveVM>();
@@ -194,14 +214,6 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
-        public List<CardVM> GetCardVMsByBoosterID(string boosterID)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardManager"/>
-        /// </summary>
         public Dictionary<int, Card> GetCards()
         {
             Dictionary<int, Card> results = new Dictionary<int, Card>();
@@ -241,14 +253,6 @@ namespace LogicLayer
             }
 
             return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardManager"/>
-        /// </summary>
-        public Dictionary<int, Card> GetCardsByBoosterID(string boosterID)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -299,14 +303,6 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
-        public Dictionary<int, List<MoveVM>> GetCardMovesByBoosterID(string boosterID)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardManager"/>
-        /// </summary>
         public Dictionary<int, List<string>> GetCardAlternateArts()
         {
             Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
@@ -346,14 +342,6 @@ namespace LogicLayer
             }
 
             return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardManager"/>
-        /// </summary>
-        public Dictionary<int, List<string>> GetCardAlternateArtsByBoosterID(string boosterID)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -496,8 +484,6 @@ namespace LogicLayer
             return results;
         }
 
-
-
         /// <summary>
         /// Creates a card VM from the inputted Card.
         /// </summary>
@@ -552,5 +538,6 @@ namespace LogicLayer
             }
             return results;
         }
+
     }
 }

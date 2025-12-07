@@ -104,6 +104,9 @@ namespace PokemonCardFinal.View
             {
                 _accessToken = null;
                 LoggedOutView();
+
+                // replace any page with a default "home" page
+                frmMain.Navigate(new SearchResultsPage());
             }
         }
 
@@ -117,6 +120,8 @@ namespace PokemonCardFinal.View
             btnSignUp.Content = "Sign Up";
             mnuCreateRecord.Visibility = Visibility.Collapsed;
             mnuEditRecord.Visibility = Visibility.Collapsed;
+            mnuUserCard.Visibility = Visibility.Collapsed;
+            mnuUserDeck.Visibility = Visibility.Collapsed;
         }
 
         private void btnSignUp_Click(object sender, RoutedEventArgs e)
@@ -228,6 +233,18 @@ namespace PokemonCardFinal.View
                 containerPage.tabController.SelectedItem = containerPage.tabUserDeck;
                 containerPage.frmUserCard.Navigate(new UserDeckPage(_userManager, _accessToken));
             };
+        }
+
+        private void mnuNewestSet_Click(object sender, RoutedEventArgs e)
+        {
+            if (_accessToken != null)
+            {
+                frmMain.Navigate(new NewestBoosterPage(_accessToken));
+            }
+            else
+            {
+                frmMain.Navigate(new NewestBoosterPage());
+            }
         }
     }
 }

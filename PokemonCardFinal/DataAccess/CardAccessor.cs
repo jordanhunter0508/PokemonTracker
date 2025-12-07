@@ -76,6 +76,68 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_select_newest_booster_card
+        /// </summary>
+        public List<Card> SelectCardsByReleaseDate(DateTime releaseDate)
+        {
+            List<Card> results = new List<Card>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_newest_booster_card";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ReleaseDate", System.Data.SqlDbType.Date);
+
+            cmd.Parameters["@ReleaseDate"].Value = releaseDate;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        results.Add(new Card()
+                        {
+                            CardID = reader.GetInt32(0),
+                            ArtistID = reader.GetInt32(1),
+                            AbilityID = reader.GetString(2),
+                            BoosterID = reader.GetString(3),
+                            PokemonRuleID = reader.GetString(4),
+                            ElementTypeID = reader.GetString(5),
+                            Name = reader.GetString(6),
+                            BoosterNumber = reader.GetInt32(7),
+                            CardType = reader.GetString(8),
+                            Rarity = reader.GetString(9),
+                            WeaknessType = reader.GetString(10),
+                            ResistanceType = reader.GetString(11),
+                            WeaknessValue = reader.GetInt32(12),
+                            ResistanceValue = reader.GetInt32(13),
+                            RetreatCost = reader.GetInt32(14),
+                            Health = reader.GetInt32(15),
+                            Stage = reader.GetString(16)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
         /// using sp_select_moves_by_card_id
         /// </summary>
         public List<MoveVM> SelectMovesByCardID(int cardID)
@@ -292,15 +354,6 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/>. Access the database
-        /// using sp_select_cards_by_booster_id
-        /// </summary>
-        public Dictionary<int, Card> SelectCardsByBoosterID(string boosterID)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/>. Access the database
         /// using sp_select_card_moves
         /// </summary>
         public Dictionary<int, List<MoveVM>> SelectCardMoves()
@@ -416,15 +469,6 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/>. Access the database
-        /// using sp_select_card_moves_by_booster_id
-        /// </summary>
-        public Dictionary<int, List<MoveVM>> SelectCardMovesByBoosterID(string boosterID)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/>. Access the database
         /// using sp_select_card_alternate_arts
         /// </summary>
         public Dictionary<int, List<string>> SelectCardAlternateArts()
@@ -530,15 +574,6 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/>. Access the database
-        /// using sp_select_card_alternate_arts_by_booster_id
-        /// </summary>
-        public Dictionary<int, List<string>> SelectCardAlternateArtsByBoosterID(string boosterID)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/>. Access the database
         /// using sp_delete_card
         /// </summary>
         public int DeleteCard(int cardID)
@@ -614,5 +649,7 @@ namespace DataAccess
                 });
             }
         }
+
+        
     }
 }

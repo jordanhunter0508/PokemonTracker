@@ -17,6 +17,14 @@ namespace DataAccessInterfaces
         public Card SelectCardByCardID(int cardID);
 
         /// <summary>
+        /// Requests all fields from the Card table to create a Card List. <br/>
+        /// Where the releaseDate matches one in the Booster table.
+        /// </summary>
+        /// <param name="releaseDate">Date of the newest set</param>
+        /// <returns>Returns a Card List of the newest set</returns>
+        public List<Card> SelectCardsByReleaseDate(DateTime releaseDate);
+
+        /// <summary>
         /// Requests all fields from the Move and MoveCost tables where <br/>
         /// the cardID matches from the join table.
         /// </summary>
@@ -46,13 +54,6 @@ namespace DataAccessInterfaces
         public Dictionary<int, Card> SelectCardsByCardName(string name);
 
         /// <summary>
-        /// Request all fields from the PokemonCard table
-        /// </summary>
-        /// <param name="rarity">Gets the rows with the matching name in the card table</param>
-        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
-        public Dictionary<int, Card> SelectCardsByBoosterID(string boosterID);
-
-        /// <summary>
         /// Request all fields from the Move and MoveCost tables
         /// </summary>
         /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
@@ -66,13 +67,6 @@ namespace DataAccessInterfaces
         public Dictionary<int, List<MoveVM>> SelectCardMovesByCardName(string name);
 
         /// <summary>
-        /// Request all fields from the Move and MoveCost tables
-        /// </summary>
-        /// <param name="boosterID">Gets the rows with the matching name in the card table</param>
-        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
-        public Dictionary<int, List<MoveVM>> SelectCardMovesByBoosterID(string boosterID);
-
-        /// <summary>
         /// Request all Alternate arts from CardAlternateArt table
         /// </summary>
         /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
@@ -84,13 +78,6 @@ namespace DataAccessInterfaces
         /// <param name="name">Gets the rows with the matching name in the card table</param>
         /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
         public Dictionary<int, List<string>> SelectCardAlternateArtsByCardName(string name);
-
-        /// <summary>
-        /// Request all Alternate arts from CardAlternateArt table
-        /// </summary>
-        /// <param name="boosterID">Gets the rows with the matching name in the card table</param>
-        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
-        public Dictionary<int, List<string>> SelectCardAlternateArtsByBoosterID(string boosterID);
 
         /// <summary>
         /// Deletes the row from the database where cardID matches in the table.

@@ -1444,3 +1444,26 @@ AS
 		RETURN @@ROWCOUNT;
 	END
 GO
+
+PRINT '*** creating sp_select_cards_by_collection_id ***'
+GO
+	CREATE PROCEDURE [dbo].[sp_select_newest_booster_card]
+	(
+		@ReleaseDate			[date]
+	)
+AS
+	BEGIN
+		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],
+				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
+				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
+				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
+				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
+				[PokemonCard].[Health],[PokemonCard].[Stage]
+				
+		FROM	[PokemonCard] 
+			JOIN [Booster] ON [Booster].[BoosterID] = [PokemonCard].[BoosterID]
+		
+		WHERE	[Booster].[ReleaseDate] = @ReleaseDate
+			
+	END
+GO

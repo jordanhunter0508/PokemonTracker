@@ -29,6 +29,15 @@ namespace LogicLayerInterfaces
         public Card GetCardByCardID(int cardID);
 
         /// <summary>
+        /// Passes parameters to <see href="SelectCardsByReleaseDate(DateTime)"/><br/>
+        /// then returns the results of the query. 
+        /// </summary>
+        /// <param name="releaseDate">Used to search the database for the cards with this date</param>
+        /// <returns>Returns a Card List where the releaseDate matches in the booster table.</returns>
+        /// <exception cref="ApplicationException">Throws if there was an error retrieving the data</exception>
+        public List<Card> GetCardsByReleaseDate(DateTime releaseDate);
+
+        /// <summary>
         /// Calls the <see href="SelectMovesByCardID(int)"/> method to get<br/>
         /// a list of moves from the database where the cardIDs match.
         /// </summary>
@@ -64,15 +73,6 @@ namespace LogicLayerInterfaces
         public List<CardVM> GetCardVMsByCardName(string name);
 
         /// <summary>
-        /// Uses methods that returns dictionaries to join them all together
-        /// to make a List of CardVMs.
-        /// </summary>
-        /// <param name="boosterID">Gets the cards with the matching boosterID</param>
-        /// <returns>Returns a list of cardVMs</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public List<CardVM> GetCardVMsByBoosterID(string boosterID);
-
-        /// <summary>
         /// Calls the <see href="SelectCards()"/> method to get<br/>
         /// a list of all Cards from the database.
         /// </summary>
@@ -88,15 +88,6 @@ namespace LogicLayerInterfaces
         /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
         public Dictionary<int, Card> GetCardsByCardName(string name);
-
-        /// <summary>
-        /// Calls the <see href="SelectCardsByBoosterID(string)"/> method to get<br/>
-        /// a list of all Cards from the database.
-        /// </summary>
-        /// <param name="boosterID">Gets the cards with the matching boosterID</param>
-        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public Dictionary<int, Card> GetCardsByBoosterID(string boosterID);
 
         /// <summary>
         /// Calls the <see href="SelectCardMoves()"/> method to get<br/>
@@ -116,15 +107,6 @@ namespace LogicLayerInterfaces
         public Dictionary<int, List<MoveVM>> GetCardMovesByCardName(string name);
 
         /// <summary>
-        /// Calls the <see href="SelectCardMovesByBoosterID(string)"/> method to get<br/>
-        /// a list of all Moves related to cards from the database.
-        /// </summary>
-        /// <param name="boosterID">Gets the cards with the matching boosterID</param>
-        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public Dictionary<int, List<MoveVM>> GetCardMovesByBoosterID(string boosterID);
-
-        /// <summary>
         /// Calls the <see href="SelectCardAlternateArts()"/> method to get<br/>
         /// a list of all Alternate Arts related to cards from the database.
         /// </summary>
@@ -140,15 +122,6 @@ namespace LogicLayerInterfaces
         /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
         public Dictionary<int, List<string>> GetCardAlternateArtsByCardName(string name);
-
-        /// <summary>
-        /// Calls the <see href="SelectCardAlternateArtsByCardName(string)"/> method to get<br/>
-        /// a list of all Alternate Arts related to cards from the database.
-        /// </summary>
-        /// <param name="boosterID">Gets the cards with the matching boosterID</param>
-        /// <returns>Returns a Dictionary where the cardID is the key and the Card is the value</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public Dictionary<int, List<string>> GetCardAlternateArtsByBoosterID(string boosterID);
 
         /// <summary>
         /// Passes parameters to <see href="DeleteCard(int)"/><br/>

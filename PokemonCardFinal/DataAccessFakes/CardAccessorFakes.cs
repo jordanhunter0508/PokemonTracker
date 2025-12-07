@@ -14,6 +14,7 @@ namespace DataAccessFakes
     {
         List<Card> _cards;
         List<MoveVM> _moves;
+        List<Booster> _boosters;
 
         // This is used to represent a join table
         List<CardMove> _cardMoves;
@@ -142,6 +143,29 @@ namespace DataAccessFakes
                 CardID = 2,
                 AlternateArtID = "test Alternate Art 1"
             });
+
+            _boosters = new List<Booster>();
+            _boosters.Add(new Booster()
+            {
+                BoosterID = "test booster 1",
+                Series = "test series",
+                ReleaseDate = DateTime.Parse("2025-11-06"),
+                Abbreviation = "test",
+            });
+            _boosters.Add(new Booster()
+            {
+                BoosterID = "test booster 2",
+                Series = "booster 2 series",
+                ReleaseDate = DateTime.Parse("1994-01-28"),
+                Abbreviation = "ser",
+            });
+            _boosters.Add(new Booster()
+            {
+                BoosterID = "test booster 3",
+                Series = "series",
+                ReleaseDate = DateTime.Parse("2003-10-10"),
+                Abbreviation = "abv",
+            });
         }
 
         /// <summary>
@@ -161,7 +185,35 @@ namespace DataAccessFakes
 
             return resultCard;
         }
-        
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
+        public List<Card> SelectCardsByReleaseDate(DateTime releaseDate)
+        {
+            List<Card> results = new List<Card>();
+            string boosterID = "";
+
+            foreach (Booster booster in _boosters)
+            {
+                if (booster.ReleaseDate == releaseDate)
+                {
+                    boosterID = booster.BoosterID;
+                    break;
+                }
+            }
+
+            foreach (Card card in _cards)
+            {
+                if (card.BoosterID == boosterID)
+                { 
+                    results.Add(card);
+                }
+            }
+
+            return results;
+        }
+
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
@@ -233,14 +285,6 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
-        public Dictionary<int, Card> SelectCardsByBoosterID(string boosterID)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
         public Dictionary<int, List<MoveVM>> SelectCardMoves()
         {
             Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
@@ -283,14 +327,6 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
-        public Dictionary<int, List<MoveVM>> SelectCardMovesByBoosterID(string boosterID)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
         public Dictionary<int, List<string>> SelectCardAlternateArts()
         {
             Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
@@ -328,14 +364,6 @@ namespace DataAccessFakes
             }
 
             return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public Dictionary<int, List<string>> SelectCardAlternateArtsByBoosterID(string boosterID)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
