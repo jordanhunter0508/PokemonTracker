@@ -47,7 +47,6 @@
                     <DataGridTextColumn Header="Element" Binding="{Binding ElementTypeID}"/>
                     <DataGridTextColumn Header="Rarity" Binding="{Binding Rarity}"/>
 
-
                     <!-- Button Column -->
                     <DataGridTemplateColumn x:Name="grdButton">
                         <DataGridTemplateColumn.CellTemplate>

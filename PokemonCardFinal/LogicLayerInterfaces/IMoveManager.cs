@@ -88,12 +88,39 @@ namespace LogicLayerInterfaces
         public bool AddMoveCost(MoveCost cost);
 
         /// <summary>
-        /// Passes parameters to <see href="DeleteMove(string)"/><br/>
+        /// Changes the Move at moveID in the database to the
+        /// paramater object.
+        /// </summary>
+        /// <param name="moveVM">New MoveVM object to update the old field at moveID</param>
+        /// <returns>Returns true if the MoveVM was updated successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if there was a connection error.</exception>
+        public bool EditMoveVM(MoveVM moveVM);
+
+        /// <summary>
+        /// Passes parameters to <see href="UpdateMove(Move)"/><br/>
+        /// Then returns true if the record was updated successfully.
+        /// </summary>
+        /// <param name="move">New Move object to update the old field at moveID</param>
+        /// <returns>Returns true if the Move was updated successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connecting</exception>
+        public bool EditMove(Move move);
+
+        /// <summary>
+        /// Passes parameters to <see href="DeleteMove(int)"/><br/>
         /// Then returns true if the record was deleted successfully
         /// </summary>
         /// <param name="moveID">Used to find the Move</param>
         /// <returns>Returns true if the Move and its related rows were deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if there was a connection error</exception>
         public bool DeleteMove(int moveID);
+
+        /// <summary>
+        /// Passes parameters to <see href="DeleteMoveCost(int)"/><br/>
+        /// Then returns true if the record was deleted successfully
+        /// </summary>
+        /// <param name="moveID">Id of the Move in the database to delete.</param>
+        /// <returns>Returns true if the Move and its related rows were deleted successfully</returns>
+        /// <exception cref="ApplicationException">Throws if there was a connection error</exception>
+        public bool DeleteMoveCost(int moveID);
     }
 }

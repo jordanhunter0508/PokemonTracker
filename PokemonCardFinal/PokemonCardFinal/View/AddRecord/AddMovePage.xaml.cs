@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using DataDomain;
 using LogicLayer;
@@ -21,6 +22,7 @@ namespace PokemonCardFinal.View.AddRecord
         {
             InitializeComponent();
             _moveManager = new MoveManager();
+            _moveVM = new MoveVM();
             _isAddMode = true;
         }
 
@@ -39,9 +41,10 @@ namespace PokemonCardFinal.View.AddRecord
             LoadElementGrid();
             if (!_isAddMode)
             {
-                txtName.Focus();
+                txtName.IsEnabled = false;
                 txtName.Text = _moveVM.Name;
                 txtDamage.Text = _moveVM.Damage.ToString();
+                txtDescription.Focus();
                 txtDescription.Text = _moveVM.Description;
                 DisplayCmbElement();
                 btnClear.Content = "Go Back";
@@ -120,26 +123,31 @@ namespace PokemonCardFinal.View.AddRecord
 
         private void EditModeSaveButton()
         {
-            //try
-            //{
-            //    string name = txtName.Text;
-            //    MoveVM moveVM = BuildMoveVM();
+            try
+            {
+                string name = txtName.Text;
+                BuildMoveVM();
 
-            //    if (_moveManager.EditMove(moveVM))
-            //    {
-            //        MessageBox.Show("The move " + name + " was successfully created.");
-            //        ClearTextAreas();
-            //        txtName.Focus();
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("The move " + name + " was not created.");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
+                Debug.WriteLine("Start foreach");
+                foreach (var cost in _moveVM.Costs)
+                {
+                    Debug.WriteLine(cost.ElementType + " " + cost.MoveID + " " + cost.Quantity);
+                }
+                Debug.WriteLine("End foreach");
+                if (_moveManager.EditMoveVM(_moveVM))
+                {
+                    MessageBox.Show("The move " + name + " was successfully updated.");
+                    DisplayListViewPage();
+                }
+                else
+                {
+                    MessageBox.Show("The move " + name + " was not updated.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void CreateModeSaveButton()
@@ -165,8 +173,6 @@ namespace PokemonCardFinal.View.AddRecord
                 MessageBox.Show(ex.Message);
             }
         }
-
-        
 
         private void LoadElementGrid()
         {
@@ -227,27 +233,36 @@ namespace PokemonCardFinal.View.AddRecord
             }
             else if (txtElement1.IsEnabled && !int.TryParse(txtElement1.Text, out quantity))
             {
-                MessageBox.Show("Quantity field 1 must be a whole number.");
+                MessageBox.Show("Quantity must be a whole number.");
                 txtElement1.SelectAll();
                 txtElement1.Focus();
                 isValid = false;
             }
             else if (txtElement2.IsEnabled && !int.TryParse(txtElement2.Text, out quantity))
             {
-                MessageBox.Show("Quantity field 2 must be a whole number.");
+                MessageBox.Show("Quantity must be a whole number.");
                 txtElement2.SelectAll();
                 txtElement2.Focus();
                 isValid = false;
             }
             else if (txtElement3.IsEnabled && !int.TryParse(txtElement3.Text, out quantity))
             {
-                MessageBox.Show("Quantity field 3 must be a whole number.");
+                MessageBox.Show("Quantity must be a whole number.");
                 txtElement3.SelectAll();
                 txtElement3.Focus();
                 isValid = false;
             }
+            // if two combo boxs are the same and not element 0 (the placeholder)
+            // then they must be the same element
+            else if ((cmbElement1.SelectedIndex == cmbElement2.SelectedIndex && cmbElement1.SelectedIndex != 0) ||
+                (cmbElement1.SelectedIndex == cmbElement3.SelectedIndex && cmbElement1.SelectedIndex != 0) ||
+                (cmbElement2.SelectedIndex == cmbElement3.SelectedIndex && cmbElement2.SelectedIndex != 0))
+            {
+                MessageBox.Show("Please make sure you haven't selected duplicate elements.");
+                isValid = false;
+            }
 
-            return isValid;
+                return isValid;
         }
 
         private void ClearTextAreas()
@@ -278,13 +293,10 @@ namespace PokemonCardFinal.View.AddRecord
             string description = txtDescription.Text;
             int damage = Convert.ToInt32(txtDamage.Text);
 
-            _moveVM = new MoveVM()
-            {
-                Name = name,
-                Damage = damage,
-                Description = description,
-                Costs = CreateMoveCost()
-            };
+            _moveVM.Name = name;
+            _moveVM.Damage = damage;
+            _moveVM.Description = description;
+            _moveVM.Costs = CreateMoveCost();
         }
 
         private List<MoveCost> CreateMoveCost()
@@ -326,16 +338,19 @@ namespace PokemonCardFinal.View.AddRecord
             if (_moveVM.Costs.Count >= 1)
             {
                 txtElement1.Text = _moveVM.Costs[0].Quantity.ToString();
+                txtElement1.IsEnabled = true;
                 cmbElement1.SelectedValue = _moveVM.Costs[0].ElementType.ToString().ToLower();
             }
             if (_moveVM.Costs.Count >= 2)
             {
                 txtElement2.Text = _moveVM.Costs[1].Quantity.ToString();
+                txtElement2.IsEnabled = true;
                 cmbElement2.SelectedValue = _moveVM.Costs[1].ElementType.ToString().ToLower();
             }
             if (_moveVM.Costs.Count >= 3)
             {
                 txtElement3.Text = _moveVM.Costs[2].Quantity.ToString();
+                txtElement3.IsEnabled = true;
                 cmbElement3.SelectedValue = _moveVM.Costs[2].ElementType.ToString().ToLower();
             }
         }

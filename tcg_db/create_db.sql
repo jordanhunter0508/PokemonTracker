@@ -1074,6 +1074,24 @@ AS
 	END
 GO
 
+PRINT '*** creating sp_update_move ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_move]
+	(	
+		@MoveID			[int],
+		@Name			[nvarchar](30),
+		@Damage			[int],
+		@Description	[nvarchar](200)
+	)	
+AS
+	BEGIN
+		UPDATE	[dbo].[Move]
+		SET		[Move].[Name] = @Name,
+				[Move].[Damage] = @Damage,
+				[Move].[Description] = @Description
+		WHERE	[Move].[MoveID] = @MoveID;
+	END
+GO
 
 PRINT '*** creating sp_delete_move ***'
 GO
@@ -1086,6 +1104,20 @@ AS
 		DELETE 	[dbo].[Move]
 		WHERE	[Move].[MoveID] = @MoveID
 		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_delete_move_cost ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_move_cost]
+	(	
+		@MoveID			[int]
+	)	
+AS
+	BEGIN
+		DELETE 	[dbo].[MoveCost]
+		WHERE	[MoveCost].[MoveID] = @MoveID
+		RETURN 	@@ROWCOUNT;
 	END
 GO
 

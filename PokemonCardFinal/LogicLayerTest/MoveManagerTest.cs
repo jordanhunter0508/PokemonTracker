@@ -480,7 +480,7 @@ public class MoveManagerTest
     }
 
     [TestMethod]
-    public void DeleteMoveReturnsTrueWithValidID() 
+    public void TestDeleteMoveReturnsTrueWithValidID() 
     {
         // arrange
         const int moveID = 1;
@@ -495,7 +495,7 @@ public class MoveManagerTest
     }
 
     [TestMethod]
-    public void DeleteMoveReturnsFalseWithInvalidID()
+    public void TestDeleteMoveReturnsFalseWithInvalidID()
     {
         // arrange
         const int moveID = 999;
@@ -507,5 +507,290 @@ public class MoveManagerTest
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeleteMoveCostReturnsTrueWithValidID()
+    {
+        // arrange
+        const int moveID = 1;
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.DeleteMoveCost(moveID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeleteMoveCostReturnsFalseWithInvalidID()
+    {
+        // arrange
+        const int moveID = 999;
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _moveManager.DeleteMoveCost(moveID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestEditMoveReturnsTrueWithValidID()
+    {
+        // arrange
+        Move move = new Move()
+        {
+            MoveID = 1,
+            Name = "test move 11",
+            Damage = 1000,
+            Description = "Test EditMove Returns False"
+        };
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.EditMove(move);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestEditMoveReturnsFalseWithInvalidID()
+    {
+        // arrange
+        Move move = new Move() 
+        {
+            MoveID = 999,
+            Name = "test move 1",
+            Damage = 1000,
+            Description = "Test EditMove Returns False"
+        };
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _moveManager.EditMove(move);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestEditMoveReturnsFalseWithBlankMove()
+    {
+        // arrange
+        Move move = new Move();
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _moveManager.EditMove(move);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestEditMoveThrowsArgumentNullExceptionWithNullMove()
+    {
+        // arrange
+        Move move = null;
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _moveManager.EditMove(move);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestEditMoveVMReturnsTrueWithValidID()
+    {
+        // arrange
+        MoveVM move = new MoveVM()
+        {
+            MoveID = 1,
+            Name = "test move 11",
+            Damage = 1000,
+            Description = "Test EditMove Returns True",
+            Costs = new List<MoveCost>() 
+            {
+                new MoveCost()
+                {
+                    MoveID = 1,
+                    ElementType = "element",
+                    Quantity = 3
+                },
+                new MoveCost()
+                {
+                    MoveID = 1,
+                    ElementType = "new element",
+                    Quantity = 1
+                }
+            }
+        };
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.EditMoveVM(move);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestEditMoveVMReturnsTrueWithDuplicateMoveCost()
+    {
+        // arrange
+        MoveVM move = new MoveVM()
+        {
+            MoveID = 1,
+            Name = "test move 11",
+            Damage = 1000,
+            Description = "Test EditMove Returns True",
+            Costs = new List<MoveCost>() 
+            {
+                new MoveCost()
+                {
+                    MoveID = 1,
+                    ElementType = "element",
+                    Quantity = 1,
+                },
+                new MoveCost()
+                {
+                    MoveID = 1,
+                    ElementType = "test element",
+                    Quantity = 2,
+                }
+            }
+        };
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.EditMoveVM(move);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditMoveVMThrowsApplicationExceptionWithInvalidID()
+    {
+        // arrange
+        MoveVM move = new MoveVM()
+        {
+            MoveID = 999,
+            Name = "test move 11",
+            Damage = 1000,
+            Description = "Test EditMove Returns False",
+            Costs = new List<MoveCost>()
+            {
+                new MoveCost()
+                {
+                    MoveID = 1,
+                    ElementType = "element",
+                    Quantity = 3
+                },
+                new MoveCost()
+                {
+                    MoveID = 1,
+                    ElementType = "new element",
+                    Quantity = 1
+                }
+            }
+        };
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _moveManager.EditMoveVM(move);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestEditMoveVMReturnsFalseWithBlankMoveVM()
+    {
+        // arrange
+        MoveVM move = new MoveVM()
+        {
+            Costs = new List<MoveCost>()
+        };
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _moveManager.EditMoveVM(move);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestEditMoveVMReturnsTrueWithBlankMoveCost()
+    {
+        // arrange
+        MoveVM move = new MoveVM()
+        {
+            MoveID = 1,
+            Name = "test move 11",
+            Damage = 1000,
+            Description = "Test EditMove Returns True",
+            Costs = new List<MoveCost>()
+        };
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.EditMoveVM(move);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestEditMoveVMThrowsArgumentNullExceptionWithNullMoveVM()
+    {
+        // arrange
+        MoveVM move = null;
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.EditMoveVM(move);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditMoveVMThrowsApplicationExceptionWithNullMoveCost()
+    {
+        // arrange
+        MoveVM move = new MoveVM()
+        {
+            Costs = null
+        };
+        bool actualResult = false;
+
+        // act
+        actualResult = _moveManager.EditMoveVM(move);
+
+        // assert
+        // do nothing
     }
 }

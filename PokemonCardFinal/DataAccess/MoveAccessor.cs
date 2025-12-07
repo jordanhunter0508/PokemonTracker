@@ -255,7 +255,6 @@ namespace DataAccess
             {
                 conn.Close();
             }
-            Debug.WriteLine("Count in InsertMove: " + count);
             return count;
         }
 
@@ -309,6 +308,83 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_move";
             SqlCommand cmd = new SqlCommand(cmdText,conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
+            cmd.Parameters["@MoveID"].Value = moveID;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_update_move
+        /// </summary>
+        public int UpdateMove(Move move)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_update_move";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar,30);
+            cmd.Parameters.Add("@Damage", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar,200);
+
+            cmd.Parameters["@MoveID"].Value = move.MoveID;
+            cmd.Parameters["@Name"].Value = move.Name;
+            cmd.Parameters["@Damage"].Value = move.Damage;
+            cmd.Parameters["@Description"].Value = move.Description;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_delete_move_cost
+        /// </summary>
+        public int DeleteMoveCost(int moveID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_delete_move_cost";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);

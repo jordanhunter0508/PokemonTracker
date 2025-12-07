@@ -242,5 +242,68 @@ namespace DataAccessFakes
 
             return count;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/> used for testing
+        /// </summary>
+        public int UpdateMove(Move move)
+        {
+            int count = 0;
+            int index = -1;
+
+            for(int i = 0; i <_moves.Count; i++)
+            {
+                if (_moves[i].MoveID == move.MoveID)
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            try
+            {
+                if (index != -1)
+                {
+                    _moves[index].Name = move.Name;
+                    _moves[index].Damage = move.Damage;
+                    _moves[index].Description = move.Description;
+                    count = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/> used for testing
+        /// </summary>
+        public int DeleteMoveCost(int moveID)
+        {
+            int count = 0;
+            List<MoveCost> moveCosts = new List<MoveCost>();
+            MoveVM deletedMove = null;
+
+            foreach (MoveCost movecost in _moveCosts)
+            {
+                if (movecost.MoveID == moveID)
+                {
+                    moveCosts.Add(movecost);
+                    count = 1;
+                }
+            }
+
+            for (int i = 0; i < moveCosts.Count; i++)
+            {
+                _moveCosts.Remove(moveCosts[i]);
+            }
+
+            return count;
+        }
     }
 }

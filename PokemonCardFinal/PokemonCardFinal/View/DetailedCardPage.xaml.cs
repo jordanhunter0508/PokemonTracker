@@ -53,7 +53,7 @@ namespace PokemonCardFinal.View
             }
 
             if (IsCollectionView || _accessToken == null)
-            { 
+            {
                 btnAddCard.Visibility = Visibility.Collapsed;
             }
 
@@ -81,7 +81,7 @@ namespace PokemonCardFinal.View
             {
 
                 MessageBox.Show("Failed to get booster series.\n\n" + ex.Message);
-            }            
+            }
         }
 
         private void DisplayCardStats()
@@ -128,7 +128,7 @@ namespace PokemonCardFinal.View
                 MessageBox.Show("Failed to load a list of alternate arts.\n\n" + ex.Message);
             }
         }
-        
+
         private void DisplayMove()
         {
             if (_card.Moves.Count == 0)
@@ -143,17 +143,17 @@ namespace PokemonCardFinal.View
                 txtSecondMove.Visibility = Visibility.Collapsed;
 
                 MoveVM move = _card.Moves[0];
-                lblFirstMove.Content = move.Name+ ", " + move.TotalCost + " (" + move.ElementTypes + ")";
+                lblFirstMove.Content = move.Name + " " + move.Damage + ", " + move.TotalCost + " Energy (" + move.ElementTypes + ")";
                 txtFirstMove.Text = "Description: " + move.Description;
             }
             else
             {
                 MoveVM move = _card.Moves[0];
-                lblFirstMove.Content = move.Name + ", " + move.TotalCost + " (" + move.ElementTypes + ")";
+                lblFirstMove.Content = move.Name + " " + move.Damage + ", " + move.TotalCost + " Energy (" + move.ElementTypes + ")";
                 txtFirstMove.Text = "Description: " + move.Description;
 
                 move = _card.Moves[1];
-                lblSecondMove.Content = move.Name + ", " + move.TotalCost + " (" + move.ElementTypes + ")";
+                lblFirstMove.Content = move.Name + " " + move.Damage + ", " + move.TotalCost + " Energy (" + move.ElementTypes + ")";
                 txtSecondMove.Text = "Description: " + move.Description;
             }
         }
@@ -161,7 +161,7 @@ namespace PokemonCardFinal.View
         private void DisplayAbility()
         {
             if (_card.AbilityID == "none")
-            { 
+            {
                 grdAbility.Visibility = Visibility.Collapsed;
                 return;
             }
@@ -178,7 +178,7 @@ namespace PokemonCardFinal.View
             {
 
                 MessageBox.Show("Failed to get ability description.\n\n" + ex.Message);
-            } 
+            }
         }
 
         private void btnGoBack_Click(object sender, RoutedEventArgs e)
@@ -191,7 +191,7 @@ namespace PokemonCardFinal.View
         {
             if (_accessToken != null)
             {
-                AddCollectionCardWindow collectionWindow = new AddCollectionCardWindow(_accessToken,_card);
+                AddCollectionCardWindow collectionWindow = new AddCollectionCardWindow(_accessToken, _card);
                 collectionWindow.Owner = Window.GetWindow(this);
                 collectionWindow.ShowDialog();
             }

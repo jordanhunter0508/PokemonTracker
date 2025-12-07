@@ -8,6 +8,7 @@ using DataAccess;
 using DataAccessInterfaces;
 using DataDomain;
 using LogicLayerInterfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LogicLayer
 {
@@ -179,10 +180,14 @@ namespace LogicLayer
             bool result = false;
             bool valid = true;
 
+            if (moveVM == null)
+            {
+                throw new ArgumentNullException("Failed to add a Move. MoveVM was null.");
+            }
+
             try
             {
                 int moveID = AddMove(moveVM);
-                Debug.WriteLine("moveID in AddMoveVM: " + moveID);
 
                 foreach (MoveCost cost in moveVM.Costs)
                 {
@@ -271,6 +276,104 @@ namespace LogicLayer
             try
             {
                 result = (1 == _moveAccessor.DeleteMove(moveID));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to delete a move.", ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveManager"/>
+        /// </summary>
+        public bool EditMoveVM(MoveVM moveVM)
+        {
+            bool isEdited = false;
+            bool isValid = true;
+
+            if (moveVM == null)
+            {
+                throw new ArgumentNullException("Failed to update a move. MoveVM was null.");
+            }
+
+            try
+            {
+                if (!EditMove(moveVM))
+                {
+                    isValid = false;
+                }
+
+                DeleteMoveCost(moveVM.MoveID);
+
+                // Deletes each move then recreates it.
+                // Because the pk is a combo of two fk
+                // Someone couldn't update the element type of a card
+                // only the quantity
+                foreach (MoveCost cost in moveVM.Costs)
+                {
+                    cost.MoveID = moveVM.MoveID;
+                    Debug.WriteLine(cost.ElementType + " " + cost.MoveID + " " + cost.Quantity);
+                    if (!AddMoveCost(cost))
+                    {
+                        Debug.WriteLine("Inside if add fails.");
+                        isValid = false;
+                        break;
+                    }
+                    else { Debug.WriteLine("movecost added"); }
+                }
+
+                if (isValid)
+                {
+                    isEdited = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to update a move VM." , ex);
+            }
+
+            return isEdited;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveManager"/>
+        /// </summary>
+        public bool EditMove(Move move)
+        {
+            bool isEdited = false;
+
+            if (move == null)
+            {
+                throw new ArgumentNullException("Failed to update a move. Move was null.");
+            }
+
+            try
+            {
+                isEdited = (1 == _moveAccessor.UpdateMove(move));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to update a move.",ex);
+            }
+
+            return isEdited;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveManager"/>
+        /// </summary>
+        public bool DeleteMoveCost(int moveID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = (1 <= _moveAccessor.DeleteMoveCost(moveID));
             }
             catch (Exception ex)
             {

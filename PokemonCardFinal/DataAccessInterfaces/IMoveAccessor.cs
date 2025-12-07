@@ -55,11 +55,25 @@ namespace DataAccessInterfaces
         public int InsertMoveCost(MoveCost cost);
 
         /// <summary>
+        /// Updates the Move at moveID from the move.
+        /// </summary>
+        /// <param name="move">New Move object to update the old one.</param>
+        /// <returns>Returns 1 if it was successful.</returns>
+        public int UpdateMove(Move move);
+
+        /// <summary>
         /// Deletes the row from the database where MoveID matches on in the table.<br/>
         /// Also deletes the rows from MoveCost, CardMove
         /// </summary>
         /// <param name="moveID">MoveID of the row to delete.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public int DeleteMove(int moveID);
+
+        /// <summary>
+        /// Deletes the rows from the database where MoveID matches in the MoveCost table.
+        /// </summary>
+        /// <param name="moveID">MoveID of the rows to delete.</param>
+        /// <returns>Returns 1 if it was successful.</returns>
+        public int DeleteMoveCost(int moveID);
     }
 }
