@@ -274,5 +274,30 @@ namespace LogicLayer
 
             return isAdded;
         }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionManager"/>
+        /// </summary>
+        public bool AddCollection(Collection collection)
+        {
+            bool isAdded = false;
+
+            if (collection == null)
+            {
+                throw new ArgumentNullException("Failed to add collection. Collection was null.");
+            }
+
+            try
+            {
+                isAdded = (1 == _collectionAccessor.InsertCollection(collection));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("failed to add collection.", ex);
+            }
+
+            return isAdded;
+        }
     }
 }

@@ -219,7 +219,7 @@ CREATE TABLE [dbo].[Collection]
 	[UserID]				[int]				NOT NULL,
 	[CollectionTypeID]		[nvarchar](25)		NOT NULL,
 	[Name]					[nvarchar](50)		NOT NULL,
-	[Description]			[nvarchar](50)		NOT NULL	DEFAULT '',
+	[Description]			[nvarchar](150)		NOT NULL	DEFAULT '',
 	
 	CONSTRAINT [pk_collection_collectionid] PRIMARY KEY ([CollectionID] ASC),
 	CONSTRAINT [fk_collection_userid] FOREIGN KEY ([UserID]) REFERENCES [Users] ([UserID]),
@@ -1441,6 +1441,26 @@ AS
 			([PokemonCardID],[CollectionID],[Quantity],[Owned])
 		VALUES
 			(@PokemonCardID,@CollectionID,@Quantity,@Owned)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_insert_collection ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_collection]
+	(	
+		@UserID				[int],
+		@CollectionTypeID	[nvarchar](25),
+		@Name				[nvarchar](50),
+		@Description		[nvarchar](150)
+		
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[Collection]
+			([UserID],[CollectionTypeID],[Name],[Description])
+		VALUES
+			(@UserID,@CollectionTypeID,@Name,@Description)
 		RETURN @@ROWCOUNT;
 	END
 GO

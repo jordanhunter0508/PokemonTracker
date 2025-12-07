@@ -9,6 +9,11 @@
       Title="UserDeckPage" Loaded="Page_Loaded">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+    
         <Grid x:Name="grdEmpty" Visibility="Collapsed">
             <TextBlock FontSize="16" Margin="10"
             Text="You don't have any decks created."/>
@@ -26,5 +31,8 @@
                 <DataGridTextColumn Header="Deck Elements" Binding="{Binding Elements}"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Button x:Name="btnCreate" Grid.Row="1" Width="100" Height="35" Margin="10 0"
+                HorizontalAlignment="Right" Content="Create a Deck" Click="btnCreate_Click"/>
     </Grid>
 </Page>

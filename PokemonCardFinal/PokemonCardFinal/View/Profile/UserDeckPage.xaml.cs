@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PokemonCardFinal.View.Profile
 {
@@ -95,6 +96,22 @@ namespace PokemonCardFinal.View.Profile
         private void datDeck_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _selectedCollection = datDeck.SelectedItem as CollectionVM;
+        }
+
+        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                AddCollectionWindow collectionWindow = new AddCollectionWindow(_accessToken);
+                collectionWindow.Owner = Window.GetWindow(this);
+                collectionWindow.ShowDialog();
+
+                LoadDataGrid();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

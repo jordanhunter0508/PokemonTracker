@@ -303,6 +303,33 @@ namespace DataAccessFakes
             count = 1;
             return count;
         }
+
+        /// <summary>
+        /// Implements from <see cref="ICollectionAccessor"/> used for testing
+        /// </summary>
+        public int InsertCollection(Collection collection)
+        {
+            int count = 0;
+
+            // Represents the collection Type table in the database
+            string[] collectionTypeIDs = { "type1", "type2", "test" };
+            int[] userIDs = { 1, 2, 3 };
+
+            if (!collectionTypeIDs.Contains(collection.CollectionTypeID))
+            {
+                throw new Exception("Collection Type ID is invalid.");
+            }
+
+            if (!userIDs.Contains(collection.UserID))
+            {
+                throw new Exception("User ID is invalid.");
+            }
+
+            _collections.Add(collection);
+            count = 1;
+
+            return count;
+        }
     }
 
     internal class CollectionType

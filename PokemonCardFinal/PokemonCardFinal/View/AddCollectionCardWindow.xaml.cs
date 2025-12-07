@@ -37,6 +37,12 @@ namespace PokemonCardFinal.View
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadList();
+            btnSave.IsDefault = true;
+        }
+
+        private void LoadList()
+        {
             // Creates a list of the collection names
             // just incase the Collections is null
             try

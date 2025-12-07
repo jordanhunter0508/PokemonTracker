@@ -326,5 +326,47 @@ namespace DataAccess
 
             return count;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/>. Access the database
+        /// using sp_insert_collection
+        /// </summary>
+        public int InsertCollection(Collection collection)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_insert_collection";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@CollectionTypeID", System.Data.SqlDbType.NVarChar, 25);
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar,150);
+
+            cmd.Parameters["@UserID"].Value = collection.UserID;
+            cmd.Parameters["@CollectionTypeID"].Value = collection.CollectionTypeID;
+            cmd.Parameters["@Name"].Value = collection.Name;
+            cmd.Parameters["@Description"].Value = collection.Description;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
     }
 }

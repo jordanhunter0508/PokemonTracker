@@ -91,11 +91,21 @@ namespace PokemonCardFinal.View.Profile
 
         private void datCard_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (datCard.SelectedItem == null)
+            {
+                return;
+            }
+
             _selectedCard = datCard.SelectedItem as CollectionCardVM;
         }
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
+            if (_selectedCard == null)
+            {
+                return;
+            }
+
             string name = _selectedCard.Name;
 
             // Pop up window to confirm if the user wants to delete the deck

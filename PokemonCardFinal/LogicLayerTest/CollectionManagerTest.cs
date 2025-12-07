@@ -519,4 +519,88 @@ public class CollectionManagerTest
         // assert
         // do nothing
     }
+
+    [TestMethod]
+    public void TestAddCollectionReturnsTrueWithValidInput() 
+    {
+        // arrange
+        Collection collection = new Collection()
+        {
+            CollectionID = 5,
+            UserID = 2,
+            CollectionTypeID = "test",
+            Name = "test deck",
+            Description = "test add collection",
+        };
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.AddCollection(collection);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCollectionThrowsApplicationExceptionWithInvalidUserID() 
+    {
+        // arrange
+        Collection collection = new Collection()
+        {
+            CollectionID = 5,
+            UserID = 999,
+            CollectionTypeID = "test",
+            Name = "test deck",
+            Description = "test add collection",
+        };
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.AddCollection(collection);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCollectionThrowsApplicationExceptionWithInvalidCollectionTypeID() 
+    {
+        // arrange
+        Collection collection = new Collection()
+        {
+            CollectionID = 5,
+            UserID = 2,
+            CollectionTypeID = "failed",
+            Name = "test deck",
+            Description = "test add collection",
+        };
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.AddCollection(collection);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestAddCollectionThrowsArgumentNullExceptionWithNullCollection()
+    {
+        // arrange
+        Collection collection = null;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _collectionManager.AddCollection(collection);
+
+        // assert
+        // do nothing
+    }
 }

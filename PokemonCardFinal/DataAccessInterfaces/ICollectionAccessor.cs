@@ -57,8 +57,16 @@ namespace DataAccessInterfaces
         /// Inserts the parameters into the stored procedure to try
         /// and create a new record for a CollectionCard.
         /// </summary>
-        /// <param name="card">New CollectionCard object to insert.</param>
+        /// <param name="collectionCard">New CollectionCard object to insert.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public int InsertCollectionCard(CollectionCard collectionCard);
+
+        /// <summary>
+        /// Inserts the parameters into the stored procedure to try
+        /// and create a new record for a Collection.
+        /// </summary>
+        /// <param name="collection">New Collection object to insert.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int InsertCollection(Collection collection);
     }
 }

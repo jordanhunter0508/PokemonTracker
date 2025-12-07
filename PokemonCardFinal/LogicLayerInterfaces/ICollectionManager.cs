@@ -91,12 +91,21 @@ namespace LogicLayerInterfaces
         public bool DeleteCollectionCard(int collectionCardID);
 
         /// <summary>
-        /// Passes parameters to <see href="InsertCollectionCard()"/> Then returns true
+        /// Passes parameters to <see href="InsertCollectionCard(CollectionCard)"/> Then returns true
         /// if the record was updated successfully.
         /// </summary>
-        /// <param name="card">New CollectionCard object to be added to the database.</param>
+        /// <param name="collectionCard">New CollectionCard object to be added to the database.</param>
         /// <returns>Returns true if the CollectionCard was created successfully.</returns>
         /// <exception cref="ApplicationException">Throws if the card is already in the collection</exception>
         public bool AddCollectionCard(CollectionCard collectionCard);
+
+        /// <summary>
+        /// Passes parameters to <see href="InsertCollection(Collection)"/> Then returns true
+        /// if the record was updated successfully.
+        /// </summary>
+        /// <param name="collection">New Collection object to be added to the database.</param>
+        /// <returns>Returns true if the Collection was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the collection is already created, or invalid UserID.</exception>
+        public bool AddCollection(Collection collection);
     }
 }
