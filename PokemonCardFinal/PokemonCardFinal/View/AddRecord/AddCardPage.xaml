@@ -9,6 +9,152 @@
       Title="AddCardPage" Loaded="Page_Loaded">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         
+        <!--Card Info Grid-->
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label x:Name="lblCardInfo" Grid.Row="0"  Grid.Column="0" FontSize="18" Content="Card Info"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            
+            <!--Card Name-->
+            <Label x:Name="lblName" Grid.Row="1" Grid.Column="0" Content="Card Name:"
+                VerticalAlignment="Center"/>
+            <TextBox x:Name="txtName" Grid.Row="1" Grid.ColumnSpan="3" Width="150" Height="25" Margin="46 0 0 0"
+                HorizontalAlignment="Center" VerticalContentAlignment="Center"/>
+
+            <!--Combo Boxes for IDs-->
+            <ComboBox x:Name="cmbArtistID" Grid.Row="2" Grid.Column="0" Width="150" Height="25"
+                DisplayMemberPath="Name"/>
+            
+            <ComboBox x:Name="cmbAbility" Grid.Row="2" Grid.Column="1" Width="150" Height="25"
+                DisplayMemberPath="AbilityID"/>
+            
+            <ComboBox x:Name="cmbRarity" Grid.Row="3" Grid.Column="0" Width="150" Height="25"/>
+            <ComboBox x:Name="cmbRule" Grid.Row="3" Grid.Column="1" Width="150" Height="25"
+                DisplayMemberPath="RuleID"/>
+            <ComboBox x:Name="cmbElementType" Grid.Row="4" Grid.Column="0" Width="150" Height="25"/>
+            <ComboBox x:Name="cmbCardType" Grid.Row="4" Grid.Column="1" Width="150" Height="25"/>
+            
+            <!--Booster Information-->
+            <Label x:Name="lblBoosterNumber" Grid.Row="5" Grid.Column="0" Content="Booster Number:"
+                VerticalAlignment="Center"/>
+            <TextBox x:Name="txtBoosterNumber" Grid.Row="5" Grid.Column="0" Width="25" Height="25" Margin="10 0"
+                HorizontalAlignment="Right" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name="cmbBoosterID" Grid.Row="5" Grid.Column="1" Width="150" Height="25"/>
+        </Grid><!--End of Card Info Grid-->
+
+        <!--Card Stats Grid-->
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label x:Name="lblCardStats" Grid.Row="0" FontSize="18" Content="Card Stats"
+                    HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+            <!--Stage-->
+            <ComboBox x:Name="cmbStage" Grid.Row="1" Grid.Column="0" Width="150" Height="25"/>
+
+            <!--Weakness Type and Value-->
+            <Label x:Name="lblWeakness" Grid.Row="2" Grid.Column="0" Content="Weakness Value:"
+                VerticalAlignment="Center"/>
+            <TextBox x:Name="txtWeaknessValue" Grid.Row="2" Grid.Column="1" Width="25" Height="25"
+                HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name="cmbWeaknessType" Grid.Row="2" Grid.Column="2" Width="150" Height="25"/>
+
+            <!--Resistance Type and Value-->
+            <Label x:Name="lblResistance" Grid.Row="3" Grid.Column="0" Content="Resistance Value:"
+                VerticalAlignment="Center"/>
+            <TextBox x:Name="txtResistanceValue" Grid.Row="3" Grid.Column="1" Width="25" Height="25"
+                HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name="cmbResistanceType" Grid.Row="3" Grid.Column="2" Width="150" Height="25"/>
+
+            <!--Health-->
+            <Label x:Name="lblHealth" Grid.Row="4" Grid.Column="0" Content="Health:"
+                VerticalAlignment="Center"/>
+            <TextBox x:Name="txtHealth" Grid.Row="4" Grid.Column="1" Width="25" Height="25"
+                HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+
+            <!--Retreat Cost-->
+            <Label x:Name="lblRetreatCost" Grid.Row="5" Grid.Column="0" Content="Retreat Cost:"
+                VerticalAlignment="Center"/>
+            <TextBox x:Name="txtRetreatCost" Grid.Row="5" Grid.Column="1" Width="25" Height="25"
+                HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+        </Grid><!--End of the Card Stats Grid-->
+
+        <!--List Boxes for Moves and Alt Arts-->
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!--Move Section-->
+            <ListBox x:Name="lstMove" SelectionMode="Multiple" Width="175" Height="200" Grid.Column="0"
+                HorizontalAlignment="Left">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <!--Binds the IsSelected property from the ListBoxItem to the CheckBox-->
+                        <!--This way each row can be selected individually allowing to retive multiple moves-->
+                        <CheckBox Content="{Binding Name}"
+                            IsChecked="{Binding IsSelected,RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!--Alternate Art Section-->
+            <ListBox x:Name="lstAltArt" SelectionMode="Multiple" Width="175" Height="200" Grid.Column="1"
+                HorizontalAlignment="Left">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <!--Binds the IsSelected property from the ListBoxItem to the CheckBox-->
+                        <!--This way each row can be selected individually allowing to retive multiple moves-->
+                        <CheckBox Content="{Binding AlternateArtID}"
+                        IsChecked="{Binding IsSelected,RelativeSource={RelativeSource AncestorType=ListBoxItem}}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid><!--End of List Boxes Grid-->
+        
+        <!--Button Grid-->
+        <Grid Grid.Row="1" Grid.Column="1">
+            <!--Buttons-->
+            <Button x:Name="btnSave" Content="Save" Grid.Row="2" Grid.Column="0" Margin="0 20"
+                Width="100" Height=" 50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="btnSave_Click"/>
+            <Button x:Name="btnClear" Content="Clear" Grid.Row="2" Grid.Column="0" Margin="0 20"
+                Width="100" Height=" 50"  HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btnClear_Click"/>
+        </Grid><!--End of Button Grid-->
     </Grid>
 </Page>

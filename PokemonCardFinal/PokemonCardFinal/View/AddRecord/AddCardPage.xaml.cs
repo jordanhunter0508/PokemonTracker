@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataDomain;
+using LogicLayer;
+using LogicLayerInterfaces;
+using Microsoft.IdentityModel.Tokens;
+using PokemonCardFinal.View.ListRecords;
 
 namespace PokemonCardFinal.View.AddRecord
 {
@@ -21,16 +25,372 @@ namespace PokemonCardFinal.View.AddRecord
     /// </summary>
     public partial class AddCardPage : Page
     {
+        ICardManager _cardManager;
+        CardVM _cardVM;
+        AddEditContainerPage _containerPage;
         bool _isAddMode;
+
         public AddCardPage()
         {
             InitializeComponent();
+            _cardManager = new CardManager();
+            _cardVM = new CardVM();
             _isAddMode = true;
+        }
+
+        public AddCardPage(ICardManager cardManager, CardVM cardVM, AddEditContainerPage containerPage)
+        {
+            InitializeComponent();
+            _cardManager = cardManager;
+            _cardVM = cardVM;
+            _containerPage = containerPage;
+            _isAddMode = false;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadComboBoxes();
+            LoadListBox();
 
+            if (_isAddMode)
+            {
+                //
+            }
+            else
+            {
+                btnClear.Content = "Go Back";
+
+                // Disables all other tab items
+                _containerPage.DisplayTabItems(false);
+                _containerPage.tabCard.IsEnabled = true;
+            }
+
+            txtName.Focus();
+            btnSave.IsDefault = true;
+        }
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidateTextBoxes())
+            {
+                return;
+            }
+
+            if (_isAddMode)
+            {
+                CreateModeSaveButton();
+
+            }
+            else
+            {
+                //EditModeSaveButton();
+            }
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isAddMode)
+            {
+                ClearTextAreas();
+                txtName.Focus();
+
+            }
+            else
+            {
+                DisplayListViewPage();
+            }
+        }
+
+        private void LoadComboBoxes()
+        {
+            string[] cardTypes = { "Card Type", "Item", "Pokemon", "Stage", "Trainer" };
+            string[] rarities = { "Rarity", "Common", "Full Art", "Gallery", "Illustration Rare", "Rare", "Secret Rare", "Ultra Rare", "Uncommon" };
+            string[] stages = { "Stage", "Basic", "Stage 1", "Stage 2", "Mega", "VMAX", "VSTAR" };
+
+            try
+            {
+                List<string> elements = new ElementManager().GetElementTypeIDs();
+
+                // Sets all the combo box item sources
+                cmbArtistID.ItemsSource = new ArtistManager()
+                                            .GetArtists()
+                                            .Prepend(new Artist
+                                            {
+                                                ArtistID = 0,
+                                                GivenName = "Artists",
+                                                Surname = ""
+                                            });
+
+                cmbAbility.ItemsSource = new AbilityManager()
+                                            .GetAbilities()
+                                            .Prepend(new Ability()
+                                            {
+                                                AbilityID = "Abilities",
+                                            });
+
+                cmbBoosterID.ItemsSource = new BoosterManager()
+                                            .GetBoosterIDs()
+                                            .Prepend("Booster Set");
+
+
+                cmbRule.ItemsSource = new RuleManager()
+                                            .GetRules()
+                                            .Prepend(new PokemonRule()
+                                            {
+                                                RuleID = "Rule"
+                                            });
+
+                cmbCardType.ItemsSource = cardTypes;
+                cmbRarity.ItemsSource = rarities;
+                cmbStage.ItemsSource = stages;
+
+                cmbElementType.ItemsSource = elements.Prepend("Element Type");
+                cmbWeaknessType.ItemsSource = elements.Prepend("Weakness Type");
+                cmbResistanceType.ItemsSource = elements.Prepend("Resistance Type");
+
+                // set all SelectedIndex's to the default value
+
+                if (_isAddMode)
+                {
+                    ClearTextAreas();
+                }
+                else
+                {
+                    // auto filll
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to load combo boxes.\n\n" + ex.Message);
+            }
+        }
+
+        private void LoadListBox()
+        {
+            try
+            {
+                lstMove.ItemsSource = new MoveManager().GetMoveVMs().OrderBy(move => move.Name);
+                lstAltArt.ItemsSource = new AltArtManager().GetAlternateArts();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Failed to load list boxes.\n\n" + ex.Message);
+            }
+        }
+
+        private void ClearTextAreas()
+        {
+            cmbArtistID.SelectedIndex = 0;
+            cmbAbility.SelectedIndex = 0;
+            cmbBoosterID.SelectedIndex = 0;
+            cmbRule.SelectedIndex = 0;
+            cmbCardType.SelectedIndex = 0;
+            cmbRarity.SelectedIndex = 0;
+            cmbStage.SelectedIndex = 0;
+            cmbElementType.SelectedIndex = 0;
+            cmbWeaknessType.SelectedIndex = 0;
+            cmbResistanceType.SelectedIndex = 0;
+
+            txtBoosterNumber.Text = "";
+            txtHealth.Text = "";
+            txtName.Text = "";
+            txtResistanceValue.Text = "";
+            txtRetreatCost.Text = "";
+            txtWeaknessValue.Text = "";
+
+            lstMove.UnselectAll();
+            lstAltArt.UnselectAll();
+        }
+
+        private void DisplayListViewPage()
+        {
+            _containerPage.DisplayTabItems(true);
+            _containerPage.IsListView = true;
+            _containerPage.frmCard.Navigate(new CardRecordsPage());
+        }
+
+        private bool ValidateTextBoxes()
+        {
+            bool isValid = true;
+            int value = 0;
+
+            if (txtName.Text.IsNullOrEmpty() || txtName.Text.Length > 50)
+            {
+                txtName.Focus();
+                txtName.SelectAll();
+                isValid = false;
+                MessageBox.Show("Invalid Card Name.");
+            }
+            else if (txtBoosterNumber.Text.IsNullOrEmpty() || !int.TryParse(txtBoosterNumber.Text, out value))
+            {
+                txtBoosterNumber.Focus();
+                txtBoosterNumber.SelectAll();
+                isValid = false;
+                MessageBox.Show("Invalid Booster Number.");
+            }
+            else if (txtWeaknessValue.Text.IsNullOrEmpty() || !int.TryParse(txtWeaknessValue.Text, out value))
+            {
+                txtWeaknessValue.Focus();
+                txtWeaknessValue.SelectAll();
+                isValid = false;
+                MessageBox.Show("Invalid Weakness Value.");
+            }
+            else if (txtResistanceValue.Text.IsNullOrEmpty() || !int.TryParse(txtResistanceValue.Text, out value))
+            {
+                txtResistanceValue.Focus();
+                txtResistanceValue.SelectAll();
+                isValid = false;
+                MessageBox.Show("Invalid Resistance Value.");
+            }
+            else if (txtHealth.Text.IsNullOrEmpty() || !int.TryParse(txtHealth.Text, out value))
+            {
+                txtHealth.Focus();
+                txtHealth.SelectAll();
+                isValid = false;
+                MessageBox.Show("Invalid Health Value.");
+            }
+            else if (txtRetreatCost.Text.IsNullOrEmpty() || !int.TryParse(txtRetreatCost.Text, out value))
+            {
+                txtRetreatCost.Focus();
+                txtRetreatCost.SelectAll();
+                isValid = false;
+                MessageBox.Show("Invalid Retreat Cost.");
+            }
+            else if (cmbArtistID.SelectedIndex < 1)
+            {
+                isValid = false;
+                MessageBox.Show("Please select an artist.");
+            }
+            else if (cmbRarity.SelectedIndex < 1)
+            {
+                isValid = false;
+                MessageBox.Show("Please select a rarity.");
+            }
+            else if (cmbElementType.SelectedIndex < 1)
+            {
+                isValid = false;
+                MessageBox.Show("Please select an element type.");
+            }
+            else if (cmbCardType.SelectedIndex < 1)
+            {
+                isValid = false;
+                MessageBox.Show("Please select a card type.");
+            }
+            else if (cmbBoosterID.SelectedIndex < 1)
+            {
+                isValid = false;
+                MessageBox.Show("Please select a booster set.");
+            }
+            else if (cmbStage.SelectedIndex < 1)
+            {
+                isValid = false;
+                MessageBox.Show("Please select a stage.");
+            }
+
+            return isValid;
+        }
+
+        private void CreateModeSaveButton()
+        {
+            try
+            {
+                string name = txtName.Text;
+                BuildCardVM();
+
+                if (_cardManager.AddCardVM(_cardVM))
+                {
+                    MessageBox.Show("The card " + name + " was successfully created.");
+                    ClearTextAreas();
+                    txtName.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("The card " + name + " was not created.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void BuildCardVM()
+        {
+            try
+            {
+                // Bas Card Section
+                _cardVM.ArtistID = ((Artist)cmbArtistID.SelectedItem).ArtistID;
+                _cardVM.BoosterID = (string)cmbBoosterID.SelectedItem;
+                _cardVM.ElementTypeID = (string)cmbElementType.SelectedItem;
+                _cardVM.Name = txtName.Text;
+                _cardVM.BoosterNumber = Convert.ToInt32(txtBoosterNumber.Text);
+                _cardVM.CardType = (string)cmbCardType.SelectedItem;
+                _cardVM.Rarity = (string)cmbRarity.SelectedItem;
+                _cardVM.RetreatCost = Convert.ToInt32(txtRetreatCost.Text);
+                _cardVM.Health = Convert.ToInt32(txtHealth.Text);
+                _cardVM.Stage = (string)cmbStage.SelectedItem;
+
+                // If unselected assumes the card doesn't have an ability
+                if (cmbAbility.SelectedIndex == 0)
+                {
+                    _cardVM.AbilityID = "none";
+                }
+                else
+                {
+                    _cardVM.AbilityID = ((Ability)cmbAbility.SelectedItem).AbilityID;
+                }
+
+                // If unselected assumes the card doesn't have a pokemon rule
+                if (cmbRule.SelectedIndex == 0)
+                {
+                    _cardVM.PokemonRuleID = "none";
+                }
+                else
+                {
+                    _cardVM.PokemonRuleID = ((PokemonRule)cmbRule.SelectedItem).RuleID;
+                }
+
+                // If unselected assumes the card doesn't have a weakness type
+                if (cmbWeaknessType.SelectedIndex == 0)
+                {
+                    _cardVM.WeaknessType = "none";
+                    _cardVM.WeaknessValue = 0;
+                }
+                else
+                {
+                    _cardVM.WeaknessType = (string)cmbWeaknessType.SelectedItem;
+                    _cardVM.WeaknessValue = Convert.ToInt32(txtWeaknessValue.Text);
+                }
+
+                // If unselected assumes the card doesn't have a resistance type
+                if (cmbResistanceType.SelectedIndex == 0)
+                {
+                    _cardVM.ResistanceType = "none";
+                    _cardVM.ResistanceValue = 0;
+                }
+                else
+                {
+                    _cardVM.ResistanceType = (string)cmbResistanceType.SelectedItem;
+                    _cardVM.ResistanceValue = Convert.ToInt32(txtResistanceValue.Text);
+                }
+
+                // VM Section
+                _cardVM.Moves = lstMove.SelectedItems.Cast<MoveVM>().ToList();
+                if (lstAltArt.SelectedItems.Count == 0)
+                {
+                    _cardVM.AlternateArts = new List<string>() { "none" };
+                }
+                else
+                {
+                    _cardVM.AlternateArts = lstAltArt.SelectedItems.Cast<AlternateArt>().Select(altArt => altArt.AlternateArtID).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Failed to build the move.\n\n" + ex.Message);
+            }
         }
     }
 }

@@ -151,7 +151,7 @@ namespace LogicLayer
             List<CardVM> results = new List<CardVM>();
 
             try
-            {            
+            {
                 Dictionary<int, Card> cards = GetCards();
                 Dictionary<int, List<MoveVM>> moves = GetCardMoves();
                 Dictionary<int, List<string>> altArts = GetCardAlternateArts();
@@ -189,7 +189,7 @@ namespace LogicLayer
         {
             List<CardVM> results = new List<CardVM>();
 
-            if (name == null) 
+            if (name == null)
             {
                 throw new ArgumentNullException("Failed to get list of cards by name. Name was null.");
             }
@@ -205,7 +205,7 @@ namespace LogicLayer
             catch (Exception ex)
             {
 
-                throw new ApplicationException("Failed to get a list of cards by name.",ex);
+                throw new ApplicationException("Failed to get a list of cards by name.", ex);
             }
 
             return results;
@@ -487,15 +487,20 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
-        public bool AddCard(Card card)
+        public int AddCard(Card card)
         {
-            bool isAdded = false;
+            int id = -1;
 
             try
             {
                 ValidateCard(card);
 
-                isAdded = (1 == _cardAccessor.InsertCard(card));
+                id = _cardAccessor.InsertCard(card);
+
+                if (id == -1)
+                {
+                    throw new Exception("Failed to retrive id.");
+                }
             }
             catch (Exception ex)
             {
@@ -503,7 +508,7 @@ namespace LogicLayer
                 throw new ApplicationException("Failed to add card to the database.");
             }
 
-            return isAdded;
+            return id;
         }
 
         /// <summary>
@@ -607,7 +612,7 @@ namespace LogicLayer
 
             try
             {
-                isDeleted = (1 == _cardAccessor.DeleteCardAlternateArt(cardID,alternateArtID));
+                isDeleted = (1 == _cardAccessor.DeleteCardAlternateArt(cardID, alternateArtID));
             }
             catch (Exception ex)
             {
@@ -616,6 +621,55 @@ namespace LogicLayer
             }
 
             return isDeleted;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public bool AddCardVM(CardVM cardVM)
+        {
+            bool isAdded = false;
+            bool valid = true;
+
+            if (cardVM == null)
+            {
+                throw new ArgumentNullException("Failed to add a Move. MoveVM was null.");
+            }
+
+            try
+            {
+                cardVM.CardID = AddCard(cardVM);
+                foreach (MoveVM move in cardVM.Moves)
+                {
+                    DeleteCardMove(cardVM.CardID, move.MoveID);
+                    if (!AddCardMove(cardVM.CardID,move.MoveID))
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+
+                foreach (string altArt in cardVM.AlternateArts)
+                {
+                    DeleteCardAlternateArt(cardVM.CardID, altArt);
+                    if (!AddCardAlternateArt(cardVM.CardID, altArt))
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (valid)
+                {
+                    isAdded = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to add a move to the database\n", ex);
+            }
+
+            return isAdded; ;
         }
 
         /// <summary>
@@ -658,7 +712,7 @@ namespace LogicLayer
         /// <param name="moves">Dictionary where the key is the cardID and the value is the List of MoveVM for a card</param>
         /// <param name="altArts">Dictionary where the key is the cardID and the value is the List of alternate arts for a card</param>
         /// <returns>Returns a List of CardVMs from a combination of dictionaries</returns>
-        private List<CardVM> SaveCards(Dictionary<int, Card> cards, Dictionary<int, List<MoveVM>> moves, Dictionary<int, List<string>> altArts) 
+        private List<CardVM> SaveCards(Dictionary<int, Card> cards, Dictionary<int, List<MoveVM>> moves, Dictionary<int, List<string>> altArts)
         {
             List<CardVM> results = new List<CardVM>();
             foreach (var entry in cards)
@@ -683,7 +737,7 @@ namespace LogicLayer
         /// <summary>
         /// Throws an error if the card has any null string inside
         /// </summary>
-        private void ValidateCard(Card card) 
+        private void ValidateCard(Card card)
         {
             if (card == null)
             {
@@ -730,5 +784,6 @@ namespace LogicLayer
                 throw new ArgumentNullException("Failed to add card. Card's Stage was null.");
             }
         }
+
     }
 }

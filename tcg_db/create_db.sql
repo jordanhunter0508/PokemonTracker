@@ -1522,8 +1522,9 @@ AS
 			(@ArtistID,@AbilityID,@BoosterID,@PokemonRuleID,
 			 @ElementTypeID,@Name,@BoosterNumber,@CardType,
 			 @Rarity,@WeaknessType,@ResistanceType,@WeaknessValue,
-			 @ResistanceValue,@RetreatCost,@Health,@Stage)
-		RETURN @@ROWCOUNT;
+			 @ResistanceValue,@RetreatCost,@Health,@Stage);
+			 
+		SELECT SCOPE_IDENTITY();
 	END
 GO
 

@@ -11,5 +11,18 @@ namespace DataDomain
         public int ArtistID { get; set; }
         public string GivenName { get; set; }
         public string Surname { get; set; }
+
+        public string Name 
+        {
+            get 
+            {
+                string name = GivenName;
+                if (Surname.Replace(" ", "") != "")
+                {
+                    name += ", " + Surname;
+                }
+                return name;
+            }
+        }
     }
 }

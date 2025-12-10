@@ -47,6 +47,7 @@ namespace PokemonCardFinal.View.Profile
             InitializeComponent();
             _collectionManager = collectionManager;
             _collectionVM = collectionVM;
+            _collectionID = collectionVM.CollectionID;
             _accessToken = accessToken;
             _isDeckMode = true;
         }
@@ -145,10 +146,7 @@ namespace PokemonCardFinal.View.Profile
         {
             try
             {
-                if (!_isDeckMode)
-                {
-                    _collectionVM = _collectionManager.GetCollectionVMByCollectionID(_collectionID);
-                }
+                _collectionVM = _collectionManager.GetCollectionVMByCollectionID(_collectionID);
 
                 List<CollectionCardVM> collectionCardVM = _collectionManager.ConvertCollectionCardToVM(_collectionVM.Cards);
 

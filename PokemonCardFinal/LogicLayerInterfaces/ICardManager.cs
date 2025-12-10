@@ -124,13 +124,21 @@ namespace LogicLayerInterfaces
         public Dictionary<int, List<string>> GetCardAlternateArtsByCardName(string name);
 
         /// <summary>
+        /// Uses other Add and Delete methods to insert the new CardVM
+        /// </summary>
+        /// <param name="cardVM">New CardVM object to be added to the database.</param>
+        /// <returns>Returns true if the CardVM was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the boosterID boosterNumber and Rarity are already used.</exception>
+        public bool AddCardVM(CardVM cardVM);
+
+        /// <summary>
         /// Passes parameters to <see href="InsertCard(Card)"/> Then returns true
         /// if the record was updated successfully.
         /// </summary>
         /// <param name="card">New Card object to be added to the database.</param>
         /// <returns>Returns true if the Card was created successfully.</returns>
         /// <exception cref="ApplicationException">Throws if the boosterID boosterNumber and Rarity are already used.</exception>
-        public bool AddCard(Card card);
+        public int AddCard(Card card);
 
         /// <summary>
         /// Passes parameters to <see href="UpdateCard(Card)"/><br/>

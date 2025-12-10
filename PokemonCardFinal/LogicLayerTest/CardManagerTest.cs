@@ -1313,7 +1313,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 5,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -1331,8 +1331,8 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        const bool expected = true;
-        bool actual = false;
+        const int expected = 5;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1366,7 +1366,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1400,7 +1400,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1434,7 +1434,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1469,7 +1469,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1504,7 +1504,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1541,7 +1541,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1576,7 +1576,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1610,7 +1610,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1644,7 +1644,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1678,7 +1678,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1712,7 +1712,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1746,7 +1746,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1780,7 +1780,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1814,7 +1814,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1848,7 +1848,7 @@ public class CardManagerTest
             Health = 100,
             Stage = "test stage"
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1882,7 +1882,7 @@ public class CardManagerTest
             Health = 100,
             Stage = null
         };
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1897,7 +1897,7 @@ public class CardManagerTest
     {
         // arrange
         Card card = null;
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1912,7 +1912,7 @@ public class CardManagerTest
     {
         // arrange
         Card card = new Card();
-        bool actual = false;
+        int actual = 1;
 
         // act
         actual = _cardManager.AddCard(card);
@@ -1928,7 +1928,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -1963,7 +1963,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 999,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -1997,7 +1997,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "failed",
             BoosterID = "test booster 3",
@@ -2031,7 +2031,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "failed",
@@ -2066,7 +2066,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -2101,7 +2101,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -2138,7 +2138,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 1,
             AbilityID = "test ability 1",
             BoosterID = "test booster 1",
@@ -2173,7 +2173,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = null,
             BoosterID = "test booster 3",
@@ -2207,7 +2207,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = null,
@@ -2241,7 +2241,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -2275,7 +2275,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -2309,7 +2309,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -2343,7 +2343,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -2377,7 +2377,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -2411,7 +2411,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -2445,7 +2445,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -2479,7 +2479,7 @@ public class CardManagerTest
         // arrange
         Card card = new Card()
         {
-            CardID = 4,
+            CardID = 2,
             ArtistID = 2,
             AbilityID = "test ability 1",
             BoosterID = "test booster 3",
@@ -2535,30 +2535,68 @@ public class CardManagerTest
         // asseret
         // do nothig
     }
+
+    [TestMethod]
+    public void TestAddCardVMReturnsTrueWithValidCardVM()
+    {
+        // arrange
+        CardVM cardVM = new CardVM()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 2",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 1",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage",
+            Moves = new List<MoveVM>()
+            { 
+                new MoveVM()
+                {
+                    MoveID = 1,
+                },
+                new MoveVM()
+                {
+                    MoveID = 2,
+                }
+            },
+            AlternateArts = new List<string>()
+            {
+                "test Alternate Art 1"
+            },
+        };
+        const bool expectd = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCardVM(cardVM);
+
+        // assert
+        Assert.AreEqual(expectd, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestAddCardVMThrowsArgumentNullExceptionWithValidCardVM()
+    {
+        // arrange
+        CardVM cardVM = null;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCardVM(cardVM);
+
+        // assert
+        // do nothing
+    }
 }
-
-
-/* Add a card and edit
- * valid
- * 
- * invalid artistid
- * invalid abilityid
- * invalid boosterid
- * invalid pokemonruleid
- * invalid elementtypeid
- * invalid boosterID, bosoterNumber, rarity combo
- * 
- * null ability
- * null bosoterid
- * null pokemonruleid
- * null elementtypeid
- * null name
- * null cardtype
- * null rarity
- * null weaknesstype
- * null resistancetype
- * null stage
- * 
- * null card object
- * Blank card
- */

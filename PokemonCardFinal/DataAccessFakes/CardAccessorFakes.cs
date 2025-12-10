@@ -439,7 +439,7 @@ namespace DataAccessFakes
             }
 
             _cards.Add(card);
-            count = 1;
+            count = card.CardID;
 
             return count;
         }
@@ -491,10 +491,7 @@ namespace DataAccessFakes
                     throw new Exception("Unique Constraint (BoosterID, BoosterNumber, Rarity) already used.");
                 }
 
-                if (_cards[i].CardID == card.CardID &&
-                    _cards[i].BoosterID == card.BoosterID &&
-                    _cards[i].BoosterNumber == card.BoosterNumber &&
-                    _cards[i].Rarity == card.Rarity) 
+                if (_cards[i].CardID == card.CardID) 
                 {
                     index = i;
                 }

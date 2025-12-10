@@ -49,7 +49,7 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                <Label x:Name="lblCardStats" Grid.Row="0" FontSize="18" Content="Card Stats" Margin="10 0"
+                <Label x:Name="lblCardStats" Grid.Row="0" FontSize="16" Content="Card Stats" Margin="10 0"
                        HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Label x:Name="lblHealth" Grid.Row="1" Content="Health: " Margin="10 0"
                        HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -69,7 +69,7 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label x:Name="lblAltArt" Grid.Row="0" FontSize="18"  Content="Alternate Arts"/>
+                <Label x:Name="lblAltArt" Grid.Row="0" FontSize="16"  Content="Alternate Arts"/>
                 <ListView x:Name="lstAltArt" Grid.Row="1" Width="200" Height="75" Margin="15 10"
                         VerticalAlignment="Top" HorizontalAlignment="Left" IsHitTestVisible="False"/>
             </Grid> <!--End of Alternate Art Grid-->

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using PokemonCardFinal.View.AddRecord;
 
 namespace PokemonCardFinal.View.ListRecords
 {
@@ -39,7 +40,27 @@ namespace PokemonCardFinal.View.ListRecords
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            if (_selectedCard == null)
+            {
+                return;
+            }
 
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+            // Navigate the main frame to the new outer page
+            AddEditContainerPage containerPage = new AddEditContainerPage();
+            mainWindow.frmMain.Navigate(containerPage);
+
+            // When the outer page is loaded change the inner page
+            // to AddCardPage
+            containerPage.Loaded += (s, args) =>
+            {
+                containerPage.IsListView = false;
+                containerPage.tabController.SelectedItem = containerPage.tabCard;
+                containerPage.frmCard.Navigate
+                (
+                    new AddCardPage(_cardManager,_selectedCard,containerPage)
+                );
+            };
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)

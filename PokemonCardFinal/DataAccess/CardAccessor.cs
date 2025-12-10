@@ -658,7 +658,13 @@ namespace DataAccess
             {
                 conn.Open();
 
-                count = cmd.ExecuteNonQuery();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    count = Convert.ToInt32(reader.GetDecimal(0));
+                }
             }
             catch (Exception ex)
             {
