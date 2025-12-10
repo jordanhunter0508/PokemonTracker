@@ -80,10 +80,61 @@ namespace DataAccessInterfaces
         public Dictionary<int, List<string>> SelectCardAlternateArtsByCardName(string name);
 
         /// <summary>
+        /// Inserts the parameters into the stored procedure to try
+        /// and create a new record for a Card.
+        /// </summary>
+        /// <param name="card">New Card object to insert.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int InsertCard(Card card);
+
+        /// <summary>
+        /// Updates the fields in the Card table at the cardID.
+        /// </summary>
+        /// <param name="card">New Card object to update the old field at cardID.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int UpdateCard(Card card);
+
+        /// <summary>
         /// Deletes the row from the database where cardID matches in the table.
         /// </summary>
         /// <param name="cardID">CardID of the row to delete.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public int DeleteCard(int cardID);
+
+        /// <summary>
+        /// Inserts the parameters into the stored procedure to try
+        /// and create a new record for a CardMove.
+        /// </summary>
+        /// <param name="cardID">CardID of the row to insert.</param>
+        /// <param name="moveID">MoveID of the row to insert.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int InsertCardMove(int cardID, int moveID);
+
+        /// <summary>
+        /// Deletes the row from the database where cardID <br/>
+        /// and the moveID matches in the CardMove table.
+        /// </summary>
+        /// <param name="cardID">CardID of the row to delete.</param>
+        /// <param name="moveID">MoveID of the row to delete.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int DeleteCardMove(int cardID, int moveID);
+
+        /// <summary>
+        /// Inserts the parameters into the stored procedure to try
+        /// and create a new record for a CardAlternateArt.
+        /// </summary>
+        /// <param name="cardID">CardID of the row to insert.</param>
+        /// <param name="alternateArtID">MoveID of the row to insert.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int InsertCardAlternateArt(int cardID, string alternateArtID);
+
+        /// <summary>
+        /// Deletes the row from the database where cardID <br/> 
+        /// and the alternateArtID matches in the CardAlternateArt table.
+        /// </summary>
+        /// <param name="cardID">CardID of the row to delete.</param>
+        /// <param name="alternateArtID">AlternateArtID of the row to delete.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int DeleteCardAlternateArt(int cardID, string alternateArtID);
     }
 }

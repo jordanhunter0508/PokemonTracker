@@ -607,7 +607,285 @@ namespace DataAccess
             return count;
         }
 
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_insert_card
+        /// </summary>
+        public int InsertCard(Card card)
+        {
+            int count = 0;
 
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_insert_card";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@AbilityID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@PokemonRuleID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@ElementTypeID", System.Data.SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@BoosterNumber", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@CardType", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Rarity", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@WeaknessType", System.Data.SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@ResistanceType", System.Data.SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@WeaknessValue", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@ResistanceValue", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@RetreatCost", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@Health", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@Stage", System.Data.SqlDbType.NVarChar,30);
+
+            cmd.Parameters["@ArtistID"].Value = card.ArtistID;
+            cmd.Parameters["@AbilityID"].Value = card.AbilityID;
+            cmd.Parameters["@BoosterID"].Value = card.BoosterID;
+            cmd.Parameters["@PokemonRuleID"].Value = card.PokemonRuleID;
+            cmd.Parameters["@ElementTypeID"].Value = card.ElementTypeID;
+            cmd.Parameters["@Name"].Value = card.Name;
+            cmd.Parameters["@BoosterNumber"].Value = card.BoosterNumber;
+            cmd.Parameters["@CardType"].Value = card.CardType;
+            cmd.Parameters["@Rarity"].Value = card.Rarity;
+            cmd.Parameters["@WeaknessType"].Value = card.WeaknessType;
+            cmd.Parameters["@ResistanceType"].Value = card.ResistanceType;
+            cmd.Parameters["@WeaknessValue"].Value = card.WeaknessValue;
+            cmd.Parameters["@ResistanceValue"].Value = card.ResistanceValue;
+            cmd.Parameters["@RetreatCost"].Value = card.RetreatCost;
+            cmd.Parameters["@Health"].Value = card.Health;
+            cmd.Parameters["@Stage"].Value = card.Stage;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_update_card
+        /// </summary>
+        public int UpdateCard(Card card)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_update_card";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@AbilityID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@BoosterID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@PokemonRuleID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@ElementTypeID", System.Data.SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@BoosterNumber", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@CardType", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Rarity", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@WeaknessType", System.Data.SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@ResistanceType", System.Data.SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@WeaknessValue", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@ResistanceValue", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@RetreatCost", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@Health", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@Stage", System.Data.SqlDbType.NVarChar, 30);
+
+            cmd.Parameters["@PokemonCardID"].Value = card.CardID;
+            cmd.Parameters["@ArtistID"].Value = card.ArtistID;
+            cmd.Parameters["@AbilityID"].Value = card.AbilityID;
+            cmd.Parameters["@BoosterID"].Value = card.BoosterID;
+            cmd.Parameters["@PokemonRuleID"].Value = card.PokemonRuleID;
+            cmd.Parameters["@ElementTypeID"].Value = card.ElementTypeID;
+            cmd.Parameters["@Name"].Value = card.Name;
+            cmd.Parameters["@BoosterNumber"].Value = card.BoosterNumber;
+            cmd.Parameters["@CardType"].Value = card.CardType;
+            cmd.Parameters["@Rarity"].Value = card.Rarity;
+            cmd.Parameters["@WeaknessType"].Value = card.WeaknessType;
+            cmd.Parameters["@ResistanceType"].Value = card.ResistanceType;
+            cmd.Parameters["@WeaknessValue"].Value = card.WeaknessValue;
+            cmd.Parameters["@ResistanceValue"].Value = card.ResistanceValue;
+            cmd.Parameters["@RetreatCost"].Value = card.RetreatCost;
+            cmd.Parameters["@Health"].Value = card.Health;
+            cmd.Parameters["@Stage"].Value = card.Stage;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_insert_card_move
+        /// </summary>
+        public int InsertCardMove(int cardID, int moveID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_insert_card_move";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@PokemonCardID"].Value = cardID;
+            cmd.Parameters["@MoveID"].Value = moveID;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_delete_card_move
+        /// </summary>
+        public int DeleteCardMove(int cardID, int moveID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_delete_card_move";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@PokemonCardID"].Value = cardID;
+            cmd.Parameters["@MoveID"].Value = moveID;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_insert_card_alternate_art
+        /// </summary>
+        public int InsertCardAlternateArt(int cardID, string alternateArtID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_insert_card_alternate_art";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 50);
+
+            cmd.Parameters["@PokemonCardID"].Value = cardID;
+            cmd.Parameters["@AlternateArtID"].Value = alternateArtID;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_delete_card_alternate_art
+        /// </summary>
+        public int DeleteCardAlternateArt(int cardID, string alternateArtID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_delete_card_alternate_art";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar,50);
+
+            cmd.Parameters["@PokemonCardID"].Value = cardID;
+            cmd.Parameters["@AlternateArtID"].Value = alternateArtID;
+
+            try
+            {
+                conn.Open();
+
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
 
 
         /// <summary>
@@ -649,7 +927,5 @@ namespace DataAccess
                 });
             }
         }
-
-        
     }
 }

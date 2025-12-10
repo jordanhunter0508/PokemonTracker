@@ -124,6 +124,24 @@ namespace LogicLayerInterfaces
         public Dictionary<int, List<string>> GetCardAlternateArtsByCardName(string name);
 
         /// <summary>
+        /// Passes parameters to <see href="InsertCard(Card)"/> Then returns true
+        /// if the record was updated successfully.
+        /// </summary>
+        /// <param name="card">New Card object to be added to the database.</param>
+        /// <returns>Returns true if the Card was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the boosterID boosterNumber and Rarity are already used.</exception>
+        public bool AddCard(Card card);
+
+        /// <summary>
+        /// Passes parameters to <see href="UpdateCard(Card)"/><br/>
+        /// Then returns true if the record was updated successfully.
+        /// </summary>
+        /// <param name="card">New Card object to update the old field at cardID</param>
+        /// <returns>Returns true if the Card was updated successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the boosterId, boosterNumber and rarity are already used.</exception>
+        public bool EditCard(Card card);
+
+        /// <summary>
         /// Passes parameters to <see href="DeleteCard(int)"/><br/>
         /// Then returns true if the record was deleted successfully
         /// </summary>
@@ -131,6 +149,46 @@ namespace LogicLayerInterfaces
         /// <returns>Returns true if the Card, and it's components was deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if there was a problem connecting to the database.</exception>
         public bool DeleteCard(int cardID);
+
+        /// <summary>
+        /// Passes parameters to <see href="InsertCardMove(int,int)"/> Then returns true
+        /// if the record was updated successfully.
+        /// </summary>
+        /// <param name="cardID">Used to find the CardMove.</param>
+        /// <param name="moveID">Used to find the CardMove.</param>
+        /// <returns>Returns true if the CardMove was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the CardMove already exists.</exception>
+        public bool AddCardMove(int cardID, int moveID);
+
+        /// <summary>
+        /// Passes parameters to <see href="DeleteCardMove(int,int)"/><br/>
+        /// Then returns true if the record was deleted successfully
+        /// </summary>
+        /// <param name="cardID">Used to find the CardMove.</param>
+        /// <param name="moveID">Used to find the CardMove.</param>
+        /// <returns>Returns true if the CardMove was delted successfully</returns>
+        /// <exception cref="ApplicationException">Throws if there was a problem connecting to the database.</exception>
+        public bool DeleteCardMove(int cardID, int moveID);
+
+        /// <summary>
+        /// Passes parameters to <see href="InsertCardAlternateArt(int,string)"/> Then returns true
+        /// if the record was updated successfully.
+        /// </summary>
+        /// <param name="cardID">Used to find the CardMove.</param>
+        /// <param name="alternateArtID">Used to find the CardMove.</param>
+        /// <returns>Returns true if the CardAlternateArt was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the CardAlternateArt already exists.</exception>
+        public bool AddCardAlternateArt(int cardID, string alternateArtID);
+
+        /// <summary>
+        /// Passes parameters to <see href="DeleteCardAlternateArt(int,string)"/><br/>
+        /// Then returns true if the record was deleted successfully
+        /// </summary>
+        /// <param name="cardID">Used to find the CardAlternateArt</param>
+        /// <param name="alternateArtID">Used to find the CardAlternateArt</param>
+        /// <returns>Returns true if the CardAlternateArt was deleted successfully</returns>
+        /// <exception cref="ApplicationException">Throws if there was a problem connecting to the database.</exception>
+        public bool DeleteCardAlternateArt(int cardID, string alternateArtID);
 
         /// <summary>
         /// Filters a IEnumberable<CardVM> with a specified name using linq.<br/>

@@ -1081,32 +1081,3 @@ INSERT INTO [dbo].[CollectionElement]
 VALUES
 	(2,"fire")
 GO
-
-
-/*
-		
-[UserID]				[int]						
-[CollectionTypeID]		[nvarchar](25)	
-[Name]					[nvarchar](50)	
-[Description]			[nvarchar](50)	
-[Active]				[bit]			
-
-
-
-[PokemonCardID]			[int]
-[CollectionID]			[int]
-[Quantity]				[int]
-[Owned]					[bit]
-
-
-
-
-PRINT '*** adding to Collection Card Table ***'
-GO
-INSERT INTO [dbo].[CollectionCard]
-	([PokemonCardID],[CollectionID],[CollectionID],[Quantity],[Owned])
-VALUES
-	()
-GO
-
-*/

@@ -485,6 +485,140 @@ namespace LogicLayer
         }
 
         /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public bool AddCard(Card card)
+        {
+            bool isAdded = false;
+
+            try
+            {
+                ValidateCard(card);
+
+                isAdded = (1 == _cardAccessor.InsertCard(card));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to add card to the database.");
+            }
+
+            return isAdded;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public bool EditCard(Card card)
+        {
+            bool isEdited = false;
+
+            try
+            {
+                ValidateCard(card);
+
+                isEdited = (1 == _cardAccessor.UpdateCard(card));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to update card to the database.");
+            }
+
+            return isEdited;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public bool AddCardMove(int cardID, int moveID)
+        {
+            bool isAdded = false;
+
+            try
+            {
+                isAdded = (1 == _cardAccessor.InsertCardMove(cardID, moveID));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to add a card's move.", ex);
+            }
+
+            return isAdded;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public bool DeleteCardMove(int cardID, int moveID)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                isDeleted = (1 == _cardAccessor.DeleteCardMove(cardID, moveID));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to delete a card's alternate art.", ex);
+            }
+
+            return isDeleted;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public bool AddCardAlternateArt(int cardID, string alternateArtID)
+        {
+            bool isAdded = false;
+
+            if (alternateArtID == null || alternateArtID == "")
+            {
+                throw new ArgumentNullException("Failed to add a card's alternate art. AlternateArtID was null.");
+            }
+
+            try
+            {
+                isAdded = (1 == _cardAccessor.InsertCardAlternateArt(cardID, alternateArtID));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to add a card's alternate art.", ex);
+            }
+
+            return isAdded;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public bool DeleteCardAlternateArt(int cardID, string alternateArtID)
+        {
+            bool isDeleted = false;
+
+            if (alternateArtID == null || alternateArtID == "")
+            {
+                throw new ArgumentNullException("Failed to delete a card's alternate art. AlternateArtID was null.");
+            }
+
+            try
+            {
+                isDeleted = (1 == _cardAccessor.DeleteCardAlternateArt(cardID,alternateArtID));
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to delete a card's alternate art.", ex);
+            }
+
+            return isDeleted;
+        }
+
+        /// <summary>
         /// Creates a card VM from the inputted Card.
         /// </summary>
         /// <param name="card">Card desired to be a CardVM</param>
@@ -517,6 +651,13 @@ namespace LogicLayer
             return result;
         }
 
+        /// <summary>
+        /// Combines the Dictionaries to a list of CardVMs
+        /// </summary>
+        /// <param name="cards">Dictionary where the key is the cardID and the value is the Card</param>
+        /// <param name="moves">Dictionary where the key is the cardID and the value is the List of MoveVM for a card</param>
+        /// <param name="altArts">Dictionary where the key is the cardID and the value is the List of alternate arts for a card</param>
+        /// <returns>Returns a List of CardVMs from a combination of dictionaries</returns>
         private List<CardVM> SaveCards(Dictionary<int, Card> cards, Dictionary<int, List<MoveVM>> moves, Dictionary<int, List<string>> altArts) 
         {
             List<CardVM> results = new List<CardVM>();
@@ -539,5 +680,55 @@ namespace LogicLayer
             return results;
         }
 
+        /// <summary>
+        /// Throws an error if the card has any null string inside
+        /// </summary>
+        private void ValidateCard(Card card) 
+        {
+            if (card == null)
+            {
+                throw new ArgumentNullException("Failed to add card. Card was null.");
+            }
+            if (card.AbilityID == null || card.AbilityID.Replace(" ", "").Length == 0)
+            {
+                throw new ArgumentNullException("Failed to add card. Card's AbilityID was null.");
+            }
+            if (card.BoosterID == null || card.BoosterID.Replace(" ", "").Length == 0)
+            {
+                throw new ArgumentNullException("Failed to add card. Card's BoosterID was null.");
+            }
+            if (card.PokemonRuleID == null || card.PokemonRuleID.Replace(" ", "").Length == 0)
+            {
+                throw new ArgumentNullException("Failed to add card. Card's PokemonRuleID was null.");
+            }
+            if (card.ElementTypeID == null || card.ElementTypeID.Replace(" ", "").Length == 0)
+            {
+                throw new ArgumentNullException("Failed to add card. Card's ElementTypeID was null.");
+            }
+            if (card.Name == null || card.Name.Replace(" ", "").Length == 0)
+            {
+                throw new ArgumentNullException("Failed to add card. Card's Name was null.");
+            }
+            if (card.CardType == null || card.CardType.Replace(" ", "").Length == 0)
+            {
+                throw new ArgumentNullException("Failed to add card. Card's CardType was null.");
+            }
+            if (card.Rarity == null || card.Rarity.Replace(" ", "").Length == 0)
+            {
+                throw new ArgumentNullException("Failed to add card. Card's Rarity was null.");
+            }
+            if (card.WeaknessType == null || card.WeaknessType.Replace(" ", "").Length == 0)
+            {
+                throw new ArgumentNullException("Failed to add card. Card's WeaknessType was null.");
+            }
+            if (card.ResistanceType == null || card.ResistanceType.Replace(" ", "").Length == 0)
+            {
+                throw new ArgumentNullException("Failed to add card. Card's ResistanceType was null.");
+            }
+            if (card.Stage == null || card.Stage.Replace(" ", "").Length == 0)
+            {
+                throw new ArgumentNullException("Failed to add card. Card's Stage was null.");
+            }
+        }
     }
 }

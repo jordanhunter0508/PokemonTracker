@@ -33,49 +33,28 @@ namespace PokemonCardFinal.View
             InitializeComponent();
             CardManager cardManager = new CardManager();
 
-
-            //Dictionary<int, Card> cards = cardManager.GetCards();
-            //datGrid.ItemsSource = cards.Values.ToList();
-
-            //Dictionary<int, List<MoveVM>> moves = cardManager.GetCardMoves();
-            //datGrid.ItemsSource = moves.Values.AsEnumerable();
-
-            //Dictionary<int, List<string>> altArts = cardManager.GetCardAlternateArts();
-            //datGrid.ItemsSource = altArts.Values.AsEnumerable();
-            Dictionary<int, List<string>> cards = cardManager.GetCardAlternateArtsByCardName("r");
-            List<string> cardList = new List<string>();
-
-            //foreach (var card in cards)
-            //{
-            //    cardList.Add(cards.Value);
-            //}
-
-            
-
-            try
+            Card card = new Card()
             {
-                CollectionManager collectionManager = new CollectionManager();
+                CardID = 31,
+                ArtistID = 2,
+                AbilityID = "none",
+                BoosterID = "destined rivals",
+                PokemonRuleID = "none",
+                ElementTypeID = "fire",
+                Name = "test edit",
+                BoosterNumber = 32,
+                CardType = "Pokemon",
+                Rarity = "common",
+                WeaknessType = "water",
+                ResistanceType = "none",
+                WeaknessValue = 2,
+                ResistanceValue = 0,
+                RetreatCost = 1,
+                Health = 70,
+                Stage = "Basic"
+            };
 
-                //List<string> cc = collectionManager.GetCollectionElementsByCollectionID(1);
-                //datGrid.ItemsSource = cc;
-
-                DataDomain.Collection collection = collectionManager.GetCollectionByCollectionID(1);
-                CollectionVM collectionVM = collectionManager.GetCollectionVMByCollectionID(1);
-
-                txtBlock.Text = collectionVM.Name;
-                datGrid.ItemsSource = collectionVM.Cards;
-
-
-                //txtBlock.Text = collectionManager.GetCollectionTypeMaxSize("user").ToString();
-
-
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
-            }
-            
+            cardManager.EditCard(card);           
         }
 
     }

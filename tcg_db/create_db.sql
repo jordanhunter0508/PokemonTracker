@@ -1,43 +1,3 @@
-/*
-
-Add Artist to detailed view
-
-Trigger on UserCard if Quantity is 0 then change bit field to 0
-Trigger for owned in collection
-
-when card is added to UserCard
-and it is in a user collection with the same id as in UserCard
-then change owned to 1
-
-
-Think of what stored procedures are needed for the program
-
-Might want to add a user Role so the user doesn't directly say Admin
-
-Very few cards have more than one ability but could make a join table for them
-if there is enough time
-
-
-Ask Jim about sign up automatically opening view profile
-
-May won't select_booster_by_abbreviation
-
-Need select card from booster
-
-
-Create a trigger for when an account is created add a user to to 2 collections
-1 wishlist and 1 Favorites
-
-When adding a description check if ' is used and replace it with ''
-convert evertyhing to lower case when inserting except decsription
-
-MoveID should be an IDENTITY field
-some moves like bite deal different damage
-
-selectMoves by name
-
-*/
-
 print '' print'*** dropping the database tcg_db ***'
 GO
 IF EXISTS(SELECT 1 FROM master.dbo.sysdatabases WHERE name = 'tcg_db')
@@ -314,7 +274,7 @@ CREATE TABLE [dbo].[PokemonCard]
 	CONSTRAINT [fk_pokemoncard_boosterid] FOREIGN KEY ([BoosterID]) REFERENCES [Booster] ([BoosterID]),
 	CONSTRAINT [fk_pokemoncard_pokemonruleid] FOREIGN KEY ([PokemonRuleID]) REFERENCES [PokemonRule] ([PokemonRuleID]),
 	CONSTRAINT [fk_pokemoncard_elementtypeid] FOREIGN KEY ([ElementTypeID]) REFERENCES [ElementType] ([ElementTypeID]),
-	CONSTRAINT [ak_pokemoncard_alternateid_boosterid_boosternumber] UNIQUE ([BoosterID],[BoosterNumber],[Rarity])
+	CONSTRAINT [ak_pokemoncard_boosterid_boosternumber_rarity] UNIQUE ([BoosterID],[BoosterNumber],[Rarity])
 )
 GO
 
@@ -1121,32 +1081,6 @@ AS
 	END
 GO
 
-/*
-Move
-[MoveID]				[nvarchar](30)
-[Damage]				[int]			
-[Description]			[nvarchar](200)
-
-Move Cost
-[MoveID]				[nvarchar](30)	
-[ElementTypeID]			[nvarchar](15)	
-[Quantity]				[int]			
-
-
-
-
-
-Name
-
-filter options
-
-booster
-rarity
-card type
-element type
-
-*/
-
 PRINT '*** creating sp_select_card_by_card_id ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_card_by_card_id]
@@ -1485,5 +1419,156 @@ AS
 		
 		WHERE	[Booster].[ReleaseDate] = @ReleaseDate
 			
+	END
+GO
+
+PRINT '*** creating sp_insert_card_move ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_card_move]
+	(	
+		@PokemonCardID		[int],
+		@MoveID				[int]
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[CardMove]
+			([PokemonCardID],[MoveID])
+		VALUES
+			(@PokemonCardID,@MoveID)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_insert_card_alternate_art ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_card_alternate_art]
+	(	
+		@PokemonCardID		[int],
+		@AlternateArtID		[nvarchar](50)
+		
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[CardAlternateArt]
+			([PokemonCardID],[AlternateArtID])
+		VALUES
+			(@PokemonCardID,@AlternateArtID)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_delete_card_move ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_card_move]
+	(	
+		@PokemonCardID		[int],
+		@MoveID				[int]
+	)	
+AS
+	BEGIN
+		DELETE	[dbo].[CardMove]
+		WHERE	[CardMove].[PokemonCardID] = @PokemonCardID
+			AND	[CardMove].[MoveID] = @MoveID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_delete_card_alternate_art ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_card_alternate_art]
+	(	
+		@PokemonCardID		[int],
+		@AlternateArtID		[nvarchar](50)
+		
+	)	
+AS
+	BEGIN
+		DELETE	[dbo].[CardAlternateArt]
+		WHERE	[CardAlternateArt].[PokemonCardID] = @PokemonCardID
+			AND	[CardAlternateArt].[AlternateArtID] = @AlternateArtID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_insert_card ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_card]
+	(	
+		@ArtistID				[int],		
+		@AbilityID				[nvarchar](30),
+		@BoosterID				[nvarchar](50),
+		@PokemonRuleID			[nvarchar](50),
+		@ElementTypeID			[nvarchar](15),
+		@Name					[nvarchar](50),
+		@BoosterNumber         	[int],		
+		@CardType				[nvarchar](50),
+		@Rarity					[nvarchar](30),
+		@WeaknessType			[nvarchar](15),
+		@ResistanceType        	[nvarchar](15),
+		@WeaknessValue         	[int],         
+		@ResistanceValue       	[int],         
+		@RetreatCost           	[int],        
+		@Health					[int],		
+		@Stage					[nvarchar](30)
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[PokemonCard]
+			([ArtistID],[AbilityID],[BoosterID],[PokemonRuleID],
+			 [ElementTypeID],[Name],[BoosterNumber],[CardType],
+			 [Rarity],[WeaknessType],[ResistanceType],[WeaknessValue],
+			 [ResistanceValue],[RetreatCost],[Health],[Stage])
+		VALUES
+			(@ArtistID,@AbilityID,@BoosterID,@PokemonRuleID,
+			 @ElementTypeID,@Name,@BoosterNumber,@CardType,
+			 @Rarity,@WeaknessType,@ResistanceType,@WeaknessValue,
+			 @ResistanceValue,@RetreatCost,@Health,@Stage)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_update_card ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_card]
+	(	
+		@PokemonCardID			[int],
+		@ArtistID				[int],		
+		@AbilityID				[nvarchar](30),
+		@BoosterID				[nvarchar](50),
+		@PokemonRuleID			[nvarchar](50),
+		@ElementTypeID			[nvarchar](15),
+		@Name					[nvarchar](50),
+		@BoosterNumber         	[int],		
+		@CardType				[nvarchar](50),
+		@Rarity					[nvarchar](30),
+		@WeaknessType			[nvarchar](15),
+		@ResistanceType        	[nvarchar](15),
+		@WeaknessValue         	[int],         
+		@ResistanceValue       	[int],         
+		@RetreatCost           	[int],        
+		@Health					[int],		
+		@Stage					[nvarchar](30)
+	)	
+AS
+	BEGIN
+		UPDATE 	[dbo].[PokemonCard]
+		SET		[PokemonCard].[ArtistID] = @ArtistID,
+				[PokemonCard].[AbilityID] = @AbilityID,
+				[PokemonCard].[BoosterID] = @BoosterID,
+				[PokemonCard].[PokemonRuleID] = @PokemonRuleID,
+				[PokemonCard].[ElementTypeID] = @ElementTypeID,
+				[PokemonCard].[Name] = @Name,
+				[PokemonCard].[BoosterNumber] = @BoosterNumber,
+				[PokemonCard].[CardType] = @CardType,
+				[PokemonCard].[Rarity] = @Rarity,
+				[PokemonCard].[WeaknessType] = @WeaknessType,
+				[PokemonCard].[ResistanceType] = @ResistanceType,
+				[PokemonCard].[WeaknessValue] = @WeaknessValue,
+				[PokemonCard].[ResistanceValue] = @ResistanceValue,
+				[PokemonCard].[RetreatCost] = @RetreatCost,
+				[PokemonCard].[Health] = @Health,
+				[PokemonCard].[Stage] = @Stage		
+		WHERE 	[PokemonCard].[PokemonCardID] = @PokemonCardID
+		RETURN @@ROWCOUNT;
 	END
 GO

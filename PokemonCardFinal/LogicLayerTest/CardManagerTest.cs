@@ -28,7 +28,7 @@ public class CardManagerTest
             AbilityID = "test ability 1",
             BoosterID = "test booster 1",
             PokemonRuleID = "test pokemon rule 1",
-            ElementTypeID = "test element",
+            ElementTypeID = "test element 1",
             Name = "test 1",
             BoosterNumber = 1,
             CardType = "test type 1",
@@ -52,7 +52,7 @@ public class CardManagerTest
         Assert.AreEqual(expectedCard.BoosterNumber, actualCard.BoosterNumber);
         Assert.AreEqual(expectedCard.Stage, actualCard.Stage);
         Assert.AreEqual(expectedCard.ElementTypeID, actualCard.ElementTypeID);
-        
+
     }
 
     [TestMethod]
@@ -71,7 +71,7 @@ public class CardManagerTest
     }
 
     [TestMethod]
-    public void TestGetMovesByCardIDWithValidCardID() 
+    public void TestGetMovesByCardIDWithValidCardID()
     {
         // arrange
         const int cardID = 1;
@@ -90,7 +90,7 @@ public class CardManagerTest
     }
 
     [TestMethod]
-    public void TestGetMovesByCardIDWithInvalidCardID() 
+    public void TestGetMovesByCardIDWithInvalidCardID()
     {
         // arrange
         const int cardID = 999;
@@ -139,7 +139,7 @@ public class CardManagerTest
     }
 
     [TestMethod]
-    public void TestGetCardVMByCardIDWithValidCardID() 
+    public void TestGetCardVMByCardIDWithValidCardID()
     {
         // arrange
         const int cardID = 1;
@@ -159,7 +159,7 @@ public class CardManagerTest
 
     [TestMethod]
     [ExpectedException(typeof(ApplicationException))]
-    public void TestGetCardVMByCardIDThrowsApplicationExceptionWithInvaildCardID() 
+    public void TestGetCardVMByCardIDThrowsApplicationExceptionWithInvaildCardID()
     {
         // arrange
         const int cardID = 999;
@@ -181,7 +181,7 @@ public class CardManagerTest
         const int valueCount = 3;
         const int cardID2 = 2;
         const string cardName1 = "test 1";
-        Dictionary<int,Card> actualResult = null;
+        Dictionary<int, Card> actualResult = null;
 
         // act
         actualResult = _cardManager.GetCards();
@@ -201,7 +201,7 @@ public class CardManagerTest
         const int valueCount = 2;
         const int cardCount2 = 1;
         const int moveID1 = 1;
-        Dictionary<int,List<MoveVM>> actualResult = null;
+        Dictionary<int, List<MoveVM>> actualResult = null;
 
         // act
         actualResult = _cardManager.GetCardMoves();
@@ -502,7 +502,7 @@ public class CardManagerTest
 
         // act
         cards = _cardManager.GetCardVMs();
-        actualResult = _cardManager.GetCardVMsByCardName(cards,name).ToList();
+        actualResult = _cardManager.GetCardVMsByCardName(cards, name).ToList();
 
         // assert
         Assert.AreEqual(count, actualResult.Count);
@@ -563,7 +563,7 @@ public class CardManagerTest
     }
 
     [TestMethod]
-    [ExpectedException (typeof(ArgumentNullException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestGetCardVMsByCardNameThrowsArgumentNullExceptionWithNullIEnumberable()
     {
         // arrange
@@ -579,7 +579,7 @@ public class CardManagerTest
     }
 
     [TestMethod]
-    [ExpectedException (typeof(ArgumentNullException))]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void TestGetCardVMsByCardNameThrowsArgumentNullExceptionWithNullInput()
     {
         // arrange
@@ -914,7 +914,7 @@ public class CardManagerTest
     public void TestGetCardVMsByElementTypeIDWithValidIEnumerable()
     {
         // arrange
-        const string rarity = "test element";
+        const string rarity = "test element 1";
         const int count = 2;
         const int cardID2 = 2;
         List<CardVM> cards = new List<CardVM>();
@@ -1044,4 +1044,1521 @@ public class CardManagerTest
         // assert
         Assert.AreEqual(count, actual.Count);
     }
+
+    [TestMethod]
+    public void TestAddCardAlternateArtReturnsTrueWithValidInput()
+    {
+        // arrange
+        const int cardID = 1;
+        const string alternateArtID = "test Alternate Art 3";
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCardAlternateArt(cardID, alternateArtID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardAlternateArtThrowsApplicationExceptionWithInvalidCardID()
+    {
+        // arrange
+        const int cardID = 999;
+        const string alternateArtID = "test Alternate Art 3";
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _cardManager.AddCardAlternateArt(cardID, alternateArtID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardAlternateArtThrowsApplicationExceptionWithInvalidAltArtID()
+    {
+        // arrange
+        const int cardID = 1;
+        const string alternateArtID = "failed";
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _cardManager.AddCardAlternateArt(cardID, alternateArtID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestAddCardAlternateArtThrowsArgumentNullExceptionWithNullString()
+    {
+        // arrange
+        const int cardID = 1;
+        const string alternateArtID = null;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCardAlternateArt(cardID, alternateArtID);
+
+        // assert
+        // do nothing
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardAlternateArtThrowsApplicationExceptionWithDuplicateInput()
+    {
+        // arrange
+        const int cardID = 1;
+        const string alternateArtID = "test Alternate Art 1";
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCardAlternateArt(cardID, alternateArtID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestDeleteCardAlternateArtReturnsTrueWithValidInput()
+    {
+        // arrange
+        const int cardID = 1;
+        const string alternateArtID = "test Alternate Art 1";
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.DeleteCardAlternateArt(cardID, alternateArtID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeleteCardAlternateArtReturnsFalseWithInvalidCardID()
+    {
+        // arrange
+        const int cardID = 999;
+        const string alternateArtID = "test Alternate Art 1";
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _cardManager.DeleteCardAlternateArt(cardID, alternateArtID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeleteCardAlternateArtReturnsFalseWithInvalidAltArtID()
+    {
+        // arrange
+        const int cardID = 1;
+        const string alternateArtID = "failed";
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _cardManager.DeleteCardAlternateArt(cardID, alternateArtID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestDeleteCardAlternateArtThrowsArgumentNullExceptionWithNullString()
+    {
+        // arrange
+        const int cardID = 1;
+        const string alternateArtID = null;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.DeleteCardAlternateArt(cardID, alternateArtID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestAddCardMoveReturnsTrueWithValidInput()
+    {
+        // arrange
+        const int cardID = 1;
+        const int moveID = 3;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCardMove(cardID, moveID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardMoveThrowsApplicationExceptionWithInvalidCardID()
+    {
+        // arrange
+        const int cardID = 999;
+        const int moveID = 1;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCardMove(cardID, moveID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardMoveThrowsApplicationExceptionWithMoveID()
+    {
+        // arrange
+        const int cardID = 1;
+        const int moveID = 999;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCardMove(cardID, moveID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardMoveThrowsApplicationExceptionWithDuplicateID()
+    {
+        // arrange
+        const int cardID = 1;
+        const int moveID = 1;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCardMove(cardID, moveID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestDeleteCardMoveReturnsTrueWithValidInput()
+    {
+        // arrange
+        const int cardID = 1;
+        const int moveID = 1;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.DeleteCardMove(cardID, moveID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeleteCardMoveReturnsFalseWithValidCardID()
+    {
+        // arrange
+        const int cardID = 999;
+        const int moveID = 1;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _cardManager.DeleteCardMove(cardID, moveID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeleteCardMoveReturnsFalseWithValidMoveID()
+    {
+        // arrange
+        const int cardID = 1;
+        const int moveID = 999;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _cardManager.DeleteCardMove(cardID, moveID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestAddCardWithReturnsTrueValidInput()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionWithInvalidArtistID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 999,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionWithInvalidAbilityID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "failed",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionWithInvalidBoosterID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "failed",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionWithInvalidRuleID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "failed",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionWithInvalidElementID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "failed",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionWithUniqueKey()
+    {
+        // BoosterId, BoosterNumber and Rarity are already used.
+
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 1,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 1",
+            PokemonRuleID = "test pokemon rule 1",
+            ElementTypeID = "test element 1",
+            Name = "test 1",
+            BoosterNumber = 1,
+            CardType = "test type 1",
+            Rarity = "test rarity 1",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullAbilityID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = null,
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullBoosterID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = null,
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullRuleID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = null,
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullElementID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = null,
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullName()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = null,
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullCardType()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = null,
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullRarity()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = null,
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullWeaknessType()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = null,
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullResistanceType()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = null,
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullStage()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = null
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionNullCard()
+    {
+        // arrange
+        Card card = null;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddCardThrowsApplicationExceptionBlankCard()
+    {
+        // arrange
+        Card card = new Card();
+        bool actual = false;
+
+        // act
+        actual = _cardManager.AddCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+
+    [TestMethod]
+    public void TestEditCardWithReturnsTrueValidInput()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionWithInvalidArtistID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 999,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionWithInvalidAbilityID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "failed",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionWithInvalidBoosterID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "failed",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionWithInvalidRuleID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "failed",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionWithInvalidElementID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "failed",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionWithUniqueKey()
+    {
+        // BoosterId, BoosterNumber and Rarity are already used.
+
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 1,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 1",
+            PokemonRuleID = "test pokemon rule 1",
+            ElementTypeID = "test element 1",
+            Name = "test 1",
+            BoosterNumber = 1,
+            CardType = "test type 1",
+            Rarity = "test rarity 1",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullAbilityID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = null,
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullBoosterID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = null,
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullRuleID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = null,
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullElementID()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = null,
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullName()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = null,
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullCardType()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = null,
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullRarity()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = null,
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullWeaknessType()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = null,
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullResistanceType()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = null,
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage"
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullStage()
+    {
+        // arrange
+        Card card = new Card()
+        {
+            CardID = 4,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 3",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 3",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = null
+        };
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionNullCard()
+    {
+        // arrange
+        Card card = null;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestEditCardThrowsApplicationExceptionBlankCard()
+    {
+        // arrange
+        Card card = new Card();
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCard(card);
+
+        // asseret
+        // do nothig
+    }
 }
+
+
+/* Add a card and edit
+ * valid
+ * 
+ * invalid artistid
+ * invalid abilityid
+ * invalid boosterid
+ * invalid pokemonruleid
+ * invalid elementtypeid
+ * invalid boosterID, bosoterNumber, rarity combo
+ * 
+ * null ability
+ * null bosoterid
+ * null pokemonruleid
+ * null elementtypeid
+ * null name
+ * null cardtype
+ * null rarity
+ * null weaknesstype
+ * null resistancetype
+ * null stage
+ * 
+ * null card object
+ * Blank card
+ */
