@@ -633,7 +633,7 @@ namespace LogicLayer
 
             if (cardVM == null)
             {
-                throw new ArgumentNullException("Failed to add a Move. MoveVM was null.");
+                throw new ArgumentNullException("Failed to add a Card. CardVM was null.");
             }
 
             try
@@ -666,10 +666,65 @@ namespace LogicLayer
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to add a move to the database\n", ex);
+                throw new ApplicationException("Failed to add a card to the database\n", ex);
             }
 
-            return isAdded; ;
+            return isAdded;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public bool EditCardVM(CardVM cardVM)
+        {
+            bool isAdded = false;
+            bool valid = true;
+
+            if (cardVM == null)
+            {
+                throw new ArgumentNullException("Failed to update a Card. CardVM was null.");
+            }
+
+            try
+            {
+                if (!EditCard(cardVM))
+                {
+                    Debug.WriteLine("Failed");
+                    valid = false;
+                }
+
+                foreach (MoveVM move in cardVM.Moves)
+                {
+                    DeleteCardMove(cardVM.CardID, move.MoveID);
+                    if (!AddCardMove(cardVM.CardID, move.MoveID))
+                    {
+                        valid = false;
+                        
+                        break;
+                    }
+                }
+
+                foreach (string altArt in cardVM.AlternateArts)
+                {
+                    DeleteCardAlternateArt(cardVM.CardID, altArt);
+                    if (!AddCardAlternateArt(cardVM.CardID, altArt))
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (valid)
+                {
+                    isAdded = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to update a card in the database\n", ex);
+            }
+
+            return isAdded;
         }
 
         /// <summary>
@@ -784,6 +839,5 @@ namespace LogicLayer
                 throw new ArgumentNullException("Failed to add card. Card's Stage was null.");
             }
         }
-
     }
 }

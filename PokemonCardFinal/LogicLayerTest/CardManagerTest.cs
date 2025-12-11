@@ -2587,7 +2587,7 @@ public class CardManagerTest
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
-    public void TestAddCardVMThrowsArgumentNullExceptionWithValidCardVM()
+    public void TestAddCardVMThrowsArgumentNullExceptionWithNullCardVM()
     {
         // arrange
         CardVM cardVM = null;
@@ -2595,6 +2595,70 @@ public class CardManagerTest
 
         // act
         actual = _cardManager.AddCardVM(cardVM);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestEditCardVMReturnsTrueWithValidCardVM()
+    {
+        // arrange
+        CardVM cardVM = new CardVM()
+        {
+            CardID = 1,
+            ArtistID = 2,
+            AbilityID = "test ability 1",
+            BoosterID = "test booster 2",
+            PokemonRuleID = "test pokemon rule 3",
+            ElementTypeID = "test element 2",
+            Name = "test 1",
+            BoosterNumber = 3,
+            CardType = "test type 3",
+            Rarity = "test rarity 1",
+            WeaknessType = "weakness 1",
+            ResistanceType = "resistance 1",
+            WeaknessValue = 1,
+            ResistanceValue = 1,
+            RetreatCost = 1,
+            Health = 100,
+            Stage = "test stage",
+            Moves = new List<MoveVM>()
+            {
+                new MoveVM()
+                {
+                    MoveID = 1,
+                },
+                new MoveVM()
+                {
+                    MoveID = 2,
+                }
+            },
+            AlternateArts = new List<string>()
+            {
+                "test Alternate Art 1"
+            },
+        };
+        const bool expectd = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCardVM(cardVM);
+
+        // assert
+        Assert.AreEqual(expectd, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestEditCardVMThrowsArgumentNullExceptionWithNullCardVM()
+    {
+        // arrange
+        CardVM cardVM = null;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.EditCardVM(cardVM);
 
         // assert
         // do nothing

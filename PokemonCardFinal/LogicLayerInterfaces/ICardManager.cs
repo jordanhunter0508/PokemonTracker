@@ -141,6 +141,14 @@ namespace LogicLayerInterfaces
         public int AddCard(Card card);
 
         /// <summary>
+        /// Uses other Add and Delete methods to update the new CardVM
+        /// </summary>
+        /// <param name="cardVM">New CardVM object to be added to the database.</param>
+        /// <returns>Returns true if the CardVM was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the boosterID boosterNumber and Rarity are already used.</exception>
+        public bool EditCardVM(CardVM cardVM);
+
+        /// <summary>
         /// Passes parameters to <see href="UpdateCard(Card)"/><br/>
         /// Then returns true if the record was updated successfully.
         /// </summary>

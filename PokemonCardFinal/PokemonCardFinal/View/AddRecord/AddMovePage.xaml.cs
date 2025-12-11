@@ -128,12 +128,6 @@ namespace PokemonCardFinal.View.AddRecord
                 string name = txtName.Text;
                 BuildMoveVM();
 
-                Debug.WriteLine("Start foreach");
-                foreach (var cost in _moveVM.Costs)
-                {
-                    Debug.WriteLine(cost.ElementType + " " + cost.MoveID + " " + cost.Quantity);
-                }
-                Debug.WriteLine("End foreach");
                 if (_moveManager.EditMoveVM(_moveVM))
                 {
                     MessageBox.Show("The move " + name + " was successfully updated.");

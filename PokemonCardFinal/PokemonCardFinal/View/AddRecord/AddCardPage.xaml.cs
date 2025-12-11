@@ -54,11 +54,13 @@ namespace PokemonCardFinal.View.AddRecord
 
             if (_isAddMode)
             {
-                //
+                ClearTextAreas();
             }
             else
             {
+                DisplayCardVM();
                 btnClear.Content = "Go Back";
+                txtName.IsEnabled = false;
 
                 // Disables all other tab items
                 _containerPage.DisplayTabItems(false);
@@ -82,7 +84,7 @@ namespace PokemonCardFinal.View.AddRecord
             }
             else
             {
-                //EditModeSaveButton();
+                EditModeSaveButton();
             }
         }
 
@@ -143,21 +145,9 @@ namespace PokemonCardFinal.View.AddRecord
                 cmbRarity.ItemsSource = rarities;
                 cmbStage.ItemsSource = stages;
 
-                cmbElementType.ItemsSource = elements.Prepend("Element Type");
-                cmbWeaknessType.ItemsSource = elements.Prepend("Weakness Type");
-                cmbResistanceType.ItemsSource = elements.Prepend("Resistance Type");
-
-                // set all SelectedIndex's to the default value
-
-                if (_isAddMode)
-                {
-                    ClearTextAreas();
-                }
-                else
-                {
-                    // auto filll
-                }
-
+                cmbElementType.ItemsSource = elements.Prepend("Element Type").ToList();
+                cmbWeaknessType.ItemsSource = elements.Prepend("Weakness Type").ToList();
+                cmbResistanceType.ItemsSource = elements.Prepend("Resistance Type").ToList();
             }
             catch (Exception ex)
             {
@@ -315,6 +305,28 @@ namespace PokemonCardFinal.View.AddRecord
             }
         }
 
+        private void EditModeSaveButton()
+        {
+            try
+            {
+                BuildCardVM();
+                if (_cardManager.EditCardVM(_cardVM))
+                {
+                    MessageBox.Show("The card " + _cardVM.Name + " was successfully updated.");
+                    DisplayListViewPage();
+                }
+                else
+                {
+                    MessageBox.Show("The card " + _cardVM.Name + " was not successfully updated.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void BuildCardVM()
         {
             try
@@ -377,6 +389,7 @@ namespace PokemonCardFinal.View.AddRecord
 
                 // VM Section
                 _cardVM.Moves = lstMove.SelectedItems.Cast<MoveVM>().ToList();
+
                 if (lstAltArt.SelectedItems.Count == 0)
                 {
                     _cardVM.AlternateArts = new List<string>() { "none" };
@@ -390,6 +403,112 @@ namespace PokemonCardFinal.View.AddRecord
             {
 
                 MessageBox.Show("Failed to build the move.\n\n" + ex.Message);
+            }
+        }
+
+        private void DisplayCardVM()
+        {
+            // .Items get the full list of Items in the combo box
+            // .OfType<T>() gets only the T elements (needed for the next step)
+            // .FirstOrDefault gets the first instance where the condition matches
+            // Returns a type T object
+
+            cmbArtistID.SelectedItem = cmbArtistID.Items
+                                        .OfType<Artist>()
+                                        .FirstOrDefault(a => a.ArtistID == _cardVM.ArtistID);
+
+            
+
+
+            if (_cardVM.PokemonRuleID.ToLower() == "none")
+            {
+                cmbRule.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbRule.SelectedItem = cmbRule.Items
+                                        .OfType<PokemonRule>()
+                                        .FirstOrDefault(r => r.RuleID == _cardVM.PokemonRuleID);
+            }
+
+            if (_cardVM.AbilityID.ToLower() == "none")
+            {
+                cmbAbility.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbAbility.SelectedItem = cmbAbility.Items
+                                        .OfType<Ability>()
+                                        .FirstOrDefault(a => a.AbilityID == _cardVM.AbilityID);
+            }
+
+            if (_cardVM.WeaknessType.ToLower() == "none")
+            {
+                cmbWeaknessType.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbWeaknessType.SelectedItem = cmbWeaknessType.Items
+                    .OfType<string>()
+                    .FirstOrDefault(x => x.ToLower() == _cardVM.WeaknessType.ToLower());
+            }
+
+            if (_cardVM.ResistanceType.ToLower() == "none")
+            {
+                cmbResistanceType.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbResistanceType.SelectedItem = cmbResistanceType.Items
+                                        .OfType<string>()
+                                        .FirstOrDefault(x => x.ToLower() == _cardVM.ResistanceType.ToLower());
+            }
+
+
+
+
+            cmbElementType.SelectedItem = cmbElementType.Items
+                                        .OfType<string>()
+                                        .FirstOrDefault(x => x.ToLower() == _cardVM.ElementTypeID.ToLower());
+
+
+            cmbBoosterID.SelectedItem = _cardVM.BoosterID;
+            cmbCardType.SelectedItem = _cardVM.CardType;
+            cmbRarity.SelectedItem = _cardVM.Rarity;
+            cmbStage.SelectedItem = _cardVM.Stage;
+
+            
+
+            // TextBoxes
+            txtBoosterNumber.Text = _cardVM.BoosterNumber.ToString();
+            txtHealth.Text = _cardVM.Health.ToString();
+            txtName.Text = _cardVM.Name;
+            txtResistanceValue.Text = _cardVM.ResistanceValue.ToString();
+            txtRetreatCost.Text = _cardVM.RetreatCost.ToString();
+            txtWeaknessValue.Text = _cardVM.WeaknessValue.ToString();
+
+            // Same as ArtistID comboBox but needs a loop because
+            // Card.AlternateArts is a List
+            foreach (MoveVM move in _cardVM.Moves)
+            {
+                Move match = lstMove.Items.OfType<MoveVM>()
+                    .FirstOrDefault(m => m.MoveID == move.MoveID);
+
+                if (match != null)
+                {
+                    lstMove.SelectedItems.Add(match);
+                }
+            }
+
+            foreach (string altArtIDs in _cardVM.AlternateArts)
+            {
+                AlternateArt match = lstAltArt.Items.OfType<AlternateArt>()
+                    .FirstOrDefault(a => a.AlternateArtID == altArtIDs);
+
+                if (match != null)
+                {
+                    lstAltArt.SelectedItems.Add(match);
+                }
             }
         }
     }

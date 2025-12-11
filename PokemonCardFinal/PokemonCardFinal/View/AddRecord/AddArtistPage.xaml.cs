@@ -141,7 +141,7 @@ namespace PokemonCardFinal.View.AddRecord
                 }
                 else
                 {
-                    MessageBox.Show("The element " + givenName + " was not successfully updated.");
+                    MessageBox.Show("The artist " + givenName + " was not successfully updated.");
                 }
 
             }
