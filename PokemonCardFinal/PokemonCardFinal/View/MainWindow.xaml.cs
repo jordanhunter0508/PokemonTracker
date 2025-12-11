@@ -134,8 +134,9 @@ namespace PokemonCardFinal.View
                 UserLoggedIn(signUpWindow.AccessToken);
 
             }
-            if (btnSignUp.Content == "View Profile")
+            else if (btnSignUp.Content == "View Profile")
             {
+                MessageBox.Show(_accessToken.Roles.Count.ToString());
                 frmMain.Navigate(new ProfileContainerPage(_accessToken, _userManager));
             }
         }

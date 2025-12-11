@@ -252,7 +252,7 @@ namespace LogicLayer
 
             try
             {
-                result = (0 == _userAccessor.InsertDefaultUserCollections(userID));
+                result = (3 == _userAccessor.InsertDefaultUserCollections(userID));
             }
             catch (Exception ex)
             {

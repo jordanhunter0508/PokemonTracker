@@ -93,10 +93,15 @@ namespace PokemonCardFinal.View
                     if (_userManager.AddUserToRole(AccessToken.UserID) &&
                         _userManager.AddDefaultUserCollections(AccessToken.UserID))
                     {
+                        MessageBox.Show("Account was successfuly created.");
+                        AccessToken.Collections = _userManager.GetCollectionsByUserID(AccessToken.UserID);
+                        AccessToken.Roles = _userManager.GetRolesForUser(AccessToken.Email);
+                        this.DialogResult = false;
+                    }
+                    else 
+                    {
                         MessageBox.Show("There was an error creating your account.");
                     }
-                    MessageBox.Show("Account was successfuly created.");
-                    this.DialogResult = false;
                 }
                 else
                 {

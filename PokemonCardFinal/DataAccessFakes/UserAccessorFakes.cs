@@ -329,6 +329,8 @@ namespace DataAccessFakes
                 throw new ApplicationException("The user is not in the system.");
             }
 
+            result = 3;
+
             return result;
         }
 
