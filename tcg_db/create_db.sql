@@ -112,8 +112,8 @@ PRINT '*** creating Ability Table ***'
 GO
 CREATE TABLE [dbo].[Ability]
 (
-	[AbilityID]				[nvarchar](30)		NOT NULL	DEFAULT 'support',
-	[AbilityType]			[nvarchar](25)		NOT NULL	DEFAULT '',
+	[AbilityID]				[nvarchar](30)		NOT NULL	DEFAULT '',
+	[AbilityType]			[nvarchar](25)		NOT NULL	DEFAULT 'support',
 	[Description]			[nvarchar](650)		NOT NULL	DEFAULT '',
 
 	CONSTRAINT [pk_ability_abilityid] PRIMARY KEY ([AbilityID] ASC)

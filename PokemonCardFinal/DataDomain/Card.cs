@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,6 @@ namespace DataDomain
         public List<MoveVM> Moves { get; set; }
 
         // Could use the AlternateArt object if a description wants to be attached to each card
-        public List<string> AlternateArts { get; set; }     
+        public List<string> AlternateArts { get; set; }
     }
 }
