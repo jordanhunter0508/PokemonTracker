@@ -51,21 +51,37 @@ public class AbilityManagerTest
     }
 
     [TestMethod]
-    public void TestGetAbilitesWithValidInput()
+    public void TestGetActiveAbilitesReturnsFullList()
     {
         // arrange
-        const int count = 5;
+        const int count = 4;
         const string abilityID4 = "Ability Test 4";
         const string abilityType = "Ability Type";
         List<Ability> actualResult;
 
         // act
-        actualResult = _abilityManager.GetAbilities();
+        actualResult = _abilityManager.GetActiveAbilities();
 
         // assert
         Assert.AreEqual(count, actualResult.Count);
         Assert.AreEqual(abilityID4, actualResult[3].AbilityID);
         Assert.AreEqual(abilityType, actualResult[2].AbilityType);
+    }
+
+    [TestMethod]
+    public void TestGetDeactiveAbilitesReturnsFullList()
+    {
+        // arrange
+        const int count = 1;
+        const string abilityID4 = "Ability Test 4";
+        const string abilityType = "Ability Type";
+        List<Ability> actualResult;
+
+        // act
+        actualResult = _abilityManager.GetDeactiveAbilities();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
     }
 
     [TestMethod]
@@ -232,6 +248,96 @@ public class AbilityManagerTest
 
         // act
         actualResult = _abilityManager.DeleteAbility(abilityID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeactivateAbilityReturnsTrueWithValidInput()
+    {
+        // arrange
+        const string abilityID = "Ability Test 1";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _abilityManager.DeactivateAbility(abilityID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeactivateAbilityReturnsTrueWithAlreadyDeactiveAbility()
+    {
+        // arrange
+        const string abilityID = "Ability Test 5";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _abilityManager.DeactivateAbility(abilityID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeactivateAbilityReturnsFalseWithInvalidInput()
+    {
+        // arrange
+        const string abilityID = "Ability failed";
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _abilityManager.DeactivateAbility(abilityID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestReactivateAbilityReturnsTrueWithValidInput()
+    {
+        // arrange
+        const string abilityID = "Ability Test 5";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _abilityManager.ReactivateAbility(abilityID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestReactivateAbilityReturnsTrueWithAlreadyActiveAbility()
+    {
+        // arrange
+        const string abilityID = "Ability Test 1";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _abilityManager.ReactivateAbility(abilityID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestReactivateAbilityReturnsFalseWithInvalidInput()
+    {
+        // arrange
+        const string abilityID = "Ability failed";
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _abilityManager.ReactivateAbility(abilityID);
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);

@@ -23,31 +23,36 @@ namespace DataAccessFakes
             {
                 AbilityID = "Ability Test 1",
                 AbilityType = "Ability Type",
-                Description = "This is description 1."
+                Description = "This is description 1.",
+                Active = true,
             });
             _abilities.Add(new Ability()
             {
                 AbilityID = "Ability Test 2",
                 AbilityType = "Ability Type",
-                Description = "This is description 2."
+                Description = "This is description 2.",
+                Active = true,
             });
             _abilities.Add(new Ability()
             {
                 AbilityID = "Ability Test 3",
                 AbilityType = "Ability Type",
-                Description = "This is description 3."
+                Description = "This is description 3.",
+                Active = true,
             });
             _abilities.Add(new Ability()
             {
                 AbilityID = "Ability Test 4",
                 AbilityType = "Ability Type",
-                Description = "This is description 4."
+                Description = "This is description 4.",
+                Active = true,
             });
             _abilities.Add(new Ability()
             {
                 AbilityID = "Ability Test 5",
                 AbilityType = "Ability Test",
-                Description = "This is description 5."
+                Description = "This is description 5.",
+                Active = false,
             });
         }
 
@@ -73,10 +78,20 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/> used for testing
         /// </summary>
-        public List<Ability> SelectAbilities()
+        public List<Ability> SelectActiveAbilities()
         {
             List<Ability> results;
-            results = _abilities;
+            results = _abilities.Where(ability => ability.Active == true).ToList();
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAbilityAccessor"/> used for testing
+        /// </summary>
+        public List<Ability> SelectDeactiveAbilities()
+        {
+            List<Ability> results;
+            results = _abilities.Where(ability => ability.Active == false).ToList();
             return results;
         }
 
@@ -87,7 +102,8 @@ namespace DataAccessFakes
         {
             IEnumerable<Ability> results;
             results = from ability in _abilities
-                      where ability.AbilityType == abilityType
+                      where ability.AbilityType == abilityType &&
+                            ability.Active == true
                       orderby ability.AbilityID
                       select ability;
             return results.ToList();
@@ -168,6 +184,44 @@ namespace DataAccessFakes
             if (count == 1)
             {
                 _abilities.Remove(deleteAbility);
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAbilityAccessor"/> used for testing
+        /// </summary>
+        public int DeactivateAbility(string abilityID)
+        {
+            int count = 0;
+            foreach (Ability ability in _abilities)
+            {
+                if (ability.AbilityID == abilityID)
+                {
+                    ability.Active = false;
+                    count = 1;
+                    break;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAbilityAccessor"/> used for testing
+        /// </summary>
+        public int ReactivateAbility(string abilityID)
+        {
+            int count = 0;
+            foreach (Ability ability in _abilities)
+            {
+                if (ability.AbilityID == abilityID)
+                {
+                    ability.Active = true;
+                    count = 1;
+                    break;
+                }
             }
 
             return count;

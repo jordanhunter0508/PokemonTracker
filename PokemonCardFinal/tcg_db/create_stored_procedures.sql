@@ -1,5 +1,7 @@
-
 PRINT '' PRINT '' PRINT 'Creating Stored Procedures in tcg_db'
+GO
+USE [tcg_db]
+GO
 
 PRINT '*** creating sp_authenticate_user_by_email_and_password_hash ***'
 GO
@@ -426,6 +428,9 @@ AS
 	END
 GO
 
+
+/*========== Start Ability Stored Procedures ==========*/
+
 PRINT '*** creating sp_select_ability_by_ability_id ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_ability_by_ability_id]
@@ -434,19 +439,34 @@ CREATE PROCEDURE [dbo].[sp_select_ability_by_ability_id]
 	)
 AS
 	BEGIN
-		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],[Ability].[Description]
+		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],
+				[Ability].[Description],[Ability].[Active]
 		FROM	[Ability]
 		WHERE	[Ability].[AbilityID] = @AbilityID;
 	END
 GO
 
-PRINT '*** creating sp_select_abilities ***'
+PRINT '*** creating sp_select_abilities_active ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_abilities]
+CREATE PROCEDURE [dbo].[sp_select_abilities_active]
 AS
 	BEGIN
-		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],[Ability].[Description]
-		FROM	[Ability];
+		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],
+				[Ability].[Description],[Ability].[Active]
+		FROM	[Ability]
+		WHERE	[Ability].[Active] = 1;
+	END
+GO
+
+PRINT '*** creating sp_select_abilities_deactive ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_abilities_deactive]
+AS
+	BEGIN
+		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],
+				[Ability].[Description],[Ability].[Active]
+		FROM	[Ability]
+		WHERE	[Ability].[Active] = 0;
 	END
 GO
 
@@ -458,9 +478,11 @@ CREATE PROCEDURE [dbo].[sp_select_abilities_by_ability_type]
 	)
 AS
 	BEGIN
-		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],[Ability].[Description]
+		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],
+				[Ability].[Description],[Ability].[Active]
 		FROM	[Ability]
-		WHERE	[Ability].[AbilityType] = @AbilityType;
+		WHERE	[Ability].[AbilityType] = @AbilityType
+		AND		[Ability].[Active] = 1;
 	END
 GO
 
@@ -513,6 +535,42 @@ AS
 		RETURN 	@@ROWCOUNT;
 	END
 GO
+
+PRINT '*** creating sp_deactivate_ability ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_ability]
+	(
+		@AbilityID		[nvarchar](30)
+	)
+AS
+	BEGIN
+		UPDATE 	[Ability]
+		SET		[Active] = 0
+		WHERE 	[Ability].[AbilityID] = @AbilityID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_reactivate_ability ***'
+GO
+CREATE PROCEDURE [dbo].[sp_reactivate_ability]
+	(
+		@AbilityID		[nvarchar](30)
+	)
+AS
+	BEGIN
+		UPDATE 	[Ability]
+		SET		[Active] = 1
+		WHERE 	[Ability].[AbilityID] = @AbilityID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+/*========== End Ability Stored Procedures ==========*/
+
+
+
+
 
 PRINT '*** creating sp_select_alternate_art_by_alternate_art_id ***'
 GO

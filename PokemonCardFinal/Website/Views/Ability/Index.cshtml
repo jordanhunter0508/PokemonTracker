@@ -1,0 +1,48 @@
+﻿@model IEnumerable<DataDomain.Ability>
+
+@{
+	ViewData["Title"] = "All Abilities";
+}
+
+<h1>All Abilites</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.AbilityID)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.AbilityType)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Description)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.AbilityID)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.AbilityType)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id = item.AbilityID }) |
+					@Html.ActionLink("Details", "Details", new { id = item.AbilityID }) |
+					@Html.ActionLink("Deactivate", "Deactivate", new { id = item.AbilityID })
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

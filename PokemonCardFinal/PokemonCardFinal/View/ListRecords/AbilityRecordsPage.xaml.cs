@@ -111,7 +111,7 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                datAbility.ItemsSource = _abilityManager.FormatAbility(_abilityManager.GetAbilities());
+                datAbility.ItemsSource = _abilityManager.FormatAbility(_abilityManager.GetActiveAbilities());
                 _selectedAbility = datAbility.SelectedItem as Ability;
 
                 datAbility.Columns[0].Header = "Ability Name";

@@ -20,5 +20,7 @@ namespace DataDomain
         [Required(ErrorMessage = "Please enter the ability's description.")]
         [StringLength(650, ErrorMessage = "Description must be 650 characters or less.")]
         public string Description { get; set; }
+
+        public bool Active { get; set; }
     }
 }

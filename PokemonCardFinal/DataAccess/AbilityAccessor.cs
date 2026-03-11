@@ -41,7 +41,8 @@ namespace DataAccess
                     {
                         AbilityID = reader.GetString(0),
                         AbilityType = reader.GetString(1),
-                        Description = reader.GetString(2)
+                        Description = reader.GetString(2),
+                        Active = reader.GetBoolean(3),
                     };
 
                 }
@@ -60,14 +61,14 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/>. Access the database
-        /// using sp_select_abilities
+        /// using sp_select_abilities_active
         /// </summary>
-        public List<Ability> SelectAbilities()
+        public List<Ability> SelectActiveAbilities()
         {
             List<Ability> resultAbility = new List<Ability>();
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_abilities";
+            string cmdText = "sp_select_abilities_active";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -84,7 +85,52 @@ namespace DataAccess
                         {
                             AbilityID = reader.GetString(0),
                             AbilityType = reader.GetString(1),
-                            Description = reader.GetString(2)
+                            Description = reader.GetString(2),
+                            Active = reader.GetBoolean(3),
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return resultAbility;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAbilityAccessor"/>. Access the database
+        /// using sp_select_abilities_deactive
+        /// </summary>
+        public List<Ability> SelectDeactiveAbilities()
+        {
+            List<Ability> resultAbility = new List<Ability>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_abilities_deactive";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        resultAbility.Add(new Ability()
+                        {
+                            AbilityID = reader.GetString(0),
+                            AbilityType = reader.GetString(1),
+                            Description = reader.GetString(2),
+                            Active = reader.GetBoolean(3),
                         });
                     }
                 }
@@ -130,7 +176,8 @@ namespace DataAccess
                         {
                             AbilityID = reader.GetString(0),
                             AbilityType = reader.GetString(1),
-                            Description = reader.GetString(2)
+                            Description = reader.GetString(2),
+                            Active = reader.GetBoolean(3),
                         });
                     }
                 }
@@ -234,6 +281,70 @@ namespace DataAccess
 
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_ability";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@AbilityID", System.Data.SqlDbType.NVarChar, 30);
+
+            cmd.Parameters["@AbilityID"].Value = abilityID;
+
+
+            try
+            {
+                conn.Open();
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        public int DeactivateAbility(string abilityID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_deactivate_ability";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@AbilityID", System.Data.SqlDbType.NVarChar, 30);
+
+            cmd.Parameters["@AbilityID"].Value = abilityID;
+
+
+            try
+            {
+                conn.Open();
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        public int ReactivateAbility(string abilityID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_reactivate_ability";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 

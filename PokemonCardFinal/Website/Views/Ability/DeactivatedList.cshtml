@@ -1,14 +1,11 @@
 ﻿@model IEnumerable<DataDomain.Ability>
 
 @{
-	ViewData["Title"] = "List";
+	ViewData["Title"] = "Deactivated Abilities";
 }
 
-<h1>List</h1>
+<h1>Deactivated Abilities</h1>
 
-<p>
-	<a asp-action="Create">Create New</a>
-</p>
 <table class="table">
 	<thead>
 		<tr>
@@ -38,8 +35,7 @@
 					@Html.DisplayFor(modelItem => item.Description)
 				</td>
 				<td>
-					@Html.ActionLink("Edit", "Edit", new { id = item.AbilityID }) |
-					@Html.ActionLink("Details", "Details", new { id = item.AbilityID }) |
+					@Html.ActionLink("Activate", "Reactivate", new { id = item.AbilityID }) |
 					@Html.ActionLink("Delete", "Delete", new { id = item.AbilityID })
 				</td>
 			</tr>

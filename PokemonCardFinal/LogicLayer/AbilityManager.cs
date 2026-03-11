@@ -42,9 +42,9 @@ namespace LogicLayer
             {
                 result = _abilityAccessor.SelectAbilityByAbilityID(abilityID);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ApplicationException("Failed to get an ability.");
+                throw new ApplicationException("Failed to get an ability.", ex);
             }
 
             return result;
@@ -53,20 +53,39 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IAbilityManager"/>
         /// </summary>
-        public List<Ability> GetAbilities()
+        public List<Ability> GetActiveAbilities()
         {
             List<Ability> results = null;
 
             try
             {
-                results = _abilityAccessor.SelectAbilities();
+                results = _abilityAccessor.SelectActiveAbilities();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ApplicationException("Failed to retrieve a list of abilities.");
+                throw new ApplicationException("Failed to retrieve a list of active abilities.", ex);
             }
 
             return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAbilityManager"/>
+        /// </summary>
+        public List<Ability> GetDeactiveAbilities()
+        {
+            List<Ability> results = null;
+
+            try
+            {
+                results = _abilityAccessor.SelectDeactiveAbilities();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve a list of deactivated abilities.", ex);
+            }
+
+            return results; ;
         }
 
         /// <summary>
@@ -80,9 +99,9 @@ namespace LogicLayer
             {
                 results = _abilityAccessor.SelectAbilitiesByAbilityType(abilityType);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ApplicationException("Failed to retrieve a list of abilities with a specified ability type.");
+                throw new ApplicationException("Failed to retrieve a list of abilities with a specified ability type.", ex);
             }
 
             return results;
@@ -104,10 +123,10 @@ namespace LogicLayer
             {
                 result = (1 == _abilityAccessor.InsertAbility(ability));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to add an ability to the database.\n" +
-                    "Please make sure the ability was not already created.");
+                    "Please make sure the ability was not already created.", ex);
             }
 
             return result;
@@ -129,10 +148,10 @@ namespace LogicLayer
             {
                 result = (1 == _abilityAccessor.UpdateAbility(ability));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to update the ability in the database.\n" +
-                    "Please make sure the ability name was correct.");
+                    "Please make sure the ability name was correct.", ex);
             }
 
             return result;
@@ -149,15 +168,56 @@ namespace LogicLayer
             {
                 result = (1 == _abilityAccessor.DeleteAbility(abilityID));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to delete the ability in the database.\n" +
-                    "Please make sure the ability is not attached to any cards.");
+                    "Please make sure the ability is not attached to any cards.", ex);
             }
 
             return result;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IAbilityManager"/>
+        /// </summary>
+        public bool DeactivateAbility(string abilityID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = (1 == _abilityAccessor.DeactivateAbility(abilityID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to deactivate the ability in the database.", ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAbilityManager"/>
+        /// </summary>
+        public bool ReactivateAbility(string abilityID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = (1 == _abilityAccessor.ReactivateAbility(abilityID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to reactivate the ability in the database.", ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAbilityManager"/>
+        /// </summary>
         public IEnumerable<Ability> FormatAbility(IEnumerable<Ability> abilities)
         {
             if (abilities == null)
