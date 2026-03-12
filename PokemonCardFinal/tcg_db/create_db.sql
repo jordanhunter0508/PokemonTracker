@@ -80,6 +80,7 @@ CREATE TABLE [dbo].[AlternateArt]
 (
 	[AlternateArtID]		[nvarchar](50)		NOT NULL,
 	[Description]			[nvarchar](250)		NOT NULL	DEFAULT '',
+	[Active]				[bit]				NOT NULL	DEFAULT 1,
 	
 	CONSTRAINT [pk_alternateart_alternateartid] PRIMARY KEY ([AlternateArtID] ASC)
 )

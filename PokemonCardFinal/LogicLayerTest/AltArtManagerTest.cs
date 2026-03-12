@@ -49,21 +49,95 @@ public class AltArtManagerTest
     }
 
     [TestMethod]
-    public void TestGetAlternateArtsWithValidInput()
+    public void TestGetActiveAlternateArtsWithValidInput()
     {
         // arrange
         const int count = 3;
         const string id2 = "Test Alternate Art 2";
         const string description3 = "This is a description 3.";
-        List<AlternateArt> actualResult;
+        PaginatedResult<AlternateArt> actualResult;
 
         // act
-        actualResult = _altArtManager.GetAlternateArts();
+        actualResult = _altArtManager.GetActiveAlternateArts();
 
         // assert
-        Assert.AreEqual(count, actualResult.Count);
-        Assert.AreEqual(id2, actualResult[1].AlternateArtID);
-        Assert.AreEqual(description3, actualResult[2].Description);
+        Assert.AreEqual(count, actualResult.Items.Count);
+        Assert.AreEqual(id2, actualResult.Items[1].AlternateArtID);
+        Assert.AreEqual(description3, actualResult.Items[2].Description);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetActiveAlternateArtsThrowsArgumentExceptionWithNegativePageNumber()
+    {
+        // arrange
+        const int pageNumber = -1;
+        PaginatedResult<AlternateArt> actualResult;
+
+        // act
+        actualResult = _altArtManager.GetActiveAlternateArts(pageNumber: pageNumber);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetActiveAlternateArtsThrowsArgumentExceptionWithNegativePageSize()
+    {
+        // arrange
+        const int pageSize = -1;
+        PaginatedResult<AlternateArt> actualResult;
+
+        // act
+        actualResult = _altArtManager.GetActiveAlternateArts(pageSize: pageSize);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestGetDeactiveAlternateArtsWithValidInput()
+    {
+        // arrange
+        const int count = 1;
+        PaginatedResult<AlternateArt> actualResult;
+
+        // act
+        actualResult = _altArtManager.GetDeactiveAlternateArts();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Items.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetDeactiveAlternateArtsThrowsArgumentExceptionWithNegativePageNumber()
+    {
+        // arrange
+        const int pageNumber = -1;
+        PaginatedResult<AlternateArt> actualResult;
+
+        // act
+        actualResult = _altArtManager.GetDeactiveAlternateArts(pageNumber: pageNumber);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetDeactiveAlternateArtsThrowsArgumentExceptionWithNegativePageSize()
+    {
+        // arrange
+        const int pageSize = -1;
+        PaginatedResult<AlternateArt> actualResult;
+
+        // act
+        actualResult = _altArtManager.GetDeactiveAlternateArts(pageSize: pageSize);
+
+        // assert
+        // do nothing
     }
 
     [TestMethod]
@@ -199,5 +273,155 @@ public class AltArtManagerTest
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeactivateAlternateArtReturnsTrueWithValidInput()
+    {
+        // arrange
+        const string alternateArtID = "Test Alternate Art 1";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _altArtManager.DeactivateAlternateArt(alternateArtID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeactivateAlternateArtReturnsTrueWithAlreadyDeactiveAbility()
+    {
+        // arrange
+        const string alternateArtID = "Test Alternate Art 4";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _altArtManager.DeactivateAlternateArt(alternateArtID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeactivateAlternateArtReturnsFalseWithInvalidInput()
+    {
+        // arrange
+        const string alternateArtID = "failed";
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _altArtManager.DeactivateAlternateArt(alternateArtID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestDeactivateAlternateArtThrowsArgumentNullExceptionWithNullAbilityID()
+    {
+        // arrange
+        const string alternateArtID = null;
+        bool actualResult = true;
+
+        // act
+        actualResult = _altArtManager.DeactivateAlternateArt(alternateArtID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TesDeactivateAlternateArtThrowsArgumentNullExceptionWithBlankAbilityID()
+    {
+        // arrange
+        const string alternateArtID = "";
+        bool actualResult = true;
+
+        // act
+        actualResult = _altArtManager.DeactivateAlternateArt(alternateArtID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestReactivateAlternateArtReturnsTrueWithValidInput()
+    {
+        // arrange
+        const string alternateArtID = "Test Alternate Art 4";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _altArtManager.ReactivateAlternateArt(alternateArtID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestReactivateAlternateArtReturnsTrueWithAlreadyActiveAbility()
+    {
+        // arrange
+        const string alternateArtID = "Test Alternate Art 4";
+        const bool expectedResult = true;
+        bool actualResult = false;
+
+        // act
+        actualResult = _altArtManager.ReactivateAlternateArt(alternateArtID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestReactivateAbilityReturnsFalseWithInvalidInput()
+    {
+        // arrange
+        const string alternateArtID = "failed";
+        const bool expectedResult = false;
+        bool actualResult = true;
+
+        // act
+        actualResult = _altArtManager.ReactivateAlternateArt(alternateArtID);
+
+        // assert
+        Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestReactivateAlternateArtThrowsArgumentNullExceptionWithNullAbilityID()
+    {
+        // arrange
+        const string alternateArtID = null;
+        bool actualResult = true;
+
+        // act
+        actualResult = _altArtManager.ReactivateAlternateArt(alternateArtID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestReactivateAlternateArtThrowsArgumentNullExceptionWithBlankAbilityID()
+    {
+        // arrange
+        const string alternateArtID = "";
+        bool actualResult = true;
+
+        // act
+        actualResult = _altArtManager.ReactivateAlternateArt(alternateArtID);
+
+        // assert
+        // do nothing
     }
 }

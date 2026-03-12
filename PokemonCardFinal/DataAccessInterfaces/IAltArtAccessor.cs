@@ -17,11 +17,22 @@ namespace DataAccessInterfaces
         public AlternateArt SelectAlternateArtByID(string alternateArtID);
 
         /// <summary>
-        /// Requests all fields from the AlternateArt table to
-        /// create an AlternateArt List.
+        /// Requests all fields from the AlternateArt table that are active to
+        /// create a PaginatedResult of AlternateArts.
         /// </summary>
-        /// <returns>Returns a List of all alternate arts in the database.</returns>
-        public List<AlternateArt> SelectAlternateArts();
+        /// <param name="pageNumber">Represents how much to offset the records by</param>
+        /// <param name="pageSize">Represents how many records to return at most.</param>
+        /// <returns>Returns a PaginatedResult of active alternate arts in the database.</returns>
+        public PaginatedResult<AlternateArt> SelectActiveAlternateArts(int pageNumber = 1, int pageSize = 20);
+
+        /// <summary>
+        /// Requests all fields from the AlternateArt table that are deactive to
+        /// create a PaginatedResult of AlternateArts.
+        /// </summary>
+        /// <param name="pageNumber">Represents how much to offset the records by</param>
+        /// <param name="pageSize">Represents how many records to return at most.</param>
+        /// <returns>Returns a PaginatedResult of deactive alternate arts in the database.</returns>
+        public PaginatedResult<AlternateArt> SelectDeactiveAlternateArts(int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
         /// Inserts the parameters into the stored procedure to try
@@ -44,5 +55,20 @@ namespace DataAccessInterfaces
         /// <param name="alternateArtID">AlternateArtID of the row to delete.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public int DeleteAlternateArt(string alternateArtID);
+
+        /// <summary>
+        /// Sets the active field to 0 to deactivate the record.
+        /// </summary>
+        /// <param name="alternateArtID">AlternateArtID of the row to deactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int DeactivateAlternateArt(string alternateArtID);
+
+        /// <summary>
+        /// Sets the active field to 1 to reactivate the record.
+        /// </summary>
+        /// <param name="alternateArtID">AlternateArtID of the row to reactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int ReactivateAlternateArt(string alternateArtID);
+
     }
 }

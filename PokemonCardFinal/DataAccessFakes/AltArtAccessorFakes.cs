@@ -21,17 +21,26 @@ namespace DataAccessFakes
             _alternateArts.Add(new AlternateArt()
             {
                 AlternateArtID = "Test Alternate Art 1",
-                Description = "This is a description 1."
+                Description = "This is a description 1.",
+                Active = true,
             });
             _alternateArts.Add(new AlternateArt()
             {
                 AlternateArtID = "Test Alternate Art 2",
-                Description = "This is a description 2."
+                Description = "This is a description 2.",
+                Active = true,
             });
             _alternateArts.Add(new AlternateArt()
             {
                 AlternateArtID = "Test Alternate Art 3",
-                Description = "This is a description 3."
+                Description = "This is a description 3.",
+                Active = true,
+            });
+            _alternateArts.Add(new AlternateArt()
+            {
+                AlternateArtID = "Test Alternate Art 4",
+                Description = "This is a description 4.",
+                Active = false,
             });
         }
 
@@ -56,10 +65,38 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IAltArtAccessor"/> used for testing
         /// </summary>
-        public List<AlternateArt> SelectAlternateArts()
+        public PaginatedResult<AlternateArt> SelectActiveAlternateArts(int pageNumber = 1, int pageSize = 20)
         {
-            List<AlternateArt> results;
-            results = _alternateArts;
+            PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
+
+            IEnumerable<AlternateArt> activeArts = _alternateArts.Where(art => art.Active);
+
+            results.TotalCount = activeArts.Count();
+            results.PageNumber = pageNumber;
+            results.PageSize = pageSize;
+
+            results.Items = activeArts.Skip((pageNumber - 1) * pageSize)
+                                           .Take(pageSize)
+                                           .ToList();
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/> used for testing
+        /// </summary>
+        public PaginatedResult<AlternateArt> SelectDeactiveAlternateArts(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
+
+            IEnumerable<AlternateArt> activeArts = _alternateArts.Where(art => !art.Active);
+
+            results.TotalCount = activeArts.Count();
+            results.PageNumber = pageNumber;
+            results.PageSize = pageSize;
+
+            results.Items = activeArts.Skip((pageNumber - 1) * pageSize)
+                                           .Take(pageSize)
+                                           .ToList();
             return results;
         }
 
@@ -134,6 +171,44 @@ namespace DataAccessFakes
             if (count == 1)
             {
                 _alternateArts.Remove(deletedAlternateArt);
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/> used for testing
+        /// </summary>
+        public int DeactivateAlternateArt(string alternateArtID)
+        {
+            int count = 0;
+            foreach (AlternateArt arts in _alternateArts)
+            {
+                if (arts.AlternateArtID == alternateArtID)
+                {
+                    arts.Active = false;
+                    count = 1;
+                    break;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/> used for testing
+        /// </summary>
+        public int ReactivateAlternateArt(string alternateArtID)
+        {
+            int count = 0;
+            foreach (AlternateArt arts in _alternateArts)
+            {
+                if (arts.AlternateArtID == alternateArtID)
+                {
+                    arts.Active = true;
+                    count = 1;
+                    break;
+                }
             }
 
             return count;

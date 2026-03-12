@@ -111,7 +111,7 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                datAlternate.ItemsSource = _altArtManager.GetAlternateArts();
+                datAlternate.ItemsSource = _altArtManager.GetActiveAlternateArts().Items;
                 _selectedAltArt = datAlternate.SelectedItem as AlternateArt;
 
                 datAlternate.Columns[0].Header = "Alternate Art Name";

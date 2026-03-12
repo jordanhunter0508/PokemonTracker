@@ -428,6 +428,8 @@ AS
 	END
 GO
 
+
+
 /*========== Start Ability Stored Procedures ==========*/
 print'' print'========== Start Ability Stored Procedures =========='
 
@@ -612,12 +614,14 @@ AS
 		RETURN 	@@ROWCOUNT;
 	END
 GO
+
 print'========== End Ability Stored Procedures =========='
 /*========== End Ability Stored Procedures ==========*/
 
 
 
-
+/*========== Start AlternateArt Stored Procedures ==========*/
+print'' print'========== Start AlternateArt Stored Procedures =========='
 
 PRINT '*** creating sp_select_alternate_art_by_alternate_art_id ***'
 GO
@@ -627,19 +631,63 @@ CREATE PROCEDURE [dbo].[sp_select_alternate_art_by_alternate_art_id]
 	)
 AS
 	BEGIN
-		SELECT 	[AlternateArt].[AlternateArtID],[AlternateArt].[Description]
+		SELECT 	[AlternateArtID],[Description],[Active]
 		FROM	[AlternateArt]
 		WHERE	[AlternateArt].[AlternateArtID] = @AlternateArtID;
 	END
 GO
 
-PRINT '*** creating sp_select_alternate_arts ***'
+PRINT '*** creating sp_select_alternate_arts_active_paginated ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_alternate_arts]
+CREATE PROCEDURE [dbo].[sp_select_alternate_arts_active_paginated]
+(
+		@PageNumber			[int] = 1,
+		@PageSize			[int] = 20
+)
 AS
 	BEGIN
-		SELECT 	[AlternateArt].[AlternateArtID],[AlternateArt].[Description]
-		FROM	[AlternateArt];
+		SELECT 	[AlternateArtID],[Description],[Active],
+				
+				/*PaginatedList Components*/
+				COUNT([AlternateArtID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([AlternateArtID]) OVER() / @PageSize) AS TotalPages
+				
+		FROM	[AlternateArt]
+		WHERE	[AlternateArt].[Active] = 1
+		
+		/*Pagination*/
+		ORDER BY [AlternateArtID] DESC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
+	END
+GO
+
+PRINT '*** creating sp_select_alternate_arts_deactive_paginated ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_alternate_arts_deactive_paginated]
+(
+		@PageNumber			[int] = 1,
+		@PageSize			[int] = 20
+)
+AS
+	BEGIN
+		SELECT 	[AlternateArtID],[Description],[Active],
+				
+				/*PaginatedList Components*/
+				COUNT([AlternateArtID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([AlternateArtID]) OVER() / @PageSize) AS TotalPages
+				
+		FROM	[AlternateArt]
+		WHERE	[AlternateArt].[Active] = 0
+		
+		/*Pagination*/
+		ORDER BY [AlternateArtID] DESC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
 	END
 GO
 
@@ -670,8 +718,8 @@ CREATE PROCEDURE [dbo].[sp_update_alternate_art]
 AS
 	BEGIN
 		UPDATE 	[AlternateArt]
-		SET		[AlternateArt].[Description] = @Description
-		WHERE	[AlternateArt].[AlternateArtID] = @AlternateArtID
+		SET		[Description] = @Description
+		WHERE	[AlternateArtID] = @AlternateArtID
 		RETURN	@@ROWCOUNT;
 	END
 GO
@@ -685,10 +733,45 @@ CREATE PROCEDURE [dbo].[sp_delete_alternate_art]
 AS
 	BEGIN
 		DELETE 	[AlternateArt]
-		WHERE 	[AlternateArt].[AlternateArtID] = @AlternateArtID
+		WHERE 	[AlternateArtID] = @AlternateArtID
 		RETURN 	@@ROWCOUNT;
 	END
 GO
+
+PRINT '*** creating sp_deactivate_alternate_art ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_alternate_art]
+	(
+		@AlternateArtID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		UPDATE 	[AlternateArt]
+		SET		[Active] = 0
+		WHERE 	[AlternateArtID] = @AlternateArtID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+PRINT '*** creating sp_reactivate_alternate_art ***'
+GO
+CREATE PROCEDURE [dbo].[sp_reactivate_alternate_art]
+	(
+		@AlternateArtID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		UPDATE 	[AlternateArt]
+		SET		[Active] = 1
+		WHERE 	[AlternateArtID] = @AlternateArtID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print'========== End AlternateArt Stored Procedures =========='
+/*========== End AlternateArt Stored Procedures ==========*/
+
+
 
 PRINT '*** creating sp_select_move_by_moveid ***'
 GO

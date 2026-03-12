@@ -43,9 +43,9 @@ namespace LogicLayer
             {
                 result = _altArtAccessor.SelectAlternateArtByID(alternateArtID);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ApplicationException("Failed to get an alternate art.");
+                throw new ApplicationException("Failed to get an alternate art.", ex);
             }
 
             return result;
@@ -54,17 +54,54 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IAltArtManager"/>
         /// </summary>
-        public List<AlternateArt> GetAlternateArts()
+        public PaginatedResult<AlternateArt> GetActiveAlternateArts(int pageNumber = 1, int pageSize = 20)
         {
-            List<AlternateArt> results = null;
+            PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
+
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentException("Page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                throw new ArgumentException("Page size must be greater than 0.");
+            }
 
             try
             {
-                results = _altArtAccessor.SelectAlternateArts();
+                results = _altArtAccessor.SelectActiveAlternateArts(pageNumber,pageSize);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ApplicationException("Failed to retrieve a list of alternate arts.");
+                throw new ApplicationException("Failed to retrieve a list of acitve alternate arts.", ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtManager"/>
+        /// </summary>
+        public PaginatedResult<AlternateArt> GetDeactiveAlternateArts(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
+
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentException("Page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                throw new ArgumentException("Page size must be greater than 0.");
+            }
+
+            try
+            {
+                results = _altArtAccessor.SelectDeactiveAlternateArts(pageNumber,pageSize);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve a list of deactive alternate arts.", ex);
             }
 
             return results;
@@ -86,10 +123,10 @@ namespace LogicLayer
             {
                 result = (1 == _altArtAccessor.InsertAlternateArt(alternateArt));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to add an alternate art to the database.\n" +
-                    "Please make sure the alternate art was not already created.");
+                    "Please make sure the alternate art was not already created.", ex);
             }
 
             return result;
@@ -111,10 +148,10 @@ namespace LogicLayer
             {
                 result = (1 == _altArtAccessor.UpdateAlternateArt(alternateArt));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to update the alternate art in the database.\n" +
-                    "Please make sure the alternate art was correct.");
+                    "Please make sure the alternate art was correct.", ex);
             }
 
             return result;
@@ -131,10 +168,58 @@ namespace LogicLayer
             {
                 result = (1 == _altArtAccessor.DeleteAlternateArt(alternateArtID));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to delete the alternate art in the database.\n" +
-                    "Please make sure the alternate art is not attached to any cards.");
+                    "Please make sure the alternate art is not attached to any cards.", ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtManager"/>
+        /// </summary>
+        public bool DeactivateAlternateArt(string alternateArtID)
+        {
+            bool result = false;
+
+            if (String.IsNullOrWhiteSpace(alternateArtID))
+            {
+                throw new ArgumentNullException("AlternateArtID must not be null or blank.");
+            }
+
+            try
+            {
+                result = (1 == _altArtAccessor.DeactivateAlternateArt(alternateArtID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to deactivate the alternate arts in the database.", ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtManager"/>
+        /// </summary>
+        public bool ReactivateAlternateArt(string alternateArtID)
+        {
+            bool result = false;
+
+            if (String.IsNullOrWhiteSpace(alternateArtID))
+            {
+                throw new ArgumentNullException("AlternateArtID must not be null or blank.");
+            }
+
+            try
+            {
+                result = (1 == _altArtAccessor.ReactivateAlternateArt(alternateArtID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to reactivate the alternate arts in the database.", ex);
             }
 
             return result;

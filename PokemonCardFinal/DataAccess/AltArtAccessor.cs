@@ -41,7 +41,8 @@ namespace DataAccess
                     resultAltArt = new AlternateArt()
                     {
                         AlternateArtID = reader.GetString(0),
-                        Description = reader.GetString(1)
+                        Description = reader.GetString(1),
+                        Active = reader.GetBoolean(2),
                     };
 
                 }
@@ -60,16 +61,19 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IAltArtAccessor"/>. Access the database
-        /// using sp_select_alternate_arts
+        /// using sp_select_alternate_arts_active_paginated
         /// </summary>
-        public List<AlternateArt> SelectAlternateArts()
+        public PaginatedResult<AlternateArt> SelectActiveAlternateArts(int pageNumber = 1, int pageSize = 20)
         {
-            List<AlternateArt> resultAltArt = new List<AlternateArt>();
+            PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_alternate_arts";
+            string cmdText = "sp_select_alternate_arts_active_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
 
             try
             {
@@ -80,11 +84,17 @@ namespace DataAccess
                 {
                     while (reader.Read())
                     {
-                        resultAltArt.Add(new AlternateArt()
+                        results.Items.Add(new AlternateArt()
                         {
                             AlternateArtID = reader.GetString(0),
-                            Description = reader.GetString(1)
+                            Description = reader.GetString(1),
+                            Active = reader.GetBoolean(2),
                         });
+
+                        results.TotalCount = reader.GetInt32(3);
+                        results.PageNumber = reader.GetInt32(4);
+                        results.PageSize = reader.GetInt32(5);
+                        results.TotalPages = Convert.ToInt32(reader.GetDecimal(6));
                     }
                 }
             }
@@ -97,7 +107,58 @@ namespace DataAccess
                 conn.Close();
             }
 
-            return resultAltArt;
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/>. Access the database
+        /// using sp_select_alternate_arts_deactive_paginated
+        /// </summary>
+        public PaginatedResult<AlternateArt> SelectDeactiveAlternateArts(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_alternate_arts_deactive_paginated";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        results.Items.Add(new AlternateArt()
+                        {
+                            AlternateArtID = reader.GetString(0),
+                            Description = reader.GetString(1),
+                            Active = reader.GetBoolean(2),
+                        });
+
+                        results.TotalCount = reader.GetInt32(3);
+                        results.PageNumber = reader.GetInt32(4);
+                        results.PageSize = reader.GetInt32(5);
+                        results.TotalPages = Convert.ToInt32(reader.GetDecimal(6));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
         }
 
         /// <summary>
@@ -189,6 +250,76 @@ namespace DataAccess
 
             cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 50);
 
+            cmd.Parameters["@AlternateArtID"].Value = alternateArtID;
+
+
+            try
+            {
+                conn.Open();
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/>. Access the database
+        /// using sp_deactivate_alternate_art
+        /// </summary>
+        public int DeactivateAlternateArt(string alternateArtID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_deactivate_alternate_art";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters["@AlternateArtID"].Value = alternateArtID;
+
+
+            try
+            {
+                conn.Open();
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/>. Access the database
+        /// using sp_reactivate_alternate_art
+        /// </summary>
+        public int ReactivateAlternateArt(string alternateArtID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_reactivate_alternate_art";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 30);
             cmd.Parameters["@AlternateArtID"].Value = alternateArtID;
 
 

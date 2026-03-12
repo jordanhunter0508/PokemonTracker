@@ -21,7 +21,9 @@ namespace DataAccessInterfaces
         /// and fall with in the range of pageNumber and pageSize
         /// create an Ability List.
         /// </summary>
-        /// <returns>Returns a List of all abilities in the database.</returns>
+        /// <param name="pageNumber">Represents how much to offset the records by</param>
+        /// <param name="pageSize">Represents how many records to return at most.</param>
+        /// <returns>Returns a PaginatedResult of active abilities in the database.</returns>
         public PaginatedResult<Ability> SelectActiveAbilities(int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
@@ -29,7 +31,9 @@ namespace DataAccessInterfaces
         /// and fall with in the range of pageNumber and pageSize
         /// create an Ability List.
         /// </summary>
-        /// <returns>Returns a List of all abilities in the database.</returns>
+        /// <param name="pageNumber">Represents how much to offset the records by</param>
+        /// <param name="pageSize">Represents how many records to return at most.</param>
+        /// <returns>Returns a PaginatedResult of deactive abilities in the database.</returns>
         public PaginatedResult<Ability> SelectDeactiveAbilities(int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
@@ -37,7 +41,9 @@ namespace DataAccessInterfaces
         /// fall with in the range of pageNumber and pageSize.
         /// </summary>
         /// <param name="abilityType">Used to search the database for am Ability</param>
-        /// <returns>Returns a List of abilities where the abilityType matches.</returns>
+        /// <param name="pageNumber">Represents how much to offset the records by</param>
+        /// <param name="pageSize">Represents how many records to return at most.</param>
+        /// <returns>Returns a PaginatedResult of abilities where the abilityType matches.</returns>
         public PaginatedResult<Ability> SelectAbilitiesByAbilityType(string abilityType, int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
