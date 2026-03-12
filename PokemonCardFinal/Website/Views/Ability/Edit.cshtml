@@ -1,52 +1,54 @@
 ﻿@model DataDomain.Ability
 
 @{
-    IEnumerable<string> abilityTypes = (IEnumerable<string>)ViewBag.AbilityTypes;
-    ViewData["Title"] = $"Edit {Model.AbilityID}";
+	IEnumerable<string> abilityTypes = (IEnumerable<string>)ViewBag.AbilityTypes;
+	ViewData["Title"] = $"Edit {Model.AbilityID}";
 }
 
 <h1>Edit @Model.AbilityID</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="AbilityID" class="control-label"></label>
-                <input class="form-control" value="@Model.AbilityID" disabled />
-                <input asp-for="AbilityID" type="hidden" />
-                <span asp-validation-for="AbilityID" class="text-danger"></span>
-            </div>
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="AbilityID" class="control-label"></label>
+				<input class="form-control" value="@Model.AbilityID" disabled />
+				<input asp-for="AbilityID" type="hidden" />
+				<span asp-validation-for="AbilityID" class="text-danger"></span>
+			</div>
 
-            <div class="form-group">
-                <label asp-for="AbilityType" class="control-label"></label>
-                <div class="col-md-12">
-                    @Html.DropDownListFor(model => model.AbilityType,
-                    new SelectList(abilityTypes),
-                                        "Select an Ability Type",
-                                        new { @class = "form-control" })
+			<div class="form-group">
+				<label asp-for="AbilityType" class="control-label"></label>
+				<div class="col-md-12">
+					@Html.DropDownListFor(model => model.AbilityType,
+					new SelectList(abilityTypes),
+										"Select an Ability Type",
+										new { @class = "form-control" })
 
-                    @Html.ValidationMessageFor(model => model.AbilityType,
-                                        "", new { @class = "text-danger" })
-                </div>
-            </div>
+					@Html.ValidationMessageFor(model => model.AbilityType,
+										"", new { @class = "text-danger" })
+				</div>
+			</div>
 
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+			<div class="form-group">
+				<label asp-for="Description" class="control-label"></label>
+				<input asp-for="Description" class="form-control" />
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+	<a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }

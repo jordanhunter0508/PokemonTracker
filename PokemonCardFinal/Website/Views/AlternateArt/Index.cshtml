@@ -1,0 +1,42 @@
+﻿@model IEnumerable<DataDomain.AlternateArt>
+
+@{
+	ViewData["Title"] = "Alternate Arts";
+}
+
+<h1>Alternate Art Types</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table" style="table-layout: fixed; width: 100%" >
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.AlternateArtID)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Description)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.AlternateArtID)
+				</td>
+				<td style="word-wrap: break-word">
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id = item.AlternateArtID }) |
+					@Html.ActionLink("Details", "Details", new { id = item.AlternateArtID }) |
+					@Html.ActionLink("Deactivate", "Deactivate", new { id = item.AlternateArtID })
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

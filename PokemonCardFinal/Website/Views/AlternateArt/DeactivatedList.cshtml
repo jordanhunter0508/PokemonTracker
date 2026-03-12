@@ -1,0 +1,38 @@
+﻿@model IEnumerable<DataDomain.AlternateArt>
+
+@{
+	ViewData["Title"] = "Deactivated Alternate Arts";
+}
+
+<h1>Deactivated Alternate Arts</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.AlternateArtID)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Description)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.AlternateArtID)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					@Html.ActionLink("Activate", "Reactivate", new { id = item.AlternateArtID }) |
+					@Html.ActionLink("Delete", "Delete", new { id = item.AlternateArtID })
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

@@ -189,9 +189,9 @@ namespace Website.Controllers
         {
             try
             {
-                bool wasDeleted = _abilityManager.DeactivateAbility(id);
+                bool result = _abilityManager.DeactivateAbility(id);
                 
-                if (wasDeleted)
+                if (result)
                 {
                     return RedirectToAction(nameof(Index));
                 }
@@ -231,11 +231,11 @@ namespace Website.Controllers
         {
             try
             {
-                bool wasDeleted = _abilityManager.ReactivateAbility(id);
+                bool result = _abilityManager.ReactivateAbility(id);
                 
-                if (wasDeleted)
+                if (result)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(DeactivatedList));
                 }
                 else
                 {
@@ -277,7 +277,7 @@ namespace Website.Controllers
 
                 if (wasDeleted)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(DeactivatedList));
                 }
                 else
                 {
@@ -287,8 +287,8 @@ namespace Website.Controllers
             catch (Exception ex)
             {
                 ViewBag.Exception = ex;
-                ViewBag.DisplayError = $"Something went wrong when trying to delete ability '{id}'.\n" + 
-                                        "Please make sure there are no cards with this ability before tyring a permant deletion.";
+                ViewBag.DisplayError = $"Something went wrong when trying to delete ability '{id}'.\n" +
+                                        "Please make sure there are no cards with this ability before tyring a permanent deletion.";
                 return RedirectToAction("Error", "Home");
             }
         }
