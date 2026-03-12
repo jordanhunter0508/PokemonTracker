@@ -29,7 +29,7 @@ namespace Website.Controllers
         {
             try
             {
-                IEnumerable<Ability> abilities = _abilityManager.GetActiveAbilities();
+                IEnumerable<Ability> abilities = _abilityManager.GetActiveAbilities().Items;
                 return View(abilities);
             }
             catch (Exception ex)
@@ -46,7 +46,7 @@ namespace Website.Controllers
         {
             try
             {
-                IEnumerable<Ability> abilities = _abilityManager.GetDeactiveAbilities();
+                IEnumerable<Ability> abilities = _abilityManager.GetDeactiveAbilities().Items;
                 return View(abilities);
             }
             catch (Exception ex)

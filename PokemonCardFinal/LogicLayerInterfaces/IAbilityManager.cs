@@ -20,28 +20,28 @@ namespace LogicLayerInterfaces
 
         /// <summary>
         /// Calls the <see href="IAbilityAccessor.SelectActiveAbilties()"/> method to get<br/>
-        /// a list of all Abilities from the database.
+        /// a list of Abilities from the database.
         /// </summary>
         /// <returns>Returns a List of all Abilities that are active in the database</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public List<Ability>GetActiveAbilities();
+        public PaginatedResult<Ability> GetActiveAbilities(int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
         /// Calls the <see href="IAbilityAccessor.SelectDeactiveAbilites()"/> method to get<br/>
-        /// a list of all Abilities from the database.
+        /// a list of Abilities from the database.
         /// </summary>
         /// <returns>Returns a List of all Abilities that are deactive in the database</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public List<Ability>GetDeactiveAbilities();
+        public PaginatedResult<Ability> GetDeactiveAbilities(int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
         /// Calls the <see href="IAbilityAccessor.SelectAbilityByAbilityType(string)"/> method to get<br/>
-        /// a list of all Abilites from the database that hava a matching abilityType.
+        /// a list of Abilites from the database that hava a matching abilityType.
         /// </summary>
         /// <param name="abilityType">Used to search the database for abilites with the same type.</param>
         /// <returns>Returns a List of abilities in the database</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public List<Ability> GetAbilityByAbilityType(string abilityType);
+        public PaginatedResult<Ability> GetAbilitiesByAbilityType(string abilityType, int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
         /// Passes parameters to <see href="IAbilityAccessor.InsertAbility(Ability)"/><br/>
@@ -85,13 +85,5 @@ namespace LogicLayerInterfaces
         /// <param name="abilityID">AbilityID of the row to reactivate.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public bool ReactivateAbility(string abilityID);
-
-        /// <summary>
-        /// Makes sure the first letter of the ID is capitalized and then sorts them by
-        /// AbilityID
-        /// </summary>
-        /// <param name="abilities">The IEnumerable that is being sorted</param>
-        /// <returns>Returns an IEnumberable of type Ability that is formated for dispaly.</returns>
-        public IEnumerable<Ability> FormatAbility(IEnumerable<Ability> abilities);
     }
 }

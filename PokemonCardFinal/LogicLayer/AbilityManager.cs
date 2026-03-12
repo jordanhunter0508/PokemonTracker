@@ -38,6 +38,11 @@ namespace LogicLayer
         {
             Ability result = null;
 
+            if (String.IsNullOrWhiteSpace(abilityID))
+            {
+                throw new ArgumentNullException("AbilityID cannot empty or null.");
+            }
+
             try
             {
                 result = _abilityAccessor.SelectAbilityByAbilityID(abilityID);
@@ -53,13 +58,23 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IAbilityManager"/>
         /// </summary>
-        public List<Ability> GetActiveAbilities()
+        public PaginatedResult<Ability> GetActiveAbilities(int pageNumber = 1, int pageSize = 20)
         {
-            List<Ability> results = null;
+            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
+
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentException("Page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                throw new ArgumentException("Page size must be greater than 0.");
+            }
 
             try
             {
-                results = _abilityAccessor.SelectActiveAbilities();
+                results = _abilityAccessor.SelectActiveAbilities(pageNumber, pageSize);
+                results.Items = FormatAbility(results.Items);
             }
             catch (Exception ex)
             {
@@ -72,32 +87,56 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IAbilityManager"/>
         /// </summary>
-        public List<Ability> GetDeactiveAbilities()
+        public PaginatedResult<Ability> GetDeactiveAbilities(int pageNumber = 1, int pageSize = 20)
         {
-            List<Ability> results = null;
+            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
+
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentException("Page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                throw new ArgumentException("Page size must be greater than 0.");
+            }
 
             try
             {
-                results = _abilityAccessor.SelectDeactiveAbilities();
+                results = _abilityAccessor.SelectDeactiveAbilities(pageNumber, pageSize);
+                results.Items = FormatAbility(results.Items);
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to retrieve a list of deactivated abilities.", ex);
             }
 
-            return results; ;
+            return results;
         }
 
         /// <summary>
         /// Implements from <see cref="IAbilityManager"/>
         /// </summary>
-        public List<Ability> GetAbilityByAbilityType(string abilityType)
+        public PaginatedResult<Ability> GetAbilitiesByAbilityType(string abilityType, int pageNumber = 1, int pageSize = 20)
         {
-            List<Ability> results = null;
+            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
+
+            if (String.IsNullOrWhiteSpace(abilityType))
+            {
+                throw new ArgumentNullException("Ability type cannot empty or null.");
+            }
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentException("Page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                throw new ArgumentException("Page size must be greater than 0.");
+            }
 
             try
             {
-                results = _abilityAccessor.SelectAbilitiesByAbilityType(abilityType);
+                results = _abilityAccessor.SelectAbilitiesByAbilityType(abilityType,pageNumber, pageSize);
+                results.Items = FormatAbility(results.Items);
             }
             catch (Exception ex)
             {
@@ -164,6 +203,12 @@ namespace LogicLayer
         {
             bool result = false;
 
+            if (String.IsNullOrWhiteSpace(abilityID))
+            {
+                throw new ArgumentNullException("AbilityID cannot empty or null.");
+            }
+
+
             try
             {
                 result = (1 == _abilityAccessor.DeleteAbility(abilityID));
@@ -184,6 +229,11 @@ namespace LogicLayer
         {
             bool result = false;
 
+            if (String.IsNullOrWhiteSpace(abilityID))
+            {
+                throw new ArgumentNullException("AbilityID cannot empty or null.");
+            }
+
             try
             {
                 result = (1 == _abilityAccessor.DeactivateAbility(abilityID));
@@ -203,6 +253,11 @@ namespace LogicLayer
         {
             bool result = false;
 
+            if (String.IsNullOrWhiteSpace(abilityID))
+            {
+                throw new ArgumentNullException("AbilityID cannot empty or null.");
+            }
+
             try
             {
                 result = (1 == _abilityAccessor.ReactivateAbility(abilityID));
@@ -216,9 +271,12 @@ namespace LogicLayer
         }
 
         /// <summary>
-        /// Implements from <see cref="IAbilityManager"/>
+        /// Makes sure the first letter of the ID is capitalized and then sorts them by
+        /// AbilityID
         /// </summary>
-        public IEnumerable<Ability> FormatAbility(IEnumerable<Ability> abilities)
+        /// <param name="abilities">The IEnumerable that is being sorted</param>
+        /// <returns>Returns an IEnumberable of type Ability that is formated for dispaly.</returns>
+        private List<Ability> FormatAbility(IEnumerable<Ability> abilities)
         {
             if (abilities == null)
             {
@@ -231,7 +289,7 @@ namespace LogicLayer
             }
 
             abilities = abilities.OrderBy(ability => ability.AbilityID);
-            return abilities;
+            return abilities.ToList();
         }
     }
 }

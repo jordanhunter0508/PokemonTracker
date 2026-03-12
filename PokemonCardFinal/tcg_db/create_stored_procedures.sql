@@ -428,8 +428,8 @@ AS
 	END
 GO
 
-
 /*========== Start Ability Stored Procedures ==========*/
+print'' print'========== Start Ability Stored Procedures =========='
 
 PRINT '*** creating sp_select_ability_by_ability_id ***'
 GO
@@ -446,43 +446,90 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_abilities_active ***'
+PRINT '*** creating sp_select_abilities_active_paginated ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_abilities_active]
+CREATE PROCEDURE [dbo].[sp_select_abilities_active_paginated]
+(
+	@PageNumber			[int] = 1,
+	@PageSize			[int] = 20
+)
 AS
 	BEGIN
 		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],
-				[Ability].[Description],[Ability].[Active]
+				[Ability].[Description],[Ability].[Active],
+				
+				/*PaginatedList Components*/
+				COUNT([AbilityID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([AbilityID]) OVER() / @PageSize) AS TotalPages
+		
 		FROM	[Ability]
-		WHERE	[Ability].[Active] = 1;
+		WHERE	[Ability].[Active] = 1
+		
+		/*Pagination*/
+		ORDER BY [AbilityID] DESC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
 	END
 GO
 
-PRINT '*** creating sp_select_abilities_deactive ***'
+PRINT '*** creating sp_select_abilities_deactive_paginated ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_abilities_deactive]
+CREATE PROCEDURE [dbo].[sp_select_abilities_deactive_paginated]
+(
+	@PageNumber			[int] = 1,
+	@PageSize			[int] = 20
+)
 AS
 	BEGIN
 		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],
-				[Ability].[Description],[Ability].[Active]
+				[Ability].[Description],[Ability].[Active],
+				
+				/*PaginatedList Components*/
+				COUNT([AbilityID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([AbilityID]) OVER() / @PageSize) AS TotalPages
+				
 		FROM	[Ability]
-		WHERE	[Ability].[Active] = 0;
+		WHERE	[Ability].[Active] = 0
+		
+		/*Pagination*/
+		ORDER BY [AbilityID] DESC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
 	END
 GO
 
-PRINT '*** creating sp_select_abilities_by_ability_type ***'
+PRINT '*** creating sp_select_abilities_by_ability_type_paginated ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_abilities_by_ability_type]
+CREATE PROCEDURE [dbo].[sp_select_abilities_by_ability_type_paginated]
 	(
-		@AbilityType	[nvarchar](25)
+		@AbilityType	[nvarchar](25),
+		@PageNumber			[int] = 1,
+		@PageSize			[int] = 20
+
 	)
 AS
 	BEGIN
 		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],
-				[Ability].[Description],[Ability].[Active]
+				[Ability].[Description],[Ability].[Active],
+				
+				/*PaginatedList Components*/
+				COUNT([AbilityID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([AbilityID]) OVER() / @PageSize) AS TotalPages
+				
 		FROM	[Ability]
 		WHERE	[Ability].[AbilityType] = @AbilityType
-		AND		[Ability].[Active] = 1;
+		AND		[Ability].[Active] = 1
+		
+		/*Pagination*/
+		ORDER BY [AbilityID] DESC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
 	END
 GO
 
@@ -565,7 +612,7 @@ AS
 		RETURN 	@@ROWCOUNT;
 	END
 GO
-
+print'========== End Ability Stored Procedures =========='
 /*========== End Ability Stored Procedures ==========*/
 
 

@@ -78,35 +78,60 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/> used for testing
         /// </summary>
-        public List<Ability> SelectActiveAbilities()
+        public PaginatedResult<Ability> SelectActiveAbilities(int pageNumber = 1, int pageSize = 20)
         {
-            List<Ability> results;
-            results = _abilities.Where(ability => ability.Active == true).ToList();
+            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
+
+            IEnumerable<Ability> activeAbilities = _abilities.Where(ability => ability.Active);
+
+            results.TotalCount = activeAbilities.Count();
+            results.PageNumber = pageNumber;
+            results.PageSize = pageSize;
+
+            results.Items = activeAbilities.Skip((pageNumber - 1) * pageSize)
+                                           .Take(pageSize)
+                                           .ToList();
             return results;
         }
 
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/> used for testing
         /// </summary>
-        public List<Ability> SelectDeactiveAbilities()
+        public PaginatedResult<Ability> SelectDeactiveAbilities(int pageNumber = 1, int pageSize = 20)
         {
-            List<Ability> results;
-            results = _abilities.Where(ability => ability.Active == false).ToList();
+            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
+
+            IEnumerable<Ability> deactiveAbilities = _abilities.Where(ability => !ability.Active);
+
+            results.TotalCount = deactiveAbilities.Count();
+            results.PageNumber = pageNumber;
+            results.PageSize = pageSize;
+
+            results.Items = deactiveAbilities.Skip((pageNumber - 1) * pageSize)
+                                           .Take(pageSize)
+                                           .ToList();
             return results;
         }
 
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/> used for testing
         /// </summary>
-        public List<Ability> SelectAbilitiesByAbilityType(string abilityType)
+        public PaginatedResult<Ability> SelectAbilitiesByAbilityType(string abilityType, int pageNumber = 1, int pageSize = 20)
         {
-            IEnumerable<Ability> results;
-            results = from ability in _abilities
-                      where ability.AbilityType == abilityType &&
-                            ability.Active == true
-                      orderby ability.AbilityID
-                      select ability;
-            return results.ToList();
+            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
+
+            IEnumerable<Ability> abilitiesByType = _abilities.Where(ability => 
+                                                                    ability.Active && 
+                                                                    ability.AbilityType == abilityType);
+
+            results.TotalCount = abilitiesByType.Count();
+            results.PageNumber = pageNumber;
+            results.PageSize = pageSize;
+
+            results.Items = abilitiesByType.Skip((pageNumber - 1) * pageSize)
+                                           .Take(pageSize)
+                                           .ToList();
+            return results;
         }
 
         /// <summary>

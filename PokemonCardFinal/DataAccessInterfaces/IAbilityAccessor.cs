@@ -17,25 +17,28 @@ namespace DataAccessInterfaces
         public Ability SelectAbilityByAbilityID(string abilityID);
 
         /// <summary>
-        /// Requests all records from the Ability table that are active to
+        /// Requests a list records from the Ability table that are active
+        /// and fall with in the range of pageNumber and pageSize
         /// create an Ability List.
         /// </summary>
         /// <returns>Returns a List of all abilities in the database.</returns>
-        public List<Ability> SelectActiveAbilities();
+        public PaginatedResult<Ability> SelectActiveAbilities(int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
-        /// Requests all records from the Ability table that are not active to
+        /// Requests a list of records from the Ability table that are not active
+        /// and fall with in the range of pageNumber and pageSize
         /// create an Ability List.
         /// </summary>
         /// <returns>Returns a List of all abilities in the database.</returns>
-        public List<Ability> SelectDeactiveAbilities();
+        public PaginatedResult<Ability> SelectDeactiveAbilities(int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
-        /// Requests all fields from the Ability table to create an Ability List.
+        /// Requests all fields from the Ability table where the abilityType match and
+        /// fall with in the range of pageNumber and pageSize.
         /// </summary>
         /// <param name="abilityType">Used to search the database for am Ability</param>
         /// <returns>Returns a List of abilities where the abilityType matches.</returns>
-        public List<Ability> SelectAbilitiesByAbilityType(string abilityType);
+        public PaginatedResult<Ability> SelectAbilitiesByAbilityType(string abilityType, int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
         /// Inserts the parameters into the stored procedure to try

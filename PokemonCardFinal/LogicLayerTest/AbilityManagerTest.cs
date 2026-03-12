@@ -1,3 +1,4 @@
+using Azure;
 using DataAccessFakes;
 using DataDomain;
 using LogicLayer;
@@ -51,21 +52,82 @@ public class AbilityManagerTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetAbilityByAbilityIDThrowsArgumentNullExceptionWithNullAbilityID()
+    {
+        // arrange
+        const string abilityID = null;
+        Ability actualResult = null;
+
+        // act
+        actualResult = _abilityManager.GetAbilityByAbilityID(abilityID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetAbilityByAbilityIDThrowsArgumentNullExceptionWithBlankAbilityID()
+    {
+        // arrange
+        const string abilityID = "";
+        Ability actualResult = null;
+
+        // act
+        actualResult = _abilityManager.GetAbilityByAbilityID(abilityID);
+
+        // assert
+        // do nothing
+    }
+
+
+    [TestMethod]
     public void TestGetActiveAbilitesReturnsFullList()
     {
         // arrange
         const int count = 4;
         const string abilityID4 = "Ability Test 4";
         const string abilityType = "Ability Type";
-        List<Ability> actualResult;
+        PaginatedResult<Ability> actualResult;
 
         // act
         actualResult = _abilityManager.GetActiveAbilities();
 
         // assert
-        Assert.AreEqual(count, actualResult.Count);
-        Assert.AreEqual(abilityID4, actualResult[3].AbilityID);
-        Assert.AreEqual(abilityType, actualResult[2].AbilityType);
+        Assert.AreEqual(count, actualResult.Items.Count);
+        Assert.AreEqual(abilityID4, actualResult.Items[3].AbilityID);
+        Assert.AreEqual(abilityType, actualResult.Items[2].AbilityType);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetActiveAbilitesThrowsArgumentExceptionWithInvalidPageNumber()
+    {
+        // arrange
+        const int pageNumber = -1;
+        PaginatedResult<Ability> actualResult;
+
+        // act
+        actualResult = _abilityManager.GetActiveAbilities(pageNumber: pageNumber);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetActiveAbilitesThrowsArgumentExceptionWithInvalidPageSize()
+    {
+        // arrange
+        const int pageSize = 0;
+        PaginatedResult<Ability> actualResult;
+
+        // act
+        actualResult = _abilityManager.GetActiveAbilities(pageSize: pageSize);
+
+        // assert
+        // do nothing
     }
 
     [TestMethod]
@@ -78,10 +140,40 @@ public class AbilityManagerTest
         List<Ability> actualResult;
 
         // act
-        actualResult = _abilityManager.GetDeactiveAbilities();
+        actualResult = _abilityManager.GetDeactiveAbilities().Items.ToList();
 
         // assert
         Assert.AreEqual(count, actualResult.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetDeactiveAbilitiesThrowsArgumentExceptionWithInvalidPageNumber()
+    {
+        // arrange
+        const int pageNumber = -1;
+        PaginatedResult<Ability> actualResult;
+
+        // act
+        actualResult = _abilityManager.GetDeactiveAbilities(pageNumber: pageNumber);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetDeactiveAbilitiesThrowsArgumentExceptionWithInvalidPageSize()
+    {
+        // arrange
+        const int pageSize = 0;
+        PaginatedResult<Ability> actualResult;
+
+        // act
+        actualResult = _abilityManager.GetDeactiveAbilities(pageSize: pageSize);
+
+        // assert
+        // do nothing
     }
 
     [TestMethod]
@@ -90,13 +182,13 @@ public class AbilityManagerTest
         // arrange
         const string abilityType = "Ability Type";
         const int count = 4;
-        List<Ability> actualResult;
+        PaginatedResult<Ability> actualResult;
 
         // act
-        actualResult = _abilityManager.GetAbilityByAbilityType(abilityType);
+        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType);
 
         // assert
-        Assert.AreEqual(count, actualResult.Count);
+        Assert.AreEqual(count, actualResult.Items.Count);
     }
 
     [TestMethod]
@@ -105,14 +197,79 @@ public class AbilityManagerTest
         // arrange
         const string abilityType = "Ability Failed";
         const int count = 0;
-        List<Ability> actualResult;
+        PaginatedResult<Ability> actualResult;
 
         // act
-        actualResult = _abilityManager.GetAbilityByAbilityType(abilityType);
+        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType);
 
         // assert
-        Assert.AreEqual(count, actualResult.Count);
+        Assert.AreEqual(count, actualResult.Items.Count);
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetAbilityByAbilityTypeThrowsArgumentExceptionWithInvalidPageNumber()
+    {
+        // arrange
+        const string abilityType = "Ability Type";
+        const int pageNumber = -1;
+        PaginatedResult<Ability> actualResult;
+
+        // act
+        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType,pageNumber: pageNumber);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetAbilityByAbilityTypeThrowsArgumentExceptionWithInvalidPageSize()
+    {
+        // arrange
+        const string abilityType = "Ability Type";
+        const int pageSize = 0;
+        PaginatedResult<Ability> actualResult;
+
+        // act
+        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType,pageSize: pageSize);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetAbilityByAbilityTypeThrowsArgumentNullExceptionWithNullAbilityType()
+    {
+        // arrange
+        const string abilityType = null;
+        const int pageSize = 0;
+        PaginatedResult<Ability> actualResult;
+
+        // act
+        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType,pageSize: pageSize);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestGetAbilityByAbilityTypeThrowsArgumentNullExceptionWithBlankAbilityType()
+    {
+        // arrange
+        const string abilityType = "";
+        const int pageSize = 0;
+        PaginatedResult<Ability> actualResult;
+
+        // act
+        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType,pageSize: pageSize);
+
+        // assert
+        // do nothing
+    }
+
 
     [TestMethod]
     public void TestAddAbilityReturnsTrueWithValidAbility()
@@ -254,6 +411,36 @@ public class AbilityManagerTest
     }
 
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestDeleteAbilityThrowsArgumentNullExceptionWithNullAbilityID()
+    {
+        // arrange
+        const string abilityID = null;
+        bool actualResult = true;
+
+        // act
+        actualResult = _abilityManager.DeleteAbility(abilityID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestDeleteAbilityThrowsArgumentNullExceptionWithBlankAbilityID()
+    {
+        // arrange
+        const string abilityID = "";
+        bool actualResult = true;
+
+        // act
+        actualResult = _abilityManager.DeleteAbility(abilityID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
     public void TestDeactivateAbilityReturnsTrueWithValidInput()
     {
         // arrange
@@ -296,6 +483,36 @@ public class AbilityManagerTest
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestDeactivateAbilityThrowsArgumentNullExceptionWithNullAbilityID()
+    {
+        // arrange
+        const string abilityID = null;
+        bool actualResult = true;
+
+        // act
+        actualResult = _abilityManager.DeactivateAbility(abilityID);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestDeactivateAbilityThrowsArgumentNullExceptionWithBlankAbilityID()
+    {
+        // arrange
+        const string abilityID = "";
+        bool actualResult = true;
+
+        // act
+        actualResult = _abilityManager.DeactivateAbility(abilityID);
+
+        // assert
+        // do nothing
     }
 
     [TestMethod]
@@ -344,55 +561,30 @@ public class AbilityManagerTest
     }
 
     [TestMethod]
-    public void TestFormatAbilityReturnsCorrectOrder()
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestReactivateAbilityThrowsArgumentNullExceptionWithNullAbilityID()
     {
         // arrange
-        List<Ability> inputList = new List<Ability>();
-        inputList.Add(new Ability()
-        {
-            AbilityID = "test",
-            AbilityType = "type",
-            Description = "description"
-        });
-        inputList.Add(new Ability()
-        {
-            AbilityID = "another test",
-            AbilityType = "type",
-            Description = "description"
-        });
-        List<Ability> expectedList = new List<Ability>();
-        expectedList.Add(new Ability()
-        {
-            AbilityID = "Another test",
-            AbilityType = "type",
-            Description = "description"
-        });
-        expectedList.Add(new Ability()
-        {
-            AbilityID = "Test",
-            AbilityType = "type",
-            Description = "description"
-        });
-        List<Ability> actualList = null;
+        const string abilityID = null;
+        bool actualResult = true;
 
         // act
-        actualList = _abilityManager.FormatAbility(inputList).ToList();
+        actualResult = _abilityManager.ReactivateAbility(abilityID);
 
         // assert
-        Assert.AreEqual(expectedList[0].AbilityID, actualList[0].AbilityID);
-        Assert.AreEqual(expectedList[1].AbilityID, actualList[1].AbilityID);
+        // do nothing
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
-    public void TestFormatElementTypeThrowsArgumentNullExceptionWithNullInput()
+    public void TestReactivateAbilityThrowsArgumentNullExceptionWithBlankAbilityID()
     {
         // arrange
-        List<Ability> inputList = null;
-        List<Ability> outputList = new List<Ability>();
+        const string abilityID = "";
+        bool actualResult = true;
 
         // act
-        outputList = _abilityManager.FormatAbility(inputList).ToList();
+        actualResult = _abilityManager.ReactivateAbility(abilityID);
 
         // assert
         // do nothing

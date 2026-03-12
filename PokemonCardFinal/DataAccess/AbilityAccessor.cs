@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessInterfaces;
+﻿using DataAccessInterfaces;
 using DataDomain;
 using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
 
 namespace DataAccess
 {
@@ -61,16 +54,19 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/>. Access the database
-        /// using sp_select_abilities_active
+        /// using sp_select_abilities_active_paginated
         /// </summary>
-        public List<Ability> SelectActiveAbilities()
+        public PaginatedResult<Ability> SelectActiveAbilities(int pageNumber = 1, int pageSize = 20)
         {
-            List<Ability> resultAbility = new List<Ability>();
+            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_abilities_active";
+            string cmdText = "sp_select_abilities_active_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
 
             try
             {
@@ -81,13 +77,18 @@ namespace DataAccess
                 {
                     while (reader.Read())
                     {
-                        resultAbility.Add(new Ability()
+                        results.Items.Add(new Ability()
                         {
                             AbilityID = reader.GetString(0),
                             AbilityType = reader.GetString(1),
                             Description = reader.GetString(2),
                             Active = reader.GetBoolean(3),
                         });
+
+                        results.TotalCount = reader.GetInt32(4);
+                        results.PageNumber = reader.GetInt32(5);
+                        results.PageSize = reader.GetInt32(6);
+                        results.TotalPages = Convert.ToInt32(reader.GetDecimal(7));
                     }
                 }
             }
@@ -100,21 +101,24 @@ namespace DataAccess
                 conn.Close();
             }
 
-            return resultAbility;
+            return results;
         }
 
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/>. Access the database
-        /// using sp_select_abilities_deactive
+        /// using sp_select_abilities_deactive_paginated
         /// </summary>
-        public List<Ability> SelectDeactiveAbilities()
+        public PaginatedResult<Ability> SelectDeactiveAbilities(int pageNumber = 1, int pageSize = 20)
         {
-            List<Ability> resultAbility = new List<Ability>();
+            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_abilities_deactive";
+            string cmdText = "sp_select_abilities_deactive_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
 
             try
             {
@@ -125,13 +129,18 @@ namespace DataAccess
                 {
                     while (reader.Read())
                     {
-                        resultAbility.Add(new Ability()
+                        results.Items.Add(new Ability()
                         {
                             AbilityID = reader.GetString(0),
                             AbilityType = reader.GetString(1),
                             Description = reader.GetString(2),
                             Active = reader.GetBoolean(3),
                         });
+
+                        results.TotalCount = reader.GetInt32(4);
+                        results.PageNumber = reader.GetInt32(5);
+                        results.PageSize = reader.GetInt32(6);
+                        results.TotalPages = Convert.ToInt32(reader.GetDecimal(7));
                     }
                 }
             }
@@ -144,24 +153,25 @@ namespace DataAccess
                 conn.Close();
             }
 
-            return resultAbility;
+            return results;
         }
 
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/>. Access the database
-        /// using sp_select_abilities_by_ability_type
+        /// using sp_select_abilities_by_ability_type_paginated
         /// </summary>
-        public List<Ability> SelectAbilitiesByAbilityType(string abilityType)
+        public PaginatedResult<Ability> SelectAbilitiesByAbilityType(string abilityType, int pageNumber = 1, int pageSize = 20)
         {
-            List<Ability> resultAbility = new List<Ability>();
+            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_abilities_by_ability_type";
+            string cmdText = "sp_select_abilities_by_ability_type_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AbilityType", System.Data.SqlDbType.NVarChar, 25);
-            cmd.Parameters["@AbilityType"].Value = abilityType;
+            cmd.Parameters.AddWithValue("@AbilityType", abilityType);
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
 
             try
             {
@@ -172,13 +182,18 @@ namespace DataAccess
                 {
                     while (reader.Read())
                     {
-                        resultAbility.Add(new Ability()
+                        results.Items.Add(new Ability()
                         {
                             AbilityID = reader.GetString(0),
                             AbilityType = reader.GetString(1),
                             Description = reader.GetString(2),
                             Active = reader.GetBoolean(3),
                         });
+
+                        results.TotalCount = reader.GetInt32(4);
+                        results.PageNumber = reader.GetInt32(5);
+                        results.PageSize = reader.GetInt32(6);
+                        results.TotalPages = Convert.ToInt32(reader.GetDecimal(7));
                     }
                 }
             }
@@ -191,7 +206,7 @@ namespace DataAccess
                 conn.Close();
             }
 
-            return resultAbility;
+            return results;
         }
 
         /// <summary>
@@ -307,6 +322,10 @@ namespace DataAccess
             return count;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IAbilityAccessor"/>. Access the database
+        /// using sp_deactivate_ability
+        /// </summary>
         public int DeactivateAbility(string abilityID)
         {
             int count = 0;
@@ -339,6 +358,10 @@ namespace DataAccess
             return count;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IAbilityAccessor"/>. Access the database
+        /// using sp_reactivate_ability
+        /// </summary>
         public int ReactivateAbility(string abilityID)
         {
             int count = 0;
