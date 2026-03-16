@@ -18,7 +18,7 @@ namespace LogicLayer
         /// <summary>
         /// General ArtistManager created for the presentaion layer
         /// </summary>
-        public ArtistManager() 
+        public ArtistManager()
         {
             _artistAccessor = new ArtistAccesor();
         }
@@ -28,7 +28,7 @@ namespace LogicLayer
         /// </summary>
         /// <param name="artistAccessor">Set the IArtistAccessor in the ArtistManager</param>
         public ArtistManager(IArtistAccessor artistAccessor)
-        { 
+        {
             _artistAccessor = artistAccessor;
         }
 
@@ -78,17 +78,73 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IArtistManager"/>
         /// </summary>
-        public List<Artist> GetArtists()
+        public List<Artist> GetAllArtists()
         {
             List<Artist> results = null;
 
             try
             {
-                results = _artistAccessor.SelectArtists();
+                results = FormatArtists(_artistAccessor.SelectAllArtists());
             }
             catch (Exception)
-            { 
+            {
                 throw new ApplicationException("Failed to retrieve artists");
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IArtistManager"/>
+        /// </summary>
+        public PaginatedResult<Artist> GetActiveArtists(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Artist> results = new PaginatedResult<Artist>();
+
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentException("Page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                throw new ArgumentException("Page size must be greater than 0.");
+            }
+
+            try
+            {
+                results = _artistAccessor.SelectActiveArtists(pageNumber, pageSize);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve active artists.", ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IArtistManager"/>
+        /// </summary>
+        public PaginatedResult<Artist> GetDeactiveArtists(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Artist> results = new PaginatedResult<Artist>();
+
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentException("Page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                throw new ArgumentException("Page size must be greater than 0.");
+            }
+
+            try
+            {
+                results = _artistAccessor.SelectDeactiveArtists(pageNumber, pageSize);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve active artists.", ex);
             }
 
             return results;
@@ -160,7 +216,48 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IArtistManager"/>
         /// </summary>
-        public IEnumerable<Artist> FormatArtists(IEnumerable<Artist> artists)
+        public bool DeactivateArtist(int artistID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = (1 == _artistAccessor.DeactivateArtist(artistID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to deactivate the artist.", ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IArtistManager"/>
+        /// </summary>
+        public bool ReactivateArtist(int artistID)
+        {
+            bool result = false;
+
+            try
+            {
+                result = (1 == _artistAccessor.ReactivateArtist(artistID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to reactivate the artist.", ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Makes sure the first leter of the given and surname is capital
+        /// then sorts by the id.
+        /// </summary>
+        /// <param name="artists">The IEnumerable that is being sorted</param>
+        /// <returns>Returns an IEnumberable of type Artist that is formated for dispaly.</returns>
+        private List<Artist> FormatArtists(IEnumerable<Artist> artists)
         {
             if (artists == null)
             {
@@ -176,7 +273,7 @@ namespace LogicLayer
                 }
             }
             artists = artists.OrderBy(artist => artist.ArtistID);
-            return artists;
+            return artists.ToList();
         }
     }
 }

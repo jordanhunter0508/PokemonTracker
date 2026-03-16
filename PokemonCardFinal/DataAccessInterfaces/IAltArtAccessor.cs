@@ -17,6 +17,12 @@ namespace DataAccessInterfaces
         public AlternateArt SelectAlternateArtByID(string alternateArtID);
 
         /// <summary>
+        /// Requests all fields, and all records from the AlternateArt table.
+        /// </summary>
+        /// <returns>Returns a list of all alternate arts from the database</returns>
+        public List<AlternateArt> SelectAllAlternateArt();
+
+        /// <summary>
         /// Requests all fields from the AlternateArt table that are active to
         /// create a PaginatedResult of AlternateArts.
         /// </summary>

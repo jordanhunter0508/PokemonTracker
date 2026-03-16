@@ -54,6 +54,25 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IAltArtManager"/>
         /// </summary>
+        public List<AlternateArt> GetAllAlternateArt()
+        {
+            List<AlternateArt> results = new List<AlternateArt>();
+
+            try
+            {
+                results = _altArtAccessor.SelectAllAlternateArt();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve a list of all alternate arts", ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtManager"/>
+        /// </summary>
         public PaginatedResult<AlternateArt> GetActiveAlternateArts(int pageNumber = 1, int pageSize = 20)
         {
             PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();

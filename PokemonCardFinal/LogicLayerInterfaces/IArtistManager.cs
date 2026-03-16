@@ -34,7 +34,27 @@ namespace LogicLayerInterfaces
         /// </summary>
         /// <returns>Returns a List of all Artists in the database</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public List<Artist> GetArtists();
+        public List<Artist> GetAllArtists();
+
+        /// <summary>
+        /// Calls the <see href="IArtistAccessor.SelectActiveArtists(int,int)"/> method to get<br/>
+        /// a list of Artists from the database that are active.
+        /// </summary>
+        /// <param name="pageNumber">Represents what page to pull from.</param>
+        /// <param name="pageSize">Represents how many items are on the page.</param>
+        /// <returns>Returns a PaginatedResult where the Items is a list of Artists that are active</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public PaginatedResult<Artist> GetActiveArtists(int pageNumber = 1, int pageSize = 20);
+
+        /// <summary>
+        /// Calls the <see href="IArtistAccessor.SelectDeactiveArtists(int,int)"/> method to get<br/>
+        /// a list of Artist from the database that are deactive.
+        /// </summary>
+        /// <param name="pageNumber">Represents what page to pull from.</param>
+        /// <param name="pageSize">Represents how many items are on the page.</param>
+        /// <returns>Returns a PaginatedResult where the Items is a list of Artists that are deactive</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public PaginatedResult<Artist> GetDeactiveArtists(int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
         /// Passes parameters to <see href="InsertArtist(string,string)"/><br/>
@@ -68,11 +88,21 @@ namespace LogicLayerInterfaces
         public bool DeleteArtist(int artistID);
 
         /// <summary>
-        /// Makes sure the first leter of the given and surname is capital
-        /// then sorts by the id.
+        /// Passes parameters to <see href="IArtistAccessor.DeactivateArtist(int)"/><br/>
+        /// Then returns true if the record was deactivated successfully
         /// </summary>
-        /// <param name="artists">The IEnumerable that is being sorted</param>
-        /// <returns>Returns an IEnumberable of type Artist that is formated for dispaly.</returns>
-        public IEnumerable<Artist> FormatArtists(IEnumerable<Artist> artists);
+        /// <param name="artistID">ArtistID of the row to deactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connecting to the database</exception>
+        public bool DeactivateArtist(int artistID);
+
+        /// <summary>
+        /// Passes parameters to <see href="IArtistAccessor.ReactivateArtist(int)"/><br/>
+        /// Then returns true if the record was reactivated successfully
+        /// </summary>
+        /// <param name="artistID">ArtistID of the row to reactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connecting to the database</exception>
+        public bool ReactivateArtist(int artistID);
     }
 }

@@ -69,6 +69,26 @@ CREATE TABLE [dbo].[UserRole]
 GO
 
 /*
+Used to store Ability for the PokemonCard Table
+When a trainer/support/item needs an ability
+Name = trainer/support/item
+otherwise 
+Name = ability name from card
+*/
+PRINT '*** creating Ability Table ***'
+GO
+CREATE TABLE [dbo].[Ability]
+(
+	[AbilityID]				[nvarchar](30)		NOT NULL	DEFAULT '',
+	[AbilityType]			[nvarchar](25)		NOT NULL	DEFAULT 'support',
+	[Description]			[nvarchar](650)		NOT NULL	DEFAULT '',
+	[Active]				[bit]				NOT NULL	DEFAULT 1,
+
+	CONSTRAINT [pk_ability_abilityid] PRIMARY KEY ([AbilityID] ASC)
+)
+GO
+
+/*
 Used to store alternate art information
 E.X.
 Name = "reverse holo"
@@ -96,31 +116,12 @@ CREATE TABLE [dbo].[Artist]
 	[ArtistID]				[int]				NOT NULL	IDENTITY(1,1),
 	[GivenName]				[nvarchar](50)		NOT NULL,
 	[Surname]				[nvarchar](100)		NOT NULL	DEFAULT '',
+	[Active]				[bit]				NOT NULL	DEFAULT 1,
 	
 	CONSTRAINT [pk_artist_artistid] PRIMARY KEY ([ArtistID] ASC),
 	CONSTRAINT [ak_artist_givenname_surname] UNIQUE ([GivenName],[Surname])
 )
 GO
-
-/*
-Used to store Ability for the PokemonCard Table
-When a trainer/support/item needs an ability
-Name = trainer/support/item
-otherwise 
-Name = ability name from card
-*/
-PRINT '*** creating Ability Table ***'
-GO
-CREATE TABLE [dbo].[Ability]
-(
-	[AbilityID]				[nvarchar](30)		NOT NULL	DEFAULT '',
-	[AbilityType]			[nvarchar](25)		NOT NULL	DEFAULT 'support',
-	[Description]			[nvarchar](650)		NOT NULL	DEFAULT '',
-	[Active]				[bit]				NOT NULL	DEFAULT 1,
-
-	CONSTRAINT [pk_ability_abilityid] PRIMARY KEY ([AbilityID] ASC)
-)
-Go
 
 /*
 Needed because PokemonCards/CollectionType/MoveCost can all have more than one

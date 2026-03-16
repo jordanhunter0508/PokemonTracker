@@ -61,6 +61,46 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IAltArtAccessor"/>. Access the database
+        /// using sp_select_all_alternate_arts
+        /// </summary>
+        public List<AlternateArt> SelectAllAlternateArt()
+        {
+            List<AlternateArt> results = new List<AlternateArt>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_all_alternate_arts";
+            SqlCommand cmd = new SqlCommand( cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    results.Add(new AlternateArt()
+                    {
+                        AlternateArtID = reader.GetString(0),
+                        Description= reader.GetString(1),
+                        Active = reader.GetBoolean(2),
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/>. Access the database
         /// using sp_select_alternate_arts_active_paginated
         /// </summary>
         public PaginatedResult<AlternateArt> SelectActiveAlternateArts(int pageNumber = 1, int pageSize = 20)

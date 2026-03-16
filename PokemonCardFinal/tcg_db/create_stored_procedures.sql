@@ -1,439 +1,12 @@
-PRINT '' PRINT '' PRINT 'Creating Stored Procedures in tcg_db'
+print '' print '' print 'Creating Stored Procedures in tcg_db'
 GO
 USE [tcg_db]
 GO
 
-PRINT '*** creating sp_authenticate_user_by_email_and_password_hash ***'
-GO
-CREATE PROCEDURE [dbo].[sp_authenticate_user_by_email_and_password_hash]
-	(
-		@Email				[nvarchar](250),
-		@PasswordHash		[nvarchar](100)
-	)
-AS
-	BEGIN
-		SELECT	COUNT([Users].[UserID])
-		FROM	[Users]
-		WHERE	[Users].[Email] = @Email
-			AND	[Users].[PasswordHash] = @PasswordHash
-			AND	[Users].[Active] = 1;
-	END
-GO
-
-PRINT '*** creating sp_select_user_by_email ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_user_by_email]
-	(
-		@Email				[nvarchar](250)
-	)
-AS
-	BEGIN
-		SELECT	[Users].[UserID],[Users].[GivenName],[Users].[Surname],
-					[Email],[Active]
-		FROM	[Users]
-		WHERE	[Email] = @Email;
-	END
-GO
-
-PRINT '*** creating sp_select_role_by_email ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_role_by_user_email]
-	(
-		@Email				[nvarchar](250)
-	)
-AS
-	BEGIN
-		SELECT	[UserRole].[RoleID]
-		FROM	[UserRole] JOIN [Users] ON [UserRole].[UserID] = [Users].[UserID]
-		WHERE	[Users].[Email] = @Email;
-	END
-GO
-
-PRINT '*** creating sp_insert_user_into_user ***'
-GO
-CREATE PROCEDURE [dbo].[sp_insert_user_into_user]
-	(
-		@GivenName				[nvarchar](50),
-		@Surname				[nvarchar](100),
-		@Email					[nvarchar](250),
-		@PasswordHash			[nvarchar](100)		
-	)
-AS
-	BEGIN
-		INSERT INTO [dbo].[Users]
-			([GivenName],[Surname],[PasswordHash],[Email])
-		VALUES
-			(@GivenName,@Surname,@PasswordHash,@Email)
-		RETURN SCOPE_IDENTITY();
-	END
-GO
-
-PRINT '*** creating sp_select_user_count_by_email ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_user_count_by_email]
-	(
-		@Email		[nvarchar](250)
-	)
-AS
-	BEGIN
-		SELECT	COUNT([Users].[UserID])
-		FROM	[Users]
-		WHERE	[Email] = @Email;
-	END
-GO	
-
-PRINT '*** creating sp_insert_user_into_role ***'
-GO
-CREATE PROCEDURE [dbo].[sp_insert_user_into_role]
-	(
-		@UserID		[int],
-		@RoleID		[nvarchar](50)			
-	)
-AS
-	BEGIN
-		INSERT INTO [dbo].[UserRole]
-			([RoleID],[UserID])
-		VALUES
-			(@RoleID,@UserID)
-		RETURN @@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_update_passwordhash_by_email ***'
-GO
-CREATE PROCEDURE [dbo].[sp_update_passwordhash_by_email]
-	(
-		@Email					[nvarchar](250),
-		@CurrentPasswordHash	[nvarchar](100),
-		@NewPasswordHash		[nvarchar](100)
-	)
-AS
-	BEGIN
-		UPDATE 	[Users]
-		SET		[Users].[PasswordHash] = @NewPasswordHash
-		WHERE	[Users].[PasswordHash] = @CurrentPasswordHash
-			AND	@CurrentPasswordHash != @NewPasswordHash
-			AND	[Users].[Email] = @Email
-		RETURN 	@@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_select_element_by_element_type_id ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_element_by_element_type_id]
-	(
-		@ElementTypeID	[nvarchar](15)
-	)
-AS
-	BEGIN
-		SELECT 	[ElementType].[ElementTypeID],[ElementType].[Description]
-		FROM	[ElementType]
-		WHERE	[ElementType].[ElementTypeID] = @ElementTypeID;
-	END
-GO
-
-PRINT '*** creating sp_insert_element_type ***'
-GO
-CREATE PROCEDURE [dbo].[sp_insert_element_type]
-	(
-		@ElementTypeID	[nvarchar](15),
-		@Description	[nvarchar](100)
-	)
-AS
-	BEGIN
-		INSERT INTO [dbo].[ElementType]
-			([ElementTypeID],[Description])
-		VALUES
-			(@ElementTypeID,@Description)
-		RETURN @@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_update_element_type ***'
-GO
-CREATE PROCEDURE [dbo].[sp_update_element_type]
-	(
-		@ElementTypeID	[nvarchar](15),
-		@Description	[nvarchar](100)
-	)
-AS
-	BEGIN
-		UPDATE 	[ElementType]
-		SET		[ElementType].[Description] = @Description
-		WHERE	[ElementType].[ElementTypeID] = @ElementTypeID
-		RETURN	@@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_delete_element_type ***'
-GO
-CREATE PROCEDURE [dbo].[sp_delete_element_type]
-	(
-		@ElementTypeID	[nvarchar](15)
-	)
-AS
-	BEGIN
-		DELETE 	[ElementType]
-		WHERE 	[ElementType].[ElementTypeID] = @ElementTypeID
-		RETURN 	@@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_select_elements ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_elements]
-AS
-	BEGIN
-		SELECT 	[ElementType].[ElementTypeID],[ElementType].[Description]
-		FROM	[ElementType];
-	END
-GO
-
-PRINT '*** creating sp_select_artist_by_artistid ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_artist_by_artistid]
-	(
-		@ArtistID		[int]
-	)
-AS
-	BEGIN
-		SELECT 	[Artist].[ArtistID],[Artist].[GivenName],[Artist].[Surname]
-		FROM	[Artist]
-		WHERE	[Artist].[ArtistID] = @ArtistID;
-	END
-GO
-
-PRINT '*** creating sp_select_artist_by_given_name ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_artist_by_name]
-	(
-		@GivenName		[nvarchar](50),
-		@Surname		[nvarchar](100)
-	)
-AS
-	BEGIN
-		SELECT 	[Artist].[ArtistID],[Artist].[GivenName],[Artist].[Surname]
-		FROM	[Artist]
-		WHERE	[Artist].[GivenName] = @GivenName
-		AND		[Artist].[Surname] = @Surname;
-	END
-GO
-
-PRINT '*** creating sp_insert_artist ***'
-GO
-CREATE PROCEDURE [dbo].[sp_insert_artist]
-	(
-		@GivenName		[nvarchar](50),
-		@Surname		[nvarchar](100)
-	)
-AS
-	BEGIN
-		INSERT INTO [dbo].[Artist]
-			([GivenName],[Surname])
-		VALUES
-			(@GivenName,@Surname)
-		RETURN SCOPE_IDENTITY();
-	END
-GO
-
-PRINT '*** creating sp_update_artist ***'
-GO
-CREATE PROCEDURE [dbo].[sp_update_artist]
-	(
-		@ArtistID		[int],
-		@GivenName		[nvarchar](50),
-		@Surname		[nvarchar](100)
-	)
-AS
-	BEGIN
-		UPDATE 	[Artist]
-		SET		[Artist].[GivenName] = @GivenName,
-				[Artist].[Surname] = @Surname
-		WHERE	[Artist].[ArtistID] = @ArtistID
-		RETURN	@@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_delete_artist ***'
-GO
-CREATE PROCEDURE [dbo].[sp_delete_artist]
-	(
-		@ArtistID		[int]
-	)
-AS
-	BEGIN
-		DELETE 	[Artist]
-		WHERE 	[Artist].[ArtistID] = @ArtistID
-		RETURN 	@@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_select_artists ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_artists]
-AS
-	BEGIN
-		SELECT 	[Artist].[ArtistID],[Artist].[GivenName],[Artist].[Surname]
-		FROM	[Artist];
-	END
-GO
-
-PRINT '*** creating sp_select_booster_by_boosterid ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_booster_by_boosterid]
-	(
-		@BoosterID		[nvarchar](50)
-	)
-AS
-	BEGIN
-		SELECT 	[Booster].[BoosterID],[Booster].[Series],
-				[Booster].[ReleaseDate],[Booster].[Abbreviation]
-		FROM	[Booster]
-		WHERE	[Booster].[BoosterID] = @BoosterID;
-	END
-GO
-
-PRINT '*** creating sp_insert_booster ***'
-GO
-CREATE PROCEDURE [dbo].[sp_insert_booster]
-	(
-		@BoosterID		[nvarchar](50),
-		@Series			[nvarchar](50),
-		@ReleaseDate	[date],
-		@Abbreviation	[nvarchar](5)
-	)	
-AS
-	BEGIN
-		INSERT INTO [dbo].[Booster]
-			([BoosterID],[Series],[ReleaseDate],[Abbreviation])
-		VALUES
-			(@BoosterID,@Series,@ReleaseDate,@Abbreviation)
-		RETURN @@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_update_booster ***'
-GO
-CREATE PROCEDURE [dbo].[sp_update_booster]
-	(
-		@BoosterID		[nvarchar](50),
-		@Series			[nvarchar](50),
-		@ReleaseDate	[date],
-		@Abbreviation	[nvarchar](5)
-	)
-AS
-	BEGIN
-		UPDATE 	[Booster]
-		SET		[Booster].[Series] = @Series,
-				[Booster].[ReleaseDate] = @ReleaseDate,
-				[Booster].[Abbreviation] = @Abbreviation
-		WHERE	[Booster].[BoosterID] = @BoosterID
-		RETURN	@@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_delete_booster ***'
-GO
-CREATE PROCEDURE [dbo].[sp_delete_booster]
-	(
-		@BoosterID		[nvarchar](50)
-	)
-AS
-	BEGIN
-		DELETE 	[Booster]
-		WHERE 	[Booster].[BoosterID] = @BoosterID
-		RETURN 	@@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_select_boosters ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_boosters]
-AS
-	BEGIN
-		SELECT 	[Booster].[BoosterID],[Booster].[Series],
-				[Booster].[ReleaseDate],[Booster].[Abbreviation]
-		FROM	[Booster];
-	END
-GO
-
-PRINT '*** creating sp_select_rule_by_rule_id ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_rule_by_rule_id]
-	(
-		@PokemonRuleID		[nvarchar](50)
-	)
-AS
-	BEGIN
-		SELECT 	[PokemonRule].[PokemonRuleID],[PokemonRule].[Description]
-		FROM	[PokemonRule]
-		WHERE	[PokemonRule].[PokemonRuleID] = @PokemonRuleID;
-	END
-GO
-
-PRINT '*** creating sp_select_rules ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_rules]
-AS
-	BEGIN
-		SELECT 	[PokemonRule].[PokemonRuleID],[PokemonRule].[Description]
-		FROM	[PokemonRule];
-	END
-GO
-
-PRINT '*** creating sp_insert_rule ***'
-GO
-CREATE PROCEDURE [dbo].[sp_insert_rule]
-	(
-		@PokemonRuleID		[nvarchar](50),
-		@Description		[nvarchar](150)
-	)	
-AS
-	BEGIN
-		INSERT INTO [dbo].[PokemonRule]
-			([PokemonRuleID],[Description])
-		VALUES
-			(@PokemonRuleID,@Description)
-		RETURN @@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_update_rule ***'
-GO
-CREATE PROCEDURE [dbo].[sp_update_rule]
-	(
-		@PokemonRuleID		[nvarchar](50),
-		@Description		[nvarchar](150)
-	)
-AS
-	BEGIN
-		UPDATE 	[PokemonRule]
-		SET		[PokemonRule].[Description] = @Description
-		WHERE	[PokemonRule].[PokemonRuleID] = @PokemonRuleID
-		RETURN	@@ROWCOUNT;
-	END
-GO
-
-PRINT '*** creating sp_delete_rule ***'
-GO
-CREATE PROCEDURE [dbo].[sp_delete_rule]
-	(
-		@PokemonRuleID		[nvarchar](50)
-	)
-AS
-	BEGIN
-		DELETE 	[PokemonRule]
-		WHERE 	[PokemonRule].[PokemonRuleID] = @PokemonRuleID
-		RETURN 	@@ROWCOUNT;
-	END
-GO
-
-
-
 /*========== Start Ability Stored Procedures ==========*/
 print'' print'========== Start Ability Stored Procedures =========='
 
-PRINT '*** creating sp_select_ability_by_ability_id ***'
+print '*** creating sp_select_ability_by_ability_id ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_ability_by_ability_id]
 	(
@@ -448,7 +21,18 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_abilities_active_paginated ***'
+print '*** creating sp_select_all_abilities ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_abilities]
+AS
+	BEGIN
+		SELECT 	[Ability].[AbilityID],[Ability].[AbilityType],
+				[Ability].[Description],[Ability].[Active]
+		FROM	[Ability];
+	END
+GO
+
+print '*** creating sp_select_abilities_active_paginated ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_abilities_active_paginated]
 (
@@ -476,7 +60,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_abilities_deactive_paginated ***'
+print '*** creating sp_select_abilities_deactive_paginated ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_abilities_deactive_paginated]
 (
@@ -504,7 +88,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_abilities_by_ability_type_paginated ***'
+print '*** creating sp_select_abilities_by_ability_type_paginated ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_abilities_by_ability_type_paginated]
 	(
@@ -535,7 +119,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_ability ***'
+print '*** creating sp_insert_ability ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_ability]
 	(
@@ -553,7 +137,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_update_ability ***'
+print '*** creating sp_update_ability ***'
 GO
 CREATE PROCEDURE [dbo].[sp_update_ability]
 	(
@@ -571,7 +155,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_ability ***'
+print '*** creating sp_delete_ability ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_ability]
 	(
@@ -585,7 +169,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_deactivate_ability ***'
+print '*** creating sp_deactivate_ability ***'
 GO
 CREATE PROCEDURE [dbo].[sp_deactivate_ability]
 	(
@@ -600,7 +184,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_reactivate_ability ***'
+print '*** creating sp_reactivate_ability ***'
 GO
 CREATE PROCEDURE [dbo].[sp_reactivate_ability]
 	(
@@ -623,7 +207,7 @@ print'========== End Ability Stored Procedures =========='
 /*========== Start AlternateArt Stored Procedures ==========*/
 print'' print'========== Start AlternateArt Stored Procedures =========='
 
-PRINT '*** creating sp_select_alternate_art_by_alternate_art_id ***'
+print '*** creating sp_select_alternate_art_by_alternate_art_id ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_alternate_art_by_alternate_art_id]
 	(
@@ -637,7 +221,21 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_alternate_arts_active_paginated ***'
+print '*** creating sp_select_all_alternate_arts ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_alternate_arts]
+(
+		@PageNumber			[int] = 1,
+		@PageSize			[int] = 20
+)
+AS
+	BEGIN
+		SELECT 	[AlternateArtID],[Description],[Active]	
+		FROM	[AlternateArt];
+	END
+GO
+
+print '*** creating sp_select_alternate_arts_active_paginated ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_alternate_arts_active_paginated]
 (
@@ -664,7 +262,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_alternate_arts_deactive_paginated ***'
+print '*** creating sp_select_alternate_arts_deactive_paginated ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_alternate_arts_deactive_paginated]
 (
@@ -691,7 +289,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_alternate_art ***'
+print '*** creating sp_insert_alternate_art ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_alternate_art]
 	(
@@ -708,7 +306,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_update_alternate_art ***'
+print '*** creating sp_update_alternate_art ***'
 GO
 CREATE PROCEDURE [dbo].[sp_update_alternate_art]
 	(
@@ -724,7 +322,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_alternate_art ***'
+print '*** creating sp_delete_alternate_art ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_alternate_art]
 	(
@@ -738,7 +336,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_deactivate_alternate_art ***'
+print '*** creating sp_deactivate_alternate_art ***'
 GO
 CREATE PROCEDURE [dbo].[sp_deactivate_alternate_art]
 	(
@@ -753,7 +351,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_reactivate_alternate_art ***'
+print '*** creating sp_reactivate_alternate_art ***'
 GO
 CREATE PROCEDURE [dbo].[sp_reactivate_alternate_art]
 	(
@@ -773,7 +371,527 @@ print'========== End AlternateArt Stored Procedures =========='
 
 
 
-PRINT '*** creating sp_select_move_by_moveid ***'
+/*========== Start Artist Stored Procedures ==========*/
+print'' print'========== Start Artist Stored Procedures =========='
+
+print '*** creating sp_select_artist_by_artistid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_artist_by_artistid]
+	(
+		@ArtistID		[int]
+	)
+AS
+	BEGIN
+		SELECT 	[ArtistID],[GivenName],[Surname],[Active]
+		FROM	[Artist]
+		WHERE	[Artist].[ArtistID] = @ArtistID;
+	END
+GO
+
+print '*** creating sp_select_artist_by_given_name ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_artist_by_name]
+	(
+		@GivenName		[nvarchar](50),
+		@Surname		[nvarchar](100)
+	)
+AS
+	BEGIN
+		SELECT 	[ArtistID],[GivenName],[Surname],[Active]
+		FROM	[Artist]
+		WHERE	[Artist].[GivenName] = @GivenName
+		AND		[Artist].[Surname] = @Surname;
+	END
+GO
+
+print '*** creating sp_select_all_artists ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_artists]
+AS
+	BEGIN
+		SELECT 	[ArtistID],[GivenName],[Surname],[Active]
+		FROM	[Artist];
+	END
+GO
+
+print '*** creating sp_select_artists_active_paginated ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_artists_active_paginated]
+(
+		@PageNumber			[int] = 1,
+		@PageSize			[int] = 20
+)
+AS
+	BEGIN
+		SELECT 	[ArtistID],[GivenName],[Surname],[Active],
+				
+				/*PaginatedList Components*/
+				COUNT([ArtistID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([ArtistID]) OVER() / @PageSize) AS TotalPages
+				
+		FROM	[Artist]
+		WHERE	[Artist].[Active] = 1
+		
+		/*Pagination*/
+		ORDER BY [GivenName] ASC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
+	END
+GO
+
+print '*** creating sp_select_artists_deactive_paginated ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_artists_deactive_paginated]
+(
+		@PageNumber			[int] = 1,
+		@PageSize			[int] = 20
+)
+AS
+	BEGIN
+		SELECT 	[ArtistID],[GivenName],[Surname],[Active],
+				
+				/*PaginatedList Components*/
+				COUNT([ArtistID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([ArtistID]) OVER() / @PageSize) AS TotalPages
+				
+		FROM	[Artist]
+		WHERE	[Artist].[Active] = 0
+		
+		/*Pagination*/
+		ORDER BY [GivenName] ASC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
+	END
+GO
+
+print '*** creating sp_insert_artist ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_artist]
+	(
+		@GivenName		[nvarchar](50),
+		@Surname		[nvarchar](100)
+	)
+AS
+	BEGIN
+		INSERT INTO [dbo].[Artist]
+			([GivenName],[Surname])
+		VALUES
+			(@GivenName,@Surname)
+		RETURN SCOPE_IDENTITY();
+	END
+GO
+
+print '*** creating sp_update_artist ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_artist]
+	(
+		@ArtistID		[int],
+		@GivenName		[nvarchar](50),
+		@Surname		[nvarchar](100)
+	)
+AS
+	BEGIN
+		UPDATE 	[Artist]
+		SET		[Artist].[GivenName] = @GivenName,
+				[Artist].[Surname] = @Surname
+		WHERE	[Artist].[ArtistID] = @ArtistID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_delete_artist ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_artist]
+	(
+		@ArtistID		[int]
+	)
+AS
+	BEGIN
+		DELETE 	[Artist]
+		WHERE 	[Artist].[ArtistID] = @ArtistID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_deactivate_artist ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_artist]
+	(
+		@ArtistID		[int]
+	)
+AS
+	BEGIN
+		UPDATE 	[Artist]
+		SET		[Active] = 0
+		WHERE 	[ArtistID] = @ArtistID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_reactivate_artist ***'
+GO
+CREATE PROCEDURE [dbo].[sp_reactivate_artist]
+	(
+		@ArtistID		[int]
+	)
+AS
+	BEGIN
+		UPDATE 	[Artist]
+		SET		[Active] = 1
+		WHERE 	[ArtistID] = @ArtistID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print'========== End Artist Stored Procedures =========='
+/*========== End Artist Stored Procedures ==========*/
+
+
+
+
+print ''print '*** creating sp_authenticate_user_by_email_and_password_hash ***'
+GO
+CREATE PROCEDURE [dbo].[sp_authenticate_user_by_email_and_password_hash]
+	(
+		@Email				[nvarchar](250),
+		@PasswordHash		[nvarchar](100)
+	)
+AS
+	BEGIN
+		SELECT	COUNT([Users].[UserID])
+		FROM	[Users]
+		WHERE	[Users].[Email] = @Email
+			AND	[Users].[PasswordHash] = @PasswordHash
+			AND	[Users].[Active] = 1;
+	END
+GO
+
+print '*** creating sp_select_user_by_email ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_user_by_email]
+	(
+		@Email				[nvarchar](250)
+	)
+AS
+	BEGIN
+		SELECT	[Users].[UserID],[Users].[GivenName],[Users].[Surname],
+					[Email],[Active]
+		FROM	[Users]
+		WHERE	[Email] = @Email;
+	END
+GO
+
+print '*** creating sp_select_role_by_email ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_role_by_user_email]
+	(
+		@Email				[nvarchar](250)
+	)
+AS
+	BEGIN
+		SELECT	[UserRole].[RoleID]
+		FROM	[UserRole] JOIN [Users] ON [UserRole].[UserID] = [Users].[UserID]
+		WHERE	[Users].[Email] = @Email;
+	END
+GO
+
+print '*** creating sp_insert_user_into_user ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_user_into_user]
+	(
+		@GivenName				[nvarchar](50),
+		@Surname				[nvarchar](100),
+		@Email					[nvarchar](250),
+		@PasswordHash			[nvarchar](100)		
+	)
+AS
+	BEGIN
+		INSERT INTO [dbo].[Users]
+			([GivenName],[Surname],[PasswordHash],[Email])
+		VALUES
+			(@GivenName,@Surname,@PasswordHash,@Email)
+		RETURN SCOPE_IDENTITY();
+	END
+GO
+
+print '*** creating sp_select_user_count_by_email ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_user_count_by_email]
+	(
+		@Email		[nvarchar](250)
+	)
+AS
+	BEGIN
+		SELECT	COUNT([Users].[UserID])
+		FROM	[Users]
+		WHERE	[Email] = @Email;
+	END
+GO	
+
+print '*** creating sp_insert_user_into_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_user_into_role]
+	(
+		@UserID		[int],
+		@RoleID		[nvarchar](50)			
+	)
+AS
+	BEGIN
+		INSERT INTO [dbo].[UserRole]
+			([RoleID],[UserID])
+		VALUES
+			(@RoleID,@UserID)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_update_passwordhash_by_email ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_passwordhash_by_email]
+	(
+		@Email					[nvarchar](250),
+		@CurrentPasswordHash	[nvarchar](100),
+		@NewPasswordHash		[nvarchar](100)
+	)
+AS
+	BEGIN
+		UPDATE 	[Users]
+		SET		[Users].[PasswordHash] = @NewPasswordHash
+		WHERE	[Users].[PasswordHash] = @CurrentPasswordHash
+			AND	@CurrentPasswordHash != @NewPasswordHash
+			AND	[Users].[Email] = @Email
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_select_element_by_element_type_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_element_by_element_type_id]
+	(
+		@ElementTypeID	[nvarchar](15)
+	)
+AS
+	BEGIN
+		SELECT 	[ElementType].[ElementTypeID],[ElementType].[Description]
+		FROM	[ElementType]
+		WHERE	[ElementType].[ElementTypeID] = @ElementTypeID;
+	END
+GO
+
+print '*** creating sp_insert_element_type ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_element_type]
+	(
+		@ElementTypeID	[nvarchar](15),
+		@Description	[nvarchar](100)
+	)
+AS
+	BEGIN
+		INSERT INTO [dbo].[ElementType]
+			([ElementTypeID],[Description])
+		VALUES
+			(@ElementTypeID,@Description)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_update_element_type ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_element_type]
+	(
+		@ElementTypeID	[nvarchar](15),
+		@Description	[nvarchar](100)
+	)
+AS
+	BEGIN
+		UPDATE 	[ElementType]
+		SET		[ElementType].[Description] = @Description
+		WHERE	[ElementType].[ElementTypeID] = @ElementTypeID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_delete_element_type ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_element_type]
+	(
+		@ElementTypeID	[nvarchar](15)
+	)
+AS
+	BEGIN
+		DELETE 	[ElementType]
+		WHERE 	[ElementType].[ElementTypeID] = @ElementTypeID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_select_elements ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_elements]
+AS
+	BEGIN
+		SELECT 	[ElementType].[ElementTypeID],[ElementType].[Description]
+		FROM	[ElementType];
+	END
+GO
+
+
+
+print '*** creating sp_select_booster_by_boosterid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_booster_by_boosterid]
+	(
+		@BoosterID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT 	[Booster].[BoosterID],[Booster].[Series],
+				[Booster].[ReleaseDate],[Booster].[Abbreviation]
+		FROM	[Booster]
+		WHERE	[Booster].[BoosterID] = @BoosterID;
+	END
+GO
+
+print '*** creating sp_insert_booster ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_booster]
+	(
+		@BoosterID		[nvarchar](50),
+		@Series			[nvarchar](50),
+		@ReleaseDate	[date],
+		@Abbreviation	[nvarchar](5)
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[Booster]
+			([BoosterID],[Series],[ReleaseDate],[Abbreviation])
+		VALUES
+			(@BoosterID,@Series,@ReleaseDate,@Abbreviation)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_update_booster ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_booster]
+	(
+		@BoosterID		[nvarchar](50),
+		@Series			[nvarchar](50),
+		@ReleaseDate	[date],
+		@Abbreviation	[nvarchar](5)
+	)
+AS
+	BEGIN
+		UPDATE 	[Booster]
+		SET		[Booster].[Series] = @Series,
+				[Booster].[ReleaseDate] = @ReleaseDate,
+				[Booster].[Abbreviation] = @Abbreviation
+		WHERE	[Booster].[BoosterID] = @BoosterID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_delete_booster ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_booster]
+	(
+		@BoosterID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		DELETE 	[Booster]
+		WHERE 	[Booster].[BoosterID] = @BoosterID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_select_boosters ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_boosters]
+AS
+	BEGIN
+		SELECT 	[Booster].[BoosterID],[Booster].[Series],
+				[Booster].[ReleaseDate],[Booster].[Abbreviation]
+		FROM	[Booster];
+	END
+GO
+
+print '*** creating sp_select_rule_by_rule_id ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_rule_by_rule_id]
+	(
+		@PokemonRuleID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		SELECT 	[PokemonRule].[PokemonRuleID],[PokemonRule].[Description]
+		FROM	[PokemonRule]
+		WHERE	[PokemonRule].[PokemonRuleID] = @PokemonRuleID;
+	END
+GO
+
+print '*** creating sp_select_rules ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_rules]
+AS
+	BEGIN
+		SELECT 	[PokemonRule].[PokemonRuleID],[PokemonRule].[Description]
+		FROM	[PokemonRule];
+	END
+GO
+
+print '*** creating sp_insert_rule ***'
+GO
+CREATE PROCEDURE [dbo].[sp_insert_rule]
+	(
+		@PokemonRuleID		[nvarchar](50),
+		@Description		[nvarchar](150)
+	)	
+AS
+	BEGIN
+		INSERT INTO [dbo].[PokemonRule]
+			([PokemonRuleID],[Description])
+		VALUES
+			(@PokemonRuleID,@Description)
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_update_rule ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_rule]
+	(
+		@PokemonRuleID		[nvarchar](50),
+		@Description		[nvarchar](150)
+	)
+AS
+	BEGIN
+		UPDATE 	[PokemonRule]
+		SET		[PokemonRule].[Description] = @Description
+		WHERE	[PokemonRule].[PokemonRuleID] = @PokemonRuleID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_delete_rule ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_rule]
+	(
+		@PokemonRuleID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		DELETE 	[PokemonRule]
+		WHERE 	[PokemonRule].[PokemonRuleID] = @PokemonRuleID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_select_move_by_moveid ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_move_by_moveid]
 	(
@@ -787,7 +905,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_move_cost_by_moveid ***'
+print '*** creating sp_select_move_cost_by_moveid ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_move_cost_by_moveid]
 	(
@@ -803,7 +921,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_moves_with_move_cost ***'
+print '*** creating sp_select_moves_with_move_cost ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_moves_with_move_cost]
 AS
@@ -814,7 +932,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_moves_without_move_cost ***'
+print '*** creating sp_select_moves_without_move_cost ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_moves_without_move_cost]
 AS
@@ -830,7 +948,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_move ***'
+print '*** creating sp_insert_move ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_move]
 	(	
@@ -849,7 +967,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_move_cost ***'
+print '*** creating sp_insert_move_cost ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_move_cost]
 	(	
@@ -867,7 +985,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_update_move ***'
+print '*** creating sp_update_move ***'
 GO
 CREATE PROCEDURE [dbo].[sp_update_move]
 	(	
@@ -886,7 +1004,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_move ***'
+print '*** creating sp_delete_move ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_move]
 	(	
@@ -900,7 +1018,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_move_cost ***'
+print '*** creating sp_delete_move_cost ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_move_cost]
 	(	
@@ -914,7 +1032,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_card_by_card_id ***'
+print '*** creating sp_select_card_by_card_id ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_card_by_card_id]
 	(
@@ -933,7 +1051,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_moves_by_card_id ***'
+print '*** creating sp_select_moves_by_card_id ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_moves_by_card_id]
 	(
@@ -949,7 +1067,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_alternate_arts_by_card_id ***'
+print '*** creating sp_select_alternate_arts_by_card_id ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_alternate_arts_by_card_id]
 	(
@@ -963,7 +1081,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_cards ***'
+print '*** creating sp_select_cards ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_cards]
 AS
@@ -978,7 +1096,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_card_moves ***'
+print '*** creating sp_select_card_moves ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_card_moves]
 AS
@@ -990,7 +1108,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_card_alternate_arts ***'
+print '*** creating sp_select_card_alternate_arts ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_card_alternate_arts]
 AS
@@ -1000,7 +1118,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_cards_by_card_name ***'
+print '*** creating sp_select_cards_by_card_name ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_cards_by_card_name]
 	(
@@ -1019,7 +1137,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_card_moves_by_card_name ***'
+print '*** creating sp_select_card_moves_by_card_name ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_card_moves_by_card_name]
 	(
@@ -1036,7 +1154,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_card_alternate_arts_by_card_name ***'
+print '*** creating sp_select_card_alternate_arts_by_card_name ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_card_alternate_arts_by_card_name]
 	(
@@ -1051,7 +1169,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_card ***'
+print '*** creating sp_delete_card ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_card]
 	(
@@ -1065,7 +1183,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_default_user_collections ***'
+print '*** creating sp_insert_default_user_collections ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_default_user_collections]
 	(
@@ -1083,7 +1201,7 @@ AS
 GO
 
 
-PRINT '*** creating sp_select_cards_by_collection_id ***'
+print '*** creating sp_select_cards_by_collection_id ***'
 GO
 	CREATE PROCEDURE [dbo].[sp_select_collection_cards_by_collection_id]
 	(
@@ -1107,7 +1225,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_collection_by_user_id ***'
+print '*** creating sp_select_collection_by_user_id ***'
 GO
 	CREATE PROCEDURE [sp_select_collection_by_user_id]
 	(
@@ -1122,7 +1240,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_max_size_by_collection_type_id ***'
+print '*** creating sp_select_max_size_by_collection_type_id ***'
 GO
 	CREATE PROCEDURE [sp_select_max_size_by_collection_type_id]
 	(
@@ -1136,7 +1254,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_collection_elements_by_collection_id ***'
+print '*** creating sp_select_collection_elements_by_collection_id ***'
 GO
 	CREATE PROCEDURE [sp_select_collection_elements_by_collection_id]
 	(
@@ -1150,7 +1268,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_collection_by_collection_id ***'
+print '*** creating sp_select_collection_by_collection_id ***'
 GO
 	CREATE PROCEDURE [sp_select_collection_by_collection_id]
 	(
@@ -1165,7 +1283,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_collection_card ***'
+print '*** creating sp_delete_collection_card ***'
 GO
 	CREATE PROCEDURE [sp_delete_collection_card]
 	(
@@ -1179,7 +1297,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_collection ***'
+print '*** creating sp_delete_collection ***'
 GO
 	CREATE PROCEDURE [sp_delete_collection]
 	(
@@ -1193,7 +1311,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_collection_card ***'
+print '*** creating sp_insert_collection_card ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_collection_card]
 	(	
@@ -1212,7 +1330,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_collection ***'
+print '*** creating sp_insert_collection ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_collection]
 	(	
@@ -1232,7 +1350,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_select_cards_by_collection_id ***'
+print '*** creating sp_select_cards_by_collection_id ***'
 GO
 	CREATE PROCEDURE [dbo].[sp_select_newest_booster_card]
 	(
@@ -1255,7 +1373,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_card_move ***'
+print '*** creating sp_insert_card_move ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_card_move]
 	(	
@@ -1272,7 +1390,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_card_alternate_art ***'
+print '*** creating sp_insert_card_alternate_art ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_card_alternate_art]
 	(	
@@ -1290,7 +1408,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_card_move ***'
+print '*** creating sp_delete_card_move ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_card_move]
 	(	
@@ -1306,7 +1424,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_delete_card_alternate_art ***'
+print '*** creating sp_delete_card_alternate_art ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_card_alternate_art]
 	(	
@@ -1323,7 +1441,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_insert_card ***'
+print '*** creating sp_insert_card ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_card]
 	(	
@@ -1361,7 +1479,7 @@ AS
 	END
 GO
 
-PRINT '*** creating sp_update_card ***'
+print '*** creating sp_update_card ***'
 GO
 CREATE PROCEDURE [dbo].[sp_update_card]
 	(	

@@ -19,8 +19,16 @@ namespace LogicLayerInterfaces
         public AlternateArt GetAlternateArtByID(string alternateArtID);
 
         /// <summary>
-        /// Calls the <see href="IAltArtAccessor.SelectActiveAlternateArts(int,int)"/> method to get<br/>
+        /// Calls the <see href="IAltArtAccessor.SelectAllAlternateArt()"/> method to get<br/>
         /// a list of all AlternateArt from the database.
+        /// </summary>
+        /// <returns>Returns a list of all Alternate Arts.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data.</exception>
+        public List<AlternateArt> GetAllAlternateArt();
+
+        /// <summary>
+        /// Calls the <see href="IAltArtAccessor.SelectActiveAlternateArts(int,int)"/> method to get<br/>
+        /// a list of active AlternateArt from the database.
         /// </summary>
         /// <param name="pageNumber">Represents what page to pull from.</param>
         /// <param name="pageSize">Represents how many items are on the page.</param>
@@ -30,7 +38,7 @@ namespace LogicLayerInterfaces
 
         /// <summary>
         /// Calls the <see href="IAltArtAccessor.SelectDeactiveAlternateArts(int,int)"/> method to get<br/>
-        /// a list of all AlternateArt from the database.
+        /// a list of deactive AlternateArt from the database.
         /// </summary>
         /// <param name="pageNumber">Represents what page to pull from.</param>
         /// <param name="pageSize">Represents how many items are on the page.</param>
@@ -71,6 +79,7 @@ namespace LogicLayerInterfaces
         /// </summary>
         /// <param name="alternateArtID">AlternateArtID of the row to deactivate.</param>
         /// <returns>Returns the number of rows affected.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connection to the database</exception>
         public bool DeactivateAlternateArt(string alternateArtID);
 
         /// <summary>
@@ -79,6 +88,7 @@ namespace LogicLayerInterfaces
         /// </summary>
         /// <param name="alternateArtID">AlternateArtID of the row to reactivate.</param>
         /// <returns>Returns the number of rows affected.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connection to the database</exception>
         public bool ReactivateAlternateArt(string alternateArtID);
     }
 }

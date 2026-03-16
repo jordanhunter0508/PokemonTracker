@@ -78,6 +78,16 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/> used for testing
         /// </summary>
+        public List<Ability> SelectAllAbilities()
+        {
+            List<Ability> results = new List<Ability>();
+            results = _abilities;
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAbilityAccessor"/> used for testing
+        /// </summary>
         public PaginatedResult<Ability> SelectActiveAbilities(int pageNumber = 1, int pageSize = 20)
         {
             PaginatedResult<Ability> results = new PaginatedResult<Ability>();

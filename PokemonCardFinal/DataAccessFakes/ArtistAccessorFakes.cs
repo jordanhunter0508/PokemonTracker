@@ -23,19 +23,37 @@ namespace DataAccessFakes
             {
                 ArtistID = 1,
                 GivenName = "Test Given 1",
-                Surname = "Test Surname 1"
+                Surname = "Test Surname 1",
+                Active = true,
+
             });
             _artists.Add(new Artist()
             {
                 ArtistID = 2,
                 GivenName = "Test Given 2",
-                Surname = "Test Surname 2"
+                Surname = "Test Surname 2",
+                Active = true,
             });
             _artists.Add(new Artist()
             {
                 ArtistID = 3,
                 GivenName = "Test Given 3",
-                Surname = ""
+                Surname = "",
+                Active = true,
+            });
+            _artists.Add(new Artist()
+            {
+                ArtistID = 4,
+                GivenName = "Test Given 4",
+                Surname = "Test Surname 4",
+                Active = false,
+            });
+            _artists.Add(new Artist()
+            {
+                ArtistID = 5,
+                GivenName = "Test Given 5",
+                Surname = "Test Surname 5",
+                Active = false,
             });
         }
 
@@ -91,10 +109,48 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/> used for testing
         /// </summary>
-        public List<Artist> SelectArtists()
+        public List<Artist> SelectAllArtists()
         {
             List<Artist> results = null;
             results = _artists;
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/> used for testing
+        /// </summary>
+        public PaginatedResult<Artist> SelectActiveArtists(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Artist> results = new PaginatedResult<Artist>();
+
+            IEnumerable<Artist> activeAbilities = _artists.Where(ability => ability.Active);
+
+            results.TotalCount = activeAbilities.Count();
+            results.PageNumber = pageNumber;
+            results.PageSize = pageSize;
+
+            results.Items = activeAbilities.Skip((pageNumber - 1) * pageSize)
+                                           .Take(pageSize)
+                                           .ToList();
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/> used for testing
+        /// </summary>
+        public PaginatedResult<Artist> SelectDeactiveArtists(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Artist> results = new PaginatedResult<Artist>();
+
+            IEnumerable<Artist> activeAbilities = _artists.Where(ability => !ability.Active);
+
+            results.TotalCount = activeAbilities.Count();
+            results.PageNumber = pageNumber;
+            results.PageSize = pageSize;
+
+            results.Items = activeAbilities.Skip((pageNumber - 1) * pageSize)
+                                           .Take(pageSize)
+                                           .ToList();
             return results;
         }
 
@@ -189,6 +245,44 @@ namespace DataAccessFakes
             { 
                 _artists.Remove(deletedArtist);
                 count++;
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/> used for testing
+        /// </summary>
+        public int DeactivateArtist(int artistID)
+        {
+            int count = 0;
+
+            foreach (Artist artist in _artists)
+            {
+                if (artist.ArtistID == artistID)
+                {
+                    artist.Active = true;
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/> used for testing
+        /// </summary>
+        public int ReactivateArtist(int artistID)
+        {
+            int count = 0;
+
+            foreach (Artist artist in _artists)
+            {
+                if (artist.ArtistID == artistID)
+                {
+                    artist.Active = false;
+                    count++;
+                }
             }
 
             return count;

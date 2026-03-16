@@ -114,7 +114,7 @@ namespace PokemonCardFinal.View.AddRecord
 
                 // Sets all the combo box item sources
                 cmbArtistID.ItemsSource = new ArtistManager()
-                                            .GetArtists()
+                                            .GetAllArtists()
                                             .Prepend(new Artist
                                             {
                                                 ArtistID = 0,

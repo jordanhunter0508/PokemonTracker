@@ -19,7 +19,15 @@ namespace LogicLayerInterfaces
         public Ability GetAbilityByAbilityID(string abilityID);
 
         /// <summary>
-        /// Calls the <see href="IAbilityAccessor.SelectActiveAbilties()"/> method to get<br/>
+        /// Calls the <see href="IAbilityAccessor.SelectAllAbilities()"/> method to get<br/>
+        /// a list of Abilities from the database.
+        /// </summary>
+        /// <returns>Returns a a list of all abilites</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public List<Ability> GetAllAbilities();
+
+        /// <summary>
+        /// Calls the <see href="IAbilityAccessor.SelectActiveAbilties(int,int)"/> method to get<br/>
         /// a list of Abilities from the database.
         /// </summary>
         /// <param name="pageNumber">Represents what page to pull from.</param>
@@ -29,7 +37,7 @@ namespace LogicLayerInterfaces
         public PaginatedResult<Ability> GetActiveAbilities(int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
-        /// Calls the <see href="IAbilityAccessor.SelectDeactiveAbilites()"/> method to get<br/>
+        /// Calls the <see href="IAbilityAccessor.SelectDeactiveAbilites(int,int)"/> method to get<br/>
         /// a list of Abilities from the database.
         /// </summary>
         /// <param name="pageNumber">Represents what page to pull from.</param>
@@ -82,14 +90,16 @@ namespace LogicLayerInterfaces
         /// </summary>
         /// <param name="abilityID">AbilityID of the row to deactivate.</param>
         /// <returns>Returns the number of rows affected.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connection to the database</exception>
         public bool DeactivateAbility(string abilityID);
 
         /// <summary>
-        /// Passes parameters to <see href="IAbilityAccessor.DeactivateAbility(string)"/><br/>
-        /// Then returns true if the record was deactivated successfully
+        /// Passes parameters to <see href="IAbilityAccessor.ReactivateAbility(string)"/><br/>
+        /// Then returns true if the record was reactivated successfully
         /// </summary>
         /// <param name="abilityID">AbilityID of the row to reactivate.</param>
         /// <returns>Returns the number of rows affected.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connection to the database</exception>
         public bool ReactivateAbility(string abilityID);
     }
 }

@@ -54,6 +54,47 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/>. Access the database
+        /// using sp_select_all_abilities
+        /// </summary>
+        public List<Ability> SelectAllAbilities()
+        {
+            List<Ability> results = new List<Ability>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_all_abilities";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    results.Add(new Ability()
+                    {
+                        AbilityID = reader.GetString(0),
+                        AbilityType = reader.GetString(1),
+                        Description = reader.GetString(2),
+                        Active = reader.GetBoolean(3),
+                    });
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAbilityAccessor"/>. Access the database
         /// using sp_select_abilities_active_paginated
         /// </summary>
         public PaginatedResult<Ability> SelectActiveAbilities(int pageNumber = 1, int pageSize = 20)
@@ -393,5 +434,7 @@ namespace DataAccess
 
             return count;
         }
+
+
     }
 }

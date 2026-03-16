@@ -65,6 +65,16 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IAltArtAccessor"/> used for testing
         /// </summary>
+        public List<AlternateArt> SelectAllAlternateArt()
+        {
+            List<AlternateArt> results = new List<AlternateArt>();
+            results = _alternateArts;
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAltArtAccessor"/> used for testing
+        /// </summary>
         public PaginatedResult<AlternateArt> SelectActiveAlternateArts(int pageNumber = 1, int pageSize = 20)
         {
             PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
@@ -130,7 +140,7 @@ namespace DataAccessFakes
             int index = 0;
             AlternateArt updatedAlternateArt = null;
 
-            for(int i = 0; i < _alternateArts.Count; i++)
+            for (int i = 0; i < _alternateArts.Count; i++)
             {
                 if (_alternateArts[i].AlternateArtID == alternateArt.AlternateArtID)
                 {

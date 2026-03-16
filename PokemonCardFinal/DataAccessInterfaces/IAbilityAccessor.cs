@@ -17,8 +17,14 @@ namespace DataAccessInterfaces
         public Ability SelectAbilityByAbilityID(string abilityID);
 
         /// <summary>
-        /// Requests a list records from the Ability table that are active
-        /// and fall with in the range of pageNumber and pageSize
+        /// Requests all records from the Ability table to create a list of Abilities
+        /// </summary>
+        /// <returns>Returns all abilites from the database</returns>
+        public List<Ability> SelectAllAbilities();
+
+        /// <summary>
+        /// Requests a list of records from the Ability table that are active
+        /// and fall with in the range of pageNumber and pageSize to
         /// create an Ability List.
         /// </summary>
         /// <param name="pageNumber">Represents how much to offset the records by</param>
@@ -28,7 +34,7 @@ namespace DataAccessInterfaces
 
         /// <summary>
         /// Requests a list of records from the Ability table that are not active
-        /// and fall with in the range of pageNumber and pageSize
+        /// and fall with in the range of pageNumber and pageSize to
         /// create an Ability List.
         /// </summary>
         /// <param name="pageNumber">Represents how much to offset the records by</param>

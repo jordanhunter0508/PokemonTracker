@@ -17,7 +17,7 @@ namespace LogicLayer
         /// <summary>
         /// General AbilityManager created for the presentaion layer
         /// </summary>
-        public AbilityManager() 
+        public AbilityManager()
         {
             _abilityAccessor = new AbilityAccessor();
         }
@@ -53,6 +53,25 @@ namespace LogicLayer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IAbilityManager"/>
+        /// </summary>
+        public List<Ability> GetAllAbilities()
+        {
+            List<Ability> results = new List<Ability>();
+
+            try
+            {
+                results  = _abilityAccessor.SelectAllAbilities();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve a list of all abilites.", ex);
+            }
+
+            return results;
         }
 
         /// <summary>
@@ -135,7 +154,7 @@ namespace LogicLayer
 
             try
             {
-                results = _abilityAccessor.SelectAbilitiesByAbilityType(abilityType,pageNumber, pageSize);
+                results = _abilityAccessor.SelectAbilitiesByAbilityType(abilityType, pageNumber, pageSize);
                 results.Items = FormatAbility(results.Items);
             }
             catch (Exception ex)
@@ -291,5 +310,7 @@ namespace LogicLayer
             abilities = abilities.OrderBy(ability => ability.AbilityID);
             return abilities.ToList();
         }
+
+
     }
 }

@@ -216,7 +216,7 @@ public class AbilityManagerTest
         PaginatedResult<Ability> actualResult;
 
         // act
-        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType,pageNumber: pageNumber);
+        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType, pageNumber: pageNumber);
 
         // assert
         // do nothing
@@ -232,7 +232,7 @@ public class AbilityManagerTest
         PaginatedResult<Ability> actualResult;
 
         // act
-        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType,pageSize: pageSize);
+        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType, pageSize: pageSize);
 
         // assert
         // do nothing
@@ -248,7 +248,7 @@ public class AbilityManagerTest
         PaginatedResult<Ability> actualResult;
 
         // act
-        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType,pageSize: pageSize);
+        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType, pageSize: pageSize);
 
         // assert
         // do nothing
@@ -264,7 +264,7 @@ public class AbilityManagerTest
         PaginatedResult<Ability> actualResult;
 
         // act
-        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType,pageSize: pageSize);
+        actualResult = _abilityManager.GetAbilitiesByAbilityType(abilityType, pageSize: pageSize);
 
         // assert
         // do nothing
@@ -588,5 +588,19 @@ public class AbilityManagerTest
 
         // assert
         // do nothing
+    }
+
+    [TestMethod]
+    public void TestGetAllAbilities() 
+    {
+        // arrange
+        const int count = 5;
+        List<Ability> actual;
+
+        // act
+        actual = _abilityManager.GetAllAbilities();
+
+        // assert
+        Assert.AreEqual(count, actual.Count);
     }
 }

@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using DataAccessFakes;
 using DataDomain;
 using LogicLayer;
@@ -98,16 +99,16 @@ public class ArtistManagerTest
     }
 
     [TestMethod]
-    public void TestGetArtists()
+    public void TestGetAllArtists()
     {
         // arrange
-        const int expectedLength = 3;
+        const int expectedLength = 5;
         const string expectedGivenName1 = "Test Given 1";
         const string expectedGivenName2 = "Test Given 2";
         List<Artist> artists = null;
 
         // act
-        artists = _artistManager.GetArtists();
+        artists = _artistManager.GetAllArtists();
 
         // assert
         Assert.AreEqual(expectedLength, artists.Count);
@@ -186,7 +187,7 @@ public class ArtistManagerTest
     [TestMethod]
     public void TestDeleteArtistReturnsTrueWithValidArtistID()
     {
-        
+
         // arrange
         const int artistID = 1;
         const bool expectedResult = true;
@@ -215,59 +216,181 @@ public class ArtistManagerTest
     }
 
     [TestMethod]
-    public void TestFormatArtistsReturnCorrectOrder()
+    public void TestGetActiveArtistsReturnsResultsWithNoParmeters() 
     {
         // arrange
-        List<Artist> inputList = new List<Artist>();
-        inputList.Add(new Artist()
-        {
-            ArtistID = 2,
-            GivenName = "test",
-            Surname = "test",
-        });
-        inputList.Add(new Artist()
-        {
-            ArtistID = 1,
-            GivenName = "another test",
-            Surname = "another test",
-        });
-
-        List<Artist> expectedResult = new List<Artist>();
-        expectedResult.Add(new Artist()
-        {
-            ArtistID = 1,
-            GivenName = "Another test",
-            Surname = "another test",
-        });
-        expectedResult.Add(new Artist()
-        {
-            ArtistID = 2,
-            GivenName = "Test",
-            Surname = "test",
-        });
-
-        List<Artist> actualResult = new List<Artist>();
+        const int count = 3;
+        PaginatedResult<Artist> actual;
 
         // act
-        actualResult = _artistManager.FormatArtists(inputList).ToList();
+        actual = _artistManager.GetActiveArtists();
 
         // assert
-        Assert.AreEqual(expectedResult[0].ArtistID, actualResult[0].ArtistID);
-        Assert.AreEqual(expectedResult[1].ArtistID, actualResult[1].ArtistID);
+        Assert.AreEqual(count, actual.Items.Count);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
-    public void TestFormatElementTypeThrowsArgumentNullExceptionWithNullInput()
+    public void TestGetActiveArtistsReturnsResultsWithPageSize() 
     {
         // arrange
-        List<Artist> inputList = null;
-        List<Artist> outputList = new List<Artist>();
+        const int pageNumber = 1;
+        const int pageSize = 2;
+        const int count = 2;
+        PaginatedResult<Artist> actual;
 
         // act
-        outputList = _artistManager.FormatArtists(inputList).ToList();
+        actual = _artistManager.GetActiveArtists(pageNumber,pageSize);
+
+        // assert
+        Assert.AreEqual(count, actual.Items.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetActiveArtistsThrowsArgumentExceptionWithInvalidPageNumber()
+    {
+        // arrange
+        const int pageNumber = -1;
+        PaginatedResult<Artist> actualResult;
+
+        // act
+        actualResult = _artistManager.GetActiveArtists(pageNumber: pageNumber);
 
         // assert
         // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetActiveArtistsThrowsArgumentExceptionWithInvalidPageSize()
+    {
+        // arrange
+        const int pageSize = 0;
+        PaginatedResult<Artist> actualResult;
+
+        // act
+        actualResult = _artistManager.GetActiveArtists(pageSize: pageSize);
+
+        // assert
+        // do nothing
+    }
+    [TestMethod]
+    public void TestGetDeactiveArtistsReturnsResultsWithNoParmeters() 
+    {
+        // arrange
+        const int count = 2;
+        PaginatedResult<Artist> actual;
+
+        // act
+        actual = _artistManager.GetDeactiveArtists();
+
+        // assert
+        Assert.AreEqual(count, actual.Items.Count);
+    }
+
+    [TestMethod]
+    public void TestGetDeactiveArtistsReturnsResultsWithPageSize() 
+    {
+        // arrange
+        const int pageNumber = 1;
+        const int pageSize = 1;
+        const int count = 1;
+        PaginatedResult<Artist> actual;
+
+        // act
+        actual = _artistManager.GetDeactiveArtists(pageNumber,pageSize);
+
+        // assert
+        Assert.AreEqual(count, actual.Items.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetDeactiveArtistsThrowsArgumentExceptionWithInvalidPageNumber()
+    {
+        // arrange
+        const int pageNumber = -1;
+        PaginatedResult<Artist> actualResult;
+
+        // act
+        actualResult = _artistManager.GetDeactiveArtists(pageNumber: pageNumber);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetDeactiveArtistsThrowsArgumentExceptionWithInvalidPageSize()
+    {
+        // arrange
+        const int pageSize = 0;
+        PaginatedResult<Artist> actualResult;
+
+        // act
+        actualResult = _artistManager.GetDeactiveArtists(pageSize: pageSize);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestDeactivateArtistReturnsTrueWithValidID() 
+    {
+        // arrange 
+        const int artistID = 1;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _artistManager.DeactivateArtist(artistID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeactivateArtistReturnsFalseWithInvalidID() 
+    {
+        // arrange 
+        const int artistID = 999;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _artistManager.DeactivateArtist(artistID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestReactivateArtistReturnsTrueWithValidID() 
+    {
+        // arrange 
+        const int artistID = 4;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _artistManager.ReactivateArtist(artistID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestReactivateArtistReturnsFalseWithInvalidID() 
+    {
+        // arrange 
+        const int artistID = 999;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _artistManager.ReactivateArtist(artistID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
     }
 }

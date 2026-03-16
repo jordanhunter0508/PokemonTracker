@@ -25,8 +25,8 @@ namespace DataAccess
             string cmdText = "sp_select_artist_by_artistid";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            
-            cmd.Parameters.Add("@ArtistID",System.Data.SqlDbType.Int);
+
+            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
             cmd.Parameters["@ArtistID"].Value = artistID;
 
             try
@@ -41,7 +41,8 @@ namespace DataAccess
                     {
                         ArtistID = reader.GetInt32(0),
                         GivenName = reader.GetString(1),
-                        Surname = reader.GetString(2)
+                        Surname = reader.GetString(2),
+                        Active = reader.GetBoolean(3),
                     };
 
                 }
@@ -71,8 +72,8 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@GivenName", System.Data.SqlDbType.NVarChar,50);
-            cmd.Parameters.Add("@Surname", System.Data.SqlDbType.NVarChar,100);
+            cmd.Parameters.Add("@GivenName", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Surname", System.Data.SqlDbType.NVarChar, 100);
             cmd.Parameters["@GivenName"].Value = givenName;
             cmd.Parameters["@Surname"].Value = surname;
 
@@ -88,7 +89,8 @@ namespace DataAccess
                     {
                         ArtistID = reader.GetInt32(0),
                         GivenName = reader.GetString(1),
-                        Surname = reader.GetString(2)
+                        Surname = reader.GetString(2),
+                        Active = reader.GetBoolean(3),
                     };
 
                 }
@@ -107,32 +109,31 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IArtistAccessor"/>. Access the database
-        /// using sp_select_artists
+        /// using sp_select_all_artists
         /// </summary>
-        public List<Artist> SelectArtists()
+        public List<Artist> SelectAllArtists()
         {
             List<Artist> results = new List<Artist>();
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_artists";
+            string cmdText = "sp_select_all_artists";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             try
             {
                 conn.Open();
+
                 SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    results.Add(new Artist()
                     {
-                        results.Add(new Artist()
-                        {
-                            ArtistID = reader.GetInt32(0),
-                            GivenName = reader.GetString(1),
-                            Surname = reader.GetString(2)
-                        });
-                    }
+                        ArtistID = reader.GetInt32(0),
+                        GivenName = reader.GetString(1),
+                        Surname = reader.GetString(2),
+                        Active = reader.GetBoolean(3),
+                    });
                 }
             }
             catch (Exception ex)
@@ -140,7 +141,107 @@ namespace DataAccess
                 throw ex;
             }
             finally
-            { 
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IArtistAccessor"/>. Access the database
+        /// using sp_select_artists_active_paginated
+        /// </summary>
+        public PaginatedResult<Artist> SelectActiveArtists(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Artist> results = new PaginatedResult<Artist>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_artists_active_paginated";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    results.Items.Add(new Artist()
+                    {
+                        ArtistID = reader.GetInt32(0),
+                        GivenName = reader.GetString(1),
+                        Surname = reader.GetString(2),
+                        Active = reader.GetBoolean(3),
+                    });
+
+                    results.TotalCount = reader.GetInt32(4);
+                    results.PageNumber = reader.GetInt32(5);
+                    results.PageSize = reader.GetInt32(6);
+                    results.TotalPages = Convert.ToInt32(reader.GetDecimal(7));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IArtistAccessor"/>. Access the database
+        /// using sp_select_artists_deactive_paginated
+        /// </summary>
+        public PaginatedResult<Artist> SelectDeactiveArtists(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Artist> results = new PaginatedResult<Artist>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_artists_deactive_paginated";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    results.Items.Add(new Artist()
+                    {
+                        ArtistID = reader.GetInt32(0),
+                        GivenName = reader.GetString(1),
+                        Surname = reader.GetString(2),
+                        Active = reader.GetBoolean(3),
+                    });
+
+                    results.TotalCount = reader.GetInt32(4);
+                    results.PageNumber = reader.GetInt32(5);
+                    results.PageSize = reader.GetInt32(6);
+                    results.TotalPages = Convert.ToInt32(reader.GetDecimal(7));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
                 conn.Close();
             }
 
@@ -192,12 +293,12 @@ namespace DataAccess
 
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_update_artist";
-            SqlCommand cmd = new SqlCommand(cmdText,conn);
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ArtistID",System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@GivenName",System.Data.SqlDbType.NVarChar,50);
-            cmd.Parameters.Add("@Surname",System.Data.SqlDbType.NVarChar,100);
+            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
+            cmd.Parameters.Add("@GivenName", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Surname", System.Data.SqlDbType.NVarChar, 100);
             cmd.Parameters["@ArtistID"].Value = artistID;
             cmd.Parameters["@GivenName"].Value = givenName;
             cmd.Parameters["@Surname"].Value = surname;
@@ -248,6 +349,78 @@ namespace DataAccess
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IArtistAccessor"/>. Access the database
+        /// using sp_deactivate_artist
+        /// </summary>
+        public int DeactivateArtist(int artistID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_deactivate_artist";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@ArtistID"].Value = artistID;
+
+
+            try
+            {
+                conn.Open();
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IArtistAccessor"/>. Access the database
+        /// using sp_reactivate_artist
+        /// </summary>
+        public int ReactivateArtist(int artistID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_reactivate_artist";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
+
+            cmd.Parameters["@ArtistID"].Value = artistID;
+
+
+            try
+            {
+                conn.Open();
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
             finally
             {
                 conn.Close();

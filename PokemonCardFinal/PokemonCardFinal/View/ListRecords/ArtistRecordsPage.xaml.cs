@@ -114,7 +114,7 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                datArtist.ItemsSource = _artistManager.FormatArtists(_artistManager.GetArtists());
+                datArtist.ItemsSource = _artistManager.GetAllArtists();
                 _selectedArtist = datArtist.SelectedItem as Artist;
 
                 datArtist.Columns[1].Header = "Given Name";

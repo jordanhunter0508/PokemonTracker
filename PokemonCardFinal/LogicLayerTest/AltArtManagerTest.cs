@@ -424,4 +424,18 @@ public class AltArtManagerTest
         // assert
         // do nothing
     }
+
+    [TestMethod]
+    public void TestGetAllAlternateArts() 
+    {
+        // arrange
+        const int count = 4;
+        List<AlternateArt> actual;
+
+        // act
+        actual = _altArtManager.GetAllAlternateArt();
+
+        // assert
+        Assert.AreEqual(count, actual.Count);
+    }
 }
