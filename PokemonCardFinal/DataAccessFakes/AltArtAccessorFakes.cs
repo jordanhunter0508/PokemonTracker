@@ -84,6 +84,8 @@ namespace DataAccessFakes
             results.TotalCount = activeArts.Count();
             results.PageNumber = pageNumber;
             results.PageSize = pageSize;
+            results.TotalPages = (int)Math.Ceiling((double)activeArts.Count() / pageSize);
+
 
             results.Items = activeArts.Skip((pageNumber - 1) * pageSize)
                                            .Take(pageSize)
@@ -98,13 +100,15 @@ namespace DataAccessFakes
         {
             PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
 
-            IEnumerable<AlternateArt> activeArts = _alternateArts.Where(art => !art.Active);
+            IEnumerable<AlternateArt> deactiveArts = _alternateArts.Where(art => !art.Active);
 
-            results.TotalCount = activeArts.Count();
+            results.TotalCount = deactiveArts.Count();
             results.PageNumber = pageNumber;
             results.PageSize = pageSize;
+            results.TotalPages = (int)Math.Ceiling((double)deactiveArts.Count() / pageSize);
 
-            results.Items = activeArts.Skip((pageNumber - 1) * pageSize)
+
+            results.Items = deactiveArts.Skip((pageNumber - 1) * pageSize)
                                            .Take(pageSize)
                                            .ToList();
             return results;

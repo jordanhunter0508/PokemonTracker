@@ -891,6 +891,11 @@ AS
 	END
 GO
 
+
+
+/*========== Start Move Stored Procedures ==========*/
+print'' print'========== Start Move Stored Procedures =========='
+
 print '*** creating sp_select_move_by_moveid ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_move_by_moveid]
@@ -899,7 +904,7 @@ CREATE PROCEDURE [dbo].[sp_select_move_by_moveid]
 	)
 AS
 	BEGIN
-		SELECT 	[Move].[MoveID],[Move].[Name], [Move].[Damage], [Move].[Description]
+		SELECT 	[MoveID],[Name],[Damage],[Description],[Active]
 		FROM	[Move]
 		WHERE	[Move].[MoveID] = @MoveID;
 	END
@@ -945,6 +950,59 @@ AS
 				FROM 	[MoveCost]
 				WHERE 	[MoveCost].[MoveID] = [Move].[MoveID]
 			);
+	END
+GO
+
+print '*** creating sp_select_moves_active_paginated ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_moves_active_paginated]
+(
+		@PageNumber			[int] = 1,
+		@PageSize			[int] = 20
+)
+AS
+	BEGIN
+		SELECT 	[MoveID],[Name],[Damage],[Description],[Active],
+		
+				/*PaginatedList Components*/
+				COUNT([MoveID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([MoveID]) OVER() / @PageSize) AS TotalPages
+				
+		FROM	[Move]
+		WHERE	[Move].[Active] = 1
+		
+		/*Pagination*/
+		ORDER BY [Name] ASC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
+	END
+GO
+print '*** creating sp_select_moves_deactive_paginated ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_moves_deactive_paginated]
+(
+		@PageNumber			[int] = 1,
+		@PageSize			[int] = 20
+)
+AS
+	BEGIN
+		SELECT 	[MoveID],[Name],[Damage],[Description],[Active],
+		
+				/*PaginatedList Components*/
+				COUNT([MoveID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([MoveID]) OVER() / @PageSize) AS TotalPages
+				
+		FROM	[Move]
+		WHERE	[Move].[Active] = 0
+		
+		/*Pagination*/
+		ORDER BY [Name] ASC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
 	END
 GO
 
@@ -1031,6 +1089,42 @@ AS
 		RETURN 	@@ROWCOUNT;
 	END
 GO
+
+print '*** creating sp_deactivate_move ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_move]
+	(
+		@MoveID			[int]
+	)
+AS
+	BEGIN
+		UPDATE 	[Move]
+		SET		[Active] = 0
+		WHERE 	[MoveID] = @MoveID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_reactivate_move ***'
+GO
+CREATE PROCEDURE [dbo].[sp_reactivate_move]
+	(
+		@MoveID		[int]
+	)
+AS
+	BEGIN
+		UPDATE 	[Move]
+		SET		[Active] = 1
+		WHERE 	[MoveID] = @MoveID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print'========== End Move Stored Procedures =========='
+/*========== End Move Stored Procedures ==========*/
+
+print''
+
 
 print '*** creating sp_select_card_by_card_id ***'
 GO

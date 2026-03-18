@@ -42,7 +42,7 @@ namespace LogicLayerInterfaces
         /// </summary>
         /// <returns>Returns a List of all Moves and MoveVMs in the database</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public List<MoveVM> GetMoveVMs();
+        public List<MoveVM> GetAllMoveVMs();
 
         /// <summary>
         /// Calls the <see href="SelectMoveVMsWithMoveCost()"/> method to get<br/>
@@ -59,6 +59,27 @@ namespace LogicLayerInterfaces
         /// <returns>Returns a List of all Moves in the database</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
         public List<Move> GetMovesWithoutMoveCost();
+
+        /// <summary>
+        /// Calls the <see href="IMoveAccessor.SelectActiveMoves(int,int)"/> method to get<br/>
+        /// a list of Moves from the database.
+        /// </summary>
+        /// <param name="pageNumber">Represents what page to pull from.</param>
+        /// <param name="pageSize">Represents how many items are on the page.</param>
+        /// <returns>Returns a PaginatedResult where the Items is a list of Moves that are active</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public PaginatedResult<Move> GetActiveMoves(int pageNumber = 1, int pageSize = 20);
+
+        /// <summary>
+        /// Calls the <see href="IMoveAccessor.SelectDeactiveMoves(int,int)"/> method to get<br/>
+        /// a list of Moves from the database.
+        /// </summary>
+        /// <param name="pageNumber">Represents what page to pull from.</param>
+        /// <param name="pageSize">Represents how many items are on the page.</param>
+        /// <returns>Returns a PaginatedResult where the Items is a list of Moves that are deactive</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public PaginatedResult<Move> GetDeactiveMoves(int pageNumber = 1, int pageSize = 20);
+
 
         /// <summary>
         /// Uses AddMove and AddMoveCost to insert a new MoveVM inside the database
@@ -122,5 +143,24 @@ namespace LogicLayerInterfaces
         /// <returns>Returns true if the Move and its related rows were deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if there was a connection error</exception>
         public bool DeleteMoveCost(int moveID);
+
+        /// <summary>
+        /// Passes parameters to <see href="IMoveAccessor.DeactivateMove(int)"/><br/>
+        /// Then returns true if the record was deactivated successfully
+        /// </summary>
+        /// <param name="moveID">MoveID of the row to deactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connection to the database</exception>
+        public bool DeactivateMove(int moveID);
+
+        /// <summary>
+        /// Passes parameters to <see href="IMoveAccessor.ReactivateMove(int)"/><br/>
+        /// Then returns true if the record was reactivated successfully
+        /// </summary>
+        /// <param name="moveID">MoveID of the row to reactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connection to the database</exception>
+        public bool ReactivateMove(int moveID);
     }
 }
+

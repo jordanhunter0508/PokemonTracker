@@ -159,7 +159,7 @@ namespace PokemonCardFinal.View.AddRecord
         {
             try
             {
-                lstMove.ItemsSource = new MoveManager().GetMoveVMs().OrderBy(move => move.Name);
+                lstMove.ItemsSource = new MoveManager().GetAllMoveVMs().OrderBy(move => move.Name);
                 lstAltArt.ItemsSource = new AltArtManager().GetActiveAlternateArts().Items;
             }
             catch (Exception ex)

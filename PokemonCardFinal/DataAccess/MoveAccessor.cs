@@ -216,6 +216,112 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_select_moves_active_paginated
+        /// </summary>
+        public PaginatedResult<Move> SelectActiveMoves(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Move> results = new PaginatedResult<Move>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_moves_active_paginated";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        results.Items.Add(new Move()
+                        {
+                            MoveID= reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Damage = reader.GetInt32(2),
+                            Description = reader.GetString(3),
+                            Active = reader.GetBoolean(4),
+                        });
+
+                        results.TotalCount = reader.GetInt32(5);
+                        results.PageNumber = reader.GetInt32(6);
+                        results.PageSize = reader.GetInt32(7);
+                        results.TotalPages = Convert.ToInt32(reader.GetDecimal(8));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_select_moves_deactive_paginated
+        /// </summary>
+        public PaginatedResult<Move> SelectDeactiveMoves(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Move> results = new PaginatedResult<Move>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_moves_deactive_paginated";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        results.Items.Add(new Move()
+                        {
+                            MoveID = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Damage = reader.GetInt32(2),
+                            Description = reader.GetString(3),
+                            Active = reader.GetBoolean(4),
+                        });
+
+                        results.TotalCount = reader.GetInt32(5);
+                        results.PageNumber = reader.GetInt32(6);
+                        results.PageSize = reader.GetInt32(7);
+                        results.TotalPages = Convert.ToInt32(reader.GetDecimal(8));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
         /// using sp_insert_move
         /// </summary>
         public int InsertMove(Move move)
@@ -400,6 +506,70 @@ namespace DataAccess
             {
 
                 throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_deactivate_move
+        /// </summary>
+        public int DeactivateMove(int moveID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_deactivate_move";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@MoveID", moveID);
+
+            try
+            {
+                conn.Open();
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            { 
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/>. Access the database
+        /// using sp_reactivate_move
+        /// </summary>
+        public int ReactivateMove(int moveID)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_reactivate_move";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@MoveID", moveID);
+
+            try
+            {
+                conn.Open();
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
             finally
             {

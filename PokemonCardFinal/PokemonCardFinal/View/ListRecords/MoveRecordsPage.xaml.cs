@@ -112,7 +112,7 @@ namespace PokemonCardFinal.View.ListRecords
             try
             {
                 datMove.AutoGenerateColumns = false;
-                datMove.ItemsSource = _moveManager.GetMoveVMs();
+                datMove.ItemsSource = _moveManager.GetAllMoveVMs();
                 _selectedMoveVM = datMove.SelectedItem as MoveVM;
 
                 datMove.Columns[0].Width = new DataGridLength(125);

@@ -39,6 +39,26 @@ namespace DataAccessInterfaces
         public List<Move> SelectMovesWithoutMoveCost();
 
         /// <summary>
+        /// Requests a list of records from the Move table that are active
+        /// and fall with in the range of pageNumber and pageSize to
+        /// create a Move List.
+        /// </summary>
+        /// <param name="pageNumber">Represents how much to offset the records by</param>
+        /// <param name="pageSize">Represents how many records to return at most.</param>
+        /// <returns>Returns a PaginatedResult of active move in the database.</returns>
+        public PaginatedResult<Move> SelectActiveMoves(int pageNumber = 1, int pageSize = 20);
+
+        /// <summary>
+        /// Requests a list of records from the Move table that are active
+        /// and fall with in the range of pageNumber and pageSize to
+        /// create a Move List.
+        /// </summary>
+        /// <param name="pageNumber">Represents how much to offset the records by</param>
+        /// <param name="pageSize">Represents how many records to return at most.</param>
+        /// <returns>Returns a PaginatedResult of active move in the database.</returns>
+        public PaginatedResult<Move> SelectDeactiveMoves(int pageNumber = 1, int pageSize = 20);
+
+        /// <summary>
         /// Inserts the parameters into the stored procedure to try
         /// and create a new record for a Move.
         /// </summary>
@@ -75,5 +95,19 @@ namespace DataAccessInterfaces
         /// <param name="moveID">MoveID of the rows to delete.</param>
         /// <returns>Returns 1 if it was successful.</returns>
         public int DeleteMoveCost(int moveID);
+
+        /// <summary>
+        /// Sets the active field to 0 to deactivate the record.
+        /// </summary>
+        /// <param name="moveID">MoveID of the row to deactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int DeactivateMove(int moveID);
+
+        /// <summary>
+        /// Sets the active field to 1 to reactivate the record.
+        /// </summary>
+        /// <param name="moveID">MoveID of the row to reactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int ReactivateMove(int moveID);
     }
 }

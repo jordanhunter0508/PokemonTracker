@@ -149,6 +149,7 @@ CREATE TABLE [dbo].[Move]
 	[Name]					[nvarchar](30)		NOT NULL,
 	[Damage]				[int]				NOT NULL,
 	[Description]			[nvarchar](200)		NOT NULL	DEFAULT '',
+	[Active]				[bit]				NOT NULL	DEFAULT 1,
 	
 	CONSTRAINT [pk_move_moveid] PRIMARY KEY ([MoveID] ASC)
 )

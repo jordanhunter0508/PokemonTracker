@@ -105,7 +105,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IMoveManager"/>
         /// </summary>
-        public List<MoveVM> GetMoveVMs()
+        public List<MoveVM> GetAllMoveVMs()
         {
             List<MoveVM> results = null;
             List<Move> moves = null;
@@ -167,6 +167,62 @@ namespace LogicLayer
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to get a list of moves.", ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveManager"/>
+        /// </summary>
+        public PaginatedResult<Move> GetActiveMoves(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Move> results = new PaginatedResult<Move>();
+
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentException("Page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                throw new ArgumentException("Page size must be greater than 0.");
+            }
+
+            try
+            {
+                results = _moveAccessor.SelectActiveMoves(pageNumber, pageSize);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve a list of active moves.", ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveManager"/>
+        /// </summary>
+        public PaginatedResult<Move> GetDeactiveMoves(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Move> results = new PaginatedResult<Move>();
+
+            if (pageNumber <= 0)
+            {
+                throw new ArgumentException("Page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                throw new ArgumentException("Page size must be greater than 0.");
+            }
+
+            try
+            {
+                results = _moveAccessor.SelectDeactiveMoves(pageNumber, pageSize);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve a list of deactive moves.", ex);
             }
 
             return results;
@@ -310,7 +366,7 @@ namespace LogicLayer
 
                 // Deletes each move then recreates it.
                 // Because the pk is a combo of two fk
-                // Someone couldn't update the element type of a card
+                // Someone couldn't update the element type of a move
                 // only the quantity
                 foreach (MoveCost cost in moveVM.Costs)
                 {
@@ -333,7 +389,7 @@ namespace LogicLayer
             catch (Exception ex)
             {
 
-                throw new ApplicationException("Failed to update a move VM." , ex);
+                throw new ApplicationException("Failed to update a move VM.", ex);
             }
 
             return isEdited;
@@ -358,7 +414,7 @@ namespace LogicLayer
             catch (Exception ex)
             {
 
-                throw new ApplicationException("Failed to update a move.",ex);
+                throw new ApplicationException("Failed to update a move.", ex);
             }
 
             return isEdited;
@@ -383,5 +439,44 @@ namespace LogicLayer
 
             return result;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveManager"/>
+        /// </summary>
+        public bool DeactivateMove(int moveID)
+        {
+            bool result = true;
+
+            try
+            {
+                result = (1 == _moveAccessor.DeactivateMove(moveID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to deactivate the move.", ex);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveManager"/>
+        /// </summary>
+        public bool ReactivateMove(int moveID)
+        {
+            bool result = true;
+
+            try
+            {
+                result = (1 == _moveAccessor.ReactivateMove(moveID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to reactivate the move.", ex);
+            }
+
+            return result;
+        }
     }
 }
+

@@ -11,9 +11,9 @@ namespace DataAccessFakes
 {
     public class MoveAccessorFakes : IMoveAccessor
     {
-        List<Move> _moves = new List<Move> ();
+        List<Move> _moves = new List<Move>();
         List<MoveVM> _moveVMs = new List<MoveVM>();
-        List<MoveCost> _moveCosts = new List<MoveCost> ();
+        List<MoveCost> _moveCosts = new List<MoveCost>();
 
         /// <summary>
         /// Fills the _moves,_moveCosts list with fake data
@@ -25,21 +25,40 @@ namespace DataAccessFakes
                 MoveID = 1,
                 Name = "test move 1",
                 Damage = 10,
-                Description = "This is a test move."
+                Description = "This is a test move.",
+                Active = true,
             });
             _moves.Add(new Move()
             {
                 MoveID = 2,
                 Name = "test move 2",
                 Damage = 100,
-                Description = "This is a test move."
+                Description = "This is a test move.",
+                Active = true,
             });
             _moves.Add(new Move()
             {
                 MoveID = 3,
                 Name = "test move 3",
                 Damage = 0,
-                Description = "This is a test move."
+                Description = "This is a test move.",
+                Active = true,
+            });
+            _moves.Add(new Move()
+            {
+                MoveID = 4,
+                Name = "test move 4",
+                Damage = 0,
+                Description = "This is a test move.",
+                Active = false,
+            });
+            _moves.Add(new Move()
+            {
+                MoveID = 5,
+                Name = "test move 5",
+                Damage = 0,
+                Description = "This is a test move.",
+                Active = false,
             });
 
             _moveCosts.Add(new MoveCost()
@@ -69,7 +88,7 @@ namespace DataAccessFakes
 
 
             _moveVMs.Add(new MoveVM()
-            { 
+            {
                 MoveID = _moves[0].MoveID,
                 Name = _moves[0].Name,
                 Damage = _moves[0].Damage,
@@ -77,7 +96,7 @@ namespace DataAccessFakes
                 Costs = SelectMoveCostsByMoveID(_moves[0].MoveID),
             });
             _moveVMs.Add(new MoveVM()
-            { 
+            {
                 MoveID = _moves[1].MoveID,
                 Name = _moves[1].Name,
                 Damage = _moves[1].Damage,
@@ -85,7 +104,7 @@ namespace DataAccessFakes
                 Costs = SelectMoveCostsByMoveID(_moves[1].MoveID),
             });
             _moveVMs.Add(new MoveVM()
-            { 
+            {
                 MoveID = _moves[2].MoveID,
                 Name = _moves[2].Name,
                 Damage = _moves[2].Damage,
@@ -138,7 +157,7 @@ namespace DataAccessFakes
             {
                 // if the move does have a move cost
                 if (moveVM.Costs.Count > 0)
-                { 
+                {
                     results.Add(moveVM);
                 }
             }
@@ -161,6 +180,48 @@ namespace DataAccessFakes
                     results.Add(moveVM);
                 }
             }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/> used for testing
+        /// </summary>
+        public PaginatedResult<Move> SelectActiveMoves(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Move> results = new PaginatedResult<Move>();
+
+            IEnumerable<Move> activeMoves = _moves.Where(move => move.Active);
+
+            results.PageNumber = pageNumber;
+            results.PageSize = pageSize;
+            results.TotalCount = activeMoves.Count();
+            results.TotalPages = (int)Math.Ceiling((double)activeMoves.Count() / pageSize);
+
+            results.Items = activeMoves.Skip((pageNumber - 1) * pageSize)
+                                       .Take(pageSize)
+                                       .ToList();
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/> used for testing
+        /// </summary>
+        public PaginatedResult<Move> SelectDeactiveMoves(int pageNumber = 1, int pageSize = 20)
+        {
+            PaginatedResult<Move> results = new PaginatedResult<Move>();
+
+            IEnumerable<Move> deactiveMoves = _moves.Where(move => !move.Active);
+
+            results.PageNumber = pageNumber;
+            results.PageSize = pageSize;
+            results.TotalCount = deactiveMoves.Count();
+            results.TotalPages = (int)Math.Ceiling((double)deactiveMoves.Count() / pageSize);
+
+            results.Items = deactiveMoves.Skip((pageNumber - 1) * pageSize)
+                                       .Take(pageSize)
+                                       .ToList();
 
             return results;
         }
@@ -196,7 +257,7 @@ namespace DataAccessFakes
             string[] elements = { "element", "test element", "new element" };
 
             if (SelectMoveByMoveID(cost.MoveID) == null)
-            { 
+            {
                 throw new Exception("MoveID does not have a corresponding Move.");
             }
 
@@ -229,7 +290,7 @@ namespace DataAccessFakes
             foreach (Move move in _moves)
             {
                 if (moveID == move.MoveID)
-                { 
+                {
                     deletedMove = move;
                 }
             }
@@ -251,7 +312,7 @@ namespace DataAccessFakes
             int count = 0;
             int index = -1;
 
-            for(int i = 0; i <_moves.Count; i++)
+            for (int i = 0; i < _moves.Count; i++)
             {
                 if (_moves[i].MoveID == move.MoveID)
                 {
@@ -275,7 +336,7 @@ namespace DataAccessFakes
 
                 throw ex;
             }
-            
+
 
             return count;
         }
@@ -301,6 +362,44 @@ namespace DataAccessFakes
             for (int i = 0; i < moveCosts.Count; i++)
             {
                 _moveCosts.Remove(moveCosts[i]);
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/> used for testing
+        /// </summary>
+        public int DeactivateMove(int moveID)
+        {
+            int count = 0;
+
+            foreach (Move move in _moves)
+            {
+                if (move.MoveID == moveID)
+                {
+                    move.Active = false;
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IMoveAccessor"/> used for testing
+        /// </summary>
+        public int ReactivateMove(int moveID)
+        {
+            int count = 0;
+
+            foreach (Move move in _moves)
+            {
+                if (move.MoveID == moveID)
+                {
+                    move.Active = true;
+                    count++;
+                }
             }
 
             return count;

@@ -188,7 +188,7 @@ public class MoveManagerTest
     }
 
     [TestMethod]
-    public void TestGetMoveVMs()
+    public void TestGetAllMoveVMs()
     {
         // arrange
         const int expectedCount = 3;
@@ -197,7 +197,7 @@ public class MoveManagerTest
         List<MoveVM> actualMoves = null;
 
         // act
-        actualMoves = _moveManager.GetMoveVMs();
+        actualMoves = _moveManager.GetAllMoveVMs();
 
         // assert
         Assert.AreEqual(expectedCount, actualMoves.Count);
@@ -211,12 +211,12 @@ public class MoveManagerTest
         // arrange
         Move move = new Move()
         {
-            MoveID = 4,
+            MoveID = 6,
             Name = "new move",
             Damage = 100,
             Description = "This is a new move."
         };
-        const int expectedResult = 4;
+        const int expectedResult = 6;
         int actualResult = 0;
 
         // act
@@ -343,20 +343,20 @@ public class MoveManagerTest
         List<MoveCost> moveCost = new List<MoveCost>();
         moveCost.Add(new MoveCost()
         {
-            MoveID = 4,
+            MoveID = 6,
             ElementType = "element",
             Quantity = 2
         });
         moveCost.Add(new MoveCost()
         {
-            MoveID = 4,
+            MoveID = 6,
             ElementType = "new element",
             Quantity = 1
         });
 
         MoveVM moveVM = new MoveVM()
         {
-            MoveID = 4,
+            MoveID = 6,
             Name = "new move",
             Damage = 100,
             Description = "This is a new move.",
@@ -381,7 +381,7 @@ public class MoveManagerTest
 
         MoveVM moveVM = new MoveVM()
         {
-            MoveID = 4,
+            MoveID = 6,
             Name = "new move",
             Damage = 100,
             Description = "This is a new move.",
@@ -789,6 +789,184 @@ public class MoveManagerTest
 
         // act
         actualResult = _moveManager.EditMoveVM(move);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestDeactivateMoveReturnsTrueWithValidID() 
+    {
+        // arrange
+        const int moveID = 1;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _moveManager.DeactivateMove(moveID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+    
+    [TestMethod]
+    public void TestDeactivateMoveReturnsTrueWithAlreadyActiveID() 
+    {
+        // arrange
+        const int moveID = 4;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _moveManager.DeactivateMove(moveID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeactivateMoveReturnsFalseWithInvalidID() 
+    {
+        // arrange
+        const int moveID = 999;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _moveManager.DeactivateMove(moveID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestReactivateMoveReturnsTrueWithValidID() 
+    {
+        // arrange
+        const int moveID = 4;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _moveManager.ReactivateMove(moveID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestReactivateMoveReturnsTrueWithAlreadyActiveID() 
+    {
+        // arrange
+        const int moveID = 1;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _moveManager.ReactivateMove(moveID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestReactivateMoveReturnsFalseWithInvalidID() 
+    {
+        // arrange
+        const int moveID = 999;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _moveManager.ReactivateMove(moveID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestGetActiveMovesReturnsFullList()
+    {
+        // arrange
+        const int count = 3;
+        PaginatedResult<Move> actualResult;
+
+        // act
+        actualResult = _moveManager.GetActiveMoves();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Items.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetActiveMovesThrowsArgumentExceptionWithInvalidPageNumber()
+    {
+        // arrange
+        const int pageNumber = -1;
+        PaginatedResult<Move> actualResult;
+
+        // act
+        actualResult = _moveManager.GetActiveMoves(pageNumber: pageNumber);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetActiveMovesThrowsArgumentExceptionWithInvalidPageSize()
+    {
+        // arrange
+        const int pageSize = 0;
+        PaginatedResult<Move> actualResult;
+
+        // act
+        actualResult = _moveManager.GetActiveMoves(pageSize: pageSize);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestGetDeactiveMovesReturnsFullList()
+    {
+        // arrange
+        const int count = 2;
+        PaginatedResult<Move> actualResult;
+
+        // act
+        actualResult = _moveManager.GetDeactiveMoves();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Items.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetDeactiveMovesThrowsArgumentExceptionWithInvalidPageNumber()
+    {
+        // arrange
+        const int pageNumber = -1;
+        PaginatedResult<Move> actualResult;
+
+        // act
+        actualResult = _moveManager.GetDeactiveMoves(pageNumber: pageNumber);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetDeactiveMovesThrowsArgumentExceptionWithInvalidPageSize()
+    {
+        // arrange
+        const int pageSize = 0;
+        PaginatedResult<Move> actualResult;
+
+        // act
+        actualResult = _moveManager.GetDeactiveMoves(pageSize: pageSize);
 
         // assert
         // do nothing

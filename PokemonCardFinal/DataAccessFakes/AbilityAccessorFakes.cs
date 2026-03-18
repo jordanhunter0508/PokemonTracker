@@ -97,6 +97,7 @@ namespace DataAccessFakes
             results.TotalCount = activeAbilities.Count();
             results.PageNumber = pageNumber;
             results.PageSize = pageSize;
+            results.TotalPages = (int)Math.Ceiling((double)activeAbilities.Count() / pageSize);
 
             results.Items = activeAbilities.Skip((pageNumber - 1) * pageSize)
                                            .Take(pageSize)
@@ -116,6 +117,8 @@ namespace DataAccessFakes
             results.TotalCount = deactiveAbilities.Count();
             results.PageNumber = pageNumber;
             results.PageSize = pageSize;
+            results.TotalPages = (int)Math.Ceiling((double)deactiveAbilities.Count() / pageSize);
+
 
             results.Items = deactiveAbilities.Skip((pageNumber - 1) * pageSize)
                                            .Take(pageSize)

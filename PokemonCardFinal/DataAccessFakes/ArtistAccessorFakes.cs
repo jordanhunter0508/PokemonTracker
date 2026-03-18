@@ -123,15 +123,17 @@ namespace DataAccessFakes
         {
             PaginatedResult<Artist> results = new PaginatedResult<Artist>();
 
-            IEnumerable<Artist> activeAbilities = _artists.Where(ability => ability.Active);
+            IEnumerable<Artist> activeArtists = _artists.Where(ability => ability.Active);
 
-            results.TotalCount = activeAbilities.Count();
+            results.TotalCount = activeArtists.Count();
             results.PageNumber = pageNumber;
             results.PageSize = pageSize;
+            results.TotalPages = (int)Math.Ceiling((double)activeArtists.Count() / pageSize);
 
-            results.Items = activeAbilities.Skip((pageNumber - 1) * pageSize)
-                                           .Take(pageSize)
-                                           .ToList();
+
+            results.Items = activeArtists.Skip((pageNumber - 1) * pageSize)
+                                          .Take(pageSize)
+                                          .ToList();
             return results;
         }
 
@@ -142,13 +144,15 @@ namespace DataAccessFakes
         {
             PaginatedResult<Artist> results = new PaginatedResult<Artist>();
 
-            IEnumerable<Artist> activeAbilities = _artists.Where(ability => !ability.Active);
+            IEnumerable<Artist> deactiveArtists = _artists.Where(ability => !ability.Active);
 
-            results.TotalCount = activeAbilities.Count();
+            results.TotalCount = deactiveArtists.Count();
             results.PageNumber = pageNumber;
             results.PageSize = pageSize;
+            results.TotalPages = (int)Math.Ceiling((double)deactiveArtists.Count() / pageSize);
 
-            results.Items = activeAbilities.Skip((pageNumber - 1) * pageSize)
+
+            results.Items = deactiveArtists.Skip((pageNumber - 1) * pageSize)
                                            .Take(pageSize)
                                            .ToList();
             return results;
