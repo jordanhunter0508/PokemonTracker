@@ -10,5 +10,6 @@ namespace DataDomain
     {
         public string RuleID { get; set; }
         public string Description { get; set; }
+        public bool Active { get; set; }
     }
 }

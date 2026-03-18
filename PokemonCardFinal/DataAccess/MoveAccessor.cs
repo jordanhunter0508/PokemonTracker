@@ -44,7 +44,8 @@ namespace DataAccess
                         MoveID = reader.GetInt32(0),
                         Name = reader.GetString(1),
                         Damage = reader.GetInt32(2),
-                        Description = reader.GetString(3)
+                        Description = reader.GetString(3),
+                        Active = reader.GetBoolean(4),
                     };
                 }
             }
@@ -136,12 +137,13 @@ namespace DataAccess
                         // If this is the first time seeing this MoveID, add it
                         if (!results.ContainsKey(moveID))
                         {
-                            results.Add(moveID,new MoveVM()
+                            results.Add(moveID, new MoveVM()
                             {
                                 MoveID = moveID,
                                 Name = reader.GetString(1),
                                 Damage = reader.GetInt32(2),
                                 Description = reader.GetString(3),
+                                Active = reader.GetBoolean(4),
                                 Costs = new List<MoveCost>()
                             });
                         }
@@ -150,8 +152,8 @@ namespace DataAccess
                         results[moveID].Costs.Add(new MoveCost
                         {
                             MoveID = moveID,
-                            ElementType = reader.GetString(4),
-                            Quantity = reader.GetInt32(5)
+                            ElementType = reader.GetString(5),
+                            Quantity = reader.GetInt32(6)
                         });
                     }
                 }
@@ -196,7 +198,8 @@ namespace DataAccess
                             MoveID = reader.GetInt32(0),
                             Name = reader.GetString(1),
                             Damage = reader.GetInt32(2),
-                            Description = reader.GetString(3)
+                            Description = reader.GetString(3),
+                            Active = reader.GetBoolean(4),
                         });
                     }
                 }
@@ -235,24 +238,21 @@ namespace DataAccess
                 conn.Open();
 
                 SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    results.Items.Add(new Move()
                     {
-                        results.Items.Add(new Move()
-                        {
-                            MoveID= reader.GetInt32(0),
-                            Name = reader.GetString(1),
-                            Damage = reader.GetInt32(2),
-                            Description = reader.GetString(3),
-                            Active = reader.GetBoolean(4),
-                        });
+                        MoveID = reader.GetInt32(0),
+                        Name = reader.GetString(1),
+                        Damage = reader.GetInt32(2),
+                        Description = reader.GetString(3),
+                        Active = reader.GetBoolean(4),
+                    });
 
-                        results.TotalCount = reader.GetInt32(5);
-                        results.PageNumber = reader.GetInt32(6);
-                        results.PageSize = reader.GetInt32(7);
-                        results.TotalPages = Convert.ToInt32(reader.GetDecimal(8));
-                    }
+                    results.TotalCount = reader.GetInt32(5);
+                    results.PageNumber = reader.GetInt32(6);
+                    results.PageSize = reader.GetInt32(7);
+                    results.TotalPages = Convert.ToInt32(reader.GetDecimal(8));
                 }
             }
             catch (Exception ex)
@@ -288,24 +288,22 @@ namespace DataAccess
                 conn.Open();
 
                 SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        results.Items.Add(new Move()
-                        {
-                            MoveID = reader.GetInt32(0),
-                            Name = reader.GetString(1),
-                            Damage = reader.GetInt32(2),
-                            Description = reader.GetString(3),
-                            Active = reader.GetBoolean(4),
-                        });
 
-                        results.TotalCount = reader.GetInt32(5);
-                        results.PageNumber = reader.GetInt32(6);
-                        results.PageSize = reader.GetInt32(7);
-                        results.TotalPages = Convert.ToInt32(reader.GetDecimal(8));
-                    }
+                while (reader.Read())
+                {
+                    results.Items.Add(new Move()
+                    {
+                        MoveID = reader.GetInt32(0),
+                        Name = reader.GetString(1),
+                        Damage = reader.GetInt32(2),
+                        Description = reader.GetString(3),
+                        Active = reader.GetBoolean(4),
+                    });
+
+                    results.TotalCount = reader.GetInt32(5);
+                    results.PageNumber = reader.GetInt32(6);
+                    results.PageSize = reader.GetInt32(7);
+                    results.TotalPages = Convert.ToInt32(reader.GetDecimal(8));
                 }
             }
             catch (Exception ex)
@@ -413,7 +411,7 @@ namespace DataAccess
 
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_move";
-            SqlCommand cmd = new SqlCommand(cmdText,conn);
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
@@ -452,9 +450,9 @@ namespace DataAccess
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar,30);
+            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 30);
             cmd.Parameters.Add("@Damage", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar,200);
+            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 200);
 
             cmd.Parameters["@MoveID"].Value = move.MoveID;
             cmd.Parameters["@Name"].Value = move.Name;
@@ -540,7 +538,7 @@ namespace DataAccess
                 throw;
             }
             finally
-            { 
+            {
                 conn.Close();
             }
 

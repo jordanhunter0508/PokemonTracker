@@ -135,7 +135,7 @@ namespace PokemonCardFinal.View.AddRecord
 
 
                 cmbRule.ItemsSource = new RuleManager()
-                                            .GetRules()
+                                            .GetAllRules()
                                             .Prepend(new PokemonRule()
                                             {
                                                 RuleID = "Rule"

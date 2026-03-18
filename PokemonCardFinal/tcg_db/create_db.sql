@@ -222,6 +222,7 @@ CREATE TABLE [dbo].[PokemonRule]
 (
 	[PokemonRuleID]			[nvarchar](50)		NOT NULL,
 	[Description]			[nvarchar](150)		NOT NULL,
+	[Active]				[bit]				NOT NULL	DEFAULT 1,
 	
 	CONSTRAINT [pk_pokemonrule_pokemonruleid] PRIMARY KEY ([PokemonRuleID] ASC)
 )

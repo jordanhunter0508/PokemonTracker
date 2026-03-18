@@ -48,17 +48,17 @@ public class RuleManagerTest
     }
 
     [TestMethod]
-    public void TestGetRules()
+    public void TestGetAllRules()
     {
         // arrange
-        const int listCount = 3;
+        const int listCount = 5;
         const string ruleID2 = "Test Rule 2";
         const string description3 = "This is really not a test.";
 
         List<PokemonRule> actualResults = null;
 
         // act
-        actualResults = _ruleManager.GetRules();
+        actualResults = _ruleManager.GetAllRules();
 
         // assert
         Assert.AreEqual(listCount, actualResults.Count);
@@ -202,5 +202,183 @@ public class RuleManagerTest
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    public void TestDeactivateRuleReturnsTrueWithValidID()
+    {
+        // arrange
+        const string ruleID = "Test Rule 1";
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _ruleManager.DeactivateRule(ruleID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeactivateRuleReturnsTrueWithAlreadyActiveID()
+    {
+        // arrange
+        const string ruleID = "Test Rule 3";
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _ruleManager.DeactivateRule(ruleID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestDeactivateRuleReturnsFalseWithInvalidID()
+    {
+        // arrange
+        const string ruleID = "fails";
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _ruleManager.DeactivateRule(ruleID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestReactivateRuleReturnsTrueWithValidID()
+    {
+        // arrange
+        const string ruleID = "Test Rule 3";
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _ruleManager.ReactivateRule(ruleID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestReactivateRuleReturnsTrueWithAlreadyActiveID()
+    {
+        // arrange
+        const string ruleID = "Test Rule 1";
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _ruleManager.ReactivateRule(ruleID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestReactivateRuleReturnsFalseWithInvalidID()
+    {
+        // arrange
+        const string ruleID = "fails";
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _ruleManager.ReactivateRule(ruleID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestGetActiveRulesReturnsFullList()
+    {
+        // arrange
+        const int count = 3;
+        PaginatedResult<PokemonRule> actualResult;
+
+        // act
+        actualResult = _ruleManager.GetActiveRules();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Items.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetActiveRulesThrowsArgumentExceptionWithInvalidPageNumber()
+    {
+        // arrange
+        const int pageNumber = -1;
+        PaginatedResult<PokemonRule> actualResult;
+
+        // act
+        actualResult = _ruleManager.GetActiveRules(pageNumber: pageNumber);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetActiveRulesThrowsArgumentExceptionWithInvalidPageSize()
+    {
+        // arrange
+        const int pageSize = 0;
+        PaginatedResult<PokemonRule> actualResult;
+
+        // act
+        actualResult = _ruleManager.GetActiveRules(pageSize: pageSize);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestGetDeactiveRulesReturnsFullList()
+    {
+        // arrange
+        const int count = 2;
+        PaginatedResult<PokemonRule> actualResult;
+
+        // act
+        actualResult = _ruleManager.GetDeactiveRules();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Items.Count);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetDeactiveRulesThrowsArgumentExceptionWithInvalidPageNumber()
+    {
+        // arrange
+        const int pageNumber = -1;
+        PaginatedResult<PokemonRule> actualResult;
+
+        // act
+        actualResult = _ruleManager.GetDeactiveRules(pageNumber: pageNumber);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestGetDeactiveRulesThrowsArgumentExceptionWithInvalidPageSize()
+    {
+        // arrange
+        const int pageSize = 0;
+        PaginatedResult<PokemonRule> actualResult;
+
+        // act
+        actualResult = _ruleManager.GetDeactiveRules(pageSize: pageSize);
+
+        // assert
+        // do nothing
     }
 }

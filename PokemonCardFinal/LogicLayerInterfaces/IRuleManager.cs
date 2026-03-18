@@ -19,7 +19,27 @@ namespace LogicLayerInterfaces
         /// </summary>
         /// <returns>Returns a List of all PokemonRules in the database</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public List<PokemonRule> GetRules();
+        public List<PokemonRule> GetAllRules();
+
+        /// <summary>
+        /// Calls the <see href="IRuleAccessor.SelectActiveRules(int,int)"/> method to get<br/>
+        /// a list of PokemonRules from the database.
+        /// </summary>
+        /// <param name="pageNumber">Represents what page to pull from.</param>
+        /// <param name="pageSize">Represents how many items are on the page.</param>
+        /// <returns>Returns a PaginatedResult where the Items is a list of PokemonRules that are active</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public PaginatedResult<PokemonRule> GetActiveRules(int pageNumber = 1, int pageSize = 20);
+
+        /// <summary>
+        /// Calls the <see href="IRuleAccessor.SelectDeactiveRules(int,int)"/> method to get<br/>
+        /// a list of PokemonRules from the database.
+        /// </summary>
+        /// <param name="pageNumber">Represents what page to pull from.</param>
+        /// <param name="pageSize">Represents how many items are on the page.</param>
+        /// <returns>Returns a PaginatedResult where the Items is a list of PokemonRules that are deactive</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public PaginatedResult<PokemonRule> GetDeactiveRules(int pageNumber = 1, int pageSize = 20);
 
         /// <summary>
         /// Passes parameters to <see href="InsertRule(PokemonRule)"/> Then returns true
@@ -47,5 +67,23 @@ namespace LogicLayerInterfaces
         /// <returns>Returns true if the Pokemon Rule was deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if the PokemonRule is attached to a card</exception>
         public bool DeleteRule(string ruleID);
+
+        /// <summary>
+        /// Passes parameters to <see href="IRuleAccessor.DeactivateRule(string)"/><br/>
+        /// Then returns true if the record was deactivated successfully
+        /// </summary>
+        /// <param name="ruleID">RuleID of the row to deactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connection to the database</exception>
+        public bool DeactivateRule(string ruleID);
+
+        /// <summary>
+        /// Passes parameters to <see href="IRuleAccessor.ReactivateRule(string)"/><br/>
+        /// Then returns true if the record was reactivated successfully
+        /// </summary>
+        /// <param name="ruleID">RuleID of the row to reactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connection to the database</exception>
+        public bool ReactivateRule(string ruleID);
     }
 }

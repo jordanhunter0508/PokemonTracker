@@ -113,7 +113,7 @@ namespace PokemonCardFinal.View.ListRecords
         {
             try
             {
-                datRule.ItemsSource = _ruleManager.GetRules();
+                datRule.ItemsSource = _ruleManager.GetAllRules();
                 _selectedRule = datRule.SelectedItem as PokemonRule;
 
                 datRule.Columns[0].Header = "Rule Name";

@@ -820,6 +820,15 @@ AS
 	END
 GO
 
+
+
+
+
+
+
+/*========== Start Pokemon Rule Stored Procedures ==========*/
+print'' print'========== Start Pokemon Rule Stored Procedures =========='
+
 print '*** creating sp_select_rule_by_rule_id ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_rule_by_rule_id]
@@ -828,7 +837,7 @@ CREATE PROCEDURE [dbo].[sp_select_rule_by_rule_id]
 	)
 AS
 	BEGIN
-		SELECT 	[PokemonRule].[PokemonRuleID],[PokemonRule].[Description]
+		SELECT 	[PokemonRuleID],[Description],[Active]
 		FROM	[PokemonRule]
 		WHERE	[PokemonRule].[PokemonRuleID] = @PokemonRuleID;
 	END
@@ -839,8 +848,62 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_rules]
 AS
 	BEGIN
-		SELECT 	[PokemonRule].[PokemonRuleID],[PokemonRule].[Description]
+		SELECT 	[PokemonRuleID],[Description],[Active]
 		FROM	[PokemonRule];
+	END
+GO
+
+print '*** creating sp_select_rule_active_paginated ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_rule_active_paginated]
+(
+	@PageNumber			[int] = 1,
+	@PageSize			[int] = 20
+)
+AS
+	BEGIN
+		SELECT 	[PokemonRuleID],[Description],[Active],
+				
+				/*PaginatedList Components*/
+				COUNT([PokemonRuleID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([PokemonRuleID]) OVER() / @PageSize) AS TotalPages
+		
+		FROM	[PokemonRule]
+		WHERE	[Active] = 1
+		
+		/*Pagination*/
+		ORDER BY [PokemonRuleID] DESC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
+	END
+GO
+
+print '*** creating sp_select_rule_deactive_paginated ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_rule_deactive_paginated]
+(
+	@PageNumber			[int] = 1,
+	@PageSize			[int] = 20
+)
+AS
+	BEGIN
+		SELECT 	[PokemonRuleID],[Description],[Active],
+				
+				/*PaginatedList Components*/
+				COUNT([PokemonRuleID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([PokemonRuleID]) OVER() / @PageSize) AS TotalPages
+		
+		FROM	[PokemonRule]
+		WHERE	[Active] = 0
+		
+		/*Pagination*/
+		ORDER BY [PokemonRuleID] DESC
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
 	END
 GO
 
@@ -891,6 +954,39 @@ AS
 	END
 GO
 
+print '*** creating sp_deactivate_rule ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_rule]
+	(
+		@PokemonRuleID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		UPDATE 	[PokemonRule]
+		SET		[Active] = 0
+		WHERE 	[PokemonRuleID] = @PokemonRuleID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_reactivate_rule ***'
+GO
+CREATE PROCEDURE [dbo].[sp_reactivate_rule]
+	(
+		@PokemonRuleID		[nvarchar](50)
+	)
+AS
+	BEGIN
+		UPDATE 	[PokemonRule]
+		SET		[Active] = 1
+		WHERE 	[PokemonRuleID] = @PokemonRuleID
+		RETURN 	@@ROWCOUNT;
+	END
+GO
+
+print'========== End Pokemon Rule Stored Procedures =========='
+/*========== End Pokemon Rule Stored Procedures ==========*/
+
 
 
 /*========== Start Move Stored Procedures ==========*/
@@ -931,7 +1027,8 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_moves_with_move_cost]
 AS
 	BEGIN
-		SELECT 	[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
+		SELECT 	[Move].[MoveID], [Move].[Name], [Move].[Damage],
+				[Move].[Description], [Move].[Active],
 				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
 		FROM	[Move] JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID];
 	END
@@ -942,7 +1039,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_moves_without_move_cost]
 AS
 	BEGIN
-		SELECT 	[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description]
+		SELECT 	[MoveID],[Name],[Damage],[Description],[Active]
 		FROM 	[Move] 
 		WHERE	NOT EXISTS
 			(
