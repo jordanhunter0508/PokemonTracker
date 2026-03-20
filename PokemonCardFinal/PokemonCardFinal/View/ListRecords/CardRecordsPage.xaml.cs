@@ -25,7 +25,7 @@ namespace PokemonCardFinal.View.ListRecords
     public partial class CardRecordsPage : Page
     {
         ICardManager _cardManager;
-        CardVM _selectedCard;
+        Card _selectedCard;
 
         public CardRecordsPage()
         {
@@ -58,7 +58,7 @@ namespace PokemonCardFinal.View.ListRecords
                 containerPage.tabController.SelectedItem = containerPage.tabCard;
                 containerPage.frmCard.Navigate
                 (
-                    new AddCardPage(_cardManager,_selectedCard,containerPage)
+                    new AddCardPage(_cardManager,_selectedCard.CardID,containerPage)
                 );
             };
         }
@@ -105,7 +105,7 @@ namespace PokemonCardFinal.View.ListRecords
 
         private void datCard_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _selectedCard = datCard.SelectedItem as CardVM;
+            _selectedCard = datCard.SelectedItem as Card;
         }
 
         private void LoadList()
@@ -113,8 +113,8 @@ namespace PokemonCardFinal.View.ListRecords
             try
             {
                 datCard.AutoGenerateColumns = false;
-                datCard.ItemsSource = _cardManager.GetCardVMs();
-                _selectedCard = datCard.SelectedItem as CardVM;
+                datCard.ItemsSource = _cardManager.GetAllCards();
+                _selectedCard = datCard.SelectedItem as Card;
 
                 datCard.Columns[0].Width = new DataGridLength(75);
                 datCard.Columns[1].Width = new DataGridLength(1, DataGridLengthUnitType.Star);

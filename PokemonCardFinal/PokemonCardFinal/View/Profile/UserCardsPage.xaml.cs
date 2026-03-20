@@ -78,8 +78,7 @@ namespace PokemonCardFinal.View.Profile
                 MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
 
                 int cardID = _selectedCard.Card.CardID;
-                CardVM selectedCard = cardManager.GetCardVMByCardID(cardID);
-                DetailedCardPage detailedCardPage = new DetailedCardPage(selectedCard,_accessToken);
+                DetailedCardPage detailedCardPage = new DetailedCardPage(cardID,_accessToken);
                 detailedCardPage.IsCollectionView = true;
                 mainWindow.frmMain.Navigate(detailedCardPage);
             }

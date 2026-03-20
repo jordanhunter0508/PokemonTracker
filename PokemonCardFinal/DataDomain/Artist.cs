@@ -11,6 +11,20 @@ namespace DataDomain
         public int ArtistID { get; set; }
         public string GivenName { get; set; }
         public string Surname { get; set; }
+
+        public string Name
+        {
+            get
+            {
+                string name = GivenName;
+                if (!String.IsNullOrWhiteSpace(Surname))
+                {
+                    name += ", " + Surname;
+                }
+                return name;
+            }
+        }
+
         public bool Active { get; set; }
     }
 }

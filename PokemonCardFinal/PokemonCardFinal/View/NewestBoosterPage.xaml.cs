@@ -25,7 +25,6 @@ namespace PokemonCardFinal.View
     {
         ICardManager _cardManager;
         UserVM _accessToken;
-        DateTime _releaseDate = DateTime.Parse("1/20/2023");
 
         public NewestBoosterPage()
         {
@@ -64,8 +63,7 @@ namespace PokemonCardFinal.View
                 MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
                 Card selectedCard = datCard.SelectedItem as Card;
 
-                CardVM cardVM = _cardManager.GetCardVMByCardID(selectedCard.CardID);
-                mainWindow.frmMain.Navigate(new DetailedCardPage(cardVM, _accessToken));
+                mainWindow.frmMain.Navigate(new DetailedCardPage(selectedCard.CardID, _accessToken));
             }
             catch (Exception ex)
             {
@@ -87,7 +85,7 @@ namespace PokemonCardFinal.View
             try
             {
                 Card selectedCard = datCard.SelectedItem as Card;
-                CardVM cardVM = _cardManager.GetCardVMByCardID(selectedCard.CardID);
+                CardVM cardVM = _cardManager.GetCardVM(selectedCard.CardID);
 
                 AddCollectionCardWindow collectionWindow = new AddCollectionCardWindow(_accessToken, cardVM);
 
@@ -104,7 +102,8 @@ namespace PokemonCardFinal.View
         {
             try
             {
-                datCard.ItemsSource = _cardManager.GetCardsByReleaseDate(_releaseDate);
+                //datCard.ItemsSource = _cardManager.GetCardsByReleaseDate(_releaseDate);
+                MessageBox.Show("Needs Implementation");
 
                 datCard.Columns[0].Width = new DataGridLength(65);
                 datCard.Columns[1].Width = new DataGridLength(1, DataGridLengthUnitType.Star);

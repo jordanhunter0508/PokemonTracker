@@ -1231,14 +1231,15 @@ CREATE PROCEDURE [dbo].[sp_select_card_by_card_id]
 	)
 AS
 	BEGIN
-		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
-				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
-				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
-				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
-				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
-				[PokemonCard].[Health],[PokemonCard].[Stage]			
+		SELECT	[PokemonCardID],[ArtistID],[AbilityID],			
+				[BoosterID],[PokemonRuleID],[ElementTypeID],
+				[Name],[BoosterNumber],[CardType],
+				[Rarity],[WeaknessType],[ResistanceType],
+				[WeaknessValue],[ResistanceValue],[RetreatCost],
+				[Health],[Stage]	
+				
 		FROM	[PokemonCard]
-		WHERE	[PokemonCard].[PokemonCardID] = @PokemonCardID;
+		WHERE	[PokemonCardID] = @PokemonCardID;
 	END
 GO
 
@@ -1266,27 +1267,24 @@ CREATE PROCEDURE [dbo].[sp_select_alternate_arts_by_card_id]
 	)
 AS
 	BEGIN
-		SELECT 	[CardAlternateArt].[AlternateArtID]
+		SELECT 	[AlternateArtID]
 		FROM	[CardAlternateArt]
-		WHERE	[CardAlternateArt].[PokemonCardID] = @PokemonCardID;
+		WHERE	[PokemonCardID] = @PokemonCardID;
 	END
 GO
 
-print '*** creating sp_select_cards ***'
+print '*** creating sp_select_all_cards ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_cards]
+CREATE PROCEDURE [dbo].[sp_select_all_cards]
 AS
 	BEGIN
-		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
-				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
-				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
-				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
-				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
-				[PokemonCard].[Health],[PokemonCard].[Stage]			
+		SELECT	[PokemonCardID],[BoosterID],[ElementTypeID],
+				[Name],[BoosterNumber],[CardType],[Rarity]
+				
 		FROM	[PokemonCard];
 	END
 GO
-
+/*
 print '*** creating sp_select_card_moves ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_card_moves]
@@ -1308,6 +1306,7 @@ AS
 		FROM	[CardAlternateArt];
 	END
 GO
+*/
 
 print '*** creating sp_select_cards_by_card_name ***'
 GO
@@ -1317,17 +1316,15 @@ CREATE PROCEDURE [dbo].[sp_select_cards_by_card_name]
 	)
 AS
 	BEGIN
-		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[ArtistID],[PokemonCard].[AbilityID],			
-				[PokemonCard].[BoosterID],[PokemonCard].[PokemonRuleID],[PokemonCard].[ElementTypeID],
-				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
-				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
-				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
-				[PokemonCard].[Health],[PokemonCard].[Stage]			
+		SELECT	[PokemonCardID],[BoosterID],[ElementTypeID],
+				[Name],[BoosterNumber],[CardType],[Rarity]
+				
 		FROM	[PokemonCard]
 		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%');
 	END
 GO
 
+/*
 print '*** creating sp_select_card_moves_by_card_name ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_card_moves_by_card_name]
@@ -1359,7 +1356,7 @@ AS
 		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%');
 	END
 GO
-
+*/
 print '*** creating sp_delete_card ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_card]
@@ -1599,35 +1596,31 @@ AS
 	END
 GO
 
-print '*** creating sp_delete_card_move ***'
+print '*** creating sp_delete_card_moves ***'
 GO
-CREATE PROCEDURE [dbo].[sp_delete_card_move]
+CREATE PROCEDURE [dbo].[sp_delete_card_moves]
 	(	
-		@PokemonCardID		[int],
-		@MoveID				[int]
+		@PokemonCardID		[int]
 	)	
 AS
 	BEGIN
 		DELETE	[dbo].[CardMove]
 		WHERE	[CardMove].[PokemonCardID] = @PokemonCardID
-			AND	[CardMove].[MoveID] = @MoveID
 		RETURN 	@@ROWCOUNT;
 	END
 GO
 
-print '*** creating sp_delete_card_alternate_art ***'
+print '*** creating sp_delete_card_alternate_arts ***'
 GO
-CREATE PROCEDURE [dbo].[sp_delete_card_alternate_art]
+CREATE PROCEDURE [dbo].[sp_delete_card_alternate_arts]
 	(	
-		@PokemonCardID		[int],
-		@AlternateArtID		[nvarchar](50)
+		@PokemonCardID		[int]
 		
 	)	
 AS
 	BEGIN
 		DELETE	[dbo].[CardAlternateArt]
 		WHERE	[CardAlternateArt].[PokemonCardID] = @PokemonCardID
-			AND	[CardAlternateArt].[AlternateArtID] = @AlternateArtID
 		RETURN 	@@ROWCOUNT;
 	END
 GO

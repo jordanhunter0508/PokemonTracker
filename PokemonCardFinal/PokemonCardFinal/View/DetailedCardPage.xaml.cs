@@ -26,29 +26,41 @@ namespace PokemonCardFinal.View
     {
         public bool IsCollectionView = false;
 
-        CardVM _card;
-        UserVM _accessToken;
+        private ICardManager _cardManager;
+        private CardVM _card;
+        private UserVM _accessToken;
+        private int _cardID = 0;
 
-        public DetailedCardPage(CardVM card)
+        public DetailedCardPage(int cardID)
         {
             InitializeComponent();
-            _card = card;
+            _cardID = cardID;
+            _cardManager = new CardManager();
         }
 
-        public DetailedCardPage(CardVM card, UserVM accessToken)
+        public DetailedCardPage(int cardID, UserVM accessToken)
         {
             InitializeComponent();
-            _card = card;
+            _cardID = cardID;
             _accessToken = accessToken;
+            _cardManager = new CardManager();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // Used just incase a blank card is inserted
-            if (_card == null || _card.Name == null)
+            try
             {
-                MessageBox.Show("Failed to load card details.");
-                // Hide all
+                _card = _cardManager.GetCardVM(_cardID);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
+            }
+
+            if (_card == null)
+            {
+                MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+                mainWindow.frmMain.GoBack();
                 return;
             }
 
@@ -153,7 +165,7 @@ namespace PokemonCardFinal.View
                 txtFirstMove.Text = "Description: " + move.Description;
 
                 move = _card.Moves[1];
-                lblFirstMove.Content = move.Name + " " + move.Damage + ", " + move.TotalCost + " Energy (" + move.ElementTypes + ")";
+                lblSecondMove.Content = move.Name + " " + move.Damage + ", " + move.TotalCost + " Energy (" + move.ElementTypes + ")";
                 txtSecondMove.Text = "Description: " + move.Description;
             }
         }

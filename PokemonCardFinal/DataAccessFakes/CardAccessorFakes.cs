@@ -13,12 +13,6 @@ namespace DataAccessFakes
     public class CardAccessorFakes : ICardAccessor
     {
         List<Card> _cards;
-        List<MoveVM> _moves;
-        List<Booster> _boosters;
-
-        // This is used to represent a join table
-        List<CardMove> _cardMoves;
-        List<CardAlternateArt> _cardAlternateArts;
 
         /// <summary>
         /// Fills the _cards list with fake data
@@ -86,86 +80,6 @@ namespace DataAccessFakes
                 Health = 100,
                 Stage = "test stage"
             });
-
-            _moves = new List<MoveVM>();
-            _moves.Add(new MoveVM()
-            {
-                MoveID = 1,
-                Name = "testMove1",
-                Damage = 1,
-                Description = "This is a test move for card 1."
-            });
-            _moves.Add(new MoveVM()
-            {
-                MoveID = 2,
-                Name = "testMove2",
-                Damage = 1,
-                Description = "This is a test move for card 1."
-            });
-            _moves.Add(new MoveVM()
-            {
-                MoveID = 3,
-                Name = "testMove3",
-                Damage = 1,
-                Description = "This is a test move for card 22."
-            });
-
-            _cardMoves = new List<CardMove>();
-            _cardMoves.Add(new CardMove()
-            {
-                CardID = 1,
-                MoveID = 1
-            });
-            _cardMoves.Add(new CardMove()
-            {
-                CardID = 1,
-                MoveID = 2
-            });
-            _cardMoves.Add(new CardMove()
-            {
-                CardID = 2,
-                MoveID = 2
-            });
-
-            _cardAlternateArts = new List<CardAlternateArt>();
-            _cardAlternateArts.Add(new CardAlternateArt()
-            {
-                CardID = 1,
-                AlternateArtID = "test Alternate Art 1"
-            });
-            _cardAlternateArts.Add(new CardAlternateArt()
-            {
-                CardID = 1,
-                AlternateArtID = "test Alternate Art 2"
-            });
-            _cardAlternateArts.Add(new CardAlternateArt()
-            {
-                CardID = 2,
-                AlternateArtID = "test Alternate Art 1"
-            });
-
-            _boosters = new List<Booster>();
-            _boosters.Add(new Booster()
-            {
-                BoosterID = "test booster 1",
-                Series = "test series",
-                ReleaseDate = DateTime.Parse("2025-11-06"),
-                Abbreviation = "test",
-            });
-            _boosters.Add(new Booster()
-            {
-                BoosterID = "test booster 2",
-                Series = "booster 2 series",
-                ReleaseDate = DateTime.Parse("1994-01-28"),
-                Abbreviation = "ser",
-            });
-            _boosters.Add(new Booster()
-            {
-                BoosterID = "test booster 3",
-                Series = "series",
-                ReleaseDate = DateTime.Parse("2003-10-10"),
-                Abbreviation = "abv",
-            });
         }
 
         /// <summary>
@@ -189,207 +103,11 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
-        public List<Card> SelectCardsByReleaseDate(DateTime releaseDate)
+        public List<Card> SelectAllCards()
         {
             List<Card> results = new List<Card>();
-            string boosterID = "";
-
-            foreach (Booster booster in _boosters)
-            {
-                if (booster.ReleaseDate == releaseDate)
-                {
-                    boosterID = booster.BoosterID;
-                    break;
-                }
-            }
-
-            foreach (Card card in _cards)
-            {
-                if (card.BoosterID == boosterID)
-                {
-                    results.Add(card);
-                }
-            }
-
+            results = _cards;
             return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public List<MoveVM> SelectMovesByCardID(int cardID)
-        {
-            List<MoveVM> results = new List<MoveVM>();
-
-            foreach (CardMove cardMove in _cardMoves)
-            {
-                if (cardMove.CardID == cardID)
-                {
-                    results.Add(SelectMoveVMByMoveID(cardMove.MoveID));
-                }
-            }
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public List<string> SelectAlternateArtsByCardID(int cardID)
-        {
-            List<string> results = new List<string>();
-
-            foreach (CardAlternateArt cardAlternateArt in _cardAlternateArts)
-            {
-                if (cardAlternateArt.CardID == cardID)
-                {
-                    results.Add(cardAlternateArt.AlternateArtID);
-                }
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public Dictionary<int, Card> SelectCards()
-        {
-            Dictionary<int, Card> results = new Dictionary<int, Card>();
-
-            foreach (Card card in _cards)
-            {
-                results.Add(card.CardID, card);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public Dictionary<int, Card> SelectCardsByCardName(string name)
-        {
-            Dictionary<int, Card> results = new Dictionary<int, Card>();
-
-            foreach (Card card in _cards)
-            {
-                if (card.Name.Contains(name))
-                {
-                    results.Add(card.CardID, card);
-                }
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public Dictionary<int, List<MoveVM>> SelectCardMoves()
-        {
-            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
-
-            foreach (CardMove cardMove in _cardMoves)
-            {
-                // checks if the key is already used
-                if (!results.ContainsKey(cardMove.CardID))
-                {
-                    // if not add the key and create a new list
-                    results.Add(cardMove.CardID, new List<MoveVM>());
-                }
-
-                // each row has a cardID and a moveID if the CardID is already a key
-                // then add the move at the cardID
-                results[cardMove.CardID].Add(SelectMoveVMByMoveID(cardMove.MoveID));
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public Dictionary<int, List<MoveVM>> SelectCardMovesByCardName(string name)
-        {
-            Dictionary<int, List<MoveVM>> results = new Dictionary<int, List<MoveVM>>();
-
-            foreach (Card card in _cards)
-            {
-                if (card.Name.Contains(name))
-                {
-                    results.Add(card.CardID, SelectMovesByCardID(card.CardID));
-                }
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public Dictionary<int, List<string>> SelectCardAlternateArts()
-        {
-            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
-
-            foreach (CardAlternateArt altArts in _cardAlternateArts)
-            {
-                // checks if the key is already used
-                if (!results.ContainsKey(altArts.CardID))
-                {
-                    // if not add the key and create a new list
-                    results.Add(altArts.CardID, new List<string>());
-                }
-
-                // each row has a cardID and a moveID if the CardID is already a key
-                // then add the move at the cardID
-                results[altArts.CardID].Add(altArts.AlternateArtID);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public Dictionary<int, List<string>> SelectCardAlternateArtsByCardName(string name)
-        {
-            Dictionary<int, List<string>> results = new Dictionary<int, List<string>>();
-
-            foreach (Card card in _cards)
-            {
-                if (card.Name.Contains(name))
-                {
-                    results.Add(card.CardID, SelectAlternateArtsByCardID(card.CardID));
-                }
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public int DeleteCard(int cardID)
-        {
-            int count = 0;
-            Card deletedCard = null;
-
-            foreach (Card card in _cards)
-            {
-                if (card.CardID == cardID)
-                {
-                    deletedCard = card;
-                    break;
-                }
-            }
-
-            if (deletedCard != null)
-            {
-                _cards.Remove(deletedCard);
-                count = 1;
-            }
-
-            return count;
         }
 
         /// <summary>
@@ -426,6 +144,30 @@ namespace DataAccessFakes
             if (!validElements.Contains(card.ElementTypeID))
             {
                 throw new Exception("Invalid ElementTypeID");
+            }
+            if (card.CardType == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
+            if (card.Name == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
+            if (card.Rarity == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
+            if (card.ResistanceType == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
+            if (card.WeaknessType == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
+            if (card.Stage == null)
+            {
+                throw new Exception("Invalid CardType");
             }
 
             foreach (Card element in _cards)
@@ -480,8 +222,32 @@ namespace DataAccessFakes
             {
                 throw new Exception("Invalid ElementTypeID");
             }
+            if (card.CardType == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
+            if (card.Name == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
+            if (card.Rarity == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
+            if (card.ResistanceType == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
+            if (card.WeaknessType == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
+            if (card.Stage == null)
+            {
+                throw new Exception("Invalid CardType");
+            }
 
-            for(int i = 0; i < _cards.Count; i++)
+            for (int i = 0; i < _cards.Count; i++)
             {
                 if (_cards[i].CardID != card.CardID &&
                     _cards[i].BoosterID == card.BoosterID &&
@@ -491,7 +257,7 @@ namespace DataAccessFakes
                     throw new Exception("Unique Constraint (BoosterID, BoosterNumber, Rarity) already used.");
                 }
 
-                if (_cards[i].CardID == card.CardID) 
+                if (_cards[i].CardID == card.CardID)
                 {
                     index = i;
                 }
@@ -509,166 +275,28 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/> used for testing
         /// </summary>
-        public int InsertCardMove(int cardID, int moveID)
+        public int DeleteCard(int cardID)
         {
             int count = 0;
-            int[] validMoveID = { 1, 2, 3 };
+            Card deletedCard = null;
 
-            if (!validMoveID.Contains(moveID))
+            foreach (Card card in _cards)
             {
-                throw new Exception("Move not in the table.");
-            }
-
-            if (SelectCardByCardID(cardID) == null)
-            {
-                throw new Exception("CardID not valid.");
-            }
-
-            foreach (CardMove cardMove in _cardMoves)
-            {
-                if (cardMove.CardID == cardID &&
-                   cardMove.MoveID == moveID)
+                if (card.CardID == cardID)
                 {
-                    throw new Exception("Card already has this Move.");
-                }
-            }
-
-            _cardMoves.Add(new CardMove()
-            {
-                CardID = cardID,
-                MoveID = moveID,
-            });
-            count = 1;
-
-            return count;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>    
-        public int DeleteCardMove(int cardID, int moveID)
-        {
-            int count = 0;
-            CardMove deletedMove = null;
-
-            foreach (CardMove cardMove in _cardMoves)
-            {
-                if (cardMove.CardID == cardID &&
-                    cardMove.MoveID == moveID)
-                {
-                    deletedMove = cardMove;
+                    deletedCard = card;
                     break;
                 }
             }
 
-            if (deletedMove != null)
+            if (deletedCard != null)
             {
-                _cardMoves.Remove(deletedMove);
+                _cards.Remove(deletedCard);
                 count = 1;
             }
 
-
             return count;
         }
 
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public int InsertCardAlternateArt(int cardID, string alternateArtID)
-        {
-            int count = 0;
-            string[] validAlternateArts = { "test Alternate Art 1", "test Alternate Art 2", "test Alternate Art 3" };
-
-            if (!validAlternateArts.Contains(alternateArtID))
-            {
-                throw new Exception("Alternate Art not in the table.");
-            }
-
-            if (SelectCardByCardID(cardID) == null)
-            {
-                throw new Exception("CardID not valid.");
-            }
-
-            for (int i = 0; i < _cardAlternateArts.Count; i++)
-            {
-                if (_cardAlternateArts[i].CardID == cardID &&
-                   _cardAlternateArts[i].AlternateArtID == alternateArtID)
-                {
-                    throw new Exception("Card already has this Alternate Art.");
-                }
-            }
-
-            _cardAlternateArts.Add(new CardAlternateArt()
-            {
-                CardID = cardID,
-                AlternateArtID = alternateArtID,
-            });
-            count = 1;
-
-            return count;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/> used for testing
-        /// </summary>
-        public int DeleteCardAlternateArt(int cardID, string alternateArtID)
-        {
-            int count = 0;
-            CardAlternateArt deletedAltArt = null;
-
-            foreach (CardAlternateArt cardAlternateArt in _cardAlternateArts)
-            {
-                if (cardAlternateArt.CardID == cardID &&
-                    cardAlternateArt.AlternateArtID == alternateArtID)
-                {
-                    deletedAltArt = cardAlternateArt;
-                    break;
-                }
-            }
-
-            if (deletedAltArt != null)
-            {
-                _cardAlternateArts.Remove(deletedAltArt);
-                count = 1;
-            }
-
-
-            return count;
-        }
-
-        /// <summary>
-        /// Used to help SelectMovesByCardID find the correct Move
-        /// </summary>
-        private MoveVM SelectMoveVMByMoveID(int moveID)
-        {
-            MoveVM resultMove = null;
-
-            foreach (MoveVM move in _moves)
-            {
-                if (move.MoveID == moveID)
-                {
-                    resultMove = move;
-                    break;
-                }
-            }
-
-            return resultMove;
-        }
-    }
-
-    // Used to represent the join table from the database
-    // used for testing purposes only.
-    internal class CardMove
-    {
-        public int CardID { get; set; }
-        public int MoveID { get; set; }
-    }
-
-    // Used to represent the join table from the database
-    // used for testing purposes only.
-    internal class CardAlternateArt
-    {
-        public int CardID { get; set; }
-        public string AlternateArtID { get; set; }
     }
 }

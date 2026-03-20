@@ -26,29 +26,35 @@ namespace PokemonCardFinal.View.AddRecord
     public partial class AddCardPage : Page
     {
         ICardManager _cardManager;
+        ICardComponentManager _componentManger;
         CardVM _cardVM;
         AddEditContainerPage _containerPage;
         bool _isAddMode;
+        int _cardID;
 
         public AddCardPage()
         {
             InitializeComponent();
             _cardManager = new CardManager();
+            _componentManger = new CardComponentManager();
             _cardVM = new CardVM();
             _isAddMode = true;
         }
 
-        public AddCardPage(ICardManager cardManager, CardVM cardVM, AddEditContainerPage containerPage)
+        public AddCardPage(ICardManager cardManager, int cardID, AddEditContainerPage containerPage)
         {
             InitializeComponent();
+            _componentManger = new CardComponentManager();
             _cardManager = cardManager;
-            _cardVM = cardVM;
+            _cardID = cardID;
             _containerPage = containerPage;
             _isAddMode = false;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+
+
             LoadComboBoxes();
             LoadListBox();
 
@@ -58,6 +64,15 @@ namespace PokemonCardFinal.View.AddRecord
             }
             else
             {
+                try
+                {
+                    _cardVM = _cardManager.GetCardVM(_cardID);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
+                }
+
                 DisplayCardVM();
                 btnClear.Content = "Go Back";
                 txtName.IsEnabled = false;
@@ -65,6 +80,7 @@ namespace PokemonCardFinal.View.AddRecord
                 // Disables all other tab items
                 _containerPage.DisplayTabItems(false);
                 _containerPage.tabCard.IsEnabled = true;
+                
             }
 
             txtName.Focus();
@@ -287,8 +303,10 @@ namespace PokemonCardFinal.View.AddRecord
             {
                 string name = txtName.Text;
                 BuildCardVM();
+                int newID = _cardManager.AddCard(_cardVM);
+                SaveCardComponents(newID);
 
-                if (_cardManager.AddCardVM(_cardVM))
+                if (_cardManager.GetCardVM(newID) != null)
                 {
                     MessageBox.Show("The card " + name + " was successfully created.");
                     ClearTextAreas();
@@ -305,13 +323,35 @@ namespace PokemonCardFinal.View.AddRecord
             }
         }
 
+        private void SaveCardComponents(int newID)
+        {
+            // Add the list of moves to the card to store in the database
+            foreach (var move in _cardVM.Moves)
+            {
+                _componentManger.AddCardMove(newID, move.MoveID);
+            }
+
+            // Add the list of alternate arts to the card to store in the database
+            foreach (var altArt in _cardVM.AlternateArts)
+            {
+                _componentManger.AddCardAlternateArt(newID, altArt);
+            }
+        }
+
         private void EditModeSaveButton()
         {
             try
             {
                 BuildCardVM();
-                if (_cardManager.EditCardVM(_cardVM))
+
+                if (_cardManager.EditCard(_cardVM))
                 {
+                    // Removes all current moves attached to the card then adds the new
+                    // moves selected from the ListBox
+                    _componentManger.DeleteCardMoves(_cardVM.CardID);
+                    _componentManger.DeleteCardAlternateArts(_cardVM.CardID);
+                    SaveCardComponents(_cardVM.CardID);
+
                     MessageBox.Show("The card " + _cardVM.Name + " was successfully updated.");
                     DisplayListViewPage();
                 }
@@ -323,7 +363,7 @@ namespace PokemonCardFinal.View.AddRecord
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
             }
         }
 
@@ -417,7 +457,7 @@ namespace PokemonCardFinal.View.AddRecord
                                         .OfType<Artist>()
                                         .FirstOrDefault(a => a.ArtistID == _cardVM.ArtistID);
 
-            
+
 
 
             if (_cardVM.PokemonRuleID.ToLower() == "none")
@@ -477,7 +517,7 @@ namespace PokemonCardFinal.View.AddRecord
             cmbRarity.SelectedItem = _cardVM.Rarity;
             cmbStage.SelectedItem = _cardVM.Stage;
 
-            
+
 
             // TextBoxes
             txtBoosterNumber.Text = _cardVM.BoosterNumber.ToString();

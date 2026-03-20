@@ -26,8 +26,10 @@ namespace PokemonCardFinal.View
     public partial class SearchResultsPage : Page
     {
         ICardManager _cardManager;
-        List<CardVM> _cards;
-        List<CardVM> _filteredCards;
+        ISearchManager _searchManager;
+        IFilterCardManager _filterCardManager;
+        List<Card> _cards;
+        List<Card> _filteredCards;
         UserVM _accessToken;
         string _search;
         bool _isSearchMode;
@@ -36,6 +38,8 @@ namespace PokemonCardFinal.View
         {
             InitializeComponent();
             _cardManager = new CardManager();
+            _searchManager = new SearchManager();
+            _filterCardManager = new FilterCardManager();
             _isSearchMode = false;
         }
 
@@ -43,6 +47,8 @@ namespace PokemonCardFinal.View
         {
             InitializeComponent();
             _cardManager = new CardManager();
+            _searchManager = new SearchManager();
+            _filterCardManager = new FilterCardManager();
             _search = search;
             _isSearchMode = true;
         }
@@ -51,6 +57,8 @@ namespace PokemonCardFinal.View
         {
             InitializeComponent();
             _cardManager = new CardManager();
+            _searchManager = new SearchManager();
+            _filterCardManager = new FilterCardManager();
             _accessToken = accessToken;
             _isSearchMode = false;
         }
@@ -59,6 +67,8 @@ namespace PokemonCardFinal.View
         {
             InitializeComponent();
             _cardManager = new CardManager();
+            _searchManager = new SearchManager();
+            _filterCardManager = new FilterCardManager();
             _search = search;
             _accessToken = accessToken;
             _isSearchMode = true;
@@ -94,32 +104,32 @@ namespace PokemonCardFinal.View
             }
         }
 
-        private List<CardVM> ApplyFilters()
+        private List<Card> ApplyFilters()
         {
             _filteredCards = _cards;
 
             if (0 < cmbBooster.SelectedIndex)
             {
                 string booster = cmbBooster.SelectedItem.ToString();
-                _filteredCards = _cardManager.GetCardVMsByBoosterID(_filteredCards, booster).ToList();
+                _filteredCards = _filterCardManager.FilterByBoosterID(_filteredCards, booster).ToList();
             }
 
             if (0 < cmbRarity.SelectedIndex)
             {
                 string rarity = cmbRarity.SelectedItem.ToString();
-                _filteredCards = _cardManager.GetCardVMsByRarity(_filteredCards, rarity).ToList();
+                _filteredCards = _filterCardManager.FilterByRarity(_filteredCards, rarity).ToList();
             }
 
             if (0 < cmbCardType.SelectedIndex)
             {
                 string cardType = cmbCardType.SelectedItem.ToString();
-                _filteredCards = _cardManager.GetCardVMsByCardType(_filteredCards, cardType).ToList();
+                _filteredCards = _filterCardManager.FilterByCardType(_filteredCards, cardType).ToList();
             }
 
             if (0 < cmbElementType.SelectedIndex)
             {
                 string element = cmbElementType.SelectedItem.ToString();
-                _filteredCards = _cardManager.GetCardVMsByElementTypeID(_filteredCards, element).ToList();
+                _filteredCards = _filterCardManager.FilterByElementTypeID(_filteredCards, element).ToList();
             }
 
 
@@ -132,22 +142,22 @@ namespace PokemonCardFinal.View
             {
                 if (_isSearchMode)
                 {
-                    _cards = _cardManager.GetCardVMsByCardName(_search);
+                    _cards = _searchManager.SearchCardsByName(_search);
                 }
                 else
                 {
-                    _cards = _cardManager.GetCardVMs();
+                    _cards = _cardManager.GetAllCards();
                 }
                 UpdateList(_cards);
             }
             catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
             }
         }
 
-        private void UpdateList(List<CardVM> cards)
+        private void UpdateList(List<Card> cards)
         {
             datSearch.ItemsSource = cards;
 
@@ -252,8 +262,8 @@ namespace PokemonCardFinal.View
 
             // load the detailed page
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-            CardVM selectedCard = datSearch.SelectedItem as CardVM;
-            mainWindow.frmMain.Navigate(new DetailedCardPage(selectedCard, _accessToken));
+            Card selectedCard = datSearch.SelectedItem as Card;
+            mainWindow.frmMain.Navigate(new DetailedCardPage(selectedCard.CardID, _accessToken));
         }
 
     }
