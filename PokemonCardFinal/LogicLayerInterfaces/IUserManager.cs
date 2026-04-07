@@ -70,7 +70,7 @@ namespace LogicLayerInterfaces
         /// <param name="passwordHash">Hashed password from the users inputted password</param>
         /// <returns>Returns true if the account was successfully created, false otherwise</returns>
         /// <exception cref="ApplicationException">Throws there is an error reaching the database</exception>
-        public bool CreateUserAccount(string givenName, string surname, string email, string passwordHash);
+        public bool CreateUserAccount(string givenName, string surname, string email, string password);
 
         /// <summary>
         /// Passes parameters to <see href="SelectUserCountByEmail(string)"/> then returns <br/>

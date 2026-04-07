@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -27,6 +27,7 @@ namespace DataDomain
         public int RetreatCost { get; set; }
         public int Health { get; set; }
         public string Stage { get; set; }
+        public string ImagePath { get; set; }
     }
 
     public class CardVM : Card

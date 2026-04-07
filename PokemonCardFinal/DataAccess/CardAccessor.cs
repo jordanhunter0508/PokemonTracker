@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -57,7 +57,8 @@ namespace DataAccess
                         ResistanceValue = reader.GetInt32(13),
                         RetreatCost = reader.GetInt32(14),
                         Health = reader.GetInt32(15),
-                        Stage = reader.GetString(16)
+                        Stage = reader.GetString(16),
+                        ImagePath = reader.IsDBNull(17) ? null : reader.GetString(17)
                     };
                 }
             }
@@ -103,6 +104,7 @@ namespace DataAccess
                         BoosterNumber = reader.GetInt32(4),
                         CardType = reader.GetString(5),
                         Rarity = reader.GetString(6),
+                        ImagePath = reader.IsDBNull(7) ? null : reader.GetString(7)
                     });
                 }
             }
@@ -146,7 +148,8 @@ namespace DataAccess
             cmd.Parameters.Add("@ResistanceValue", System.Data.SqlDbType.Int);
             cmd.Parameters.Add("@RetreatCost", System.Data.SqlDbType.Int);
             cmd.Parameters.Add("@Health", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@Stage", System.Data.SqlDbType.NVarChar,30);
+            cmd.Parameters.Add("@Stage", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@ImagePath", System.Data.SqlDbType.NVarChar, 250);
 
             cmd.Parameters["@ArtistID"].Value = card.ArtistID;
             cmd.Parameters["@AbilityID"].Value = card.AbilityID;
@@ -164,6 +167,11 @@ namespace DataAccess
             cmd.Parameters["@RetreatCost"].Value = card.RetreatCost;
             cmd.Parameters["@Health"].Value = card.Health;
             cmd.Parameters["@Stage"].Value = card.Stage;
+
+            if (!String.IsNullOrWhiteSpace(card.ImagePath))
+            {
+                cmd.Parameters["@ImagePath"].Value = card.ImagePath;
+            }
 
             try
             {
@@ -219,6 +227,7 @@ namespace DataAccess
             cmd.Parameters.Add("@RetreatCost", System.Data.SqlDbType.Int);
             cmd.Parameters.Add("@Health", System.Data.SqlDbType.Int);
             cmd.Parameters.Add("@Stage", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@ImagePath", System.Data.SqlDbType.NVarChar, 250);
 
             cmd.Parameters["@PokemonCardID"].Value = card.CardID;
             cmd.Parameters["@ArtistID"].Value = card.ArtistID;
@@ -237,6 +246,11 @@ namespace DataAccess
             cmd.Parameters["@RetreatCost"].Value = card.RetreatCost;
             cmd.Parameters["@Health"].Value = card.Health;
             cmd.Parameters["@Stage"].Value = card.Stage;
+
+            if (!String.IsNullOrWhiteSpace(card.ImagePath))
+            {
+                cmd.Parameters["@ImagePath"].Value = card.ImagePath;
+            }
 
             try
             {

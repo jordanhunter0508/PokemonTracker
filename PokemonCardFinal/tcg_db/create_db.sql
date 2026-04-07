@@ -270,6 +270,7 @@ CREATE TABLE [dbo].[PokemonCard]
 	[RetreatCost]           [int]               NULL,
 	[Health]				[int]				NULL,
 	[Stage]					[nvarchar](30)		NOT NULL,
+	[ImagePath]				[nvarchar](250)		NULL		DEFAULT 'cards/default.png',
 
 	
 	/*AlternateArtID, boosterid,BoosterID unique*/

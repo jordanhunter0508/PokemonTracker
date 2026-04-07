@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -59,12 +59,13 @@ namespace DataAccess
                                 ResistanceValue = reader.GetInt32(13),
                                 RetreatCost = reader.GetInt32(14),
                                 Health = reader.GetInt32(15),
-                                Stage = reader.GetString(16)
+                                Stage = reader.GetString(16),
+                                ImagePath = reader.IsDBNull(17) ? null : reader.GetString(17)
                             },
-                            CollectionCardID = reader.GetInt32(17),
-                            CollectionID = reader.GetInt32(18),
-                            Quantity = reader.GetInt32(19),
-                            Owned = reader.GetBoolean(20),
+                            CollectionCardID = reader.GetInt32(18),
+                            CollectionID = reader.GetInt32(19),
+                            Quantity = reader.GetInt32(20),
+                            Owned = reader.GetBoolean(21),
                         });
                     }
                 }

@@ -11,9 +11,9 @@ namespace Website.Controllers
     {
         IAltArtManager _altArtManager;
 
-        public AlternateArtController()
+        public AlternateArtController(IAltArtManager altArtManager)
         {
-            _altArtManager = new AltArtManager();
+            _altArtManager = altArtManager;
         }
 
         // GET: AlternateArtController
@@ -46,7 +46,6 @@ namespace Website.Controllers
                 ViewBag.Exception = ex;
                 ViewBag.DisplayError = "Could not get a list of deactivated alternate arts.";
                 return RedirectToAction("Error", "Home");
-
             }
         }
 

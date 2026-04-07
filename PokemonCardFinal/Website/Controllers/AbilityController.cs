@@ -12,9 +12,9 @@ namespace Website.Controllers
         IAbilityManager _abilityManager;
         List<string> _abilityTypes;
 
-        public AbilityController()
+        public AbilityController(IAbilityManager abilityManager)
         {
-            _abilityManager = new AbilityManager();
+            _abilityManager = abilityManager;
             _abilityTypes = new List<string>()
             {
                 "Ability",

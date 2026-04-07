@@ -1,3 +1,6 @@
+using LogicLayer;
+using LogicLayerInterfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Website.Data;
@@ -10,15 +13,33 @@ namespace Website
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
+
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(2);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                   .AddCookie(options =>
+                   {
+                       options.LoginPath = "/Account/Login";
+                       options.LogoutPath = "/Account/Logout";
+                       options.SlidingExpiration = true;
+                       options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                       options.Cookie.HttpOnly = true;
+                   });
+
+            // Allows for dependacy injection
+            builder.Services.AddScoped<IUserManager, UserManager>();
+            builder.Services.AddScoped<ICardManager, CardManager>();
+            builder.Services.AddScoped<IAbilityManager, AbilityManager>();
+            builder.Services.AddScoped<IAltArtManager, AltArtManager>();
+
 
             var app = builder.Build();
 

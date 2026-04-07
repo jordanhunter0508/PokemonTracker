@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -38,7 +38,8 @@ namespace DataAccessFakes
                 ResistanceValue = 1,
                 RetreatCost = 1,
                 Health = 100,
-                Stage = "test stage"
+                Stage = "test stage",
+                ImagePath = "default_image.png"
             });
             _cards.Add(new Card()
             {
@@ -58,7 +59,8 @@ namespace DataAccessFakes
                 ResistanceValue = 1,
                 RetreatCost = 1,
                 Health = 100,
-                Stage = "test stage"
+                Stage = "test stage",
+                ImagePath = "default_image.png"
             });
             _cards.Add(new Card()
             {
@@ -78,7 +80,8 @@ namespace DataAccessFakes
                 ResistanceValue = 1,
                 RetreatCost = 1,
                 Health = 100,
-                Stage = "test stage"
+                Stage = "test stage",
+                ImagePath = "default_image.png"
             });
         }
 

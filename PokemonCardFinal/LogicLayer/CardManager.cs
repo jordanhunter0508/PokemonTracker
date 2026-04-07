@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -178,6 +178,7 @@ namespace LogicLayer
                 RetreatCost = card.RetreatCost,
                 Health = card.Health,
                 Stage = card.Stage,
+                ImagePath = card.ImagePath,
                 Moves = new List<MoveVM>(),
                 AlternateArts = new List<string>(),
             };

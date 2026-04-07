@@ -1236,7 +1236,7 @@ AS
 				[Name],[BoosterNumber],[CardType],
 				[Rarity],[WeaknessType],[ResistanceType],
 				[WeaknessValue],[ResistanceValue],[RetreatCost],
-				[Health],[Stage]	
+				[Health],[Stage],[ImagePath]	
 				
 		FROM	[PokemonCard]
 		WHERE	[PokemonCardID] = @PokemonCardID;
@@ -1279,7 +1279,7 @@ CREATE PROCEDURE [dbo].[sp_select_all_cards]
 AS
 	BEGIN
 		SELECT	[PokemonCardID],[BoosterID],[ElementTypeID],
-				[Name],[BoosterNumber],[CardType],[Rarity]
+				[Name],[BoosterNumber],[CardType],[Rarity],[ImagePath]
 				
 		FROM	[PokemonCard];
 	END
@@ -1317,7 +1317,7 @@ CREATE PROCEDURE [dbo].[sp_select_cards_by_card_name]
 AS
 	BEGIN
 		SELECT	[PokemonCardID],[BoosterID],[ElementTypeID],
-				[Name],[BoosterNumber],[CardType],[Rarity]
+				[Name],[BoosterNumber],[CardType],[Rarity],[ImagePath]
 				
 		FROM	[PokemonCard]
 		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%');
@@ -1402,7 +1402,7 @@ AS
 				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
 				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
 				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
-				[PokemonCard].[Health],[PokemonCard].[Stage],[CollectionCard].[CollectionCardID],
+				[PokemonCard].[Health],[PokemonCard].[Stage],[PokemonCard].[ImagePath],[CollectionCard].[CollectionCardID],
 				[CollectionCard].[CollectionID],[CollectionCard].[Quantity],[CollectionCard].[Owned]
 				
 		FROM	[PokemonCard] 
@@ -1551,7 +1551,7 @@ AS
 				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
 				[PokemonCard].[Rarity],[PokemonCard].[WeaknessType],[PokemonCard].[ResistanceType],
 				[PokemonCard].[WeaknessValue],[PokemonCard].[ResistanceValue],[PokemonCard].[RetreatCost],
-				[PokemonCard].[Health],[PokemonCard].[Stage]
+				[PokemonCard].[Health],[PokemonCard].[Stage],[PokemonCard].[ImagePath]
 				
 		FROM	[PokemonCard] 
 			JOIN [Booster] ON [Booster].[BoosterID] = [PokemonCard].[BoosterID]
@@ -1644,7 +1644,8 @@ CREATE PROCEDURE [dbo].[sp_insert_card]
 		@ResistanceValue       	[int],         
 		@RetreatCost           	[int],        
 		@Health					[int],		
-		@Stage					[nvarchar](30)
+		@Stage					[nvarchar](30),
+		@ImagePath				[nvarchar](250) = 'cards/default.png'
 	)	
 AS
 	BEGIN
@@ -1652,12 +1653,12 @@ AS
 			([ArtistID],[AbilityID],[BoosterID],[PokemonRuleID],
 			 [ElementTypeID],[Name],[BoosterNumber],[CardType],
 			 [Rarity],[WeaknessType],[ResistanceType],[WeaknessValue],
-			 [ResistanceValue],[RetreatCost],[Health],[Stage])
+			 [ResistanceValue],[RetreatCost],[Health],[Stage],[ImagePath])
 		VALUES
 			(@ArtistID,@AbilityID,@BoosterID,@PokemonRuleID,
 			 @ElementTypeID,@Name,@BoosterNumber,@CardType,
 			 @Rarity,@WeaknessType,@ResistanceType,@WeaknessValue,
-			 @ResistanceValue,@RetreatCost,@Health,@Stage);
+			 @ResistanceValue,@RetreatCost,@Health,@Stage,@ImagePath);
 			 
 		SELECT SCOPE_IDENTITY();
 	END
@@ -1683,7 +1684,8 @@ CREATE PROCEDURE [dbo].[sp_update_card]
 		@ResistanceValue       	[int],         
 		@RetreatCost           	[int],        
 		@Health					[int],		
-		@Stage					[nvarchar](30)
+		@Stage					[nvarchar](30),
+		@ImagePath				[nvarchar](250) = 'cards/default.png'
 	)	
 AS
 	BEGIN
@@ -1703,7 +1705,8 @@ AS
 				[PokemonCard].[ResistanceValue] = @ResistanceValue,
 				[PokemonCard].[RetreatCost] = @RetreatCost,
 				[PokemonCard].[Health] = @Health,
-				[PokemonCard].[Stage] = @Stage		
+				[PokemonCard].[Stage] = @Stage,
+				[PokemonCard].[ImagePath] = @ImagePath		
 		WHERE 	[PokemonCard].[PokemonCardID] = @PokemonCardID
 		RETURN @@ROWCOUNT;
 	END

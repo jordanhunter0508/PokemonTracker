@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,6 +43,7 @@ namespace DataAccess
                         BoosterNumber = reader.GetInt32(4),
                         CardType = reader.GetString(5),
                         Rarity = reader.GetString(6),
+                        ImagePath = reader.IsDBNull(7) ? null : reader.GetString(7)
                     });
                 }
             }

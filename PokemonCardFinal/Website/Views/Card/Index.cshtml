@@ -1,0 +1,92 @@
+﻿@model IEnumerable<DataDomain.Card>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+@{
+	var itemImageTest = Model.First();
+	var fullPath = "https://pub-fb772ed43bb441dfb44e25393b7eb03c.r2.dev/" + itemImageTest.ImagePath;
+	// <img src=@fullPath />
+}
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.CardID)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.BoosterID)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ElementTypeID)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.BoosterNumber)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CardType)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Rarity)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ImagePath)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.CardID)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.BoosterID)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ElementTypeID)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.BoosterNumber)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.CardType)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Rarity)
+				</td>
+				@if (!String.IsNullOrWhiteSpace(item.ImagePath))
+				{
+					<td>
+						@Html.DisplayFor(modelItem => item.ImagePath)
+					</td>
+				}
+				else
+				{
+					<td>
+						No Image Found
+					</td>
+				}
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+					@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+					@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
