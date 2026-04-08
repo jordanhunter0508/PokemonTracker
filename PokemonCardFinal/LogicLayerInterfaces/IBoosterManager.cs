@@ -10,7 +10,7 @@ namespace LogicLayerInterfaces
     public interface IBoosterManager
     {
         /// <summary>
-        /// Passes parameters to <see href="SelectBoosterByBoosterID(string)"/><br/>
+        /// Passes parameters to <see href="IBoosterAccessor.SelectBoosterByBoosterID(string)"/><br/>
         /// then returns the results of the query. 
         /// </summary>
         /// <param name="boosterID">Used to search the database for the booster</param>
@@ -19,7 +19,7 @@ namespace LogicLayerInterfaces
         public Booster GetBoosterByBoosterID(string boosterID);
 
         /// <summary>
-        /// Calls the <see href="SelectBooster()"/> method to get<br/>
+        /// Calls the <see href="IBoosterAccessor.SelectBooster()"/> method to get<br/>
         /// a list of all Boosters from the database.
         /// </summary>
         /// <returns>Returns a List of all Boosters in the database</returns>
@@ -27,7 +27,7 @@ namespace LogicLayerInterfaces
         public List<Booster> GetBoosters();
 
         /// <summary>
-        /// Calls the <see href="GetBoosters()"/> method to get<br/>
+        /// Calls the <see href="IBoosterAccessor.GetBoosters()"/> method to get<br/>
         /// a list of all Boosters from the database. Then returns the ids.
         /// </summary>
         /// <returns>Returns a List of all BoosterIDs in the database</returns>
@@ -35,7 +35,7 @@ namespace LogicLayerInterfaces
         public List<string> GetBoosterIDs();
 
         /// <summary>
-        /// Passes parameters to <see href="InsertBooster()"/> Then returns true
+        /// Passes parameters to <see href="IBoosterAccessor.InsertBooster()"/> Then returns true
         /// if the record was updated successfully.
         /// </summary>
         /// <param name="booster">New Booster object to be added to the database.</param>
@@ -45,7 +45,7 @@ namespace LogicLayerInterfaces
         public bool AddBooster(Booster booster);
 
         /// <summary>
-        /// Passes parameters to <see href="UpdateBooster(Booster)"/><br/>
+        /// Passes parameters to <see href="IBoosterAccessor.UpdateBooster(Booster)"/><br/>
         /// Then returns true if the record was updated successfully.
         /// </summary>
         /// <param name="booster">New Booster object to update the old field at boosterID</param>
@@ -54,7 +54,7 @@ namespace LogicLayerInterfaces
         public bool EditBooster(Booster booster);
 
         /// <summary>
-        /// Passes parameters to <see href="DeleteBooster(string)"/><br/>
+        /// Passes parameters to <see href="IBoosterAccessor.DeleteBooster(string)"/><br/>
         /// Then returns true if the record was deleted successfully
         /// </summary>
         /// <param name="boosterID">Used to find the Booster</param>

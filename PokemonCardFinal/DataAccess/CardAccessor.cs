@@ -122,6 +122,85 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="ICardAccessor"/>. Access the database
+        /// using sp_select_cards_paginated
+        /// </summary>
+        public PaginatedResult<Card> SelectCardsPaginated(FilterOption filterOption, int pageNumber = 1, int pageSize = 25)
+        {
+            PaginatedResult<Card> result = new PaginatedResult<Card>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_cards_paginated";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            // Filter Options
+            if (filterOption != null)
+            {
+                if (!string.IsNullOrWhiteSpace(filterOption.BoosterID))
+                {
+                    cmd.Parameters.AddWithValue("@BoosterID", filterOption.BoosterID);
+                }
+
+                if (!string.IsNullOrWhiteSpace(filterOption.Rarity))
+                {
+                    cmd.Parameters.AddWithValue("@Rarity", filterOption.Rarity);
+                }
+
+                if (!string.IsNullOrWhiteSpace(filterOption.CardType))
+                {
+                    cmd.Parameters.AddWithValue("@CardType", filterOption.CardType);
+                }
+
+                if (!string.IsNullOrWhiteSpace(filterOption.ElementTypeID))
+                {
+                    cmd.Parameters.AddWithValue("@ElementTypeID", filterOption.ElementTypeID);
+                }
+            }
+
+            cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    result.Items.Add(new Card()
+                    {
+                        CardID = reader.GetInt32(0),
+                        BoosterID = reader.GetString(1),
+                        ElementTypeID = reader.GetString(2),
+                        Name = reader.GetString(3),
+                        BoosterNumber = reader.GetInt32(4),
+                        CardType = reader.GetString(5),
+                        Rarity = reader.GetString(6),
+                        ImagePath = reader.GetString(7),
+                    });
+
+                    result.TotalCount = reader.GetInt32(8);
+                    result.PageNumber = reader.GetInt32(9);
+                    result.PageSize = reader.GetInt32(10);
+                    result.TotalPages = Convert.ToInt32(reader.GetDecimal(11));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/>. Access the database
         /// using sp_insert_card
         /// </summary>
         public int InsertCard(Card card)
@@ -304,6 +383,5 @@ namespace DataAccess
 
             return count;
         }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +27,6 @@ namespace PokemonCardFinal.View
     {
         ICardManager _cardManager;
         ISearchManager _searchManager;
-        IFilterCardManager _filterCardManager;
         List<Card> _cards;
         List<Card> _filteredCards;
         UserVM _accessToken;
@@ -39,7 +38,6 @@ namespace PokemonCardFinal.View
             InitializeComponent();
             _cardManager = new CardManager();
             _searchManager = new SearchManager();
-            _filterCardManager = new FilterCardManager();
             _isSearchMode = false;
         }
 
@@ -48,7 +46,6 @@ namespace PokemonCardFinal.View
             InitializeComponent();
             _cardManager = new CardManager();
             _searchManager = new SearchManager();
-            _filterCardManager = new FilterCardManager();
             _search = search;
             _isSearchMode = true;
         }
@@ -58,7 +55,6 @@ namespace PokemonCardFinal.View
             InitializeComponent();
             _cardManager = new CardManager();
             _searchManager = new SearchManager();
-            _filterCardManager = new FilterCardManager();
             _accessToken = accessToken;
             _isSearchMode = false;
         }
@@ -68,7 +64,6 @@ namespace PokemonCardFinal.View
             InitializeComponent();
             _cardManager = new CardManager();
             _searchManager = new SearchManager();
-            _filterCardManager = new FilterCardManager();
             _search = search;
             _accessToken = accessToken;
             _isSearchMode = true;
@@ -76,13 +71,13 @@ namespace PokemonCardFinal.View
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadList();
+
             // Load the filter combo boxes
             LoadBoosterComboBox();
             LoadRarityComboBox();
             LoadCardTypeComboBox();
             LoadElementTypeComboBox();
-
-            LoadList();
 
             if (_accessToken == null)
             {
@@ -106,32 +101,29 @@ namespace PokemonCardFinal.View
 
         private List<Card> ApplyFilters()
         {
-            _filteredCards = _cards;
+            FilterOption filterOption = new FilterOption();
 
             if (0 < cmbBooster.SelectedIndex)
             {
-                string booster = cmbBooster.SelectedItem.ToString();
-                _filteredCards = _filterCardManager.FilterByBoosterID(_filteredCards, booster).ToList();
+                filterOption.BoosterID = cmbBooster.SelectedItem.ToString();
             }
 
             if (0 < cmbRarity.SelectedIndex)
             {
-                string rarity = cmbRarity.SelectedItem.ToString();
-                _filteredCards = _filterCardManager.FilterByRarity(_filteredCards, rarity).ToList();
+                filterOption.Rarity = cmbRarity.SelectedItem.ToString();
             }
 
             if (0 < cmbCardType.SelectedIndex)
             {
-                string cardType = cmbCardType.SelectedItem.ToString();
-                _filteredCards = _filterCardManager.FilterByCardType(_filteredCards, cardType).ToList();
+                filterOption.CardType = cmbCardType.SelectedItem.ToString();
             }
 
             if (0 < cmbElementType.SelectedIndex)
             {
-                string element = cmbElementType.SelectedItem.ToString();
-                _filteredCards = _filterCardManager.FilterByElementTypeID(_filteredCards, element).ToList();
+                filterOption.ElementTypeID = cmbElementType.SelectedItem.ToString();
             }
 
+            _filteredCards = _cardManager.ApplyFilters(_cards, filterOption).ToList();
 
             return _filteredCards;
         }

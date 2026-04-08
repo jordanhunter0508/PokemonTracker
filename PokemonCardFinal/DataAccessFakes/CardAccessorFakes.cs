@@ -83,6 +83,48 @@ namespace DataAccessFakes
                 Stage = "test stage",
                 ImagePath = "default_image.png"
             });
+            _cards.Add(new Card()
+            {
+                CardID = 4,
+                ArtistID = 2,
+                AbilityID = "test ability 2",
+                BoosterID = "test booster 3",
+                PokemonRuleID = "test pokemon rule 1",
+                ElementTypeID = "test element 2",
+                Name = "test 3",
+                BoosterNumber = 2,
+                CardType = "test type 1",
+                Rarity = "test rarity 1",
+                WeaknessType = "weakness 2",
+                ResistanceType = "resistance 1",
+                WeaknessValue = 1,
+                ResistanceValue = 1,
+                RetreatCost = 1,
+                Health = 100,
+                Stage = "test stage",
+                ImagePath = "default_image.png"
+            });
+            _cards.Add(new Card()
+            {
+                CardID = 5,
+                ArtistID = 1,
+                AbilityID = "test ability 1",
+                BoosterID = "test booster 1",
+                PokemonRuleID = "test pokemon rule 1",
+                ElementTypeID = "test element 2",
+                Name = "test 4",
+                BoosterNumber = 3,
+                CardType = "test type 3",
+                Rarity = "test rarity 2",
+                WeaknessType = "weakness 2",
+                ResistanceType = "resistance 2",
+                WeaknessValue = 1,
+                ResistanceValue = 1,
+                RetreatCost = 1,
+                Health = 100,
+                Stage = "test stage",
+                ImagePath = "default_image.png"
+            });
         }
 
         /// <summary>
@@ -110,6 +152,53 @@ namespace DataAccessFakes
         {
             List<Card> results = new List<Card>();
             results = _cards;
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
+        public PaginatedResult<Card> SelectCardsPaginated(FilterOption filterOption, int pageNumber = 1, int pageSize = 25)
+        {
+            PaginatedResult<Card> results = new PaginatedResult<Card>();
+
+            results.Items = _cards;
+
+            if (!string.IsNullOrWhiteSpace(filterOption.CardName))
+            {
+                results.Items = results.Items.Where(card => card.Name.Contains(filterOption.CardName, StringComparison.OrdinalIgnoreCase))
+                                             .OrderBy(card => card.Name).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterOption.Rarity))
+            {
+                results.Items = results.Items.Where(card => string.Equals(card.Rarity, filterOption.Rarity, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterOption.BoosterID))
+            {
+                results.Items = results.Items.Where(card => string.Equals(card.BoosterID, filterOption.BoosterID, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterOption.CardType))
+            {
+                results.Items = results.Items.Where(card => string.Equals(card.CardType, filterOption.CardType, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterOption.ElementTypeID))
+            {
+                results.Items = results.Items.Where(card => string.Equals(card.ElementTypeID, filterOption.ElementTypeID, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            results.TotalCount = results.Items.Count();
+            results.PageNumber = pageNumber;
+            results.PageSize = pageSize;
+            results.TotalPages = (int)Math.Ceiling((double)results.Items.Count() / pageSize);
+
+            results.Items = results.Items.Skip((pageNumber - 1) * pageSize)
+                                          .Take(pageSize)
+                                          .ToList();
+
             return results;
         }
 
@@ -299,7 +388,6 @@ namespace DataAccessFakes
             }
 
             return count;
-        }
-
+        }  
     }
 }

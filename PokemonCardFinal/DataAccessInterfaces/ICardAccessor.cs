@@ -16,14 +16,33 @@ namespace DataAccessInterfaces
         /// <returns>Returns a Card of the specified cardID.</returns>
         public Card SelectCardByCardID(int cardID);
 
+        /// <summary>
+        /// Requests all cards from the database.
+        /// Not all fields are returned
+        /// </summary>
+        /// <returns>Returns a List of all Cards for the database</returns>
         public List<Card> SelectAllCards();
 
         /// <summary>
-        /// Inserts the parameters into the stored procedure to try
-        /// and create a new record for a Card.
+        /// Requests a set number of cards based on pageSize from the database. <br/>
+        /// Offset by pageNumber and filtered by filterOption.<br/>
+        /// Saves the Cards in Items of the PaginatedReults.
         /// </summary>
-        /// <param name="card">New Card object to insert.</param>
-        /// <returns>Returns the number of rows affected.</returns>
+        /// <param name="filterOption">Optional filters for the query</param>
+        /// <param name="pageNumber">Represents how much to offset the records by</param>
+        /// <param name="pageSize">Represents how many records to return at most.</param>
+        /// <returns>Returns a paginated list of Cards from the database</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public PaginatedResult<Card> SelectCardsPaginated(FilterOption filterOption, int pageNumber = 1, int pageSize = 25);
+
+        /// <summary>
+        /// Passes parameters to <see href="InsertBooster()"/> Then returns true
+        /// if the record was updated successfully.
+        /// </summary>
+        /// <param name="booster">New Booster object to be added to the database.</param>
+        /// <returns>Returns true if the Booster was created successfully.</returns>
+        /// <exception cref="ApplicationException">Throws if the abbreviation is already used 
+        /// or if the boosterId is already used.</exception>
         public int InsertCard(Card card);
 
         /// <summary>

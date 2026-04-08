@@ -38,7 +38,7 @@ public class ElementManagerTest
     public void TestGetElementTypeByElementTypeIDThrowsApplicationException()
     {
         // arrrange
-        const string elementTypeID = "ttest";
+        const string elementTypeID = "fails";
         const string expectedID = null;
         const string expectedDescription = null;
         ElementType actualElement = null;
@@ -56,8 +56,8 @@ public class ElementManagerTest
     {
         // arrange
         const int expectedLength = 3;
-        const string expectedID1 = "testElement1";
-        const string expectedID2 = "testElement2";
+        const string expectedID1 = "TestElement1";
+        const string expectedID2 = "TestElement2";
         List<ElementType> elementTypes = null;
 
         // act

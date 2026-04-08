@@ -59,7 +59,7 @@ namespace LogicLayer
 
             try
             {
-                results = _elementAccessor.SelectElementTypes();
+                results = FormatElemetTypes(_elementAccessor.SelectElementTypes()).ToList();
             }
             catch (Exception ex)
             {

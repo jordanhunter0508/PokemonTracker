@@ -1,92 +1,193 @@
-﻿@model IEnumerable<DataDomain.Card>
+﻿@model IEnumerable<Website.Models.CardListViewModel>
 
 @{
 	ViewData["Title"] = "Index";
+	ViewBag.BaseUrl = "https://pub-fb772ed43bb441dfb44e25393b7eb03c.r2.dev/";
+
+	// Filter select box options
+	IEnumerable<string> boosterIDs = ViewBag.BoosterIDs;
+	IEnumerable<string> rarities = ViewBag.Rarities;
+	IEnumerable<string> cardTypes = ViewBag.CardTypes;
+	IEnumerable<string> elements = ViewBag.Elements;
+
+	// Filter selected options
+	string boosterFilter = ViewBag.BoosterFilter;
+	string rarityFilter = ViewBag.RarityFilter;
+	string cardTypeFilter = ViewBag.CardTypeFilter;
+	string elementFilter = ViewBag.ElementFilter;
+
+	// Pagination
+	int pageNumber = ViewBag.PageNumber;
+	int pageSize = ViewBag.PageSize;
+	int totalPages = ViewBag.TotalPages;
+	int totalCount = ViewBag.TotalCount;
 }
 
-<h1>Index</h1>
+<h1>All Cards</h1>
 
 <p>
 	<a asp-action="Create">Create New</a>
 </p>
+
+
+@* Filter Bar *@
+<div class="filter-bar">
+	<form asp-controller="Card" asp-action="Index" method="get">
+		<div class="row g-2 align-items-end">
+			<div class="row g-2 align-items-end">
+
+				@* Booster Filter *@
+				<div class="col-md-3">
+					<label class="form-label fw-smibold" style="font-size:12px;">Booster Set</label>
+					<select name="boosterFilter" class="form-select form-select-sm">
+						<option value="">Select a Booster</option>
+						@if (boosterIDs.Any())
+						{
+							@foreach (var booster in boosterIDs)
+							{
+								<option value="@booster" selected="@(boosterFilter == booster ? "Selected" : null)">@booster</option>
+							}
+						}
+					</select>
+				</div>
+
+				@* Rarity Filter *@
+				<div class="col-md-2">
+					<label class="form-label fw-smibold" style="font-size:12px;">Rarity</label>
+					<select name="rarityFilter" class="form-select form-select-sm">
+						<option value="">Select a Rarity</option>
+						@if (rarities.Any())
+						{
+							@foreach (var rarity in rarities)
+							{
+								<option value="@rarity" selected="@(rarityFilter == rarity ? "Selected" : null)">@rarity</option>
+							}
+						}
+					</select>
+				</div>
+
+				@* Card Type Filter *@
+				<div class="col-md-2">
+					<label class="form-label fw-smibold" style="font-size:12px;">Card Type</label>
+					<select name="cardTypeFilter" class="form-select form-select-sm">
+						<option value="">Select a Card Type</option>
+						@if (cardTypes.Any())
+						{
+							@foreach (var type in cardTypes)
+							{
+								<option value="@type" selected="@(cardTypeFilter == type ? "Selected" : null)">@type</option>
+							}
+						}
+					</select>
+				</div>
+
+				@* Element Type Filter *@
+				<div class="col-md-2">
+					<label class="form-label fw-smibold" style="font-size:12px;">Element Type</label>
+					<select name="elementFilter" class="form-select form-select-sm">
+						<option value="">Select an Element</option>
+						@if (elements.Any())
+						{
+							@foreach (var element in elements)
+							{
+								<option value="@element" selected="@(elementFilter == element ? "Selected" : null)">@element</option>
+							}
+						}
+					</select>
+				</div>
+
+				@* Filter and Clear Buttons *@
+				<div class="col-md-2 ms-auto d-flex gap-2">
+					<button type="submit" class="btn btn-sm w-100 fw-bold">Filter</button>
+					<a asp-controller="Card" asp-action="Index"
+					   class="btn btn-outline-secondary btn-sm w-100">Clear</a>
+				</div>
+
+			</div>
+		</div>
+	</form>
+</div>
+
+
+@* Display number of Card *@
 @{
-	var itemImageTest = Model.First();
-	var fullPath = "https://pub-fb772ed43bb441dfb44e25393b7eb03c.r2.dev/" + itemImageTest.ImagePath;
-	// <img src=@fullPath />
+	int start = (pageNumber - 1) * pageSize + 1;
+	int end = start + Model.Count() - 1;
+
+	if (totalCount == 0)
+	{
+		start = 0;
+		end = 0;
+	}
+
+	<p style="font-size:13px; color:var(--crs-muted); margin-bottom:16px;">
+		Showing <strong>@start - @end</strong> of @totalCount
+	</p>
 }
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.CardID)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.BoosterID)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ElementTypeID)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Name)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.BoosterNumber)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.CardType)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Rarity)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ImagePath)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
+
+
+@* Main Content *@
+@if (Model.Any())
+{
+	@* Card Display *@
+	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
 		@foreach (var item in Model)
 		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.CardID)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.BoosterID)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.ElementTypeID)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.BoosterNumber)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.CardType)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Rarity)
-				</td>
-				@if (!String.IsNullOrWhiteSpace(item.ImagePath))
-				{
-					<td>
-						@Html.DisplayFor(modelItem => item.ImagePath)
-					</td>
-				}
-				else
-				{
-					<td>
-						No Image Found
-					</td>
-				}
-				<td>
-					@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-					@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-				</td>
-			</tr>
+			string fullPath = ViewBag.BaseUrl + item.Card.ImagePath;
+			<div class="col">
+				<a asp-controller="Card" asp-action="Details" asp-route-id="@item.Card.CardID" class="card-link">
+					<div class="card h-100">
+						<div class="card-img-wrapper">
+							<img src="@fullPath" class="card-img-top" alt="@item.Card.Name" />
+						</div>
+						<div class="card-body">
+							<h5 class="card-title">@item.Card.Name</h5>
+							<p class="card-text">
+								@item.Booster.Abbreviation.ToUpper(): @item.Card.BoosterID, #@item.Card.BoosterNumber
+							</p>
+							<p class="card-text">
+								@item.Card.Rarity, @item.Card.CardType
+							</p>
+						</div>
+					</div>
+				</a>
+			</div>
 		}
-	</tbody>
-</table>
+	</div>
+
+	@* Pagination *@
+	<div class="card-pagination">
+		@if (pageNumber > 1)
+		{
+			<a asp-action="Index"
+			   asp-route-boosterFilter="@boosterFilter"
+			   asp-route-rarityFilter="@rarityFilter"
+			   asp-route-cardTypeFilter="@cardTypeFilter"
+			   asp-route-elementFilter="@elementFilter"
+			   asp-route-pageNumber="@(pageNumber - 1)">
+				Previous Page
+			</a>
+		}
+
+		<p>Page @pageNumber of @totalPages</p>
+
+		@if (pageNumber < totalPages)
+		{
+			<a asp-action="Index"
+			   asp-route-boosterFilter="@boosterFilter"
+			   asp-route-rarityFilter="@rarityFilter"
+			   asp-route-cardTypeFilter="@cardTypeFilter"
+			   asp-route-elementFilter="@elementFilter"
+			   asp-route-pageNumber="@(pageNumber + 1)">
+				Next Page
+			</a>
+		}
+	</div>
+}
+else
+{
+	<div class="no-results">
+		<p class="fw-semibold mb-1">No cards found.</p>
+		<p style="font-size:13px;">Try adjusting your filters.</p>
+	</div>
+}

@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace DataDomain
 {
     /// <summary>
-    /// Stores a list of items and allows the item
+    /// Stores a list of items and other details 
+    /// related to how many pages the items can make.
     /// </summary>
     public class PaginatedResult<T>
     {

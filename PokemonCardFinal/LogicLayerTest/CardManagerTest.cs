@@ -21,7 +21,7 @@ public class CardManagerTest
     public void TestGetAllCards()
     {
         // arrange
-        const int expectedCount = 3;
+        const int expectedCount = 5;
         List<Card> actual;
 
         // act
@@ -1321,5 +1321,248 @@ public class CardManagerTest
 
         // assert
         Assert.AreEqual(expectedResult, actualResult);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestApplyFiltersThrowsArgumentNullExceptionWithNullCardList()
+    {
+        // arrange
+        List<Card> cards = null;
+        FilterOption filterOption = new FilterOption() { CardName = "1" };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersWithNullFilterOptionReturnsAllCards()
+    {
+        // arrange
+        const int expectedCount = 5;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = null;
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByCardNameWithValidInput()
+    {
+        // arrange
+        const string name = "test 1";
+        const int expectedCount = 2;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { CardName = name };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByCardNameReturnsBlankListWithInvalidName()
+    {
+        // arrange
+        const string name = "fails";
+        const int expectedCount = 0;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { CardName = name };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByRarityWithValidInput()
+    {
+        // arrange
+        const string rarity = "test rarity 1";
+        const int expectedCount = 3;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { Rarity = rarity };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByRarityReturnsBlankListWithInvalidRarity()
+    {
+        // arrange
+        const string rarity = "fails";
+        const int expectedCount = 0;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { Rarity = rarity };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByBoosterIDWithValidInput()
+    {
+        // arrange
+        const string boosterID = "test booster 1";
+        const int expectedCount = 3;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { BoosterID = boosterID };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByBoosterIDReturnsBlankListWithInvalidBoosterID()
+    {
+        // arrange
+        const string boosterID = "fails";
+        const int expectedCount = 0;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { BoosterID = boosterID };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByCardTypeWithValidInput()
+    {
+        // arrange
+        const string cardType = "test type 1";
+        const int expectedCount = 3;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { CardType = cardType };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByCardTypeReturnsBlankListWithInvalidCardType()
+    {
+        // arrange
+        const string cardType = "fails";
+        const int expectedCount = 0;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { CardType = cardType };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByElementTypeIDWithValidInput()
+    {
+        // arrange
+        const string elementTypeID = "test element 1";
+        const int expectedCount = 2;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { ElementTypeID = elementTypeID };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByElementTypeIDReturnsBlankListWithInvalidElement()
+    {
+        // arrange
+        const string elementTypeID = "fails";
+        const int expectedCount = 0;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { ElementTypeID = elementTypeID };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersMultipleOptionsReturnsExpectedCards()
+    {
+        // arrange
+        const int expectedCount = 1;
+        List<Card> cards = _cardManager.GetAllCards();
+
+        // This filter combines BoosterID = "test booster 1" and ElementTypeID = "test element 2".
+        // In our mock data (CardAccessorFakes), Card 5 has these properties.
+        FilterOption filterOption = new FilterOption()
+        {
+            BoosterID = "test booster 1",
+            ElementTypeID = "test element 2"
+        };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+        Assert.AreEqual("test 4", actual[0].Name);
+    }
+
+    [TestMethod]
+    public void TestGetCardsPaginatedReturnsListWithValidParameters()
+    {
+        // arrange
+        const int expectedCount = 5;
+        const int pageSize = 5;
+        const int pageNumber = 1;
+        FilterOption filterOption = new FilterOption();
+        PaginatedResult<Card> actual;
+
+        // act
+        actual = _cardManager.GetCardsPaginated(filterOption, pageNumber, pageSize);
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Items.Count);
     }
 }

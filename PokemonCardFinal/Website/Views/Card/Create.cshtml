@@ -1,0 +1,118 @@
+﻿@model DataDomain.Card
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Card</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ArtistID" class="control-label"></label>
+                <input asp-for="ArtistID" class="form-control" />
+                <span asp-validation-for="ArtistID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AbilityID" class="control-label"></label>
+                <input asp-for="AbilityID" class="form-control" />
+                <span asp-validation-for="AbilityID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BoosterID" class="control-label"></label>
+                <input asp-for="BoosterID" class="form-control" />
+                <span asp-validation-for="BoosterID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PokemonRuleID" class="control-label"></label>
+                <input asp-for="PokemonRuleID" class="form-control" />
+                <span asp-validation-for="PokemonRuleID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ElementTypeID" class="control-label"></label>
+                <input asp-for="ElementTypeID" class="form-control" />
+                <span asp-validation-for="ElementTypeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BoosterNumber" class="control-label"></label>
+                <input asp-for="BoosterNumber" class="form-control" />
+                <span asp-validation-for="BoosterNumber" class="text-danger"></span>
+            </div>
+
+            @* Card type *@
+            <div class="form-group">
+                <label asp-for="CardType" class="control-label"></label>
+                <select asp-for="CardType" class="form-control">
+                    <option value="">Select a card type</option>
+                    <option value="item">Item</option>
+                    <option value="pokemon">Pokemon</option>
+                    <option value="stage">Stage</option>
+                    <option value="trainer">Trainer</option>
+                </select>
+                <span asp-validation-for="CardType" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Rarity" class="control-label"></label>
+                <input asp-for="Rarity" class="form-control" />
+                <span asp-validation-for="Rarity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WeaknessType" class="control-label"></label>
+                <input asp-for="WeaknessType" class="form-control" />
+                <span asp-validation-for="WeaknessType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResistanceType" class="control-label"></label>
+                <input asp-for="ResistanceType" class="form-control" />
+                <span asp-validation-for="ResistanceType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WeaknessValue" class="control-label"></label>
+                <input asp-for="WeaknessValue" class="form-control" />
+                <span asp-validation-for="WeaknessValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResistanceValue" class="control-label"></label>
+                <input asp-for="ResistanceValue" class="form-control" />
+                <span asp-validation-for="ResistanceValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RetreatCost" class="control-label"></label>
+                <input asp-for="RetreatCost" class="form-control" />
+                <span asp-validation-for="RetreatCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Health" class="control-label"></label>
+                <input asp-for="Health" class="form-control" />
+                <span asp-validation-for="Health" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stage" class="control-label"></label>
+                <input asp-for="Stage" class="form-control" />
+                <span asp-validation-for="Stage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

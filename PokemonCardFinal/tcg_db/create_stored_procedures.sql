@@ -1284,29 +1284,41 @@ AS
 		FROM	[PokemonCard];
 	END
 GO
-/*
-print '*** creating sp_select_card_moves ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_card_moves]
-AS
-	BEGIN
-		SELECT 	[CardMove].[PokemonCardID],[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
-				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
-		FROM	[Move] LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
-			JOIN [CardMove] ON [Move].[MoveID] = [CardMove].[MoveID];
-	END
-GO
 
-print '*** creating sp_select_card_alternate_arts ***'
+print '*** creating sp_select_cards_paginated ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_card_alternate_arts]
+CREATE PROCEDURE [dbo].[sp_select_cards_paginated]
+(
+	@BoosterID			[nvarchar](50) = NULL,
+	@Rarity				[nvarchar](30) = NULL,
+	@CardType			[nvarchar](50) = NULL,
+	@ElementTypeID		[nvarchar](15) = NULL,
+	@PageNumber			[int] = 1,
+	@PageSize			[int] = 20
+)
 AS
 	BEGIN
-		SELECT 	[CardAlternateArt].[PokemonCardID], [CardAlternateArt].[AlternateArtID]
-		FROM	[CardAlternateArt];
+		SELECT	[PokemonCardID],[BoosterID],[ElementTypeID],
+				[Name],[BoosterNumber],[CardType],[Rarity],[ImagePath],
+				
+				/*PaginatedList Components*/
+				COUNT([PokemonCardID]) OVER() AS TotalCount,
+				@PageNumber AS PageNumber, 
+				@PageSize AS PageSize,
+				CEILING(1.0 *  COUNT([PokemonCardID]) OVER() / @PageSize) AS TotalPages
+				
+		FROM	[PokemonCard]
+		WHERE	(@BoosterID IS NULL OR [BoosterID] = @BoosterID)
+			AND (@Rarity IS NULL OR [Rarity] = @Rarity)
+			AND (@CardType IS NULL OR [CardType] = @CardType)
+			AND (@ElementTypeID IS NULL OR [ElementTypeID] = @ElementTypeID)
+		
+		/*Pagination*/
+		ORDER BY [BoosterID] ASC, [BoosterNumber]
+		OFFSET	@PageSize * (@PageNumber - 1) ROWS
+		FETCH NEXT @PageSize ROWS ONLY;
 	END
 GO
-*/
 
 print '*** creating sp_select_cards_by_card_name ***'
 GO
@@ -1324,39 +1336,7 @@ AS
 	END
 GO
 
-/*
-print '*** creating sp_select_card_moves_by_card_name ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_card_moves_by_card_name]
-	(
-		@Name			[nvarchar](50)
-	)
-AS
-	BEGIN
-		SELECT 	[PokemonCard].[PokemonCardID],[Move].[MoveID], [Move].[Name], [Move].[Damage], [Move].[Description],
-				[MoveCost].[ElementTypeID],[MoveCost].[Quantity]
-		FROM	[Move] LEFT JOIN [MoveCost] ON [Move].[MoveID] = [MoveCost].[MoveID]
-			JOIN [CardMove] ON [Move].[MoveID] = [CardMove].[MoveID]
-			JOIN [PokemonCard] ON [CardMove].[PokemonCardID] = [PokemonCard].[PokemonCardID]
-		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%');
-	END
-GO
 
-print '*** creating sp_select_card_alternate_arts_by_card_name ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_card_alternate_arts_by_card_name]
-	(
-		@Name			[nvarchar](50)
-	)
-AS
-	BEGIN
-		SELECT 	[PokemonCard].[PokemonCardID], [CardAlternateArt].[AlternateArtID]
-		FROM	[CardAlternateArt] JOIN [PokemonCard]
-			ON [PokemonCard].[PokemonCardID] = [CardAlternateArt].[PokemonCardID]
-		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%');
-	END
-GO
-*/
 print '*** creating sp_delete_card ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_card]

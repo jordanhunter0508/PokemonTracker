@@ -79,7 +79,27 @@ namespace LogicLayer
             catch (Exception ex)
             {
 
-                throw new ApplicationException("Failed to get a search for a list of cards by card name.", ex);
+                throw new ApplicationException("Failed to get a list of all cards.", ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public PaginatedResult<Card> GetCardsPaginated(FilterOption filterOption, int pageNumber = 1, int pageSize = 25)
+        {
+            PaginatedResult<Card> results = new PaginatedResult<Card>();
+
+            try
+            {
+                results = _cardAccessor.SelectCardsPaginated(filterOption,pageNumber,pageSize);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get a paginated list of cards.", ex);
             }
 
             return results;
@@ -152,6 +172,53 @@ namespace LogicLayer
         }
 
         /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public IEnumerable<Card> ApplyFilters(IEnumerable<Card> cards, FilterOption filterOption)
+        {
+            if (cards == null)
+            {
+                throw new ArgumentNullException("Failed to get card list. Cards was null.");
+            }
+
+            if (filterOption == null)
+            {
+                return cards.OrderBy(card => card.BoosterID).ThenBy(card => card.BoosterNumber);
+            }
+
+            IEnumerable<Card> results = cards;
+
+            if (!string.IsNullOrWhiteSpace(filterOption.CardName))
+            {
+                results = results.Where(card => card.Name.Contains(filterOption.CardName, StringComparison.OrdinalIgnoreCase)).OrderBy(card => card.Name);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterOption.Rarity))
+            {
+                results = results.Where(card => string.Equals(card.Rarity, filterOption.Rarity, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterOption.BoosterID))
+            {
+                results = results.Where(card => string.Equals(card.BoosterID, filterOption.BoosterID, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterOption.CardType))
+            {
+                results = results.Where(card => string.Equals(card.CardType, filterOption.CardType, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterOption.ElementTypeID))
+            {
+                results = results.Where(card => string.Equals(card.ElementTypeID, filterOption.ElementTypeID, StringComparison.OrdinalIgnoreCase));
+            }
+
+            results = results.OrderBy(card => card.BoosterID).ThenBy(card => card.BoosterNumber);
+
+            return results;
+        }
+
+        /// <summary>
         /// Creates a card VM from the inputted Card.
         /// </summary>
         /// <param name="card">Card desired to be a CardVM</param>
@@ -183,6 +250,6 @@ namespace LogicLayer
                 AlternateArts = new List<string>(),
             };
             return result;
-        }
+        }    
     }
 }
