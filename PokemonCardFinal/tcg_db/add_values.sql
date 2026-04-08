@@ -742,14 +742,18 @@ VALUES
 	('Team Rocket','Original Series','2000-04-24','tr'),
 	('Gym Heroes','Original Series','2000-08-14','g1'),
 	('Gym Challenge','Original Series','2000-10-16','g2'),
+	
 	('Neo Genesis','Neo Series','2000-12-16','n1'),
 	('Neo Discovery','Neo Series','2001-06-01','n2'),
 	('Neo Revelation','Neo Series','2001-09-21','n3'),
 	('Neo Destiny','Neo Series','2002-02-28','n4'),
+	
 	('Legendary Collection','Legendary Collection','2002-05-24','lc'),
+	
 	('Expedition Base Set','e-Card','2002-09-15','ex'),
 	('Aquapolis','e-Card','2003-01-15','aq'),
 	('Skyridge','e-Card','2003-05-12','sk'),
+	
 	('Ruby & Sapphire','Ex','2003-07-18','rs'),
 	('Sandstorm','Ex','2003-09-18','ss'),
 	('Dragon','Ex','2003-11-24','dr'),
@@ -766,6 +770,7 @@ VALUES
 	('Crystal Guardians','Ex','2006-08-30','cg'),
 	('Dragon Frontiers','Ex','2006-11-08','df'),
 	('Power Keepers','Ex','2007-02-14','pk'),
+	
 	('Diamond & Pearl','Diamond & Pearl','2007-05-23','dp'),
 	('Mysterious Treasures','Diamond & Pearl','2007-08-22','mt'),
 	('Secret Wonders','Diamond & Pearl','2007-11-07','sw'),
@@ -773,15 +778,19 @@ VALUES
 	('Majestic Dawn','Diamond & Pearl','2008-05-21','md'),
 	('Legends Awakened','Diamond & Pearl','2008-08-20','la'),
 	('Stormfront','Diamond & Pearl','2008-11-05','sf'),
+	
 	('Platinum','Platinum','2009-02-11','pl'),
 	('Rising Rivals','Platinum','2009-05-16','rr'),
 	('Supreme Victors','Platinum','2009-08-19','sv'),
 	('Arceus','Platinum','2009-11-04','ar'),
+	
 	('HeartGold & SoulSilver','HeartGold & SoulSilver','2010-02-10','hs'),
 	('Unleashed','HeartGold & SoulSilver','2010-05-12','ul'),
 	('Undaunted','HeartGold & SoulSilver','2010-08-18','ud'),
 	('Triumphant','HeartGold & SoulSilver','2010-11-03','tm'),
+	
 	('Call of Legends','Call of Legends','2011-02-09','cl'),
+	
 	('Black & White','Black & White','2011-04-25','blw'),
 	('Emerging Powers','Black & White','2011-08-31','epo'),
 	('Noble Victories','Black & White','2011-11-16','nvi'),
@@ -794,6 +803,7 @@ VALUES
 	('Plasma Freeze','Black & White','2013-05-08','plf'),
 	('Plasma Blast','Black & White','2013-08-14','plb'),
 	('Legendary Treasures','Black & White','2013-11-06','ltr'),
+	
 	('Kalos Starter Set','XY','2013-11-08','kss'),
 	('XY','XY','2014-02-5','xy'),
 	('Flashfire','XY','2014-05-07','flf'),
@@ -809,6 +819,7 @@ VALUES
 	('Fates Collide','XY','2016-05-02','fco'),
 	('Steam Siege','XY','2016-08-03','sts'),
 	('Evolutions','XY','2016-11-02','evo'),
+	
 	('Sun & Moon','Sun & Moon','2017-02-03','sum'),
 	('Guardians Rising','Sun & Moon','2017-05-05','gri'),
 	('Burning Shadows','Sun & Moon','2017-08-04','bus'),
@@ -825,6 +836,7 @@ VALUES
 	('Unified Minds','Sun & Moon','2019-08-02','unm'),
 	('Hidden Fates','Sun & Moon','2019-08-23','hif'),
 	('Cosmic Eclipse','Sun & Moon','2019-11-01','cec'),
+	
 	('Sword & Shield','Sword & Shield','2020-02-07','ssh'),
 	('Rebel Clash','Sword & Shield','2020-05-01','rcl'),
 	('Darkness Ablaze','Sword & Shield','2020-08-14','daa'),
@@ -842,6 +854,7 @@ VALUES
 	('Lost Origin','Sword & Shield','2022-09-09','lor'),
 	('Silver Tempest','Sword & Shield','2022-11-11','sit'),
 	('Crown Zenith','Sword & Shield','2023-01-20','crz'),
+	
 	('Scarlet & Violet','Scarlet & Violet','2023-03-31','svi'),
 	('Paldea Evolved','Scarlet & Violet','2023-07-09','pal'),
 	('Obsidian Flames','Scarlet & Violet','2023-08-11','obf'),
@@ -858,8 +871,10 @@ VALUES
 	('Destined Rivals','Scarlet & Violet','2025-05-30','dri'),
 	('Black Bolt','Scarlet & Violet','2025-07-18','blk'),
 	('White Flare','Scarlet & Violet','2025-07-18','wht'),
+	
 	('Mega Evolution','Mega Evolution','2025-09-26','meg'),
 	('Phantasmal Flames','Mega Evolution','2025-11-14','pfl'),
+	
 	('Wizards Promo','Black Star','1999-07-01','wp'),
 	('Nintendo Promo','Black Star','2003-10-01','np'),
 	('Diamond & Pearl Promo','Black Star','2007-05-01','dpp'),
@@ -870,6 +885,7 @@ VALUES
 	('Sword & Shield Promo','Black Star','2019-11-01','ssp'),
 	('Scarlet & Violet Promo','Black Star','2023-01-01','svp'),
 	('Mega Evolution Promo','Black Star','2025-09-01','mep'),
+	
 	('McDonald''s 2011','McDonald''s Collection','2011-06-17','m11'),
 	('McDonald''s 2012','McDonald''s Collection','2012-06-15','m12'),
 	('McDonald''s 2013','McDonald''s Collection','2013-10-13','m13'),
@@ -883,9 +899,11 @@ VALUES
 	('McDonald''s 2022','McDonald''s Collection','2022-08-03','m22'),
 	('McDonald''s 2023','McDonald''s Collection','2023-07-27','m23'),
 	('McDonald''s 2024','McDonald''s Collection','2024-10-04','m24'),
+	
 	('Trick or Trade 2022','Trick or Trade','2022-09-01','tt22'),
 	('Trick or Trade 2023','Trick or Trade','2023-09-01','tt23'),
 	('Trick or Trade 2024','Trick or Trade','2024-08-30','tt24'),
+	
 	('POP 1','POP','2004-09-01','pop1'),
 	('POP 2','POP','2005-08-01','pop2'),
 	('POP 3','POP','2006-04-01','pop3'),
@@ -895,6 +913,7 @@ VALUES
 	('POP 7','POP','2008-04-01','pop7'),
 	('POP 8','POP','2008-09-01','pop8'),
 	('POP 9','POP','2009-03-01','pop9'),
+	
 	('Play! 1','Play! Pokemon Prize Pack','2022-11-09','pps1'),
 	('Play! 2','Play! Pokemon Prize Pack','2023-01-19','pps2'),
 	('Play! 3','Play! Pokemon Prize Pack','2023-08-14','pps3'),
@@ -902,6 +921,7 @@ VALUES
 	('Play! 5','Play! Pokemon Prize Pack','2024-08-14','pps5'),
 	('Play! 6','Play! Pokemon Prize Pack','2025-02-14','pps6'),
 	('Play! 7','Play! Pokemon Prize Pack','2025-08-14','pps7'),
+	
 	('Southern Island','Miscellaneous','2001-07-31','sl'),
 	('Best of Game','Miscellaneous','2002-12-01','best'),
 	('Poke Card Creator Pack','Miscellaneous','2004-07-01','cc'),
@@ -923,32 +943,32 @@ VALUES
 		(1,'Boosted Evolution','Scarlet & Violet Promo','none','colorless','Eevee',173,'Pokemon','Illustration Rare','fighting','none',2,0,1,50,'Basic','cards/svp/173.png'),
 		(1,'none','Mega Evolution','Mega Evolution','fire','Mega Camerupt EX', 156,'Pokemon','Ultra Rare','water','none',2,0,4,340,'Stage 1','cards/meg/156.png'),
 		(1,'none','XY Promo','Pokemon-EX','colorless','Rayquaza EX', 69, 'Pokemon','Rare','electric','fighting',2,20,2,170,'Basic','cards/xyp/69.png'),
-		(1,'none','Astral Radiance','Pokemon V','dragon','Garchomp V',23,'Pokemon','Gallery','none','none',0,0,0,200,'Basic','cards/asr/23.png'),
-		(1,'none','Ancient Origins','Pokemon-EX','Fighting','Primal Groudon EX',97,'Pokemon','Full Art','grass','none',2,0,4,240,'Mega','cards/default.png'),
-		(1,'none','Roaring Skies','Pokemon-EX','dragon','M Rayquaza EX',61,'Pokemon','Rare','fairy','none',2,0,2,230,'Mega','cards/default.png'),
-		(1,'none','Roaring Skies','Pokemon-EX','dragon','M Latios EX',102,'Pokemon','Full Art','fairy','none',2,0,0,220,'Mega','cards/default.png'),
-		(1,'none','Flashfire','Pokemon-EX','dragon','M Charizard EX',108,'Pokemon','Secret Rare','fairy','none',2,0,3,230,'Mega','cards/default.png'),
-		(1,'none','Scarlet & Violet Promo','none','fire','Victini',208,'Pokemon','Illustration Rare','water','none',2,0,1,80,'Basic','cards/default.png'),
-		(1,'none','White Flare','none','psychic','Woobat',119,'Pokemon','Illustration Rare','electric','fighting',2,30,1,60,'Basic','cards/default.png'),
-		(1,'none','Shrouded Fable','none','fire','Houndoom',66,'Pokemon','Illustration Rare','water','none',2,0,2,120,'Stage 1','cards/default.png'),
-		(1,'none','Scarlet & Violet Promo','none','steel','Kingambit',130,'Pokemon','Illustration Rare','fire','grass',2,30,4,180,'Stage 2','cards/default.png'),
-		(1,'Skyscraper','Crown Zenith','Pokemon VMAX','dragon','Duraludon VMAX',104,'Pokemon','Full Art','none','none',0,0,3,330,'VMAX','cards/default.png'),
-		(1,'none','Journey Together','none','dragon','N''s Reshiram',167,'Pokemon','Illustration Rare','none','none',0,0,2,130,'Basic','cards/default.png'),
-		(1,'none','White Flare','none','dark','Scraggy',138,'Pokemon','Illustration Rare','grass','none',2,0,1,70,'Basic','cards/default.png'),
-		(1,'none','Mega Evolution','Mega Evolution','fighting','Mega Lucario EX',77,'Pokemon','Rare','psychic','none',2,0,2,340,'Stage 1','cards/default.png'),
-		(1,'none','Paldea Evolved','none','fighting','Nacli',220,'Pokemon','Illustration Rare','grass','none',2,0,3,70,'Basic','cards/default.png'),
-		(1,'none','BREAKthrough','Pokemon-EX','psychic','Mewtwo Ex',163,'Pokemon','Secret Rare','psychic','none',2,0,2,170,'Basic','cards/default.png'),
-		(1,'none','Twilight Masquerade','Pokemon-EX','electric','Luxray EX',195,'Pokemon','Ultra Rare','fighting','none',2,0,1,310,'Stage 2','cards/default.png'),
-		(1,'none','Shrouded Fable','none','water','Horsea',67,'Pokemon','Illustration Rare','electric','none',2,0,1,60,'Basic','cards/default.png'),
-		(1,'none','Surging Spark','none','psychic','Latios',203,'Pokemon','Illustration Rare','dark','fighting',2,30,2,120,'Basic','cards/default.png'),
-		(1,'none','Destined Rivals','none','water','Clamperl',195,'Pokemon','Illustration Rare','electric','none',2,0,2,60,'Basic','cards/default.png'),
-		(1,'Moon Cleave Star','Crown Zenith','Pokemon VSTAR','dark','Hisuian Samurott VSTAR',52,'Pokemon','Gallery','grass','none',2,0,2,270,'VSTAR','cards/default.png'),
-		(1,'Sun Energy','Crown Zenith','none','fighting','Solrock',15,'Pokemon','Gallery','grass','none',2,0,1,90,'Basic','cards/default.png'),
-		(1,'none','Temporal Forces','none','steel','Metagross',178,'Pokemon','Illustration Rare','fire','grass',2,30,3,180,'Stage 2','cards/default.png'),
-		(1,'Witch''s Domain','Crown Zenith','Pokemon VMAX','psychic','Hatterene VMAX',47,'Pokemon','Gallery','dark','fighting',2,30,2,320,'VMAX','cards/default.png'),
-		(1,'Star Guardian','Crown Zenith','Pokemon VSTAR','colorless','Regigigas VSTAR',55,'Pokemon','Gallery','fighting','none',2,0,4,300,'VSTAR','cards/default.png'),
-		(1,'Team Rocket''s Archer','Destined Rivals','Supporter','colorless','Team Rocket''s Archer',223,'Trainer','Ultra Rare','none','none',0,0,0,0,'Supporter','cards/default.png'),
-		(1,'Team Rocket''s Ariana','Destined Rivals','Supporter','colorless','Team Rocket''s Ariana',224,'Trainer','Ultra Rare','none','none',0,0,0,0,'Supporter','cards/default.png')
+		(1,'none','Astral Radiance','Pokemon V','dragon','Garchomp V',23,'Pokemon','Gallery','none','none',0,0,0,200,'Basic','cards/asr/gallery/23.png'),
+		(1,'none','Ancient Origins','Pokemon-EX','Fighting','Primal Groudon EX',97,'Pokemon','Full Art','grass','none',2,0,4,240,'Mega','cards/aor/97.png'),
+		(1,'none','Roaring Skies','Pokemon-EX','dragon','M Rayquaza EX',61,'Pokemon','Rare','fairy','none',2,0,2,230,'Mega','cards/ros/61.png'),
+		(1,'none','Roaring Skies','Pokemon-EX','dragon','M Latios EX',102,'Pokemon','Full Art','fairy','none',2,0,0,220,'Mega','cards/ros/102.png'),
+		(1,'none','Flashfire','Pokemon-EX','dragon','M Charizard EX',108,'Pokemon','Secret Rare','fairy','none',2,0,3,230,'Mega','cards/flf/108.png'),
+		(1,'none','Scarlet & Violet Promo','none','fire','Victini',208,'Pokemon','Illustration Rare','water','none',2,0,1,80,'Basic','cards/svp/208.png'),
+		(1,'none','White Flare','none','psychic','Woobat',119,'Pokemon','Illustration Rare','electric','fighting',2,30,1,60,'Basic','cards/wht/119.png'),	
+		(1,'none','Shrouded Fable','none','fire','Houndoom',66,'Pokemon','Illustration Rare','water','none',2,0,2,120,'Stage 1','cards/sfa/66.png'),
+		(1,'none','Scarlet & Violet Promo','none','steel','Kingambit',130,'Pokemon','Illustration Rare','fire','grass',2,30,4,180,'Stage 2','cards/svp/130.png'),
+		(1,'Skyscraper','Crown Zenith','Pokemon VMAX','dragon','Duraludon VMAX',104,'Pokemon','Full Art','none','none',0,0,3,330,'VMAX','cards/crz/base/104.png'),
+		(1,'none','Journey Together','none','dragon','N''s Reshiram',167,'Pokemon','Illustration Rare','none','none',0,0,2,130,'Basic','cards/jtg/167.png'),
+		(1,'none','White Flare','none','dark','Scraggy',138,'Pokemon','Illustration Rare','grass','none',2,0,1,70,'Basic','cards/wht/138.png'),
+		(1,'none','Mega Evolution','Mega Evolution','fighting','Mega Lucario EX',77,'Pokemon','Rare','psychic','none',2,0,2,340,'Stage 1','cards/meg/77.png'),
+		(1,'none','Paldea Evolved','none','fighting','Nacli',220,'Pokemon','Illustration Rare','grass','none',2,0,3,70,'Basic','cards/pal/220.png'),
+		(1,'none','BREAKthrough','Pokemon-EX','psychic','Mewtwo Ex',163,'Pokemon','Secret Rare','psychic','none',2,0,2,170,'Basic','cards/bkt/163.png'),
+		(1,'none','Twilight Masquerade','Pokemon-EX','electric','Luxray EX',195,'Pokemon','Ultra Rare','fighting','none',2,0,1,310,'Stage 2','cards/twm/195.png'),
+		(1,'none','Shrouded Fable','none','water','Horsea',67,'Pokemon','Illustration Rare','electric','none',2,0,1,60,'Basic','cards/sfa/67.png'),
+		(1,'none','Surging Spark','none','psychic','Latios',203,'Pokemon','Illustration Rare','dark','fighting',2,30,2,120,'Basic','cards/srp/203.png'),
+		(1,'none','Destined Rivals','none','water','Clamperl',195,'Pokemon','Illustration Rare','electric','none',2,0,2,60,'Basic','cards/dri/195.png'),
+		(1,'Moon Cleave Star','Crown Zenith','Pokemon VSTAR','dark','Hisuian Samurott VSTAR',52,'Pokemon','Gallery','grass','none',2,0,2,270,'VSTAR','cards/crz/gallery/52.png'),
+		(1,'Sun Energy','Crown Zenith','none','fighting','Solrock',15,'Pokemon','Gallery','grass','none',2,0,1,90,'Basic','cards/crz/gallery/15.png'),
+		(1,'none','Temporal Forces','none','steel','Metagross',178,'Pokemon','Illustration Rare','fire','grass',2,30,3,180,'Stage 2','cards/tef/178.png'),
+		(1,'Witch''s Domain','Crown Zenith','Pokemon VMAX','psychic','Hatterene VMAX',47,'Pokemon','Gallery','dark','fighting',2,30,2,320,'VMAX','cards/crz/gallery/47.png'),
+		(1,'Star Guardian','Crown Zenith','Pokemon VSTAR','colorless','Regigigas VSTAR',55,'Pokemon','Gallery','fighting','none',2,0,4,300,'VSTAR','cards/crz/gallery/55.png'),
+		(1,'Team Rocket''s Archer','Destined Rivals','Supporter','colorless','Team Rocket''s Archer',223,'Trainer','Ultra Rare','none','none',0,0,0,0,'Supporter','cards/dri/223.png'),
+		(1,'Team Rocket''s Ariana','Destined Rivals','Supporter','colorless','Team Rocket''s Ariana',224,'Trainer','Ultra Rare','none','none',0,0,0,0,'Supporter','cards/dri/224.png')
 GO
 
 PRINT '*** adding to Card Move Table ***'
