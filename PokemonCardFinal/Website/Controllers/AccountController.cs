@@ -61,13 +61,13 @@ namespace Website.Controllers
         }
 
         [HttpGet]
-        public IActionResult Signup()
+        public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Signup(SignupViewModel newuser)
+        public IActionResult Register(SignupViewModel newuser)
         {
             if (!ModelState.IsValid)
             {

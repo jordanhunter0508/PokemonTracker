@@ -31,7 +31,7 @@
 
 
 @* Filter Bar *@
-<div class="filter-bar">
+<section class="filter-bar">
 	<form asp-controller="Card" asp-action="Index" method="get">
 		<div class="row g-2 align-items-end">
 			<div class="row g-2 align-items-end">
@@ -98,15 +98,15 @@
 
 				@* Filter and Clear Buttons *@
 				<div class="col-md-2 ms-auto d-flex gap-2">
-					<button type="submit" class="btn btn-sm w-100 fw-bold">Filter</button>
+					<button type="submit" class="btn btn-primary btn-sm w-100 fw-bold">Filter</button>
 					<a asp-controller="Card" asp-action="Index"
-					   class="btn btn-outline-secondary btn-sm w-100">Clear</a>
+					   class="btn btn-secondary btn-sm w-100">Clear</a>
 				</div>
 
 			</div>
 		</div>
 	</form>
-</div>
+</section>
 
 
 @* Display number of Card *@
@@ -130,7 +130,7 @@
 @if (Model.Any())
 {
 	@* Card Display *@
-	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
+	<section class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
 		@foreach (var item in Model)
 		{
 			string fullPath = ViewBag.BaseUrl + item.Card.ImagePath;
@@ -153,10 +153,10 @@
 				</a>
 			</div>
 		}
-	</div>
+	</section>
 
 	@* Pagination *@
-	<div class="card-pagination">
+	<section class="card-pagination">
 		@if (pageNumber > 1)
 		{
 			<a asp-action="Index"
@@ -182,7 +182,7 @@
 				Next Page
 			</a>
 		}
-	</div>
+	</section>
 }
 else
 {
