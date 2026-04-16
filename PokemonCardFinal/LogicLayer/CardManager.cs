@@ -213,6 +213,11 @@ namespace LogicLayer
                 results = results.Where(card => string.Equals(card.ElementTypeID, filterOption.ElementTypeID, StringComparison.OrdinalIgnoreCase));
             }
 
+            if (filterOption.ArtistID != 0)
+            {
+                results = results.Where(card => int.Equals(card.ArtistID,filterOption.ArtistID));
+            }
+
             results = results.OrderBy(card => card.BoosterID).ThenBy(card => card.BoosterNumber);
 
             return results;

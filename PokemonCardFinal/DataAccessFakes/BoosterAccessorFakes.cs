@@ -13,33 +13,91 @@ namespace DataAccessFakes
     public class BoosterAccessorFakes : IBoosterAccessor
     {
         List<Booster> _boosters;
+        List<Series> _series;
 
         /// <summary>
         /// Fills the _boosters list with fake data
         /// </summary>
         public BoosterAccessorFakes()
-        { 
+        {
             _boosters = new List<Booster>();
             _boosters.Add(new Booster()
             {
                 BoosterID = "Test Booster 1",
-                Series = "test series",
+                SeriesID = "Series 2",
                 ReleaseDate = DateTime.Parse("2025-11-06"),
                 Abbreviation = "test",
+                BaseCount = 1,
+                SecretCount = 1,
+                TotalCount = 2,
+                ImagePath = null,
+                Active = true,
+                IsFull = false,
             });
             _boosters.Add(new Booster()
             {
                 BoosterID = "Test Booster 2",
-                Series = "booster 2 series",
+                SeriesID = "Series 1",
                 ReleaseDate = DateTime.Parse("1994-01-28"),
                 Abbreviation = "ser",
+                BaseCount = 3,
+                SecretCount = 11,
+                TotalCount = 14,
+                ImagePath = null,
+                Active = true,
+                IsFull = true,
             });
             _boosters.Add(new Booster()
             {
                 BoosterID = "Test Booster 3",
-                Series = "series",
+                SeriesID = "Series 3",
                 ReleaseDate = DateTime.Parse("2003-10-10"),
                 Abbreviation = "abv",
+                BaseCount = 1,
+                SecretCount = 3,
+                TotalCount = 4,
+                ImagePath = null,
+                Active = true,
+                IsFull = true,
+            });
+            _boosters.Add(new Booster()
+            {
+                BoosterID = "Test Booster 4",
+                SeriesID = "Series 1",
+                ReleaseDate = DateTime.Parse("2003-10-10"),
+                Abbreviation = "abv",
+                BaseCount = 10,
+                SecretCount = 13,
+                TotalCount = 23,
+                ImagePath = null,
+                Active = false,
+                IsFull = false,
+            });
+
+            _series = new List<Series>();
+            _series.Add(new Series()
+            {
+                SeriesID = "Series 1",
+                ImagePath = "image/path",
+                Active = true,
+            });
+            _series.Add(new Series()
+            {
+                SeriesID = "Series 2",
+                ImagePath = "image/path2",
+                Active = true,
+            });
+            _series.Add(new Series()
+            {
+                SeriesID = "Series 3",
+                ImagePath = "image/path3",
+                Active = true,
+            });
+            _series.Add(new Series()
+            {
+                SeriesID = "Series 4",
+                ImagePath = "image/path4",
+                Active = false,
             });
         }
 
@@ -75,6 +133,29 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IBoosterAccessor"/> used for testing
         /// </summary>
+        public List<string> SelectBoosterIDs()
+        {
+            List<string> results = null;
+            results = _boosters.Where(b => b.Active)
+                               .Select(b => b.BoosterID)
+                               .ToList();
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IBoosterAccessor"/> used for testing
+        /// </summary>
+        public List<Booster> SelectActiveBoosters()
+        {
+            List<Booster> results = null;
+            results = _boosters.Where(b => b.Active).ToList();
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IBoosterAccessor"/> used for testing
+        /// </summary>
         public int InsertBooster(Booster booster)
         {
             int count = 0;
@@ -85,10 +166,17 @@ namespace DataAccessFakes
                 {
                     throw new Exception("Booser ID already used.");
                 }
-                else if(boosters.Abbreviation == booster.Abbreviation)
+                else if (boosters.Abbreviation == booster.Abbreviation)
                 {
                     throw new Exception("Abbreviation already used.");
                 }
+            }
+
+            var validSeriesID = _series.Select(s => s.SeriesID);
+
+            if (!validSeriesID.Contains(booster.SeriesID))
+            {
+                throw new Exception("Invalid seriesID.");
             }
 
             _boosters.Add(booster);
@@ -115,13 +203,12 @@ namespace DataAccessFakes
                 if (element.BoosterID == booster.BoosterID)
                 {
                     updatedElement = element;
-                    break;
+                    count++;
                 }
             }
             if (updatedElement != null)
             {
                 updatedElement = booster;
-                count++;
             }
 
             return count;
@@ -151,5 +238,22 @@ namespace DataAccessFakes
 
             return count;
         }
+
+        /// <summary>
+        /// Implements from <see cref="IBoosterAccessor"/> used for testing
+        /// </summary>
+        public List<Series> SelectSeriesImagePaths()
+        {
+            List<Series> result = new List<Series>();
+
+            result = _series.Where(s => s.Active)
+                            .Select(s => new Series
+                            {
+                                SeriesID = s.SeriesID,
+                                ImagePath = s.ImagePath
+                            }).ToList();
+            return result;
+        }
+
     }
 }

@@ -12,30 +12,28 @@ namespace Website.Controllers
         private readonly ICardManager _cardManager;
         private readonly IBoosterManager _boosterManager;
         private readonly IElementManager _elementManager;
+        private readonly IArtistManager _artistManager;
+        private readonly IAbilityManager _abilityManager;
 
         private const int PageSize = 24;
 
-        public CardController(ICardManager cardManager,
-                              IBoosterManager boosterManager,
-                              IElementManager elementManager)
+        public CardController(ICardManager cardManager, IBoosterManager boosterManager,
+                              IElementManager elementManager, IArtistManager artistManager, 
+                              IAbilityManager abilityManager)
         {
             _cardManager = cardManager;
             _boosterManager = boosterManager;
             _elementManager = elementManager;
+            _artistManager = artistManager;
+            _abilityManager = abilityManager;
         }
 
         // GET: CardController
         [HttpGet]
-        public ActionResult Index(string boosterFilter, string rarityFilter,
-                                  string cardTypeFilter, string elementFilter,
-                                  int pageNumber = 1)
+        public ActionResult Index(FilterOption filterOption, string filterTitle = "All", int pageNumber = 1)
         {
-            // Set filters to ViewBag to display the
-            // correct one in the select box when the page loads
-            ViewBag.BoosterFilter = boosterFilter;
-            ViewBag.RarityFilter = rarityFilter;
-            ViewBag.CardTypeFilter = cardTypeFilter;
-            ViewBag.ElementFilter = elementFilter;
+            ViewBag.FilterOption = filterOption;
+            ViewBag.FilterTitle = filterTitle.Replace("-"," ");
 
             try
             {
@@ -45,36 +43,13 @@ namespace Website.Controllers
                 ViewBag.CardTypes = new string[] { "Item", "Pokemon", "Stage", "Trainer" };
                 ViewBag.Elements = _elementManager.GetElementTypes().Select(e => e.ElementTypeID);
 
-                // Save Filter options
-                FilterOption filterOption = new FilterOption();
-                if (!String.IsNullOrWhiteSpace(boosterFilter))
-                {
-                    filterOption.BoosterID = boosterFilter;
-                }
-
-                if (!String.IsNullOrWhiteSpace(rarityFilter))
-                {
-                    filterOption.Rarity = rarityFilter;
-                }
-
-                if (!String.IsNullOrWhiteSpace(cardTypeFilter))
-                {
-                    filterOption.CardType = cardTypeFilter;
-                }
-
-                if (!String.IsNullOrWhiteSpace(elementFilter))
-                {
-                    filterOption.ElementTypeID = elementFilter;
-                }
-
                 var cards = _cardManager.GetCardsPaginated(filterOption, pageNumber, PageSize);
-                var results = BuildCardListVM(cards.Items);
-
                 ViewBag.PageNumber = cards.PageNumber;
                 ViewBag.PageSize = cards.PageSize;
                 ViewBag.TotalCount = cards.TotalCount;
                 ViewBag.TotalPages = cards.TotalPages;
 
+                var results = BuildCardListVM(cards.Items);
                 return View(results);
             }
             catch (Exception ex)
@@ -85,34 +60,38 @@ namespace Website.Controllers
             }
         }
 
-        private IEnumerable<CardListViewModel> BuildCardListVM(IEnumerable<Card> cards)
-        {
-            // Get distinct booster IDs
-            var boosterIDs = cards.Select(c => c.BoosterID).Distinct();
-
-            // Build a dictionary where the key is the boosterID,
-            // and the value is the Booster object
-            var boosterDict = boosterIDs
-                .Select(id => _boosterManager.GetBoosterByBoosterID(id))
-                .ToDictionary(b => b.BoosterID);
-
-            var results = cards.Select(card => new CardListViewModel
-            {
-                Card = card,
-                Booster = boosterDict.TryGetValue(card.BoosterID, out var booster) ? booster : null
-            }).ToList();
-
-            return results;
-        }
-
-
         // GET: CardController/Details/5
         public ActionResult Details(int id)
         {
             try
             {
-                CardVM cardVm = _cardManager.GetCardVM(id);
-                return View(cardVm);
+                CardVM cardVM = _cardManager.GetCardVM(id);
+
+                if (cardVM == null)
+                {
+                    TempData["ErrorMessage"] = "Card not found";
+                    return NotFound();
+                }
+
+                // Gets Card related components for display
+                ViewBag.Booster = _boosterManager.GetBoosterByBoosterID(cardVM.BoosterID);
+                ViewBag.Ability = _abilityManager.GetAbilityByAbilityID(cardVM.AbilityID);
+                ViewBag.ArtistName = _artistManager.GetArtistByArtistID(cardVM.ArtistID).Name;
+
+                List<string> costs = new List<string>();
+
+                for (int i = 0; i < cardVM.Moves.Count; i++)
+                {
+                    string cost = string.Concat(
+                        cardVM.Moves[i].Costs.Select(c => new string(c.ElementType[0], c.Quantity))
+                    );
+
+                    costs.Add(cost.ToUpper());
+                }
+
+                ViewBag.MoveCosts = costs;
+
+                return View(cardVM);
             }
             catch (Exception ex)
             {
@@ -120,6 +99,7 @@ namespace Website.Controllers
                 ViewBag.DisplayError = "Could not find card.";
                 return RedirectToAction("Error", "Home");
             }
+
         }
 
         // GET: CardController/Create
@@ -184,5 +164,28 @@ namespace Website.Controllers
                 return View();
             }
         }
+
+        private IEnumerable<CardListViewModel> BuildCardListVM(IEnumerable<Card> cards)
+        {
+            // Get distinct booster IDs
+            var boosterIDs = cards.Select(c => c.BoosterID).Distinct();
+
+            // Build a dictionary where the key is the boosterID,
+            // and the value is the Booster object
+            var boosterDict = boosterIDs
+                .Select(id => _boosterManager.GetBoosterByBoosterID(id))
+                .ToDictionary(b => b.BoosterID);
+
+            var results = cards.Select(card => new CardListViewModel
+            {
+                Card = card,
+                Booster = boosterDict.TryGetValue(card.BoosterID, out var booster) ? booster : null
+            }).ToList();
+
+            return results;
+        }
+
+        [HttpGet]
+        public IActionResult test() { return View(); }
     }
 }

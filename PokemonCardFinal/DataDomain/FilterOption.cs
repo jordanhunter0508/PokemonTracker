@@ -17,5 +17,6 @@ namespace DataDomain
         public string Rarity { get; set; } = string.Empty;
         public string CardType { get; set; } = string.Empty;
         public string ElementTypeID { get; set; } = string.Empty;
+        public int ArtistID { get; set; } = 0;
     }
 }

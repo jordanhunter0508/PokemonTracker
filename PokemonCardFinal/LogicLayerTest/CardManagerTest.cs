@@ -1526,6 +1526,40 @@ public class CardManagerTest
     }
 
     [TestMethod]
+    public void TestApplyFiltersByArtistIDWithValidInput()
+    {
+        // arrange
+        const int artistID = 1;
+        const int expectedCount = 3;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { ArtistID = artistID };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestApplyFiltersByArtistIDReturnsBlankListWithInvalidArtistID()
+    {
+        // arrange
+        const int artistID = 0;
+        const int expectedCount = 5;
+        List<Card> cards = _cardManager.GetAllCards();
+        FilterOption filterOption = new FilterOption() { ArtistID = artistID };
+        List<Card> actual;
+
+        // act
+        actual = _cardManager.ApplyFilters(cards, filterOption).ToList();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
     public void TestApplyFiltersMultipleOptionsReturnsExpectedCards()
     {
         // arrange

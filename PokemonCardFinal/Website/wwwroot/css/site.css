@@ -243,3 +243,131 @@ a.card-link {
     .card-text:last-child {
         color: var(--gray-500);
     }
+
+
+
+
+
+
+
+
+
+
+/* Container */
+.card-details-container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 6px 18px var(--hover-shadow);
+}
+
+/* Header */
+.card-details-header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 10px;
+}
+
+    .card-details-header h3 {
+        font-size: 1.6rem;
+    }
+
+.set-info {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+/* Layout */
+.card-details-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .card-details-content {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+/* Image */
+.card-details-image {
+    flex: 0 0 260px;
+    background: var(--gray-100);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+    .card-details-image img {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+/* Info Panel */
+.card-details-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+    /* Section blocks */
+    .card-details-info > div {
+        background: var(--gray-100);
+        padding: 12px 14px;
+        border-radius: 8px;
+        border: 1px solid var(--border-light);
+    }
+
+    /* Labels */
+    .card-details-info strong {
+        color: var(--dark);
+        font-weight: 600;
+    }
+
+    /* Attacks */
+    .card-details-info p {
+        margin: 0 0 6px 0;
+    }
+
+        /* Attack styling */
+        .card-details-info p strong {
+            color: var(--primary-dark);
+        }
+
+/* Artist link (future clickable) */
+.artist-name {
+    color: var(--primary);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+    .artist-name:hover {
+        text-decoration: underline;
+    }
+
+/* Alternate arts */
+.alt-arts p {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+}
+
+/* Back link */
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+    .back-link:hover {
+        text-decoration: underline;
+    }

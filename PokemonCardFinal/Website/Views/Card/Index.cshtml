@@ -1,8 +1,9 @@
-﻿@model IEnumerable<Website.Models.CardListViewModel>
+﻿@using DataDomain
+@model IEnumerable<Website.Models.CardListViewModel>
 
 @{
-	ViewData["Title"] = "Index";
-	ViewBag.BaseUrl = "https://pub-fb772ed43bb441dfb44e25393b7eb03c.r2.dev/";
+	ViewData["Title"] = ViewBag.FilterTitle + " Cards";
+	string baseUrl = "https://pub-fb772ed43bb441dfb44e25393b7eb03c.r2.dev/";
 
 	// Filter select box options
 	IEnumerable<string> boosterIDs = ViewBag.BoosterIDs;
@@ -11,10 +12,7 @@
 	IEnumerable<string> elements = ViewBag.Elements;
 
 	// Filter selected options
-	string boosterFilter = ViewBag.BoosterFilter;
-	string rarityFilter = ViewBag.RarityFilter;
-	string cardTypeFilter = ViewBag.CardTypeFilter;
-	string elementFilter = ViewBag.ElementFilter;
+	FilterOption filterOption = ViewBag.FilterOption;
 
 	// Pagination
 	int pageNumber = ViewBag.PageNumber;
@@ -23,12 +21,7 @@
 	int totalCount = ViewBag.TotalCount;
 }
 
-<h1>All Cards</h1>
-
-<p>
-	<a asp-action="Create">Create New</a>
-</p>
-
+<h1>@ViewBag.FilterTitle Cards</h1>
 
 @* Filter Bar *@
 <section class="filter-bar">
@@ -36,16 +29,19 @@
 		<div class="row g-2 align-items-end">
 			<div class="row g-2 align-items-end">
 
+				<input name="ArtistID" value="@filterOption.ArtistID" type="hidden"/>
+				<input name="filterTitle" value="@ViewBag.FilterTitle.Replace(" ","-")" type="hidden"/>
+
 				@* Booster Filter *@
 				<div class="col-md-3">
 					<label class="form-label fw-smibold" style="font-size:12px;">Booster Set</label>
-					<select name="boosterFilter" class="form-select form-select-sm">
+					<select name="BoosterID" class="form-select form-select-sm">
 						<option value="">Select a Booster</option>
 						@if (boosterIDs.Any())
 						{
 							@foreach (var booster in boosterIDs)
 							{
-								<option value="@booster" selected="@(boosterFilter == booster ? "Selected" : null)">@booster</option>
+								<option value="@booster" selected="@(filterOption.BoosterID == booster ? "Selected" : null)">@booster</option>
 							}
 						}
 					</select>
@@ -54,13 +50,13 @@
 				@* Rarity Filter *@
 				<div class="col-md-2">
 					<label class="form-label fw-smibold" style="font-size:12px;">Rarity</label>
-					<select name="rarityFilter" class="form-select form-select-sm">
+					<select name="Rarity" class="form-select form-select-sm">
 						<option value="">Select a Rarity</option>
 						@if (rarities.Any())
 						{
 							@foreach (var rarity in rarities)
 							{
-								<option value="@rarity" selected="@(rarityFilter == rarity ? "Selected" : null)">@rarity</option>
+								<option value="@rarity" selected="@(filterOption.Rarity == rarity ? "Selected" : null)">@rarity</option>
 							}
 						}
 					</select>
@@ -69,13 +65,13 @@
 				@* Card Type Filter *@
 				<div class="col-md-2">
 					<label class="form-label fw-smibold" style="font-size:12px;">Card Type</label>
-					<select name="cardTypeFilter" class="form-select form-select-sm">
+					<select name="CardType" class="form-select form-select-sm">
 						<option value="">Select a Card Type</option>
 						@if (cardTypes.Any())
 						{
 							@foreach (var type in cardTypes)
 							{
-								<option value="@type" selected="@(cardTypeFilter == type ? "Selected" : null)">@type</option>
+								<option value="@type" selected="@(filterOption.CardType == type ? "Selected" : null)">@type</option>
 							}
 						}
 					</select>
@@ -84,13 +80,13 @@
 				@* Element Type Filter *@
 				<div class="col-md-2">
 					<label class="form-label fw-smibold" style="font-size:12px;">Element Type</label>
-					<select name="elementFilter" class="form-select form-select-sm">
+					<select name="ElementTypeID" class="form-select form-select-sm">
 						<option value="">Select an Element</option>
 						@if (elements.Any())
 						{
 							@foreach (var element in elements)
 							{
-								<option value="@element" selected="@(elementFilter == element ? "Selected" : null)">@element</option>
+								<option value="@element" selected="@(filterOption.ElementTypeID == element ? "Selected" : null)">@element</option>
 							}
 						}
 					</select>
@@ -133,7 +129,7 @@
 	<section class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
 		@foreach (var item in Model)
 		{
-			string fullPath = ViewBag.BaseUrl + item.Card.ImagePath;
+			string fullPath = baseUrl + item.Card.ImagePath;
 			<div class="col">
 				<a asp-controller="Card" asp-action="Details" asp-route-id="@item.Card.CardID" class="card-link">
 					<div class="card h-100">
@@ -160,10 +156,12 @@
 		@if (pageNumber > 1)
 		{
 			<a asp-action="Index"
-			   asp-route-boosterFilter="@boosterFilter"
-			   asp-route-rarityFilter="@rarityFilter"
-			   asp-route-cardTypeFilter="@cardTypeFilter"
-			   asp-route-elementFilter="@elementFilter"
+			   asp-route-filterTitle="@ViewBag.FilterTitle"
+			   asp-route-BoosterID="@filterOption.BoosterID"
+			   asp-route-Rarity="@filterOption.Rarity"
+			   asp-route-CardType="@filterOption.CardType"
+			   asp-route-ElementTypeID="@filterOption.ElementTypeID"
+			   asp-route-artistID="@filterOption.ArtistID"
 			   asp-route-pageNumber="@(pageNumber - 1)">
 				Previous Page
 			</a>
@@ -174,12 +172,14 @@
 		@if (pageNumber < totalPages)
 		{
 			<a asp-action="Index"
-			   asp-route-boosterFilter="@boosterFilter"
-			   asp-route-rarityFilter="@rarityFilter"
-			   asp-route-cardTypeFilter="@cardTypeFilter"
-			   asp-route-elementFilter="@elementFilter"
+			   asp-route-filterTitle="@ViewBag.FilterTitle"
+			   asp-route-BoosterID="@filterOption.BoosterID"
+			   asp-route-Rarity="@filterOption.Rarity"
+			   asp-route-CardType="@filterOption.CardType"
+			   asp-route-ElementTypeID="@filterOption.ElementTypeID"
+			   asp-route-artistID="@filterOption.ArtistID"
 			   asp-route-pageNumber="@(pageNumber + 1)">
-				Next Page
+				Previous Page
 			</a>
 		}
 	</section>

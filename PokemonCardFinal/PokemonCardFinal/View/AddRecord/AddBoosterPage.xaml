@@ -12,6 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -42,13 +43,25 @@
                 Margin="20 0" VerticalContentAlignment="Center"/>
         <TextBox x:Name="txtAbbreviation" Grid.Column="1" Grid.Row="1" Width="100" Height="25" 
                 Margin="120 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        
+        <!--Base Count-->
+        <Label x:Name="lblBaseCount" Content="Base Count:" Grid.Column="0" Grid.Row="2"
+                Margin="20 0" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtBaseCount" Grid.Column="0" Grid.Row="2" Width="100" Height="25" 
+                Margin="120 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+        <!--Total Count-->
+        <Label x:Name="lblTotalCount" Content="Total Count:" Grid.Column="1" Grid.Row="2"
+                Margin="20 0" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtTotalCount" Grid.Column="1" Grid.Row="2" Width="100" Height="25" 
+                Margin="120 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 
 
         <!--Buttons-->
-        <Button x:Name="btnSave" Content="Save" Grid.Row="2" Grid.Column="0" Margin="0 20"
+        <Button x:Name="btnSave" Content="Save" Grid.Row="3" Grid.Column="0" Margin="0 20"
                 Width="100" Height=" 50" HorizontalAlignment="Left" VerticalAlignment="Top"
                 Click="btnSave_Click" />
-        <Button x:Name="btnClear" Content="Clear" Grid.Row="2" Grid.Column="0" Margin="0 20"
+        <Button x:Name="btnClear" Content="Clear" Grid.Row="3" Grid.Column="0" Margin="0 20"
                 Width="100" Height=" 50"  HorizontalAlignment="Right" VerticalAlignment="Top" 
                 Click="btnClear_Click" />
 

@@ -21,7 +21,7 @@ public class BoosterManagerTest
     {
         // arrange
         const string boosterID = "Test Booster 1";
-        const string series = "test series";
+        const string series = "Series 2";
         DateTime dateTime = new DateTime(2025,11,06);
         const string abbreviation = "test";
         Booster actualBooster;
@@ -31,7 +31,7 @@ public class BoosterManagerTest
 
         // assert
         Assert.AreEqual(boosterID, actualBooster.BoosterID);
-        Assert.AreEqual(series, actualBooster.Series);
+        Assert.AreEqual(series, actualBooster.SeriesID);
         Assert.AreEqual(dateTime, actualBooster.ReleaseDate);
         Assert.AreEqual(abbreviation, actualBooster.Abbreviation);
     }
@@ -52,10 +52,10 @@ public class BoosterManagerTest
     }
 
     [TestMethod]
-    public void TestGetBoostersWithValidInput()
+    public void TestGetBoosters()
     {
         // arrange
-        const int count = 3;
+        const int count = 4;
         const string boosterID1 = "Test Booster 1";
         const string abbreviation3 = "abv";
         List<Booster> actualBoosters;
@@ -76,7 +76,7 @@ public class BoosterManagerTest
         Booster booster = new Booster()
         {
             BoosterID = "new Booster",
-            Series = "test series",
+            SeriesID = "Series 1",
             ReleaseDate = DateTime.Parse("2025-11-06"),
             Abbreviation = "bost",
         };
@@ -113,7 +113,7 @@ public class BoosterManagerTest
         Booster booster = new Booster()
         {
             BoosterID = "Test Booster 1",
-            Series = "test series",
+            SeriesID = "Series 1",
             ReleaseDate = DateTime.Parse("2025-11-06"),
             Abbreviation = "bost",
         };
@@ -134,7 +134,28 @@ public class BoosterManagerTest
         Booster booster = new Booster()
         {
             BoosterID = "new Booster",
-            Series = "test series",
+            SeriesID = "Series 1",
+            ReleaseDate = DateTime.Parse("2025-11-06"),
+            Abbreviation = "test",
+        };
+        bool actualResult = false;
+
+        // act
+        actualResult = _boosterManager.AddBooster(booster);
+
+        // assert
+       // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ApplicationException))]
+    public void TestAddBoosterThrowsApplicationExcpetionWithInvalidSeriesID()
+    {
+        // arrange
+        Booster booster = new Booster()
+        {
+            BoosterID = "new Booster",
+            SeriesID = "fails",
             ReleaseDate = DateTime.Parse("2025-11-06"),
             Abbreviation = "test",
         };
@@ -154,7 +175,7 @@ public class BoosterManagerTest
         Booster booster = new Booster()
         {
             BoosterID = "Test Booster 1",
-            Series = "updated series",
+            SeriesID = "updated series",
             ReleaseDate = DateTime.Parse("2025-11-06"),
             Abbreviation = "boss",
         };
@@ -190,7 +211,7 @@ public class BoosterManagerTest
         Booster booster = new Booster()
         {
             BoosterID = "Test Booster 2",
-            Series = "updated series",
+            SeriesID = "updated series",
             ReleaseDate = DateTime.Parse("2025-11-06"),
             Abbreviation = "test",
         };
@@ -222,7 +243,7 @@ public class BoosterManagerTest
     public void TestDeleteBoosterReturnsFalseWithInvalidBoosterID() 
     {
         // arrange
-        const string boosterID = "Test Booster 4";
+        const string boosterID = "fails";
         const bool expectedResult = false;
         bool actualResult = true;
 
@@ -247,5 +268,33 @@ public class BoosterManagerTest
         // assert
         Assert.AreEqual(count, actualResult.Count);
         Assert.AreEqual(boosterID1, actualResult[0]);
+    }
+
+    [TestMethod]
+    public void TestGetActiveBoosters() 
+    {
+        // arrange
+        const int count = 3;
+        List<Booster> actualResult = new List<Booster>();
+
+        // act
+        actualResult = _boosterManager.SelectActiveBoosters();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
+    }
+
+    [TestMethod]
+    public void TestGetSeriesImagePaths() 
+    {
+        // arrange
+        const int count = 3;
+        List<Series> actualResult = new List<Series>();
+
+        // act
+        actualResult = _boosterManager.GetSeriesImagePaths();
+
+        // assert
+        Assert.AreEqual(count, actualResult.Count);
     }
 }

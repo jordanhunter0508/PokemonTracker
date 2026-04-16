@@ -1,126 +1,163 @@
-﻿@model DataDomain.CardVM
+﻿@using DataDomain
+@model DataDomain.CardVM
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = $"{Model.Name} - {Model.BoosterNumber}";
+	string baseUrl = "https://pub-fb772ed43bb441dfb44e25393b7eb03c.r2.dev/";
+	string fullPath = baseUrl + Model.ImagePath;
+
+	List<string> moveCosts = ViewBag.MoveCosts;
+
+	Booster booster = ViewBag.Booster;
+	Ability ability = ViewBag.Ability;
+	string artistName = ViewBag.ArtistName;
+
+	// Check if the card has certain components
+	bool isPokemon = string.Equals(Model.CardType, "pokemon", StringComparison.OrdinalIgnoreCase);
+	bool hasAbility = !string.Equals(Model.AbilityID, "none", StringComparison.OrdinalIgnoreCase);
+
+	// Format strings so the first letter is capitalized
+	string elementType = string.Concat(Model.ElementTypeID[0].ToString().ToUpper(), Model.ElementTypeID.AsSpan(1));
+	string weaknessType = string.Concat(Model.WeaknessType[0].ToString().ToUpper(), Model.WeaknessType.AsSpan(1));
+	string resistanceType = string.Concat(Model.ResistanceType[0].ToString().ToUpper(), Model.ResistanceType.AsSpan(1));
 }
 
-<h1>Details</h1>
+@* Navigation back *@
+<div>
+	<a asp-controller="Card" asp-action="Index">All Cards</a>
 
-<div>
-    <h4>CardVM</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CardID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CardID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ArtistID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ArtistID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AbilityID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AbilityID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BoosterID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BoosterID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PokemonRuleID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PokemonRuleID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ElementTypeID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ElementTypeID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BoosterNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BoosterNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CardType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CardType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Rarity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Rarity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WeaknessType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WeaknessType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ResistanceType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ResistanceType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WeaknessValue)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WeaknessValue)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ResistanceValue)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ResistanceValue)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RetreatCost)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RetreatCost)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Health)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Health)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Stage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Stage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImagePath)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImagePath)
-        </dd>
-    </dl>
+	<a asp-controller="Card" asp-action="Index" asp-route-BoosterID="@Model.BoosterID"
+	   asp-route-filterTitle="@Model.BoosterID.Replace(" ","-")">
+		/ @Model.BoosterID
+	</a>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@* Page Content *@
+<section class="card-details-container">
+
+	@* Card Header *@
+	<div class="card-details-header">
+		<h3>@Model.Name - @Model.BoosterNumber: @Model.BoosterID (@booster.Abbreviation.ToUpper())</h3>
+	</div>
+
+	<div class="card-details-content">
+		@* Card Image *@
+		<div class="card-details-image">
+			<img src="@fullPath" alt="@Model.Name" />
+		</div>
+
+		@* Card Details *@
+		<div class="card-details-info">
+
+			@* Number and Rarity *@
+			<div>
+				<p><strong>Card Number / Rarity:</strong> @Model.BoosterNumber / @Model.Rarity</p>
+			</div>
+
+			@* Card Type and Element Type *@
+			<div>
+				<p>
+					<strong>
+						Card Type
+						@if (isPokemon)
+						{
+							<span>/ Pokemon Type:</span>
+						}
+						else
+						{
+							<span>:</span>
+						}
+					</strong>
+					@Model.CardType
+					@if (isPokemon)
+					{
+						<span>/ @elementType</span>
+					}
+				</p>
+			</div>
+
+			@* Health and Stage *@
+			@if (isPokemon)
+			{
+				<div>
+					<p><strong>Health / Stage: </strong>@Model.Health / @Model.Stage</p>
+				</div>
+			}
+
+
+			@* Ability *@
+			@if (hasAbility)
+			{
+				<div>
+
+					@if (Model.CardType.Equals("Pokemon"))
+					{
+						<p><strong>Ability Name:</strong> @ability.AbilityID</p>
+					}
+					<p><strong>Ability Description:</strong> @ability.Description</p>
+				</div>
+			}
+
+			@* Move *@
+			@if (Model.Moves.Any())
+			{
+				<div>
+					@for (int i = 0; i < moveCosts.Count; i++)
+					{
+						<p>
+							<strong>Attack @(i + 1):</strong>
+							[@moveCosts[i]] @Model.Moves[i].Name (@Model.Moves[i].Damage)
+						</p>
+
+						if (!string.Equals(Model.Moves[i].Description,"none",StringComparison.OrdinalIgnoreCase))
+						{
+							<p>@Model.Moves[i].Description</p>
+						}
+					}
+				</div>
+			}
+
+
+			@* Card Stats *@
+			<div>
+				<p><strong>Health:</strong> @Model.Health</p>
+
+				@if (Model.WeaknessValue > 0)
+				{
+					<p><strong>Weakness:</strong> @weaknessType x @Model.WeaknessValue</p>
+				}
+
+				@if (Model.ResistanceValue > 0)
+				{
+					<p><strong>Resistance:</strong> @resistanceType - @Model.ResistanceValue</p>
+				}
+
+				<p><strong>Retreat Cost:</strong> @Model.RetreatCost</p>
+			</div>
+
+			@* Artist *@
+			<div>
+				<p>
+					<strong>Artist:</strong>
+					<a asp-controller="Card" asp-action="Index"
+					   asp-route-artistID="@Model.ArtistID"
+					   asp-route-filterTitle="@artistName.Replace(",","").Replace(" ","-")'s">
+						@artistName
+					</a>
+				</p>
+			</div>
+
+			@if (!Model.AlternateArts.Contains("none"))
+			{
+				<div>
+					<p>Other Varients:</p>
+					@foreach (string altArt in Model.AlternateArts)
+					{
+						<p>@altArt</p>
+					}
+				</div>
+			}
+		</div>
+
+	</div>
+</section>

@@ -26,11 +26,13 @@ namespace LogicLayerInterfaces
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
         public List<Booster> GetBoosters();
 
+        public List<Booster> SelectActiveBoosters();
+
         /// <summary>
-        /// Calls the <see href="IBoosterAccessor.GetBoosters()"/> method to get<br/>
-        /// a list of all Boosters from the database. Then returns the ids.
+        /// Calls the <see href="IBoosterAccessor.SelectBoosterIDs()"/> method to get<br/>
+        /// a list of all active boosterIDs
         /// </summary>
-        /// <returns>Returns a List of all BoosterIDs in the database</returns>
+        /// <returns>Returns a List of all active BoosterIDs in the database</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
         public List<string> GetBoosterIDs();
 
@@ -61,5 +63,19 @@ namespace LogicLayerInterfaces
         /// <returns>Returns true if the Booster was deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if the booster is attached to a card</exception>
         public bool DeleteBooster(string boosterID);
+
+
+
+
+        // ======================================== Series Related ======================================================
+        // Could get it's own manager if more is needed
+
+        /// <summary>
+        /// Calls <see href="IBoosterAccessor.SelectSeriesImagePaths()"/> <br/>
+        /// To get all active list of Series with only the id and imagePath
+        /// </summary>
+        /// <returns>Returns a list of all active Series with only the imagePath and ID</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error connecting to the database/exception>
+        public List<Series> GetSeriesImagePaths();
     }
 }

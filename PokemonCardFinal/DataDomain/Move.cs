@@ -57,7 +57,7 @@ namespace DataDomain
     public class MoveCost
     {
         public int MoveID { get; set; }
-        public string ElementType { get; set; }     // Could use a ElementType object if description is needed
+        public string ElementType { get; set; }
         public int Quantity { get; set; }
     }
 }

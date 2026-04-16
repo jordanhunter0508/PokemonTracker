@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
@@ -43,9 +44,9 @@ namespace LogicLayer
             {
                 result = _boosterAccessor.SelectBoosterByBoosterID(boosterID);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ApplicationException("Failed to get a booster.");
+                throw new ApplicationException("Failed to get a booster.", ex);
             }
 
             return result;
@@ -56,15 +57,34 @@ namespace LogicLayer
         /// </summary>
         public List<Booster> GetBoosters()
         {
-            List<Booster> results = null;
+            List<Booster> results = new List<Booster>();
 
             try
             {
                 results = _boosterAccessor.SelectBoosters();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new ApplicationException("Failed to retrieve a list of boosters.");
+                throw new ApplicationException("Failed to retrieve a list of boosters.", ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IBoosterManager"/>
+        /// </summary>
+        public List<Booster> SelectActiveBoosters()
+        {
+            List<Booster> results = new List<Booster>();
+
+            try
+            {
+                results = _boosterAccessor.SelectActiveBoosters();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to retrieve a list of active boosters.",ex);
             }
 
             return results;
@@ -79,8 +99,7 @@ namespace LogicLayer
 
             try
             {
-                results = (from booster in GetBoosters()
-                          select booster.BoosterID).ToList();
+                results = _boosterAccessor.SelectBoosterIDs();
             }
             catch (Exception ex)
             {
@@ -107,10 +126,10 @@ namespace LogicLayer
             {
                 result = (1 == _boosterAccessor.InsertBooster(booster));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to add a booster to the database.\n" +
-                    "Please make sure the booster was not already created.");
+                    "Please make sure the booster was not already created.", ex);
             }
 
             return result;
@@ -132,10 +151,10 @@ namespace LogicLayer
             {
                 result = (1 == _boosterAccessor.UpdateBooster(booster));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to update the booster in the database.\n" + 
-                    "Please make sure the booster name was correct.");
+                    "Please make sure the booster name was correct.", ex);
             }
 
             return result;
@@ -152,15 +171,32 @@ namespace LogicLayer
             {
                 result = (1 == _boosterAccessor.DeleteBooster(boosterID));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to delete the booster in the database.\n" + 
-                    "Please make sure the booster is not attached to any cards.");
+                    "Please make sure the booster is not attached to any cards.",ex);
             }
 
             return result;
         }
 
-        
+        /// <summary>
+        /// Implements from <see cref="IBoosterManager"/>
+        /// </summary>
+        public List<Series> GetSeriesImagePaths()
+        {
+            List<Series> results = new List<Series>();
+
+            try
+            {
+                results = _boosterAccessor.SelectSeriesImagePaths();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to get a list of series images.",ex);
+            }
+
+            return results;
+        }
     }
 }

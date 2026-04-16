@@ -81,7 +81,7 @@ namespace PokemonCardFinal.View
             IBoosterManager boosterManager = new BoosterManager();
             try
             {
-                string series = boosterManager.GetBoosterByBoosterID(_card.BoosterID).Series;
+                string series = boosterManager.GetBoosterByBoosterID(_card.BoosterID).SeriesID;
                 Artist artist = new ArtistManager().GetArtistByArtistID(_card.ArtistID);
 
                 lblCardName.Content = _card.Name;

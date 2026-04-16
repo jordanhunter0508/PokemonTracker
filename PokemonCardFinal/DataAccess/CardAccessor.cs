@@ -155,6 +155,11 @@ namespace DataAccess
                 {
                     cmd.Parameters.AddWithValue("@ElementTypeID", filterOption.ElementTypeID);
                 }
+
+                if (filterOption.ArtistID != 0)
+                {
+                    cmd.Parameters.AddWithValue("@ArtistID",filterOption.ArtistID);
+                }
             }
 
             cmd.Parameters.AddWithValue("@PageNumber", pageNumber);

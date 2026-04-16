@@ -34,7 +34,6 @@ namespace DataDomain
     {
         public List<MoveVM> Moves { get; set; }
 
-        // Could use the AlternateArt object if a description wants to be attached to each card
         public List<string> AlternateArts { get; set; }
     }
 }

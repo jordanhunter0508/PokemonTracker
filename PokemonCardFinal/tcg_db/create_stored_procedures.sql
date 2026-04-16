@@ -741,6 +741,11 @@ GO
 
 
 
+
+
+/*============================== Start Booster Stored Procedures ==============================*/
+print'' print'========== Start Booster Stored Procedures =========='
+
 print '*** creating sp_select_booster_by_boosterid ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_booster_by_boosterid]
@@ -749,8 +754,9 @@ CREATE PROCEDURE [dbo].[sp_select_booster_by_boosterid]
 	)
 AS
 	BEGIN
-		SELECT 	[Booster].[BoosterID],[Booster].[Series],
-				[Booster].[ReleaseDate],[Booster].[Abbreviation]
+		SELECT 	[BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
+				[BaseCount],[SecretCount],[TotalCount],[ImagePath],
+				[Active]
 		FROM	[Booster]
 		WHERE	[Booster].[BoosterID] = @BoosterID;
 	END
@@ -761,18 +767,33 @@ GO
 CREATE PROCEDURE [dbo].[sp_insert_booster]
 	(
 		@BoosterID		[nvarchar](50),
-		@Series			[nvarchar](50),
+		@SeriesID		[nvarchar](100),
 		@ReleaseDate	[date],
-		@Abbreviation	[nvarchar](5)
+		@Abbreviation	[nvarchar](5),
+		@BaseCount		[int],
+		@SecretCount	[int],
+		@TotalCount		[int],
+		@ImagePath		[nvarchar](250)
 	)	
 AS
-	BEGIN
-		INSERT INTO [dbo].[Booster]
-			([BoosterID],[Series],[ReleaseDate],[Abbreviation])
-		VALUES
-			(@BoosterID,@Series,@ReleaseDate,@Abbreviation)
-		RETURN @@ROWCOUNT;
-	END
+	IF @ImagePath IS NULL
+		BEGIN
+			INSERT INTO [dbo].[Booster]
+				([BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
+				 [BaseCount],[SecretCount],[TotalCount])
+			VALUES
+				(@BoosterID,@SeriesID,@ReleaseDate,@Abbreviation,
+				 @BaseCount, @SecretCount, @TotalCount)
+		END
+	ELSE
+		BEGIN
+			INSERT INTO [dbo].[Booster]
+				([BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
+				 [BaseCount],[SecretCount],[TotalCount],[ImagePath])
+			VALUES
+				(@BoosterID,@SeriesID,@ReleaseDate,@Abbreviation,
+				 @BaseCount, @SecretCount, @TotalCount,@ImagePath)
+		END
 GO
 
 print '*** creating sp_update_booster ***'
@@ -780,17 +801,25 @@ GO
 CREATE PROCEDURE [dbo].[sp_update_booster]
 	(
 		@BoosterID		[nvarchar](50),
-		@Series			[nvarchar](50),
+		@SeriesID		[nvarchar](100),
 		@ReleaseDate	[date],
-		@Abbreviation	[nvarchar](5)
+		@Abbreviation	[nvarchar](5),
+		@BaseCount		[int],
+		@SecretCount	[int],
+		@TotalCount		[int],
+		@ImagePath		[nvarchar](250)
 	)
 AS
 	BEGIN
 		UPDATE 	[Booster]
-		SET		[Booster].[Series] = @Series,
-				[Booster].[ReleaseDate] = @ReleaseDate,
-				[Booster].[Abbreviation] = @Abbreviation
-		WHERE	[Booster].[BoosterID] = @BoosterID
+		SET		[SeriesID] = @SeriesID,
+				[ReleaseDate] = @ReleaseDate,
+				[Abbreviation] = @Abbreviation,
+				[BaseCount] = @BaseCount,
+				[SecretCount] = @BoosterID,
+				[TotalCount] = @TotalCount,
+				[ImagePath] = @ImagePath
+		WHERE	[BoosterID] = @BoosterID
 		RETURN	@@ROWCOUNT;
 	END
 GO
@@ -814,14 +843,63 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_boosters]
 AS
 	BEGIN
-		SELECT 	[Booster].[BoosterID],[Booster].[Series],
-				[Booster].[ReleaseDate],[Booster].[Abbreviation]
+		SELECT 	[BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
+				[BaseCount],[SecretCount],[TotalCount],[ImagePath],
+				[Active]
+				
 		FROM	[Booster];
 	END
 GO
 
+print '*** creating sp_select_active_boosters ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_boosters]
+AS
+	BEGIN
+		SELECT 	[BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
+				[BaseCount],[SecretCount],[TotalCount],[ImagePath],
+				[Active]
+				
+		FROM	[Booster]
+		WHERE 	[Active] = 1;
+	END
+GO
+
+print '*** creating sp_select_boosterids ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_boosterids]
+AS
+	BEGIN
+		SELECT 	[BoosterID]				
+		FROM	[Booster]
+		WHERE	[Active] = 1;
+	END
+GO
 
 
+print'========== End Booster Stored Procedures =========='
+/*============================== End Booster Stored Procedures ==============================*/
+
+
+
+
+/*============================== Start Series Stored Procedures ==============================*/
+print'' print'========== Start Series Stored Procedures =========='
+
+print '*** creating sp_select_series_image_paths ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_series_image_paths]
+AS
+	BEGIN
+		SELECT 	[SeriesID],[ImagePath]				
+		FROM	[Series]
+		WHERE	[Active] = 1;
+	END
+GO
+
+
+print'========== End Series Stored Procedures =========='
+/*============================== End Series Stored Procedures ==============================*/
 
 
 
@@ -1293,6 +1371,7 @@ CREATE PROCEDURE [dbo].[sp_select_cards_paginated]
 	@Rarity				[nvarchar](30) = NULL,
 	@CardType			[nvarchar](50) = NULL,
 	@ElementTypeID		[nvarchar](15) = NULL,
+	@ArtistID			[int] = NULL,
 	@PageNumber			[int] = 1,
 	@PageSize			[int] = 20
 )
@@ -1312,6 +1391,7 @@ AS
 			AND (@Rarity IS NULL OR [Rarity] = @Rarity)
 			AND (@CardType IS NULL OR [CardType] = @CardType)
 			AND (@ElementTypeID IS NULL OR [ElementTypeID] = @ElementTypeID)
+			AND (@ArtistID IS NULL OR [ArtistID] = @ArtistID)
 		
 		/*Pagination*/
 		ORDER BY [BoosterID] ASC, [BoosterNumber]

@@ -24,6 +24,19 @@ namespace DataAccessInterfaces
         public List<Booster> SelectBoosters();
 
         /// <summary>
+        /// Requests all fields from the Booster table where Active is true to create 
+        /// a list of Boosters.
+        /// </summary>
+        /// <returns>Returns a list of all active boosters in the database.</returns>
+        public List<Booster> SelectActiveBoosters();
+
+        /// <summary>
+        /// Requests all active boosterIDs from the database
+        /// </summary>
+        /// <returns>Returns a list of all active BoosterIDs</returns>
+        public List<string> SelectBoosterIDs();
+
+        /// <summary>
         /// Inserts the parameters into the stored procedure to try
         /// and create a new record for a Booster.
         /// </summary>
@@ -44,5 +57,20 @@ namespace DataAccessInterfaces
         /// <param name="boosterID">BoosterID of the row to delete.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public int DeleteBooster(string boosterID);
+
+
+
+
+
+
+
+        // ======================================== Series Related ======================================================
+        // Could get it's own accessor if more is needed
+
+        /// <summary>
+        /// Requests all active image paths from the series table
+        /// </summary>
+        /// <returns>Returns a list of all active Series with only the imagePath and ID</returns>
+        public List<Series> SelectSeriesImagePaths();
     }
 }

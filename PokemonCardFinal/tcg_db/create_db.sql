@@ -229,18 +229,46 @@ CREATE TABLE [dbo].[PokemonRule]
 GO
 
 /*
+Has two related TRIGGERS one to update BoosterCount
+another to update the ReleaseDate to the earliest Booster ReleaseDate using the ID
+Active is false by default to prevent the series info showing prematurely
+*/
+print '*** creating Series Table ***'
+GO
+CREATE TABLE [dbo].[Series]
+(
+	[SeriesID]			[nvarchar](100)		NOT NULL,
+	[BoosterCount]		[int]				NOT NULL	DEFAULT 0,
+	[ReleaseDate]		[date]				NULL,
+	[ImagePath]			[nvarchar](250)		NULL		DEFAULT 'series/default.png',
+	[Active]			[bit]				NOT NULL	DEFAULT 0,
+
+	CONSTRAINT [pk_series_seriesid] PRIMARY KEY ([SeriesID] ASC)
+)
+GO
+
+/*
 Used to store the data about the booster packs or sets
+Active is false by defaults so it doesn't automatically appear on booster list view
+with no cards attached.
 */
 PRINT '*** creating Booster Table ***'
 GO
 CREATE TABLE [dbo].[Booster]
 (
 	[BoosterID]				[nvarchar](50)		NOT NULL,
-	[Series]				[nvarchar](50)		NOT NULL,
+	[SeriesID]				[nvarchar](100)		NOT NULL,
 	[ReleaseDate]			[date]				NOT NULL,
 	[Abbreviation]			[nvarchar](5)		NOT NULL,
+	[BaseCount]				[int]				NOT NULL,
+	[SecretCount]			[int]				NOT NULL,
+	[TotalCount]			[int]				NOT NULL,
+	[ImagePath]				[nvarchar](250)		NULL		DEFAULT 'boosters/default.png',
+	[Active]				[bit]				NOT NULL	DEFAULT 0,
+	[IsFull]				[bit]				NOT NULL	DEFAULT 0,
 	
 	CONSTRAINT [pk_booster_boosterid] PRIMARY KEY ([BoosterID]),
+	CONSTRAINT [fk_booster_seriesid] FOREIGN KEY ([SeriesID]) REFERENCES [Series]([SeriesID]),
 	CONSTRAINT [ak_booster_abbreviation] UNIQUE ([Abbreviation])
 )
 GO
@@ -271,7 +299,7 @@ CREATE TABLE [dbo].[PokemonCard]
 	[Health]				[int]				NULL,
 	[Stage]					[nvarchar](30)		NOT NULL,
 	[ImagePath]				[nvarchar](250)		NULL		DEFAULT 'cards/default.png',
-
+	[Active]				[bit]				NOT NULL	DEFAULT 0,
 	
 	/*AlternateArtID, boosterid,BoosterID unique*/
 	CONSTRAINT [pk_pokemoncard_pokemoncardid] PRIMARY KEY ([PokemonCardID] ASC),

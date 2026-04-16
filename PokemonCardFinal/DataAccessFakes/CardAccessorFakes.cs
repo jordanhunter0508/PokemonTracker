@@ -190,6 +190,11 @@ namespace DataAccessFakes
                 results.Items = results.Items.Where(card => string.Equals(card.ElementTypeID, filterOption.ElementTypeID, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
+            if (filterOption.ArtistID != 0)
+            {
+                results.Items = results.Items.Where(card => int.Equals(card.ArtistID, filterOption.ArtistID)).ToList();
+            }
+
             results.TotalCount = results.Items.Count();
             results.PageNumber = pageNumber;
             results.PageSize = pageSize;
