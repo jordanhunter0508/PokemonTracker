@@ -1,0 +1,5 @@
+Plan: add_active_to_card
+Forgot to add return rowcount on the insert stored procedure when it updated it.
+
+Plan: update_accessor_classes
+Did not change existing AddWithValue string parameters to Add for the string types. 

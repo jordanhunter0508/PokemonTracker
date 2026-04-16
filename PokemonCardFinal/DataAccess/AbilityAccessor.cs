@@ -1,4 +1,5 @@
-﻿using DataAccessInterfaces;
+using System.Data;
+using DataAccessInterfaces;
 using DataDomain;
 using Microsoft.Data.SqlClient;
 
@@ -17,9 +18,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_ability_by_ability_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AbilityID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@AbilityID", SqlDbType.NVarChar, 30);
             cmd.Parameters["@AbilityID"].Value = abilityID;
 
             try
@@ -63,7 +64,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_all_abilities";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             try
             {
@@ -104,7 +105,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_abilities_active_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
             cmd.Parameters.AddWithValue("@PageSize", pageSize);
@@ -156,7 +157,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_abilities_deactive_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
             cmd.Parameters.AddWithValue("@PageSize", pageSize);
@@ -208,11 +209,14 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_abilities_by_ability_type_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@AbilityType", abilityType);
+            cmd.CommandType = CommandType.StoredProcedure;
+    
             cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
             cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+            cmd.Parameters.Add("@AbilityType", SqlDbType.NVarChar, 25);     
+            cmd.Parameters["@AbilityType"].Value = abilityType;
+            
 
             try
             {
@@ -261,11 +265,11 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_ability";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AbilityID", System.Data.SqlDbType.NVarChar, 30);
-            cmd.Parameters.Add("@AbilityType", System.Data.SqlDbType.NVarChar, 25);
-            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 650);
+            cmd.Parameters.Add("@AbilityID", SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@AbilityType", SqlDbType.NVarChar, 25);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 650);
 
             cmd.Parameters["@AbilityID"].Value = ability.AbilityID;
             cmd.Parameters["@AbilityType"].Value = ability.AbilityType;
@@ -300,11 +304,11 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_update_ability";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AbilityID", System.Data.SqlDbType.NVarChar, 30);
-            cmd.Parameters.Add("@AbilityType", System.Data.SqlDbType.NVarChar, 25);
-            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 650);
+            cmd.Parameters.Add("@AbilityID", SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@AbilityType", SqlDbType.NVarChar, 25);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 650);
 
             cmd.Parameters["@AbilityID"].Value = ability.AbilityID;
             cmd.Parameters["@AbilityType"].Value = ability.AbilityType;
@@ -338,9 +342,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_ability";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AbilityID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@AbilityID", SqlDbType.NVarChar, 30);
 
             cmd.Parameters["@AbilityID"].Value = abilityID;
 
@@ -374,9 +378,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_deactivate_ability";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AbilityID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@AbilityID", SqlDbType.NVarChar, 30);
 
             cmd.Parameters["@AbilityID"].Value = abilityID;
 
@@ -410,9 +414,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_reactivate_ability";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AbilityID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@AbilityID", SqlDbType.NVarChar, 30);
 
             cmd.Parameters["@AbilityID"].Value = abilityID;
 

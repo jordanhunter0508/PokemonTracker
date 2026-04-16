@@ -92,7 +92,7 @@ print '*** creating sp_select_abilities_by_ability_type_paginated ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_abilities_by_ability_type_paginated]
 	(
-		@AbilityType	[nvarchar](25),
+		@AbilityType		[nvarchar](25),
 		@PageNumber			[int] = 1,
 		@PageSize			[int] = 20
 
@@ -784,6 +784,7 @@ AS
 			VALUES
 				(@BoosterID,@SeriesID,@ReleaseDate,@Abbreviation,
 				 @BaseCount, @SecretCount, @TotalCount)
+			RETURN @@ROWCOUNT;
 		END
 	ELSE
 		BEGIN
@@ -793,6 +794,7 @@ AS
 			VALUES
 				(@BoosterID,@SeriesID,@ReleaseDate,@Abbreviation,
 				 @BaseCount, @SecretCount, @TotalCount,@ImagePath)
+			RETURN @@ROWCOUNT;
 		END
 GO
 
@@ -1314,7 +1316,7 @@ AS
 				[Name],[BoosterNumber],[CardType],
 				[Rarity],[WeaknessType],[ResistanceType],
 				[WeaknessValue],[ResistanceValue],[RetreatCost],
-				[Health],[Stage],[ImagePath]	
+				[Health],[Stage],[ImagePath],[Active]
 				
 		FROM	[PokemonCard]
 		WHERE	[PokemonCardID] = @PokemonCardID;
@@ -1357,7 +1359,7 @@ CREATE PROCEDURE [dbo].[sp_select_all_cards]
 AS
 	BEGIN
 		SELECT	[PokemonCardID],[BoosterID],[ElementTypeID],
-				[Name],[BoosterNumber],[CardType],[Rarity],[ImagePath]
+				[Name],[BoosterNumber],[CardType],[Rarity],[ImagePath],[Active]
 				
 		FROM	[PokemonCard];
 	END
@@ -1387,7 +1389,9 @@ AS
 				CEILING(1.0 *  COUNT([PokemonCardID]) OVER() / @PageSize) AS TotalPages
 				
 		FROM	[PokemonCard]
-		WHERE	(@BoosterID IS NULL OR [BoosterID] = @BoosterID)
+		
+		WHERE	[Active] = 1
+			AND	(@BoosterID IS NULL OR [BoosterID] = @BoosterID)
 			AND (@Rarity IS NULL OR [Rarity] = @Rarity)
 			AND (@CardType IS NULL OR [CardType] = @CardType)
 			AND (@ElementTypeID IS NULL OR [ElementTypeID] = @ElementTypeID)
@@ -1412,7 +1416,8 @@ AS
 				[Name],[BoosterNumber],[CardType],[Rarity],[ImagePath]
 				
 		FROM	[PokemonCard]
-		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%');
+		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%')
+			AND [Active] = 1;
 	END
 GO
 
@@ -1426,6 +1431,36 @@ CREATE PROCEDURE [dbo].[sp_delete_card]
 AS
 	BEGIN
 		DELETE 	[PokemonCard]
+		WHERE	[PokemonCardID] = @PokemonCardID;
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_deactivate_card ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_card]
+	(
+		@PokemonCardID	[int]
+	)
+AS
+	BEGIN
+		UPDATE 	[PokemonCard]
+		SET		[Active] = 0
+		WHERE	[PokemonCardID] = @PokemonCardID;
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_reactivate_card ***'
+GO
+CREATE PROCEDURE [dbo].[sp_reactivate_card]
+	(
+		@PokemonCardID	[int]
+	)
+AS
+	BEGIN
+		UPDATE 	[PokemonCard]
+		SET		[Active] = 1
 		WHERE	[PokemonCardID] = @PokemonCardID;
 		RETURN @@ROWCOUNT;
 	END

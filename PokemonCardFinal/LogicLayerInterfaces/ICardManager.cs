@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,6 +64,22 @@ namespace LogicLayerInterfaces
         /// <returns>Returns true if the Card was deleted successfully</returns>
         /// <exception cref="ApplicationException">Throws if there was a problem connecting to the database.</exception>
         public bool DeleteCard(int cardID);
+
+        /// <summary>
+        /// Deactivates a card, effectively hiding it from active contexts without full deletion.
+        /// </summary>
+        /// <param name="cardID">Used to find the Card</param>
+        /// <returns>Returns true if the Card was deactivated successfully</returns>
+        /// <exception cref="ApplicationException">Throws if there was a problem connecting to the database.</exception>
+        public bool DeactivateCard(int cardID);
+
+        /// <summary>
+        /// Reactivates an inactive card.
+        /// </summary>
+        /// <param name="cardID">Used to find the Card</param>
+        /// <returns>Returns true if the Card was reactivated successfully</returns>
+        /// <exception cref="ApplicationException">Throws if there was a problem connecting to the database.</exception>
+        public bool ReactivateCard(int cardID);
 
         /// <summary>
         /// Filters a set of cards using FilterOption.

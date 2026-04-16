@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,9 +24,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_element_by_element_type_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ElementTypeID", System.Data.SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@ElementTypeID", SqlDbType.NVarChar, 15);
             cmd.Parameters["@ElementTypeID"].Value = elementTypeID;
 
             try
@@ -66,7 +67,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_elements";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             try
             {
@@ -108,10 +109,11 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_element_type";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ElementTypeID", System.Data.SqlDbType.NVarChar, 15);
-            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@ElementTypeID", SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 100);
+
             cmd.Parameters["@ElementTypeID"].Value = elementTypeID;
             cmd.Parameters["@Description"].Value = description;
 
@@ -143,10 +145,11 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_update_element_type";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ElementTypeID", System.Data.SqlDbType.NVarChar, 15);
-            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@ElementTypeID", SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 100);
+
             cmd.Parameters["@ElementTypeID"].Value = elementTypeID;
             cmd.Parameters["@Description"].Value = description;
 
@@ -178,9 +181,10 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_element_type";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ElementTypeID", System.Data.SqlDbType.NVarChar, 15);
+            cmd.Parameters.Add("@ElementTypeID", SqlDbType.NVarChar, 15);
+            
             cmd.Parameters["@ElementTypeID"].Value = elementTypeID;
 
             try

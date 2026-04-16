@@ -174,6 +174,44 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
+        public bool DeactivateCard(int cardID)
+        {
+            bool isDeactivated = false;
+
+            try
+            {
+                isDeactivated = (1 == _cardAccessor.DeactivateCard(cardID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to deactivate a card.", ex);
+            }
+
+            return isDeactivated;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
+        public bool ReactivateCard(int cardID)
+        {
+            bool isReactivated = false;
+
+            try
+            {
+                isReactivated = (1 == _cardAccessor.ReactivateCard(cardID));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to reactivate a card.", ex);
+            }
+
+            return isReactivated;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ICardManager"/>
+        /// </summary>
         public IEnumerable<Card> ApplyFilters(IEnumerable<Card> cards, FilterOption filterOption)
         {
             if (cards == null)
@@ -251,6 +289,7 @@ namespace LogicLayer
                 Health = card.Health,
                 Stage = card.Stage,
                 ImagePath = card.ImagePath,
+                Active = card.Active,
                 Moves = new List<MoveVM>(),
                 AlternateArts = new List<string>(),
             };

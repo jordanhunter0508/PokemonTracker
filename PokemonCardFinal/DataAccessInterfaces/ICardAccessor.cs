@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,6 +58,20 @@ namespace DataAccessInterfaces
         /// <param name="cardID">CardID of the row to delete.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public int DeleteCard(int cardID);
+
+        /// <summary>
+        /// Sets the Active field to false for the given cardID.
+        /// </summary>
+        /// <param name="cardID">CardID of the row to deactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int DeactivateCard(int cardID);
+
+        /// <summary>
+        /// Sets the Active field to true for the given cardID.
+        /// </summary>
+        /// <param name="cardID">CardID of the row to reactivate.</param>
+        /// <returns>Returns the number of rows affected.</returns>
+        public int ReactivateCard(int cardID);
 
     }
 }

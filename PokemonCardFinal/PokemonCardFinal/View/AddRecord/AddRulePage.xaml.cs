@@ -33,6 +33,7 @@ namespace PokemonCardFinal.View.AddRecord
         {
             InitializeComponent();
             _isAddMode = true;
+            _ruleManager = new RuleManager();
         }
 
         public AddRulePage(PokemonRule rule, IRuleManager ruleManager, 

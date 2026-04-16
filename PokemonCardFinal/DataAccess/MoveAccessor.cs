@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -25,10 +26,9 @@ namespace DataAccess
             string cmdText = "sp_select_move_by_moveid";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
 
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
-            cmd.Parameters["@MoveID"].Value = moveID;
+            cmd.Parameters.AddWithValue("@MoveID", moveID);
 
             try
             {
@@ -73,10 +73,9 @@ namespace DataAccess
             string cmdText = "sp_select_move_cost_by_moveid";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
 
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
-            cmd.Parameters["@MoveID"].Value = moveID;
+            cmd.Parameters.AddWithValue("@MoveID", moveID);
 
             try
             {
@@ -120,7 +119,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_moves_with_move_cost";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             try
             {
@@ -181,7 +180,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_moves_without_move_cost";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             try
             {
@@ -228,7 +227,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_moves_active_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
             cmd.Parameters.AddWithValue("@PageSize", pageSize);
@@ -278,7 +277,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_moves_deactive_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
             cmd.Parameters.AddWithValue("@PageSize", pageSize);
@@ -329,14 +328,14 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_move";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 30);
-            cmd.Parameters.Add("@Damage", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 200);
+            cmd.Parameters.AddWithValue("@Damage", move.Damage);
 
+            cmd.Parameters.Add("@Name", SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 200);
+            
             cmd.Parameters["@Name"].Value = move.Name;
-            cmd.Parameters["@Damage"].Value = move.Damage;
             cmd.Parameters["@Description"].Value = move.Description;
 
             try
@@ -373,15 +372,13 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_move_cost";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@ElementTypeID", System.Data.SqlDbType.NVarChar, 15);
-            cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
+            cmd.Parameters.AddWithValue("@MoveID", cost.MoveID);
+            cmd.Parameters.AddWithValue("@Quantity", cost.Quantity);
 
-            cmd.Parameters["@MoveID"].Value = cost.MoveID;
+            cmd.Parameters.Add("@ElementTypeID", SqlDbType.NVarChar, 15);
             cmd.Parameters["@ElementTypeID"].Value = cost.ElementType;
-            cmd.Parameters["@Quantity"].Value = cost.Quantity;
 
             try
             {
@@ -412,10 +409,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_move";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
-            cmd.Parameters["@MoveID"].Value = moveID;
+            cmd.Parameters.AddWithValue("@MoveID", moveID);
 
             try
             {
@@ -447,16 +443,15 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_update_move";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 30);
-            cmd.Parameters.Add("@Damage", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 200);
+            cmd.Parameters.AddWithValue("@MoveID", move.MoveID);
+            cmd.Parameters.AddWithValue("@Damage", move.Damage);
 
-            cmd.Parameters["@MoveID"].Value = move.MoveID;
+            cmd.Parameters.Add("@Name", SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 200);
+
             cmd.Parameters["@Name"].Value = move.Name;
-            cmd.Parameters["@Damage"].Value = move.Damage;
             cmd.Parameters["@Description"].Value = move.Description;
 
             try
@@ -489,10 +484,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_move_cost";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
-            cmd.Parameters["@MoveID"].Value = moveID;
+            cmd.Parameters.AddWithValue("@MoveID", moveID);
 
             try
             {
@@ -524,7 +518,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_deactivate_move";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@MoveID", moveID);
 
@@ -556,7 +550,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_reactivate_move";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@MoveID", moveID);
 

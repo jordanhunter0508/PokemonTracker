@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -24,10 +25,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_artist_by_artistid";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
-            cmd.Parameters["@ArtistID"].Value = artistID;
+            cmd.Parameters.AddWithValue("@ArtistID", artistID);
 
             try
             {
@@ -70,10 +70,11 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_artist_by_name";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@GivenName", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@Surname", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@GivenName", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Surname", SqlDbType.NVarChar, 100);
+
             cmd.Parameters["@GivenName"].Value = givenName;
             cmd.Parameters["@Surname"].Value = surname;
 
@@ -118,7 +119,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_all_artists";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             try
             {
@@ -159,7 +160,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_artists_active_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
             cmd.Parameters.AddWithValue("@PageSize", pageSize);
@@ -209,7 +210,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_artists_deactive_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
             cmd.Parameters.AddWithValue("@PageSize", pageSize);
@@ -259,10 +260,11 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_artist";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@GivenName", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@Surname", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@GivenName", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Surname", SqlDbType.NVarChar, 100);
+
             cmd.Parameters["@GivenName"].Value = givenName;
             cmd.Parameters["@Surname"].Value = surname;
 
@@ -294,12 +296,13 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_update_artist";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@GivenName", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@Surname", System.Data.SqlDbType.NVarChar, 100);
-            cmd.Parameters["@ArtistID"].Value = artistID;
+            cmd.Parameters.AddWithValue("@ArtistID", artistID);
+
+            cmd.Parameters.Add("@GivenName", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Surname", SqlDbType.NVarChar, 100);
+
             cmd.Parameters["@GivenName"].Value = givenName;
             cmd.Parameters["@Surname"].Value = surname;
 
@@ -332,11 +335,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_artist";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
-
-            cmd.Parameters["@ArtistID"].Value = artistID;
+            cmd.Parameters.AddWithValue("@ArtistID", artistID);
 
 
             try
@@ -368,11 +369,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_deactivate_artist";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
-
-            cmd.Parameters["@ArtistID"].Value = artistID;
+            cmd.Parameters.AddWithValue("@ArtistID", artistID);
 
 
             try
@@ -404,12 +403,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_reactivate_artist";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ArtistID", System.Data.SqlDbType.Int);
-
-            cmd.Parameters["@ArtistID"].Value = artistID;
-
+            cmd.Parameters.AddWithValue("@ArtistID", artistID);
 
             try
             {

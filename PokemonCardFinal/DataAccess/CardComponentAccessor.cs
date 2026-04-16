@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,10 +23,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_alternate_arts_by_card_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
-            cmd.Parameters["@PokemonCardID"].Value = cardID;
+            cmd.Parameters.AddWithValue("@PokemonCardID", cardID);
 
             try
             {
@@ -65,7 +65,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_moves_by_card_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PokemonCardID", cardID);
 
@@ -106,13 +106,10 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_card_move";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@MoveID", System.Data.SqlDbType.Int);
-
-            cmd.Parameters["@PokemonCardID"].Value = cardID;
-            cmd.Parameters["@MoveID"].Value = moveID;
+            cmd.Parameters.AddWithValue("@PokemonCardID", cardID);
+            cmd.Parameters.AddWithValue("@MoveID", moveID);
 
             try
             {
@@ -143,11 +140,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_card_moves";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
-
-            cmd.Parameters["@PokemonCardID"].Value = cardID;
+            cmd.Parameters.AddWithValue("@PokemonCardID", cardID);
 
             try
             {
@@ -178,12 +173,11 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_card_alternate_art";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.AddWithValue("@PokemonCardID", cardID);
 
-            cmd.Parameters["@PokemonCardID"].Value = cardID;
+            cmd.Parameters.Add("@AlternateArtID", SqlDbType.NVarChar, 50);
             cmd.Parameters["@AlternateArtID"].Value = alternateArtID;
 
             try
@@ -215,11 +209,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_card_alternate_arts";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
-
-            cmd.Parameters["@PokemonCardID"].Value = cardID;
+            cmd.Parameters.AddWithValue("@PokemonCardID", cardID);
 
             try
             {

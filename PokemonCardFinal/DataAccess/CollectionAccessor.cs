@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -24,10 +25,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_collection_cards_by_collection_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@CollectionID", System.Data.SqlDbType.Int);
-            cmd.Parameters["@CollectionID"].Value = collectionID;
+            cmd.Parameters.AddWithValue("@CollectionID", collectionID);
 
             try
             {
@@ -94,10 +94,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_collection_elements_by_collection_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@CollectionID", System.Data.SqlDbType.Int);
-            cmd.Parameters["@CollectionID"].Value = collectionID;
+            cmd.Parameters.AddWithValue("@CollectionID", collectionID);
 
             try
             {
@@ -137,10 +136,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_max_size_by_collection_type_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@CollectionTypeID", System.Data.SqlDbType.NVarChar, 25);
-
+            cmd.Parameters.Add("@CollectionTypeID", SqlDbType.NVarChar, 25);
             cmd.Parameters["@CollectionTypeID"].Value = collectionTypeID;
 
             try
@@ -178,11 +176,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_collection_by_collection_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@CollectionID", System.Data.SqlDbType.Int);
-
-            cmd.Parameters["@CollectionID"].Value = collectionID;
+            cmd.Parameters.AddWithValue("@CollectionID", collectionID);
 
             try
             {
@@ -225,11 +221,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_collection";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@CollectionID", System.Data.SqlDbType.Int);
-
-            cmd.Parameters["@CollectionID"].Value = collectionID;
+            cmd.Parameters.AddWithValue("@CollectionID", collectionID);
 
             try
             {
@@ -261,11 +255,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_collection_card";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@CollectionCardID", System.Data.SqlDbType.Int);
-
-            cmd.Parameters["@CollectionCardID"].Value = collectionCardID;
+            cmd.Parameters.AddWithValue("@CollectionCardID", collectionCardID);
 
             try
             {
@@ -297,17 +289,12 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_collection_card";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@PokemonCardID", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@CollectionID", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@Quantity", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@Owned", System.Data.SqlDbType.Bit);
-
-            cmd.Parameters["@PokemonCardID"].Value = collectionCard.Card.CardID;
-            cmd.Parameters["@CollectionID"].Value = collectionCard.CollectionID;
-            cmd.Parameters["@Quantity"].Value = collectionCard.Quantity;
-            cmd.Parameters["@Owned"].Value = collectionCard.Owned;
+            cmd.Parameters.AddWithValue("@PokemonCardID", collectionCard.Card.CardID);
+            cmd.Parameters.AddWithValue("@CollectionID", collectionCard.CollectionID);
+            cmd.Parameters.AddWithValue("@Quantity", collectionCard.Quantity);
+            cmd.Parameters.AddWithValue("@Owned", collectionCard.Owned);
 
             try
             {
@@ -339,14 +326,14 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_collection";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
-            cmd.Parameters.Add("@CollectionTypeID", System.Data.SqlDbType.NVarChar, 25);
-            cmd.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar,150);
+            cmd.Parameters.AddWithValue("@UserID", collection.UserID);
 
-            cmd.Parameters["@UserID"].Value = collection.UserID;
+            cmd.Parameters.Add("@CollectionTypeID", SqlDbType.NVarChar, 25);
+            cmd.Parameters.Add("@Name", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 150);
+
             cmd.Parameters["@CollectionTypeID"].Value = collection.CollectionTypeID;
             cmd.Parameters["@Name"].Value = collection.Name;
             cmd.Parameters["@Description"].Value = collection.Description;

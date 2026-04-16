@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -211,22 +211,19 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = CommandType.StoredProcedure;
 
+            cmd.Parameters.AddWithValue("@ReleaseDate", booster.ReleaseDate);
+            cmd.Parameters.AddWithValue("@BaseCount", booster.BaseCount);
+            cmd.Parameters.AddWithValue("@SecretCount", booster.SecretCount);
+            cmd.Parameters.AddWithValue("@TotalCount", booster.TotalCount);
+
             cmd.Parameters.Add("@BoosterID", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@SeriesID", SqlDbType.NVarChar, 100);
-            cmd.Parameters.Add("@ReleaseDate", SqlDbType.Date);
             cmd.Parameters.Add("@Abbreviation", SqlDbType.NVarChar, 5);
-            cmd.Parameters.Add("@BaseCount", SqlDbType.Int);
-            cmd.Parameters.Add("@SecretCount", SqlDbType.Int);
-            cmd.Parameters.Add("@TotalCount", SqlDbType.Int);
             cmd.Parameters.Add("@ImagePath", SqlDbType.NVarChar, 250);
 
             cmd.Parameters["@BoosterID"].Value = booster.BoosterID;
             cmd.Parameters["@SeriesID"].Value = booster.SeriesID;
-            cmd.Parameters["@ReleaseDate"].Value = booster.ReleaseDate;
             cmd.Parameters["@Abbreviation"].Value = booster.Abbreviation;
-            cmd.Parameters["@BaseCount"].Value = booster.BaseCount;
-            cmd.Parameters["@SecretCount"].Value = booster.SecretCount;
-            cmd.Parameters["@TotalCount"].Value = booster.TotalCount;
             cmd.Parameters["@ImagePath"].Value = booster.ImagePath == null ? DBNull.Value : booster.ImagePath;
 
             try
@@ -260,22 +257,19 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = CommandType.StoredProcedure;
 
+            cmd.Parameters.AddWithValue("@ReleaseDate", booster.ReleaseDate);
+            cmd.Parameters.AddWithValue("@BaseCount", booster.BaseCount);
+            cmd.Parameters.AddWithValue("@SecretCount", booster.SecretCount);
+            cmd.Parameters.AddWithValue("@TotalCount", booster.TotalCount);
+
             cmd.Parameters.Add("@BoosterID", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@SeriesID", SqlDbType.NVarChar, 100);
-            cmd.Parameters.Add("@ReleaseDate", SqlDbType.Date);
             cmd.Parameters.Add("@Abbreviation", SqlDbType.NVarChar, 5);
-            cmd.Parameters.Add("@BaseCount", SqlDbType.Int);
-            cmd.Parameters.Add("@SecretCount", SqlDbType.Int);
-            cmd.Parameters.Add("@TotalCount", SqlDbType.Int);
             cmd.Parameters.Add("@ImagePath", SqlDbType.NVarChar, 250);
 
             cmd.Parameters["@BoosterID"].Value = booster.BoosterID;
             cmd.Parameters["@SeriesID"].Value = booster.SeriesID;
-            cmd.Parameters["@ReleaseDate"].Value = booster.ReleaseDate;
             cmd.Parameters["@Abbreviation"].Value = booster.Abbreviation;
-            cmd.Parameters["@BaseCount"].Value = booster.BaseCount;
-            cmd.Parameters["@SecretCount"].Value = booster.SecretCount;
-            cmd.Parameters["@TotalCount"].Value = booster.TotalCount;
             cmd.Parameters["@ImagePath"].Value = booster.ImagePath;
 
             try

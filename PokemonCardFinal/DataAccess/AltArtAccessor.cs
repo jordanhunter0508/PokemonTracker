@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -25,9 +26,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_alternate_art_by_alternate_art_id";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@AlternateArtID", SqlDbType.NVarChar, 50);
             cmd.Parameters["@AlternateArtID"].Value = alternateArtID;
 
             try
@@ -70,7 +71,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_all_alternate_arts";
             SqlCommand cmd = new SqlCommand( cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             try
             {
@@ -110,7 +111,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_alternate_arts_active_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
             cmd.Parameters.AddWithValue("@PageSize", pageSize);
@@ -161,7 +162,7 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_select_alternate_arts_deactive_paginated";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PageNumber", pageNumber);
             cmd.Parameters.AddWithValue("@PageSize", pageSize);
@@ -212,10 +213,10 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_alternate_art";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@AlternateArtID", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 250);
 
             cmd.Parameters["@AlternateArtID"].Value = alternateArt.AlternateArtID;
             cmd.Parameters["@Description"].Value = alternateArt.Description;
@@ -249,10 +250,10 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_update_alternate_art";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@Description", System.Data.SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@AlternateArtID", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 250);
 
             cmd.Parameters["@AlternateArtID"].Value = alternateArt.AlternateArtID;
             cmd.Parameters["@Description"].Value = alternateArt.Description;
@@ -286,9 +287,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_delete_alternate_art";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@AlternateArtID", SqlDbType.NVarChar, 50);
 
             cmd.Parameters["@AlternateArtID"].Value = alternateArtID;
 
@@ -322,9 +323,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_deactivate_alternate_art";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@AlternateArtID", SqlDbType.NVarChar, 30);
             cmd.Parameters["@AlternateArtID"].Value = alternateArtID;
 
 
@@ -357,9 +358,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_reactivate_alternate_art";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@AlternateArtID", System.Data.SqlDbType.NVarChar, 30);
+            cmd.Parameters.Add("@AlternateArtID", SqlDbType.NVarChar, 30);
             cmd.Parameters["@AlternateArtID"].Value = alternateArtID;
 
 

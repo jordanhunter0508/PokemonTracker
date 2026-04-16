@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
@@ -31,11 +32,11 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             // Add Parameters to the command
-            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
-            cmd.Parameters.Add("@PasswordHash", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@Email", SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@PasswordHash", SqlDbType.NVarChar, 100);
 
             cmd.Parameters["@Email"].Value = email;
             cmd.Parameters["@PasswordHash"].Value = passwordHash;
@@ -80,10 +81,10 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             // Add paramater
-            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@Email", SqlDbType.NVarChar, 250);
 
             // Set paramater
             cmd.Parameters["@Email"].Value = email;
@@ -141,10 +142,10 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             // Add parameters
-            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@Email", SqlDbType.NVarChar, 250);
 
             // Set paramaters
             cmd.Parameters["@Email"].Value = email;
@@ -200,13 +201,13 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             // Add Parameters to the command
-            cmd.Parameters.Add("@GivenName", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@Surname", System.Data.SqlDbType.NVarChar, 100);
-            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
-            cmd.Parameters.Add("@PasswordHash", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@GivenName", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Surname", SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@Email", SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@PasswordHash", SqlDbType.NVarChar, 100);
 
             cmd.Parameters["@GivenName"].Value = givenName;
             cmd.Parameters["@Surname"].Value = surname;
@@ -254,10 +255,10 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             // Add Parameters to the command
-            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@Email", SqlDbType.NVarChar, 250);
 
             cmd.Parameters["@Email"].Value = email;
 
@@ -301,14 +302,13 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             // Add Parameters to the command
-            cmd.Parameters.Add("@RoleID", System.Data.SqlDbType.NVarChar, 50);
-            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
+            cmd.Parameters.AddWithValue("@UserID", userID);
 
+            cmd.Parameters.Add("@RoleID", SqlDbType.NVarChar, 50);
             cmd.Parameters["@RoleID"].Value = roleID;
-            cmd.Parameters["@UserID"].Value = userID;
 
 
 
@@ -352,12 +352,12 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             // Add Parameters to the command
-            cmd.Parameters.Add("@Email", System.Data.SqlDbType.NVarChar, 250);
-            cmd.Parameters.Add("@CurrentPasswordHash", System.Data.SqlDbType.NVarChar, 100);
-            cmd.Parameters.Add("@NewPasswordHash", System.Data.SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@Email", SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@CurrentPasswordHash", SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@NewPasswordHash", SqlDbType.NVarChar, 100);
 
             cmd.Parameters["@Email"].Value = email;
             cmd.Parameters["@CurrentPasswordHash"].Value = currentPassword;
@@ -398,10 +398,9 @@ namespace DataAccess
             SqlConnection conn = DBConnection.GetConnection();
             string cmdText = "sp_insert_default_user_collections";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
-            cmd.Parameters["@UserID"].Value = userID;
+            cmd.Parameters.AddWithValue("@UserID", userID);
 
             try
             {
@@ -439,13 +438,10 @@ namespace DataAccess
             SqlCommand cmd = new SqlCommand(cmdText, conn);
 
             // Set the command type
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             // Add parameters
-            cmd.Parameters.Add("@UserID", System.Data.SqlDbType.Int);
-
-            // Set paramaters
-            cmd.Parameters["@UserID"].Value = userID;
+            cmd.Parameters.AddWithValue("@UserID", userID);
 
             try
             {

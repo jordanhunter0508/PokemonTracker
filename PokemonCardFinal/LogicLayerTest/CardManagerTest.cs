@@ -1599,4 +1599,37 @@ public class CardManagerTest
         // assert
         Assert.AreEqual(expectedCount, actual.Items.Count);
     }
+    [TestMethod]
+    public void TestDeactivateCardWithValidIDReturnsTrue()
+    {
+        // arrange
+        const int cardID = 1;
+        bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.DeactivateCard(cardID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+        Assert.IsFalse(_cardManager.GetCardVM(cardID).Active);
+    }
+
+    [TestMethod]
+    public void TestReactivateCardWithValidIDReturnsTrue()
+    {
+        // arrange
+        const int cardID = 2; // Assume 2 was active or we deactivate it first
+        _cardManager.DeactivateCard(cardID);
+
+        bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _cardManager.ReactivateCard(cardID);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+        Assert.IsTrue(_cardManager.GetCardVM(cardID).Active);
+    }
 }

@@ -394,5 +394,29 @@ namespace DataAccessFakes
 
             return count;
         }  
+
+        public int DeactivateCard(int cardID)
+        {
+            int rowCount = 0;
+            Card card = _cards.FirstOrDefault(c => c.CardID == cardID);
+            if (card != null)
+            {
+                card.Active = false;
+                rowCount = 1;
+            }
+            return rowCount;
+        }
+
+        public int ReactivateCard(int cardID)
+        {
+            int rowCount = 0;
+            Card card = _cards.FirstOrDefault(c => c.CardID == cardID);
+            if (card != null)
+            {
+                card.Active = true;
+                rowCount = 1;
+            }
+            return rowCount;
+        }
     }
 }
