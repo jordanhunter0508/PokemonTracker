@@ -46,8 +46,9 @@ namespace DataAccess
                         BaseCount = reader.GetInt32(4),
                         SecretCount = reader.GetInt32(5),
                         TotalCount = reader.GetInt32(6),
-                        ImagePath = reader.IsDBNull(7) ? null : reader.GetString(7),
-                        Active = reader.GetBoolean(8),
+                        LogoPath = reader.IsDBNull(7) ? null : reader.GetString(7),
+                        SymbolPath = reader.IsDBNull(8) ? null : reader.GetString(8),
+                        Active = reader.GetBoolean(9),
                     };
                 }
             }
@@ -95,8 +96,9 @@ namespace DataAccess
                             BaseCount = reader.GetInt32(4),
                             SecretCount = reader.GetInt32(5),
                             TotalCount = reader.GetInt32(6),
-                            ImagePath = reader.IsDBNull(7) ? null : reader.GetString(7),
-                            Active = reader.GetBoolean(8),
+                            LogoPath = reader.IsDBNull(7) ? null : reader.GetString(7),
+                            SymbolPath = reader.IsDBNull(8) ? null : reader.GetString(8),
+                            Active = reader.GetBoolean(9),
                         });
                     }
                 }
@@ -145,8 +147,9 @@ namespace DataAccess
                             BaseCount = reader.GetInt32(4),
                             SecretCount = reader.GetInt32(5),
                             TotalCount = reader.GetInt32(6),
-                            ImagePath = reader.IsDBNull(7) ? null : reader.GetString(7),
-                            Active = reader.GetBoolean(8),
+                            LogoPath = reader.IsDBNull(7) ? null : reader.GetString(7),
+                            SymbolPath = reader.IsDBNull(8) ? null : reader.GetString(8),
+                            Active = reader.GetBoolean(9),
                         });
                     }
                 }
@@ -200,6 +203,41 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IBoosterAccessor"/>. Access the database
+        /// using sp_select_active_boosterids
+        /// </summary>
+        public List<string> SelectActiveBoosterIDs()
+        {
+            List<string> results = new List<string>();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_select_active_boosterids";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    results.Add(reader.GetString(0));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IBoosterAccessor"/>. Access the database
         /// using sp_insert_booster
         /// </summary>
         public int InsertBooster(Booster booster)
@@ -219,12 +257,14 @@ namespace DataAccess
             cmd.Parameters.Add("@BoosterID", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@SeriesID", SqlDbType.NVarChar, 100);
             cmd.Parameters.Add("@Abbreviation", SqlDbType.NVarChar, 5);
-            cmd.Parameters.Add("@ImagePath", SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@LogoPath", SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@SymbolPath", SqlDbType.NVarChar, 250);
 
             cmd.Parameters["@BoosterID"].Value = booster.BoosterID;
             cmd.Parameters["@SeriesID"].Value = booster.SeriesID;
             cmd.Parameters["@Abbreviation"].Value = booster.Abbreviation;
-            cmd.Parameters["@ImagePath"].Value = booster.ImagePath == null ? DBNull.Value : booster.ImagePath;
+            cmd.Parameters["@LogoPath"].Value = booster.LogoPath == null ? DBNull.Value : booster.LogoPath;
+            cmd.Parameters["@SymbolPath"].Value = booster.SymbolPath == null ? DBNull.Value : booster.SymbolPath;
 
             try
             {
@@ -265,12 +305,14 @@ namespace DataAccess
             cmd.Parameters.Add("@BoosterID", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@SeriesID", SqlDbType.NVarChar, 100);
             cmd.Parameters.Add("@Abbreviation", SqlDbType.NVarChar, 5);
-            cmd.Parameters.Add("@ImagePath", SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@LogoPath", SqlDbType.NVarChar, 250);
+            cmd.Parameters.Add("@SymbolPath", SqlDbType.NVarChar, 250);
 
             cmd.Parameters["@BoosterID"].Value = booster.BoosterID;
             cmd.Parameters["@SeriesID"].Value = booster.SeriesID;
             cmd.Parameters["@Abbreviation"].Value = booster.Abbreviation;
-            cmd.Parameters["@ImagePath"].Value = booster.ImagePath;
+            cmd.Parameters["@LogoPath"].Value = booster.LogoPath == null ? DBNull.Value : booster.LogoPath;
+            cmd.Parameters["@SymbolPath"].Value = booster.SymbolPath == null ? DBNull.Value : booster.SymbolPath;
 
             try
             {
@@ -347,7 +389,7 @@ namespace DataAccess
                     results.Add(new Series
                     {
                         SeriesID = reader.GetString(0),
-                        ImagePath = reader.GetString(1),
+                        ImagePath = reader.IsDBNull(1) ? null : reader.GetString(1),
                     });
                 }
             }

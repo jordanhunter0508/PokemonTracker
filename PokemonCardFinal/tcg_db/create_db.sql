@@ -34,6 +34,10 @@ GO
 /*
 Used to store user information
 connects to roles to check what the user can do
+
+Could make a have image field so a user can select one of a few options
+the options could be stored in a different table to make it easier for an admin to add profile pictures
+DONT'T LET ALL USERS ADD PROFILE PICTURES
 */
 PRINT '*** creating Users Table ***'
 GO
@@ -93,6 +97,8 @@ Used to store alternate art information
 E.X.
 Name = "reverse holo"
 Description = "Standard card with the background of the card holographic."
+
+Could add an imagePath to show an example of what the card looks like
 */
 PRINT '*** creating AlternateArt Table ***'
 GO
@@ -125,6 +131,8 @@ GO
 
 /*
 Needed because PokemonCards/CollectionType/MoveCost can all have more than one
+
+Could add images to show the symbol and a energy card
 */
 PRINT '*** creating ElementType Table ***'
 GO
@@ -239,8 +247,8 @@ CREATE TABLE [dbo].[Series]
 (
 	[SeriesID]			[nvarchar](100)		NOT NULL,
 	[BoosterCount]		[int]				NOT NULL	DEFAULT 0,
-	[ReleaseDate]		[date]				NULL,
-	[ImagePath]			[nvarchar](250)		NULL		DEFAULT 'series/default.png',
+	[ReleaseDate]		[date]				NOT NULL,
+	[ImagePath]			[nvarchar](250)		NULL		DEFAULT 'default.png',
 	[Active]			[bit]				NOT NULL	DEFAULT 0,
 
 	CONSTRAINT [pk_series_seriesid] PRIMARY KEY ([SeriesID] ASC)
@@ -263,7 +271,8 @@ CREATE TABLE [dbo].[Booster]
 	[BaseCount]				[int]				NOT NULL,
 	[SecretCount]			[int]				NOT NULL,
 	[TotalCount]			[int]				NOT NULL,
-	[ImagePath]				[nvarchar](250)		NULL		DEFAULT 'boosters/default.png',
+	[LogoPath]				[nvarchar](250)		NULL		DEFAULT 'default.png',
+	[SymbolPath]			[nvarchar](250)		NULL		DEFAULT 'none',
 	[Active]				[bit]				NOT NULL	DEFAULT 0,
 	[IsFull]				[bit]				NOT NULL	DEFAULT 0,
 	
@@ -298,7 +307,7 @@ CREATE TABLE [dbo].[PokemonCard]
 	[RetreatCost]           [int]               NULL,
 	[Health]				[int]				NULL,
 	[Stage]					[nvarchar](30)		NOT NULL,
-	[ImagePath]				[nvarchar](250)		NULL		DEFAULT 'cards/default.png',
+	[ImagePath]				[nvarchar](250)		NULL		DEFAULT 'pokemon/cards/default.png',
 	[Active]				[bit]				NOT NULL	DEFAULT 0,
 	
 	/*AlternateArtID, boosterid,BoosterID unique*/

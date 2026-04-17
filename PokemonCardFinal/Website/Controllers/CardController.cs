@@ -38,7 +38,7 @@ namespace Website.Controllers
             try
             {
                 // Used to fill the select boxes for filters
-                ViewBag.BoosterIDs = _boosterManager.GetBoosterIDs();
+                ViewBag.BoosterIDs = _boosterManager.GetActiveBoosterIDs();
                 ViewBag.Rarities = new string[] { "Common", "Full Art", "Gallery", "Illustration Rare", "Rare", "Secret Rare", "Ultra Rare", "Uncommon" };
                 ViewBag.CardTypes = new string[] { "Item", "Pokemon", "Stage", "Trainer" };
                 ViewBag.Elements = _elementManager.GetElementTypes().Select(e => e.ElementTypeID);

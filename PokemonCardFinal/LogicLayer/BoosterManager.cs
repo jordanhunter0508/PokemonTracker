@@ -74,7 +74,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IBoosterManager"/>
         /// </summary>
-        public List<Booster> SelectActiveBoosters()
+        public List<Booster> GetActiveBoosters()
         {
             List<Booster> results = new List<Booster>();
 
@@ -105,6 +105,25 @@ namespace LogicLayer
             {
 
                 throw new ApplicationException("Failed to get booster ids.", ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IBoosterManager"/>
+        /// </summary>
+        public List<string> GetActiveBoosterIDs()
+        {
+            List<string> results = new List<string>();
+
+            try
+            {
+                results = _boosterAccessor.SelectActiveBoosterIDs();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Failed to get active booster ids.", ex);
             }
 
             return results;
@@ -198,5 +217,7 @@ namespace LogicLayer
 
             return results;
         }
+
+        
     }
 }

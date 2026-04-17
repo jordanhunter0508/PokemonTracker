@@ -31,10 +31,16 @@ namespace DataAccessInterfaces
         public List<Booster> SelectActiveBoosters();
 
         /// <summary>
+        /// Requests all boosterIDs from the database
+        /// </summary>
+        /// <returns>Returns a list of all BoosterIDs</returns>
+        public List<string> SelectBoosterIDs();
+
+        /// <summary>
         /// Requests all active boosterIDs from the database
         /// </summary>
         /// <returns>Returns a list of all active BoosterIDs</returns>
-        public List<string> SelectBoosterIDs();
+        public List<string> SelectActiveBoosterIDs();
 
         /// <summary>
         /// Inserts the parameters into the stored procedure to try

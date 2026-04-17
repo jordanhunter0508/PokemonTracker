@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -30,7 +30,11 @@ namespace DataDomain
         [DisplayName("Total Card Count")]
         public int? TotalCount { get; set; }
 
-        public string ImagePath { get; set; }
+        [DisplayName("Logo Path")]
+        public string LogoPath { get; set; }
+
+        [DisplayName("Symbol Path")]
+        public string SymbolPath { get; set; }
         public bool Active { get; set; }
         public bool IsFull { get; set; }
     }

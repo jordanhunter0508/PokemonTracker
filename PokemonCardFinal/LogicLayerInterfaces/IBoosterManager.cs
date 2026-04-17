@@ -26,15 +26,29 @@ namespace LogicLayerInterfaces
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
         public List<Booster> GetBoosters();
 
-        public List<Booster> SelectActiveBoosters();
+        /// <summary>
+        /// Calls the <see href="IBoosterAccessor.SelectActiveBoosters()"/> method to get<br/>
+        /// a list of all active Boosters from the database.
+        /// </summary>
+        /// <returns>Returns a List of all active Boosters in the database</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public List<Booster> GetActiveBoosters();
 
         /// <summary>
         /// Calls the <see href="IBoosterAccessor.SelectBoosterIDs()"/> method to get<br/>
+        /// a list of all boosterIDs
+        /// </summary>
+        /// <returns>Returns a List of all BoosterIDs in the database</returns>
+        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
+        public List<string> GetBoosterIDs();
+
+        /// <summary>
+        /// Calls the <see href="IBoosterAccessor.SelectActiveBoosterIDs()"/> method to get<br/>
         /// a list of all active boosterIDs
         /// </summary>
         /// <returns>Returns a List of all active BoosterIDs in the database</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public List<string> GetBoosterIDs();
+        public List<string> GetActiveBoosterIDs();
 
         /// <summary>
         /// Passes parameters to <see href="IBoosterAccessor.InsertBooster()"/> Then returns true

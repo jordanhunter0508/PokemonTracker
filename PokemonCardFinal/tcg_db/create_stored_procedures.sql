@@ -755,8 +755,8 @@ CREATE PROCEDURE [dbo].[sp_select_booster_by_boosterid]
 AS
 	BEGIN
 		SELECT 	[BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
-				[BaseCount],[SecretCount],[TotalCount],[ImagePath],
-				[Active]
+				[BaseCount],[SecretCount],[TotalCount],[LogoPath],
+				[SymbolPath],[Active]
 		FROM	[Booster]
 		WHERE	[Booster].[BoosterID] = @BoosterID;
 	END
@@ -773,29 +773,22 @@ CREATE PROCEDURE [dbo].[sp_insert_booster]
 		@BaseCount		[int],
 		@SecretCount	[int],
 		@TotalCount		[int],
-		@ImagePath		[nvarchar](250)
+		@LogoPath		[nvarchar](250),
+		@SymbolPath		[nvarchar](250)
 	)	
 AS
-	IF @ImagePath IS NULL
-		BEGIN
-			INSERT INTO [dbo].[Booster]
-				([BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
-				 [BaseCount],[SecretCount],[TotalCount])
-			VALUES
-				(@BoosterID,@SeriesID,@ReleaseDate,@Abbreviation,
-				 @BaseCount, @SecretCount, @TotalCount)
-			RETURN @@ROWCOUNT;
-		END
-	ELSE
-		BEGIN
-			INSERT INTO [dbo].[Booster]
-				([BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
-				 [BaseCount],[SecretCount],[TotalCount],[ImagePath])
-			VALUES
-				(@BoosterID,@SeriesID,@ReleaseDate,@Abbreviation,
-				 @BaseCount, @SecretCount, @TotalCount,@ImagePath)
-			RETURN @@ROWCOUNT;
-		END
+	BEGIN
+		INSERT INTO [Booster]
+		([BoosterID], [SeriesID], [ReleaseDate], [Abbreviation],
+		 [BaseCount], [SecretCount], [TotalCount],
+		 [LogoPath], [SymbolPath])
+		VALUES
+		(@BoosterID, @SeriesID, @ReleaseDate, @Abbreviation,
+		 @BaseCount, @SecretCount, @TotalCount,
+		 ISNULL(@LogoPath, 'default.png'),
+		 ISNULL(@SymbolPath, 'default.png'))
+		 RETURN @@ROWCOUNT;
+	END
 GO
 
 print '*** creating sp_update_booster ***'
@@ -809,7 +802,8 @@ CREATE PROCEDURE [dbo].[sp_update_booster]
 		@BaseCount		[int],
 		@SecretCount	[int],
 		@TotalCount		[int],
-		@ImagePath		[nvarchar](250)
+		@LogoPath		[nvarchar](250),
+		@SymbolPath		[nvarchar](250)
 	)
 AS
 	BEGIN
@@ -820,7 +814,8 @@ AS
 				[BaseCount] = @BaseCount,
 				[SecretCount] = @BoosterID,
 				[TotalCount] = @TotalCount,
-				[ImagePath] = @ImagePath
+				[LogoPath] = @LogoPath,
+				[SymbolPath] = @SymbolPath
 		WHERE	[BoosterID] = @BoosterID
 		RETURN	@@ROWCOUNT;
 	END
@@ -846,8 +841,8 @@ CREATE PROCEDURE [dbo].[sp_select_boosters]
 AS
 	BEGIN
 		SELECT 	[BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
-				[BaseCount],[SecretCount],[TotalCount],[ImagePath],
-				[Active]
+				[BaseCount],[SecretCount],[TotalCount],[LogoPath],
+				[SymbolPath],[Active]
 				
 		FROM	[Booster];
 	END
@@ -858,12 +853,16 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_active_boosters]
 AS
 	BEGIN
-		SELECT 	[BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
-				[BaseCount],[SecretCount],[TotalCount],[ImagePath],
-				[Active]
+		SELECT 	[Booster].[BoosterID],[Booster].[SeriesID],[Booster].[ReleaseDate],
+				[Booster].[Abbreviation],[Booster].[BaseCount],[Booster].[SecretCount],
+				[Booster].[TotalCount],[Booster].[LogoPath],[Booster].[SymbolPath],
+				[Booster].[Active]
 				
-		FROM	[Booster]
-		WHERE 	[Active] = 1;
+		FROM	[Booster] JOIN [Series]
+			ON [Booster].[SeriesID] = [Series].[SeriesID]
+		WHERE 	[Booster].[Active] = 1
+			AND	[Series].[Active] = 1
+		ORDER BY[Booster].[ReleaseDate] DESC;
 	END
 GO
 
@@ -872,9 +871,23 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_boosterids]
 AS
 	BEGIN
-		SELECT 	[BoosterID]				
+		SELECT 	[BoosterID]
 		FROM	[Booster]
-		WHERE	[Active] = 1;
+		ORDER BY[Booster].[ReleaseDate] DESC;
+	END
+GO
+
+print '*** creating sp_select_active_boosterids ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_boosterids]
+AS
+	BEGIN
+		SELECT 	[Booster].[BoosterID]
+		FROM	[Booster]
+			JOIN [Series] ON [Booster].[SeriesID] = [Series].[SeriesID]
+		WHERE	[Booster].[Active] = 1
+			AND	[Series].[Active] = 1
+		ORDER BY[Booster].[ReleaseDate] DESC;
 	END
 GO
 
@@ -893,9 +906,10 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_series_image_paths]
 AS
 	BEGIN
-		SELECT 	[SeriesID],[ImagePath]				
+		SELECT 	[SeriesID],[ImagePath]
 		FROM	[Series]
-		WHERE	[Active] = 1;
+		WHERE	[Active] = 1
+		ORDER BY[ReleaseDate] DESC;
 	END
 GO
 
@@ -1300,8 +1314,11 @@ GO
 print'========== End Move Stored Procedures =========='
 /*========== End Move Stored Procedures ==========*/
 
-print''
 
+
+
+/*========== Start Card Stored Procedures ==========*/
+print'' print'========== Start Card Stored Procedures =========='
 
 print '*** creating sp_select_card_by_card_id ***'
 GO
@@ -1311,7 +1328,7 @@ CREATE PROCEDURE [dbo].[sp_select_card_by_card_id]
 	)
 AS
 	BEGIN
-		SELECT	[PokemonCardID],[ArtistID],[AbilityID],			
+		SELECT	[PokemonCardID],[ArtistID],[AbilityID],
 				[BoosterID],[PokemonRuleID],[ElementTypeID],
 				[Name],[BoosterNumber],[CardType],
 				[Rarity],[WeaknessType],[ResistanceType],
@@ -1379,8 +1396,9 @@ CREATE PROCEDURE [dbo].[sp_select_cards_paginated]
 )
 AS
 	BEGIN
-		SELECT	[PokemonCardID],[BoosterID],[ElementTypeID],
-				[Name],[BoosterNumber],[CardType],[Rarity],[ImagePath],
+		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[BoosterID],[PokemonCard].[ElementTypeID],
+				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
+				[PokemonCard].[Rarity],[PokemonCard].[ImagePath],
 				
 				/*PaginatedList Components*/
 				COUNT([PokemonCardID]) OVER() AS TotalCount,
@@ -1389,16 +1407,23 @@ AS
 				CEILING(1.0 *  COUNT([PokemonCardID]) OVER() / @PageSize) AS TotalPages
 				
 		FROM	[PokemonCard]
+			JOIN [Booster] ON [PokemonCard].[BoosterID] = [Booster].[BoosterID]
+			JOIN [Series] ON [Booster].[SeriesID] = [Series].[SeriesID]
 		
-		WHERE	[Active] = 1
-			AND	(@BoosterID IS NULL OR [BoosterID] = @BoosterID)
-			AND (@Rarity IS NULL OR [Rarity] = @Rarity)
-			AND (@CardType IS NULL OR [CardType] = @CardType)
-			AND (@ElementTypeID IS NULL OR [ElementTypeID] = @ElementTypeID)
-			AND (@ArtistID IS NULL OR [ArtistID] = @ArtistID)
+				/*Verify the card is active*/
+		WHERE	[PokemonCard].[Active] = 1
+			AND	[Booster].[Active] = 1
+			AND	[Series].[Active] = 1
+			
+			/*Filter Options*/
+			AND	(@BoosterID IS NULL OR [PokemonCard].[BoosterID] = @BoosterID)
+			AND (@Rarity IS NULL OR [PokemonCard].[Rarity] = @Rarity)
+			AND (@CardType IS NULL OR [PokemonCard].[CardType] = @CardType)
+			AND (@ElementTypeID IS NULL OR [PokemonCard].[ElementTypeID] = @ElementTypeID)
+			AND (@ArtistID IS NULL OR [PokemonCard].[ArtistID] = @ArtistID)
 		
 		/*Pagination*/
-		ORDER BY [BoosterID] ASC, [BoosterNumber]
+		ORDER BY [PokemonCard].[BoosterID] ASC, [PokemonCard].[BoosterNumber]
 		OFFSET	@PageSize * (@PageNumber - 1) ROWS
 		FETCH NEXT @PageSize ROWS ONLY;
 	END
@@ -1412,12 +1437,18 @@ CREATE PROCEDURE [dbo].[sp_select_cards_by_card_name]
 	)
 AS
 	BEGIN
-		SELECT	[PokemonCardID],[BoosterID],[ElementTypeID],
-				[Name],[BoosterNumber],[CardType],[Rarity],[ImagePath]
+		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[BoosterID],[PokemonCard].[ElementTypeID],
+				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
+				[PokemonCard].[Rarity],[PokemonCard].[ImagePath]
 				
 		FROM	[PokemonCard]
+			JOIN [Booster] ON [PokemonCard].[BoosterID] = [Booster].[BoosterID]
+			JOIN [Series] ON [Booster].[SeriesID] = [Series].[SeriesID]
+			
 		WHERE	[PokemonCard].[Name] LIKE CONCAT('%',@Name,'%')
-			AND [Active] = 1;
+			AND	[PokemonCard].[Active] = 1
+			AND	[Booster].[Active] = 1
+			AND	[Series].[Active] = 1;
 	END
 GO
 
@@ -1465,6 +1496,13 @@ AS
 		RETURN @@ROWCOUNT;
 	END
 GO
+
+print'========== End Card Stored Procedures =========='
+/*========== End Card Stored Procedures ==========*/
+
+
+print''
+
 
 print '*** creating sp_insert_default_user_collections ***'
 GO

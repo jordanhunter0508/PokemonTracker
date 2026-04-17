@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -30,7 +31,8 @@ namespace DataAccessFakes
                 BaseCount = 1,
                 SecretCount = 1,
                 TotalCount = 2,
-                ImagePath = null,
+                LogoPath = null,
+                SymbolPath = null,
                 Active = true,
                 IsFull = false,
             });
@@ -43,7 +45,8 @@ namespace DataAccessFakes
                 BaseCount = 3,
                 SecretCount = 11,
                 TotalCount = 14,
-                ImagePath = null,
+                LogoPath = null,
+                SymbolPath = null,
                 Active = true,
                 IsFull = true,
             });
@@ -56,7 +59,8 @@ namespace DataAccessFakes
                 BaseCount = 1,
                 SecretCount = 3,
                 TotalCount = 4,
-                ImagePath = null,
+                LogoPath = null,
+                SymbolPath = null,
                 Active = true,
                 IsFull = true,
             });
@@ -69,8 +73,23 @@ namespace DataAccessFakes
                 BaseCount = 10,
                 SecretCount = 13,
                 TotalCount = 23,
-                ImagePath = null,
+                LogoPath = null,
+                SymbolPath = null,
                 Active = false,
+                IsFull = false,
+            });
+            _boosters.Add(new Booster()
+            {
+                BoosterID = "Test Booster 5",
+                SeriesID = "Series 4",
+                ReleaseDate = DateTime.Parse("2003-10-10"),
+                Abbreviation = "abv",
+                BaseCount = 10,
+                SecretCount = 13,
+                TotalCount = 23,
+                LogoPath = null,
+                SymbolPath = null,
+                Active = true,
                 IsFull = false,
             });
 
@@ -136,9 +155,30 @@ namespace DataAccessFakes
         public List<string> SelectBoosterIDs()
         {
             List<string> results = null;
-            results = _boosters.Where(b => b.Active)
-                               .Select(b => b.BoosterID)
-                               .ToList();
+            results = _boosters.Select(b => b.BoosterID).ToList();
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IBoosterAccessor"/> used for testing
+        /// </summary>
+        public List<string> SelectActiveBoosterIDs()
+        {
+            List<string> results = new List<string>();
+
+            foreach (var booster in _boosters)
+            {
+                foreach (var series in _series)
+                {
+                    if (string.Equals(booster.SeriesID, series.SeriesID) &&
+                        booster.Active && series.Active)
+                    {
+                        results.Add(booster.BoosterID);
+
+                    }
+                }
+            }
 
             return results;
         }
@@ -148,8 +188,21 @@ namespace DataAccessFakes
         /// </summary>
         public List<Booster> SelectActiveBoosters()
         {
-            List<Booster> results = null;
-            results = _boosters.Where(b => b.Active).ToList();
+            List<Booster> results = new List<Booster>();
+
+            foreach (var booster in _boosters)
+            {
+                foreach (var series in _series)
+                {
+                    if (string.Equals(booster.SeriesID, series.SeriesID) &&
+                        booster.Active && series.Active)
+                    {
+                        results.Add(booster);
+
+                    }
+                }
+            }
+
             return results;
         }
 
@@ -254,6 +307,5 @@ namespace DataAccessFakes
                             }).ToList();
             return result;
         }
-
     }
 }

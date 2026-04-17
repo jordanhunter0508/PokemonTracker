@@ -55,7 +55,7 @@ public class BoosterManagerTest
     public void TestGetBoosters()
     {
         // arrange
-        const int count = 4;
+        const int count = 5;
         const string boosterID1 = "Test Booster 1";
         const string abbreviation3 = "abv";
         List<Booster> actualBoosters;
@@ -258,7 +258,7 @@ public class BoosterManagerTest
     public void TestGetBoosterIDs() 
     {
         // arrange
-        const int count = 3;
+        const int count = 5;
         const string boosterID1 = "Test Booster 1";
         List<string> actualResult = new List<string>();
 
@@ -271,6 +271,20 @@ public class BoosterManagerTest
     }
 
     [TestMethod]
+    public void TestGetActiveBoosterIDs() 
+    {
+        // arrange
+        const int expectedCount = 3;
+        List<string> actual = null;
+
+        // act
+        actual = _boosterManager.GetActiveBoosterIDs();
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
     public void TestGetActiveBoosters() 
     {
         // arrange
@@ -278,7 +292,7 @@ public class BoosterManagerTest
         List<Booster> actualResult = new List<Booster>();
 
         // act
-        actualResult = _boosterManager.SelectActiveBoosters();
+        actualResult = _boosterManager.GetActiveBoosters();
 
         // assert
         Assert.AreEqual(count, actualResult.Count);
