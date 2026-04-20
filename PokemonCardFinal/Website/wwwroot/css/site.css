@@ -3,10 +3,8 @@
     --primary: #f59e0b;
     --primary-dark: #d97706;
     --primary-light: #ffbf5b;
-
     /* Secondary / Accent */
     --accent: #fff4e6;
-
     /* Neutrals */
     --dark: #2d2f36;
     --muted: #7b7d85;
@@ -18,18 +16,15 @@
     --gray-300: #e5e2db;
     --gray-500: #9e9b91;
     --gray-600: #6e6b64;
-
     /* Focus / States */
     --focus: #4dabf7;
     --hover-shadow: rgba(0, 0, 0, 0.04);
-
     /* Buttons (Primary = Amber) */
     --btn-bg: #f59e0b;
     --btn-text: #1a1a1a;
     --btn-border: #f59e0b;
     --btn-hover-bg: #d97706;
     --btn-hover-text: #ffffff;
-
     /* Typography */
     --font-heading: 'Poppins', sans-serif;
     --font-body: 'Inter', sans-serif;
@@ -247,12 +242,6 @@ a.card-link {
 
 
 
-
-
-
-
-
-
 /* Container */
 .card-details-container {
     max-width: 1100px;
@@ -290,6 +279,11 @@ a.card-link {
 @media (min-width: 768px) {
     .card-details-content {
         flex-direction: row;
+        align-items: flex-start;
+    }
+    .all-booster-container {
+        display:flex;
+        flex-direction:row;
         align-items: flex-start;
     }
 }
@@ -371,3 +365,88 @@ a.card-link {
     .back-link:hover {
         text-decoration: underline;
     }
+
+
+
+/*============================== List Booster Styles ==============================*/
+.all-booster-container {
+    display: grid;
+    grid-template-rows: auto;
+    padding: 10px;
+    gap: 20px;
+}
+
+.series-container {
+    display: grid;
+    grid-template-rows: auto;
+}
+
+.series-bar {
+    display: grid;
+    grid-template-columns: 250px auto;
+    background: var(--primary-dark);
+    padding: 10px;
+    height: 120px;
+    align-items: center;
+}
+
+.series-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 5/2;
+}
+
+.series-header {
+    margin:auto 2%;
+    color: var(--white);
+}
+
+.booster-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+    .booster-container a {
+        text-decoration: none;
+    }
+
+.booster-card {
+    margin:auto;
+    width: 100%;
+    position: relative;
+    border: 1px solid var(--gray-300);
+    border-radius: 10px;
+    background-color: var(--white);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+    .booster-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px var(--hover-shadow);
+    }
+
+.booster-card-logo {
+    display: block;
+    margin: 2% auto;
+    width: 50%;
+    height: auto;
+    aspect-ratio: 7/2;
+    object-fit: contain;
+}
+
+.booster-card-symbol {
+    position: absolute;
+    bottom: 10%;
+    right: 1.5%;
+    width: 8%;
+    height: auto;
+    aspect-ratio: 91/67;
+}
+
+.booster-card-name {
+    display: flex;
+    justify-content: center;
+}

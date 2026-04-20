@@ -8,33 +8,38 @@
 
 <h1>All Boosters</h1>
 
+<div class="all-booster-container">
 
-@foreach (var item in Model)
-{
-	string seriesImagePath = baseUrl + item.Series.ImagePath;
-	<div>
-		@* Series Header 
-		<div>
-			<img src="@seriesImagePath" />
-			<span>@item.Series.SeriesID</span>
-		</div>*@
-		@foreach (var booster in item.Boosters)
-		{
-			string logo = baseUrl + booster.LogoPath;
-			string symbol = baseUrl + booster.SymbolPath;
-			<div>
-				<span>
-					<img src="@logo" alt="@booster.LogoPath"/>
-					@if (!booster.SymbolPath.Equals("none"))
-					{
-						<img src="@symbol" alt="@booster.SymbolPath"/>
-					}
-					else
-					{
-						<partial>there is no symbol path stored</partial>	
-					}
-				</span>
-			</div>	
-		}
-	</div>
-}
+	@foreach (var item in Model)
+	{
+		string seriesImagePath = baseUrl + item.Series.ImagePath;
+
+		<div class="series-container">
+
+			@* Series Header *@
+			<div class="series-bar">
+				<img class="series-img" src="@seriesImagePath" />
+				<h3 class="series-header">@item.Series.SeriesID</h3>
+			</div>
+
+			<div class="booster-container">
+				@foreach (var booster in item.Boosters)
+				{
+					string logo = baseUrl + booster.LogoPath;
+					string symbol = baseUrl + booster.SymbolPath;
+
+					<a asp-controller="Card" asp-action="Details" asp-route-id="1">
+						<div class="booster-card">
+							<img class="booster-card-logo" src="@logo" alt="@booster.LogoPath" />
+							@if (!booster.SymbolPath.Equals("none"))
+							{
+								<img class="booster-card-symbol" src="@symbol" alt="@booster.SymbolPath" />
+							}
+							<h5 class="booster-card-name">@booster.BoosterID</h5>
+						</div>
+					</a>
+				}
+			</div>
+		</div>
+	}
+</div>
