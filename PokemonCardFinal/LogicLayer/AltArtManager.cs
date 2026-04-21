@@ -73,62 +73,6 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IAltArtManager"/>
         /// </summary>
-        public PaginatedResult<AlternateArt> GetActiveAlternateArts(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
-
-            if (pageNumber <= 0)
-            {
-                throw new ArgumentException("Page number must be greater than 0.");
-            }
-            if (pageSize <= 0)
-            {
-                throw new ArgumentException("Page size must be greater than 0.");
-            }
-
-            try
-            {
-                results = _altArtAccessor.SelectActiveAlternateArts(pageNumber,pageSize);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to retrieve a list of acitve alternate arts.", ex);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IAltArtManager"/>
-        /// </summary>
-        public PaginatedResult<AlternateArt> GetDeactiveAlternateArts(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
-
-            if (pageNumber <= 0)
-            {
-                throw new ArgumentException("Page number must be greater than 0.");
-            }
-            if (pageSize <= 0)
-            {
-                throw new ArgumentException("Page size must be greater than 0.");
-            }
-
-            try
-            {
-                results = _altArtAccessor.SelectDeactiveAlternateArts(pageNumber,pageSize);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to retrieve a list of deactive alternate arts.", ex);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IAltArtManager"/>
-        /// </summary>
         public bool AddAlternateArt(AlternateArt alternateArt)
         {
             bool result = false;

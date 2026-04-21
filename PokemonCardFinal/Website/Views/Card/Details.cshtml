@@ -25,11 +25,7 @@
 @* Navigation back *@
 <div>
 	<a asp-controller="Card" asp-action="Index">All Cards</a>
-
-	<a asp-controller="Card" asp-action="Index" asp-route-BoosterID="@Model.BoosterID"
-	   asp-route-filterTitle="@Model.BoosterID.Replace(" ","-")">
-		/ @Model.BoosterID
-	</a>
+	<a asp-controller="Booster" asp-action="Details" asp-route-id="@Model.BoosterID"> / @Model.BoosterID</a>
 </div>
 
 @* Page Content *@

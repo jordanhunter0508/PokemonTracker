@@ -75,48 +75,6 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IAltArtAccessor"/> used for testing
         /// </summary>
-        public PaginatedResult<AlternateArt> SelectActiveAlternateArts(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
-
-            IEnumerable<AlternateArt> activeArts = _alternateArts.Where(art => art.Active);
-
-            results.TotalCount = activeArts.Count();
-            results.PageNumber = pageNumber;
-            results.PageSize = pageSize;
-            results.TotalPages = (int)Math.Ceiling((double)activeArts.Count() / pageSize);
-
-
-            results.Items = activeArts.Skip((pageNumber - 1) * pageSize)
-                                           .Take(pageSize)
-                                           .ToList();
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IAltArtAccessor"/> used for testing
-        /// </summary>
-        public PaginatedResult<AlternateArt> SelectDeactiveAlternateArts(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<AlternateArt> results = new PaginatedResult<AlternateArt>();
-
-            IEnumerable<AlternateArt> deactiveArts = _alternateArts.Where(art => !art.Active);
-
-            results.TotalCount = deactiveArts.Count();
-            results.PageNumber = pageNumber;
-            results.PageSize = pageSize;
-            results.TotalPages = (int)Math.Ceiling((double)deactiveArts.Count() / pageSize);
-
-
-            results.Items = deactiveArts.Skip((pageNumber - 1) * pageSize)
-                                           .Take(pageSize)
-                                           .ToList();
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IAltArtAccessor"/> used for testing
-        /// </summary>
         public int InsertAlternateArt(AlternateArt alternateArt)
         {
             int count = 0;

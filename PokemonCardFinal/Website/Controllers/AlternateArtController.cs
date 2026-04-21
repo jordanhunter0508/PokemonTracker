@@ -1,12 +1,14 @@
 ﻿using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Website.Controllers
 {
+    [Authorize]
     public class AlternateArtController : Controller
     {
         IAltArtManager _altArtManager;
@@ -16,40 +18,25 @@ namespace Website.Controllers
             _altArtManager = altArtManager;
         }
 
-        // GET: AlternateArtController
+        [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Index()
         {
             try
             {
-                IEnumerable<AlternateArt> altArts = _altArtManager.GetActiveAlternateArts().Items;
+                IEnumerable<AlternateArt> altArts = _altArtManager.GetAllAlternateArt();
                 return View(altArts);
             }
             catch (Exception ex)
             {
                 ViewBag.Exception = ex;
-                ViewBag.DisplayError = "Could not get a list of active alternate arts.";
+                ViewBag.DisplayError = "Could not get a list of all alternate arts.";
                 return RedirectToAction("Error", "Home");
             }
         }
 
-        // GET: AbilityController
-        // Displays a list of all deactive abilities by default
-        public ActionResult DeactivatedList()
-        {
-            try
-            {
-                IEnumerable<AlternateArt> altArts = _altArtManager.GetDeactiveAlternateArts().Items;
-                return View(altArts);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Exception = ex;
-                ViewBag.DisplayError = "Could not get a list of deactivated alternate arts.";
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
-        // GET: AlternateArtController/Details/5
+        [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Details(string id)
         {
             try
@@ -65,15 +52,16 @@ namespace Website.Controllers
             }
         }
 
-        // GET: AlternateArtController/Create
+        [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: AlternateArtController/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Create(AlternateArt alternateArt)
         {
             if (!ModelState.IsValid)
@@ -219,7 +207,7 @@ namespace Website.Controllers
 
                 if (result)
                 {
-                    return RedirectToAction(nameof(DeactivatedList));
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
@@ -261,7 +249,7 @@ namespace Website.Controllers
 
                 if (wasDeleted)
                 {
-                    return RedirectToAction(nameof(DeactivatedList));
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {

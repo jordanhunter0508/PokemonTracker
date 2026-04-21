@@ -1,0 +1,73 @@
+﻿@model Website.Models.BoosterDetailsVM
+
+@{
+    ViewData["Title"] = Model.Booster.BoosterID;
+    string baseUrl = "https://pub-0cfa07777fcc4b5381b15a3693771700.r2.dev";
+    string logoPath = baseUrl + Model.Booster.LogoPath;
+    string symbolPath = baseUrl + Model.Booster.SymbolPath;
+}
+
+
+@* Navigation back *@
+<div>
+    <a asp-controller="Booster" asp-action="Index">All Boosters</a>
+</div>
+
+
+<div class="booster-bar">
+    <div class="logo-wrapper">
+        <img class="booster-logo" src="@logoPath" />
+        <img class="booster-symbol" src="@symbolPath" />
+    </div>
+
+    <h3 class="booster-header">@Model.Booster.BoosterID</h3>
+
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-title">Cards</div>
+            <div class="stat-value">@Model.Booster.BaseCount</div>
+            <div class="stat-sub">+@Model.Booster.SecretCount Secret</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Released</div>
+            <div class="stat-value">
+                @Model.Booster.ReleaseDate.ToString("MMM d yyyy")
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Card Display *@
+@if(Model.Cards.Any())
+{
+    <section class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
+        @foreach (var item in Model.Cards)
+        {
+            string fullPath = baseUrl + item.ImagePath;
+            <div class="col">
+                <a asp-controller="Card" asp-action="Details" asp-route-id="@item.CardID" class="card-link">
+                    <div class="card h-100">
+                        <div class="card-img-wrapper">
+                            <img src="@fullPath" class="card-img-top" alt="@item.Name" />
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <p class="card-text">@item.BoosterID, #@item.BoosterNumber</p>
+                            <p class="card-text">
+                                @item.Rarity, @item.CardType
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </section>
+}
+else
+{
+    <div class="no-results">
+        <p class="fw-semibold mb-1">No cards found.</p>
+        <p style="font-size:13px;">This booster set may have accidentally became available.</p>
+    </div>
+}

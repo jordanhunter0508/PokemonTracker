@@ -23,24 +23,6 @@ namespace DataAccessInterfaces
         public List<AlternateArt> SelectAllAlternateArt();
 
         /// <summary>
-        /// Requests all fields from the AlternateArt table that are active to
-        /// create a PaginatedResult of AlternateArts.
-        /// </summary>
-        /// <param name="pageNumber">Represents how much to offset the records by</param>
-        /// <param name="pageSize">Represents how many records to return at most.</param>
-        /// <returns>Returns a PaginatedResult of active alternate arts in the database.</returns>
-        public PaginatedResult<AlternateArt> SelectActiveAlternateArts(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
-        /// Requests all fields from the AlternateArt table that are deactive to
-        /// create a PaginatedResult of AlternateArts.
-        /// </summary>
-        /// <param name="pageNumber">Represents how much to offset the records by</param>
-        /// <param name="pageSize">Represents how many records to return at most.</param>
-        /// <returns>Returns a PaginatedResult of deactive alternate arts in the database.</returns>
-        public PaginatedResult<AlternateArt> SelectDeactiveAlternateArts(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
         /// Inserts the parameters into the stored procedure to try
         /// and create a new record for an AlternateArt.
         /// </summary>
@@ -75,6 +57,5 @@ namespace DataAccessInterfaces
         /// <param name="alternateArtID">AlternateArtID of the row to reactivate.</param>
         /// <returns>Returns the number of rows affected.</returns>
         public int ReactivateAlternateArt(string alternateArtID);
-
     }
 }

@@ -235,60 +235,6 @@ AS
 	END
 GO
 
-print '*** creating sp_select_alternate_arts_active_paginated ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_alternate_arts_active_paginated]
-(
-		@PageNumber			[int] = 1,
-		@PageSize			[int] = 20
-)
-AS
-	BEGIN
-		SELECT 	[AlternateArtID],[Description],[Active],
-				
-				/*PaginatedList Components*/
-				COUNT([AlternateArtID]) OVER() AS TotalCount,
-				@PageNumber AS PageNumber, 
-				@PageSize AS PageSize,
-				CEILING(1.0 *  COUNT([AlternateArtID]) OVER() / @PageSize) AS TotalPages
-				
-		FROM	[AlternateArt]
-		WHERE	[AlternateArt].[Active] = 1
-		
-		/*Pagination*/
-		ORDER BY [AlternateArtID] DESC
-		OFFSET	@PageSize * (@PageNumber - 1) ROWS
-		FETCH NEXT @PageSize ROWS ONLY;
-	END
-GO
-
-print '*** creating sp_select_alternate_arts_deactive_paginated ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_alternate_arts_deactive_paginated]
-(
-		@PageNumber			[int] = 1,
-		@PageSize			[int] = 20
-)
-AS
-	BEGIN
-		SELECT 	[AlternateArtID],[Description],[Active],
-				
-				/*PaginatedList Components*/
-				COUNT([AlternateArtID]) OVER() AS TotalCount,
-				@PageNumber AS PageNumber, 
-				@PageSize AS PageSize,
-				CEILING(1.0 *  COUNT([AlternateArtID]) OVER() / @PageSize) AS TotalPages
-				
-		FROM	[AlternateArt]
-		WHERE	[AlternateArt].[Active] = 0
-		
-		/*Pagination*/
-		ORDER BY [AlternateArtID] DESC
-		OFFSET	@PageSize * (@PageNumber - 1) ROWS
-		FETCH NEXT @PageSize ROWS ONLY;
-	END
-GO
-
 print '*** creating sp_insert_alternate_art ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_alternate_art]
@@ -1426,6 +1372,42 @@ AS
 		ORDER BY [PokemonCard].[BoosterID] ASC, [PokemonCard].[BoosterNumber]
 		OFFSET	@PageSize * (@PageNumber - 1) ROWS
 		FETCH NEXT @PageSize ROWS ONLY;
+	END
+GO
+
+print '*** creating sp_select_cards_by_filter ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_cards_by_filter]
+	(
+		@Name				[nvarchar](50) = NULL,
+		@BoosterID			[nvarchar](50) = NULL,
+		@Rarity				[nvarchar](30) = NULL,
+		@CardType			[nvarchar](50) = NULL,
+		@ElementTypeID		[nvarchar](15) = NULL,
+		@ArtistID			[int] = NULL
+	)
+AS
+	BEGIN
+		SELECT	[PokemonCard].[PokemonCardID],[PokemonCard].[BoosterID],[PokemonCard].[ElementTypeID],
+				[PokemonCard].[Name],[PokemonCard].[BoosterNumber],[PokemonCard].[CardType],
+				[PokemonCard].[Rarity],[PokemonCard].[ImagePath]
+				
+		FROM	[PokemonCard]
+			JOIN [Booster] ON [PokemonCard].[BoosterID] = [Booster].[BoosterID]
+			JOIN [Series] ON [Booster].[SeriesID] = [Series].[SeriesID]
+			
+				/*Verify the Card is Active*/
+		WHERE	[PokemonCard].[Active] = 1
+			AND	[Booster].[Active] = 1
+			AND	[Series].[Active] = 1
+			
+			/*Filter Options*/
+			AND (@Name IS NULL OR [PokemonCard].[Name] LIKE CONCAT('%',@Name,'%'))
+			AND	(@BoosterID IS NULL OR [PokemonCard].[BoosterID] = @BoosterID)
+			AND (@Rarity IS NULL OR [PokemonCard].[Rarity] = @Rarity)
+			AND (@CardType IS NULL OR [PokemonCard].[CardType] = @CardType)
+			AND (@ElementTypeID IS NULL OR [PokemonCard].[ElementTypeID] = @ElementTypeID)
+			AND (@ArtistID IS NULL OR [PokemonCard].[ArtistID] = @ArtistID);
 	END
 GO
 

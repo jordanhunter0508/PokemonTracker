@@ -27,26 +27,6 @@ namespace LogicLayerInterfaces
         public List<AlternateArt> GetAllAlternateArt();
 
         /// <summary>
-        /// Calls the <see href="IAltArtAccessor.SelectActiveAlternateArts(int,int)"/> method to get<br/>
-        /// a list of active AlternateArt from the database.
-        /// </summary>
-        /// <param name="pageNumber">Represents what page to pull from.</param>
-        /// <param name="pageSize">Represents how many items are on the page.</param>
-        /// <returns>Returns paginated results where the Items is a list of AlternateArts.</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data.</exception>
-        public PaginatedResult<AlternateArt> GetActiveAlternateArts(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
-        /// Calls the <see href="IAltArtAccessor.SelectDeactiveAlternateArts(int,int)"/> method to get<br/>
-        /// a list of deactive AlternateArt from the database.
-        /// </summary>
-        /// <param name="pageNumber">Represents what page to pull from.</param>
-        /// <param name="pageSize">Represents how many items are on the page.</param>
-        /// <returns>Returns paginated results where the Items is a list of AlternateArts.</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data.</exception>
-        public PaginatedResult<AlternateArt> GetDeactiveAlternateArts(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
         /// Passes parameters to <see href="IAltArtAccessor.InsertAlternateArt(AlternateArt)"/><br/>
         /// Then returns true if the record was created successfully
         /// </summary>

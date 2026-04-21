@@ -1,5 +1,5 @@
-﻿using LogicLayerInterfaces;
-using Microsoft.AspNetCore.Http;
+﻿using DataDomain;
+using LogicLayerInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Website.Models;
 
@@ -8,10 +8,12 @@ namespace Website.Controllers
     public class BoosterController : Controller
     {
         private readonly IBoosterManager _boosterManager;
+        private readonly ISearchManager _searchManager;
 
-        public BoosterController(IBoosterManager boosterManager)
+        public BoosterController(IBoosterManager boosterManager, ISearchManager searchManager)
         {
             _boosterManager = boosterManager;
+            _searchManager = searchManager;
         }
 
         // GET: BoosterController
@@ -47,9 +49,28 @@ namespace Website.Controllers
         }
 
         // GET: BoosterController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            try
+            {
+                FilterOption filter = new FilterOption()
+                {
+                    BoosterID = id,
+                };
+
+                BoosterDetailsVM vm = new BoosterDetailsVM();
+                vm.Booster = _boosterManager.GetBoosterByBoosterID(id);   
+                vm.Cards = _searchManager.GetCards(filter)
+                                         .OrderBy(c => c.BoosterNumber).ToList();
+                Console.WriteLine(filter.BoosterID);
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Exception = ex;
+                ViewBag.DisplayError = "Could not get a list all cards.";
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         // GET: BoosterController/Create

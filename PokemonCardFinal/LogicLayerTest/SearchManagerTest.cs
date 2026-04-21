@@ -75,4 +75,149 @@ public class SearchManagerTest
         // assert
         // do nothing
     }
+
+    [TestMethod]
+    public void TestGetCardsbyNameReturnsList()
+    {
+        // arrange
+        FilterOption filterOption = new FilterOption()
+        {
+            CardName = "Test Name 1"
+        };
+        const int expectedCount = 2;
+        List<Card> actual;
+
+        // act
+        actual = _searchManager.GetCards(filterOption);
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardsbyBoosterIDReturnsList()
+    {
+        // arrange
+        FilterOption filterOption = new FilterOption()
+        {
+            BoosterID = "Booster 2"
+        };
+        const int expectedCount = 3;
+        List<Card> actual;
+
+        // act
+        actual = _searchManager.GetCards(filterOption);
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardsbyRarityReturnsList()
+    {
+        // arrange
+        FilterOption filterOption = new FilterOption()
+        {
+            Rarity = "Uncommon"
+        };
+        const int expectedCount = 2;
+        List<Card> actual;
+
+        // act
+        actual = _searchManager.GetCards(filterOption);
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardsbyCardTypeReturnsList()
+    {
+        // arrange
+        FilterOption filterOption = new FilterOption()
+        {
+            CardType = "Trainer"
+        };
+        const int expectedCount = 2;
+        List<Card> actual;
+
+        // act
+        actual = _searchManager.GetCards(filterOption);
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardsbyElementTypeIDReturnsList()
+    {
+        // arrange
+        FilterOption filterOption = new FilterOption()
+        {
+            ElementTypeID = "Element 2"
+        };
+        const int expectedCount = 1;
+        List<Card> actual;
+
+        // act
+        actual = _searchManager.GetCards(filterOption);
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardsbyArtistIDReturnsList()
+    {
+        // arrange
+        FilterOption filterOption = new FilterOption()
+        {
+            ArtistID = 1
+        };
+        const int expectedCount = 3;
+        List<Card> actual;
+
+        // act
+        actual = _searchManager.GetCards(filterOption);
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardsWtihMultipleFiltersReturnsList()
+    {
+        // arrange
+        FilterOption filterOption = new FilterOption()
+        {
+            Rarity = "Uncommon",
+            ArtistID = 1
+        };
+        const int expectedCount = 2;
+        List<Card> actual;
+
+        // act
+        actual = _searchManager.GetCards(filterOption);
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
+
+    [TestMethod]
+    public void TestGetCardsReturnsBlankListWithInvaliFilterOption()
+    {
+        // arrange
+        FilterOption filterOption = new FilterOption()
+        {
+            CardType = "fail",
+        };
+        const int expectedCount = 0;
+        List<Card> actual;
+
+        // act
+        actual = _searchManager.GetCards(filterOption);
+
+        // assert
+        Assert.AreEqual(expectedCount, actual.Count);
+    }
 }

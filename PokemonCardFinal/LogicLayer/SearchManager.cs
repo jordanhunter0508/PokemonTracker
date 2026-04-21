@@ -34,6 +34,7 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ISearchManager"/>
         /// </summary>
+        [Obsolete(message: "Use GetCards(FilterOption.CardName) instead.", false)]
         public List<Card> SearchCardsByName(string name)
         {
             List<Card> results = new List<Card>();
@@ -51,6 +52,26 @@ namespace LogicLayer
             {
 
                 throw new ApplicationException("Failed to get a search for a list of cards by card name.", ex);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="ISearchManager"/>
+        /// </summary>
+        public List<Card> GetCards(FilterOption filter)
+        {
+            List<Card> results = new List<Card> ();
+
+            try
+            {
+                results = _searchAccessor.SelectCards(filter);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Failed to get a search for a list of cards.", ex);
             }
 
             return results;

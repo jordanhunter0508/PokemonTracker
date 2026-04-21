@@ -18,7 +18,7 @@
 
 			@* Series Header *@
 			<div class="series-bar">
-				<img class="series-img" src="@seriesImagePath" />
+				<img class="series-logo" src="@seriesImagePath" />
 				<h3 class="series-header">@item.Series.SeriesID</h3>
 			</div>
 
@@ -28,7 +28,7 @@
 					string logo = baseUrl + booster.LogoPath;
 					string symbol = baseUrl + booster.SymbolPath;
 
-					<a asp-controller="Card" asp-action="Details" asp-route-id="1">
+					<a asp-controller="Booster" asp-action="Details" asp-route-id="@booster.BoosterID">
 						<div class="booster-card">
 							<img class="booster-card-logo" src="@logo" alt="@booster.LogoPath" />
 							@if (!booster.SymbolPath.Equals("none"))
