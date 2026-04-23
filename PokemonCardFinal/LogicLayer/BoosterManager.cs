@@ -186,6 +186,11 @@ namespace LogicLayer
         {
             bool result = false;
 
+            if (string.IsNullOrWhiteSpace(boosterID))
+            {
+                throw new ArgumentException("BoosterID was either null or blank");
+            }
+
             try
             {
                 result = (1 == _boosterAccessor.DeleteBooster(boosterID));
@@ -202,22 +207,55 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IBoosterManager"/>
         /// </summary>
-        public List<Series> GetSeriesImagePaths()
+        public bool ActivateBooster(string boosterID, bool active)
         {
-            List<Series> results = new List<Series>();
+            bool wasUpdated = false;
+
+            if (string.IsNullOrWhiteSpace(boosterID))
+            {
+                throw new ArgumentException("BoosterID was either null or blank");
+            }
 
             try
             {
-                results = _boosterAccessor.SelectSeriesImagePaths();
+                wasUpdated = (1 == _boosterAccessor.ActivateBooster(boosterID, active));
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to get a list of series images.",ex);
+                throw new ApplicationException($"Failed to update {boosterID}'s active status.",ex);
             }
 
-            return results;
+            return wasUpdated;
         }
 
-        
+        /// <summary>
+        /// Implements from <see cref="IBoosterManager"/>
+        /// </summary>
+        public bool ActivateCardsByBoosterID(string boosterID, bool active)
+        {
+            bool wasUpdated = false;
+
+            if (string.IsNullOrWhiteSpace(boosterID))
+            {
+                throw new ArgumentException("BoosterID was either null or blank");
+            }
+
+            try
+            {
+                ActivationResults results = _boosterAccessor.ActivateCardsByBoosterID(boosterID,active);
+
+                // Avoid returning true if the boosterID was invalid
+                if (results.ExpectedCount != 0)
+                {
+                    wasUpdated = (results.ExpectedCount == results.UpdatedCount);
+                }   
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Failed to update cards active status. Related to {boosterID}", ex);
+            }
+
+            return wasUpdated;
+        }
     }
 }

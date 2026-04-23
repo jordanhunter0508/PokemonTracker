@@ -73,6 +73,67 @@ body {
     margin-bottom: 60px;
 }
 
+
+
+/*============================== Switch ==============================*/
+.switch {
+    align-items: center;
+    position: relative;
+    display: inline-block;
+    width: 5.5%;
+    aspect-ratio: 2 / 1;
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 999px;
+}
+
+    .slider::after {
+        content: "";
+        position: absolute;
+        width: 44%;
+        height: 80%;
+        top: 10%;
+        left: 4%;
+        background-color: var(--white);
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+
+input:checked + .slider {
+    background-color: var(--primary);
+}
+
+    input:checked + .slider::after {
+        transform: translateX(110%);
+    }
+
+.switch-lg {
+    width: 60px;
+}
+
+.switch-sm {
+    width: 40px;
+}
+
+
+
+
+
+
+
+
 .no-results {
     text-align: center;
     padding: 60px 20px;
@@ -282,9 +343,10 @@ a.card-link {
         flex-direction: row;
         align-items: flex-start;
     }
+
     .all-booster-container {
-        display:flex;
-        flex-direction:row;
+        display: flex;
+        flex-direction: row;
         align-items: flex-start;
     }
 }
@@ -337,7 +399,7 @@ a.card-link {
             color: var(--primary-dark);
         }
 
-/* Artist link (future clickable) */
+/* Artist link */
 .artist-name {
     color: var(--primary);
     font-weight: 500;
@@ -414,7 +476,7 @@ a.card-link {
     }
 
 .booster-card {
-    margin:auto;
+    margin: auto;
     width: 100%;
     position: relative;
     border: 1px solid var(--gray-300);
@@ -528,7 +590,7 @@ a.card-link {
     font-weight: 700;
     color: var(--dark);
     line-height: 1.1;
-    text-align:center;
+    text-align: center;
 }
 
 .stat-sub {
@@ -544,14 +606,32 @@ a.card-link {
 /* ADMIN */
 
 .admin-layout-container {
-    /*    display: grid;
-    grid-template-columns: 250px auto;*/
     display: flex;
     flex-direction: row;
     align-content: flex-start;
 }
 
     .admin-layout-container section {
-        border: 1px solid red;
         margin: 0% 1%;
+    }
+
+
+
+.admin-card {
+    border: 1px solid var(--gray-500);
+    border-radius: 10px;
+    background-color: var(--white);
+    margin-bottom: 2%;
+}
+
+.admin-series-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 8px;
+}
+
+    .admin-series-header h4 {
+        margin: 0;
+        font-size: 1.75em;
     }

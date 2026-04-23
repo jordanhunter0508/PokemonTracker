@@ -66,20 +66,14 @@ namespace LogicLayerInterfaces
         public bool DeleteCard(int cardID);
 
         /// <summary>
-        /// Deactivates a card, effectively hiding it from active contexts without full deletion.
+        /// Reactivates or Deactivates a card specified by the activate parameter.
+        /// card at cardID is updated
         /// </summary>
         /// <param name="cardID">Used to find the Card</param>
+        /// <param name="active">Used to activate or deactivate the card</param>
         /// <returns>Returns true if the Card was deactivated successfully</returns>
         /// <exception cref="ApplicationException">Throws if there was a problem connecting to the database.</exception>
-        public bool DeactivateCard(int cardID);
-
-        /// <summary>
-        /// Reactivates an inactive card.
-        /// </summary>
-        /// <param name="cardID">Used to find the Card</param>
-        /// <returns>Returns true if the Card was reactivated successfully</returns>
-        /// <exception cref="ApplicationException">Throws if there was a problem connecting to the database.</exception>
-        public bool ReactivateCard(int cardID);
+        public bool ActivateCard(int cardID, bool active);
 
         /// <summary>
         /// Filters a set of cards using FilterOption.

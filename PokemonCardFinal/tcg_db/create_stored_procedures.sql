@@ -837,6 +837,45 @@ AS
 	END
 GO
 
+print '*** creating sp_activate_booster ***'
+GO
+CREATE PROCEDURE [dbo].[sp_activate_booster]
+	(
+		@BoosterID		[nvarchar](50),
+		@Active			[bit]
+	)
+AS
+	BEGIN
+		UPDATE 	[Booster]
+		SET		[Active] = @Active
+		WHERE	[BoosterID] = @BoosterID
+		RETURN	@@ROWCOUNT;
+	END
+GO
+
+print '*** creating sp_activate_booster_by_seriesid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_activate_booster_by_seriesid]
+	(
+		@SeriesID		[nvarchar](100),
+		@Active			[bit]
+	)
+AS
+	BEGIN
+		DECLARE @Expected INT
+		SELECT 	@Expected = COUNT([BoosterID])
+		FROM 	[Booster]
+		WHERE 	[SeriesID] = @SeriesID;
+		
+		UPDATE 	[Booster]
+		SET		[Active] = @Active
+		FROM	[Booster]
+		WHERE	[SeriesID] = @SeriesID;
+
+		SELECT 	@Expected AS ExpectedCount,
+				@@ROWCOUNT AS UpdatedCount;
+	END
+GO
 
 print'========== End Booster Stored Procedures =========='
 /*============================== End Booster Stored Procedures ==============================*/
@@ -856,6 +895,34 @@ AS
 		FROM	[Series]
 		WHERE	[Active] = 1
 		ORDER BY[ReleaseDate] DESC;
+	END
+GO
+
+print '*** creating sp_select_series ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_series]
+AS
+	BEGIN
+		SELECT 	[SeriesID],[BoosterCount],[ReleaseDate],
+				[ImagePath],[Active]
+		FROM	[Series]
+		ORDER BY[ReleaseDate] DESC;
+	END
+GO
+
+print '*** creating sp_activate_series ***'
+GO
+CREATE PROCEDURE [dbo].[sp_activate_series]
+	(
+		@SeriesID		[nvarchar](100),
+		@Active			[bit]
+	)
+AS
+	BEGIN
+		UPDATE 	[Series]
+		SET		[Active] = @Active
+		WHERE	[SeriesID] = @SeriesID
+		RETURN	@@ROWCOUNT;
 	END
 GO
 
@@ -1449,33 +1516,70 @@ AS
 	END
 GO
 
-print '*** creating sp_deactivate_card ***'
+print '*** creating sp_activate_card ***'
 GO
-CREATE PROCEDURE [dbo].[sp_deactivate_card]
+CREATE PROCEDURE [dbo].[sp_activate_card]
 	(
-		@PokemonCardID	[int]
+		@PokemonCardID	[int],
+		@Active			[bit]
 	)
 AS
 	BEGIN
 		UPDATE 	[PokemonCard]
-		SET		[Active] = 0
+		SET		[Active] = @Active
 		WHERE	[PokemonCardID] = @PokemonCardID;
 		RETURN @@ROWCOUNT;
 	END
 GO
 
-print '*** creating sp_reactivate_card ***'
+print '*** creating sp_activate_card_by_boosterid ***'
 GO
-CREATE PROCEDURE [dbo].[sp_reactivate_card]
+CREATE PROCEDURE [dbo].[sp_activate_card_by_boosterid]
 	(
-		@PokemonCardID	[int]
+		@BoosterID 		[nvarchar](50),
+		@Active    		[bit]
 	)
 AS
 	BEGIN
+		DECLARE @Expected INT;
+
+		SELECT 	@Expected = COUNT(@BoosterID)
+		FROM 	[PokemonCard]
+		WHERE 	[BoosterID] = @BoosterID;
+		
 		UPDATE 	[PokemonCard]
-		SET		[Active] = 1
-		WHERE	[PokemonCardID] = @PokemonCardID;
-		RETURN @@ROWCOUNT;
+		SET 	[Active] = @Active
+		WHERE 	[BoosterID] = @BoosterID;
+
+		SELECT 	@Expected AS ExpectedCount,
+				@@ROWCOUNT AS UpdatedCount;
+	END
+GO
+
+print '*** creating sp_activate_card_by_seriesid ***'
+GO
+CREATE PROCEDURE [dbo].[sp_activate_card_by_seriesid]
+	(
+		@SeriesID		[nvarchar](50),
+		@Active			[bit]
+	)
+AS
+	BEGIN
+		DECLARE @Expected INT;
+
+		SELECT 	@Expected = COUNT([PokemonCardID])
+		FROM 	[PokemonCard] JOIN [Booster] ON [PokemonCard].[BoosterID] = [Booster].[BoosterID]
+			JOIN [Series] ON [Booster].[SeriesID] = [Series].[SeriesID]
+		WHERE 	[Series].[SeriesID] = @SeriesID;
+		
+		UPDATE 	[PokemonCard]
+		SET		[PokemonCard].[Active] = @Active
+		FROM	[PokemonCard] JOIN [Booster] ON [PokemonCard].[BoosterID] = [Booster].[BoosterID]
+			JOIN [Series] ON [Booster].[SeriesID] = [Series].[SeriesID]
+		WHERE	[Series].[SeriesID] = @SeriesID;
+
+		SELECT 	@Expected AS ExpectedCount,
+				@@ROWCOUNT AS UpdatedCount;
 	END
 GO
 

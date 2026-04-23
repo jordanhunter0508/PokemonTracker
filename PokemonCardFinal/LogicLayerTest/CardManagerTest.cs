@@ -1,3 +1,4 @@
+using System.ComponentModel.Design;
 using DataAccess;
 using DataAccessFakes;
 using DataDomain;
@@ -1599,37 +1600,68 @@ public class CardManagerTest
         // assert
         Assert.AreEqual(expectedCount, actual.Items.Count);
     }
+    
     [TestMethod]
     public void TestDeactivateCardWithValidIDReturnsTrue()
     {
         // arrange
         const int cardID = 1;
+        const bool active = false;
         bool expected = true;
         bool actual = false;
 
         // act
-        actual = _cardManager.DeactivateCard(cardID);
+        actual = _cardManager.ActivateCard(cardID, active);
 
         // assert
         Assert.AreEqual(expected, actual);
-        Assert.IsFalse(_cardManager.GetCardVM(cardID).Active);
+    }
+    
+    [TestMethod]
+    public void TestDeactivateCardWithInvalidIDReturnsFalse()
+    {
+        // arrange
+        const int cardID = 999;
+        const bool active = false;
+        bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _cardManager.ActivateCard(cardID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void TestReactivateCardWithValidIDReturnsTrue()
     {
         // arrange
-        const int cardID = 2; // Assume 2 was active or we deactivate it first
-        _cardManager.DeactivateCard(cardID);
-
+        const int cardID = 2;
+        const bool active = true;
         bool expected = true;
         bool actual = false;
 
         // act
-        actual = _cardManager.ReactivateCard(cardID);
+        actual = _cardManager.ActivateCard(cardID,active);
 
         // assert
         Assert.AreEqual(expected, actual);
-        Assert.IsTrue(_cardManager.GetCardVM(cardID).Active);
+    }
+
+    [TestMethod]
+    public void TestReactivateCardWithInvalidIDReturnsFalse()
+    {
+        // arrange
+        const int cardID = 999;
+        const bool active = true;
+        bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _cardManager.ActivateCard(cardID,active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
     }
 }

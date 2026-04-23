@@ -1,14 +1,164 @@
-﻿@{
-    ViewData["Title"] = "Admin Panel";
+﻿@model IEnumerable<Website.Models.SeriesWithBoosters>
+
+@{
+	ViewData["Title"] = "Admin Panel";
 }
+
+<script>
+	function confirmSeries(checkBox, id){
+		const newState = checkBox.checked;
+		let message = "Are you sure you want deactivate " + id + ".\n" +
+						"This will deactivate all related boosters and cards.\n" +
+						"This will hide all related boosters and cards from the users until reactivated.";
+
+		if(newState){
+			message = "Are you sure you want activate " + id + ".\n" +
+					  "This will activate all related boosters and cards.\n" +
+					  "This will display all related boosters and cards for the users until deactivated.";
+		}
+
+		if(confirm(message)){
+			checkBox.form.submit();
+		}else{
+			checkBox.checked = !newState;
+		}
+	}
+
+	function confirmBooster(checkBox, id){
+		const newState = checkBox.checked;
+		let message = "Are you sure you want deactivate " + id + ".\n" +
+						"This will deactivate all related cards.\n" +
+						"This will hide all related cards from the users until reactivated.";
+
+		if(newState){
+			message = "Are you sure you want activate " + id + ".\n" +
+					  "This will activate all related cards.\n" +
+					  "This will display all related cards for the users until deactivated.";
+		}
+
+		if(confirm(message)){
+			checkBox.form.submit();
+		}else{
+			checkBox.checked = !newState;
+		}
+	}
+</script>
 
 <div class="admin-layout-container">
 
-    @* Admin Side bar *@
-    <partial name="~/Views/Shared/_AdminPartial.cshtml"/>
+	@* Admin Side bar *@
+	<partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
-    @* Main Content *@
-    <section>
-        <p>Test</p>
-    </section>
+	@* Main Content *@
+	<section>
+		<h1 style="padding: 10px;">Series and Boosters</h1>
+		<a asp-controller="Series" asp-action="Create" style="padding: 10px;">
+			Add a new Series
+		</a>
+		@foreach (var item in Model)
+		{
+			string seriesID = item.Series.SeriesID;
+
+			<div class="admin-card">
+				<div class="admin-series-header">
+					<h4>@seriesID</h4>
+
+
+					<div>
+						<label class="switch switch-lg">
+							<form asp-controller="Series" asp-action="Activate" method="post">
+								<input type="hidden" name="id" value="@seriesID" />
+								<input type="checkbox" name="active" value="true"
+									   @(item.Series.Active ? "checked" : "")
+									   onchange="confirmSeries(this,'@seriesID')" />
+								<span class="slider"></span>
+							</form>
+						</label>
+					</div>
+				</div>
+
+				<a asp-controller="Booster" asp-action="Create" style="padding: 10px;">
+					Add a booster
+				</a>
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th>
+								Booster Name
+							</th>
+							<th>
+								Release Date
+							</th>
+							<th>
+								Abbreviation
+							</th>
+							<th>
+								Base Count
+							</th>
+							<th>
+								Secret Count
+							</th>
+							<th>
+								Total Count
+							</th>
+							<th>
+								Full
+							</th>
+							<th>
+								Active
+							</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+
+						@foreach (var booster in item.Boosters)
+						{
+							<tr>
+								<td>
+									@Html.DisplayFor(modelItem => booster.BoosterID)
+								</td>
+								<td>
+									@booster.ReleaseDate.ToString("MM/dd/yyyy")
+								</td>
+								<td>
+									@booster.Abbreviation.ToUpper()
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => booster.BaseCount)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => booster.SecretCount)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => booster.TotalCount)
+								</td>
+
+								<td>
+									@Html.DisplayFor(modelItem => booster.IsFull)
+								</td>
+								<td>
+									<label class="switch switch-sm">
+										<form asp-controller="Booster" asp-action="Activate" method="post">
+											<input type="hidden" name="id" value="@booster.BoosterID" />
+											<input type="checkbox" name="active" value="true"
+												   @(booster.Active ? "checked" : "")
+												   onchange="confirmBooster(this,'@booster.BoosterID')" />
+											<span class="slider"></span>
+										</form>
+									</label>
+								</td>
+								<td>
+									@Html.ActionLink("View Cards", "AdminList", new { /* id=item.PrimaryKey */ }) |
+									@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+								</td>
+							</tr>
+						}
+
+					</tbody>
+				</table>
+			</div>
+		}
+	</section>
 </div>

@@ -174,13 +174,13 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="ICardManager"/>
         /// </summary>
-        public bool DeactivateCard(int cardID)
+        public bool ActivateCard(int cardID, bool active)
         {
             bool isDeactivated = false;
 
             try
             {
-                isDeactivated = (1 == _cardAccessor.DeactivateCard(cardID));
+                isDeactivated = (1 == _cardAccessor.ActivateCard(cardID,active));
             }
             catch (Exception ex)
             {
@@ -188,25 +188,6 @@ namespace LogicLayer
             }
 
             return isDeactivated;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardManager"/>
-        /// </summary>
-        public bool ReactivateCard(int cardID)
-        {
-            bool isReactivated = false;
-
-            try
-            {
-                isReactivated = (1 == _cardAccessor.ReactivateCard(cardID));
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to reactivate a card.", ex);
-            }
-
-            return isReactivated;
         }
 
         /// <summary>

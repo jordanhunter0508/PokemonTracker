@@ -15,6 +15,7 @@ namespace DataAccessFakes
     {
         List<Booster> _boosters;
         List<Series> _series;
+        List<Card> _cards;
 
         /// <summary>
         /// Fills the _boosters list with fake data
@@ -117,6 +118,32 @@ namespace DataAccessFakes
                 SeriesID = "Series 4",
                 ImagePath = "image/path4",
                 Active = false,
+            });
+
+            _cards = new List<Card>();
+            _cards.Add(new Card()
+            {
+                CardID = 1,
+                BoosterID = "Test Booster 1",
+                Active = true,
+            });
+            _cards.Add(new Card()
+            {
+                CardID = 2,
+                BoosterID = "Test Booster 1",
+                Active = true,
+            });
+            _cards.Add(new Card()
+            {
+                CardID = 3,
+                BoosterID = "Test Booster 4",
+                Active = true,
+            });
+            _cards.Add(new Card()
+            {
+                CardID = 4,
+                BoosterID = "Test Booster 4",
+                Active = true,
             });
         }
 
@@ -295,17 +322,40 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IBoosterAccessor"/> used for testing
         /// </summary>
-        public List<Series> SelectSeriesImagePaths()
+        public int ActivateBooster(string boosterID, bool active)
         {
-            List<Series> result = new List<Series>();
+            int count = 0;
 
-            result = _series.Where(s => s.Active)
-                            .Select(s => new Series
-                            {
-                                SeriesID = s.SeriesID,
-                                ImagePath = s.ImagePath
-                            }).ToList();
-            return result;
+            Booster booster = _boosters.FirstOrDefault(b => b.BoosterID.Equals(boosterID));
+
+            if (booster != null)
+            {
+                booster.Active = active;
+                count++;
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IBoosterAccessor"/> used for testing
+        /// </summary>
+        public ActivationResults ActivateCardsByBoosterID(string boosterID, bool active)
+        {
+            ActivationResults results = new ActivationResults();
+
+            results.ExpectedCount = _cards.Where(c => c.BoosterID.Equals(boosterID)).Count();
+
+            foreach (Card card in _cards)
+            {
+                if (card.BoosterID.Equals(boosterID))
+                { 
+                    card.Active = active;
+                    results.UpdatedCount++;
+                }
+            }
+
+            return results;
         }
     }
 }

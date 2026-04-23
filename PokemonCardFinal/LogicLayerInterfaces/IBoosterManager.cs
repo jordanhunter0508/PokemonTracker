@@ -78,18 +78,22 @@ namespace LogicLayerInterfaces
         /// <exception cref="ApplicationException">Throws if the booster is attached to a card</exception>
         public bool DeleteBooster(string boosterID);
 
-
-
-
-        // ======================================== Series Related ======================================================
-        // Could get it's own manager if more is needed
+        /// <summary>
+        /// Changes the Active field for a single booster
+        /// based on the active parameter
+        /// </summary>
+        /// <param name="boosterID">Used to find the Booster</param>
+        /// <param name="active">Used to reactivate or deactivate</param>
+        /// <returns>Returns true if 1 row was affected, false otherwise</returns>
+        public bool ActivateBooster(string boosterID, bool active);
 
         /// <summary>
-        /// Calls <see href="IBoosterAccessor.SelectSeriesImagePaths()"/> <br/>
-        /// To get all active list of Series with only the id and imagePath
+        /// Changes the Active field for all cards with the boosterID
+        /// based on the active parameter
         /// </summary>
-        /// <returns>Returns a list of all active Series with only the imagePath and ID</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error connecting to the database/exception>
-        public List<Series> GetSeriesImagePaths();
+        /// <param name="boosterID">Used to find all card related to the Booster</param>
+        /// <param name="active">Used to reactivate or deactivate</param>
+        /// <returns>Returns true if the correct number of cards are deactivated</returns>
+        public bool ActivateCardsByBoosterID(string boosterID, bool active);
     }
 }

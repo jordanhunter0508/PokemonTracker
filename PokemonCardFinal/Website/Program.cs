@@ -38,6 +38,7 @@ namespace Website
             builder.Services.AddScoped<IUserManager, UserManager>();
             builder.Services.AddScoped<ICardManager, CardManager>();
             builder.Services.AddScoped<IBoosterManager, BoosterManager>();
+            builder.Services.AddScoped<ISeriesManager, SeriesManager>();
             builder.Services.AddScoped<ISearchManager, SearchManager>();
             builder.Services.AddScoped<IElementManager, ElementManager>();
             builder.Services.AddScoped<IArtistManager, ArtistManager>();

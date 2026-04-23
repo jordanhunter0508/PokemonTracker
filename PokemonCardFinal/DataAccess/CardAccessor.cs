@@ -387,48 +387,17 @@ namespace DataAccess
         /// Implements from <see cref="ICardAccessor"/>. Access the database
         /// using sp_deactivate_card
         /// </summary>
-        public int DeactivateCard(int cardID)
+        public int ActivateCard(int cardID, bool active)
         {
             int count = 0;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_deactivate_card";
+            string cmdText = "sp_activate_card";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@PokemonCardID", cardID);
-
-            try
-            {
-                conn.Open();
-                count = cmd.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                conn.Close();
-            }
-
-            return count;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="ICardAccessor"/>. Access the database
-        /// using sp_reactivate_card
-        /// </summary>
-        public int ReactivateCard(int cardID)
-        {
-            int count = 0;
-
-            SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_reactivate_card";
-            SqlCommand cmd = new SqlCommand(cmdText, conn);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@PokemonCardID", cardID);
+            cmd.Parameters.AddWithValue("@Active", active);
 
             try
             {

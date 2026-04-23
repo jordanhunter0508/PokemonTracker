@@ -2,6 +2,7 @@ using DataAccessFakes;
 using DataDomain;
 using LogicLayer;
 using LogicLayerInterfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LogicLayerTest;
 
@@ -299,16 +300,258 @@ public class BoosterManagerTest
     }
 
     [TestMethod]
-    public void TestGetSeriesImagePaths() 
+    public void TestActivateBoosterReactivatesWithValidIDReturnsTrue() 
     {
         // arrange
-        const int count = 3;
-        List<Series> actualResult = new List<Series>();
+        const string boosterID = "Test Booster 4";
+        const bool active = true;
+        const bool expected = true;
+        bool actual = false;
 
         // act
-        actualResult = _boosterManager.GetSeriesImagePaths();
+        actual = _boosterManager.ActivateBooster(boosterID, active);
 
         // assert
-        Assert.AreEqual(count, actualResult.Count);
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateBoosterReactivatesWithAlreadyActiveIDReturnsTrue() 
+    {
+        // arrange
+        const string boosterID = "Test Booster 1";
+        const bool active = true;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _boosterManager.ActivateBooster(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateBoosterReactivatesWithInvalidIDReturnsFalse() 
+    {
+        // arrange
+        const string boosterID = "fails";
+        const bool active = true;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _boosterManager.ActivateBooster(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateBoosterDeactivatesWithValidIDReturnsTrue() 
+    {
+        // arrange
+        const string boosterID = "Test Booster 1";
+        const bool active = false;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _boosterManager.ActivateBooster(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateBoosterDeactivatesWithAlreadyDeactiveIDReturnsTrue() 
+    {
+        // arrange
+        const string boosterID = "Test Booster 4";
+        const bool active = false;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _boosterManager.ActivateBooster(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateBoosterDeactivatesWithInvalidIDReturnsFalse() 
+    {
+        // arrange
+        const string boosterID = "fails";
+        const bool active = true;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _boosterManager.ActivateBooster(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestActivateBoosterThrowsArgumentExceptionWithNullID() 
+    {
+        // arrange
+        const string boosterID = null;
+        const bool active = true;
+        bool actual = true;
+
+        // act
+        actual = _boosterManager.ActivateBooster(boosterID, active);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestActivateBoosterThrowsArgumentExceptionWithBlankID() 
+    {
+        // arrange
+        const string boosterID = "";
+        const bool active = true;
+        bool actual = true;
+
+        // act
+        actual = _boosterManager.ActivateBooster(boosterID, active);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    public void TestActivateCardsByBoosterIDReactivatesWithValidIDReturnsTrue()
+    {
+        // arrange
+        const string boosterID = "Test Booster 4";
+        const bool active = true;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _boosterManager.ActivateCardsByBoosterID(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateCardsByBoosterIDReactivatesWithAlreadyActiveIDReturnsTrue()
+    {
+        // arrange
+        const string boosterID = "Test Booster 1";
+        const bool active = true;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _boosterManager.ActivateCardsByBoosterID(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateCardsByBoosterIDReactivatesWithInvalidIDReturnsFalse()
+    {
+        // arrange
+        const string boosterID = "fails";
+        const bool active = true;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _boosterManager.ActivateCardsByBoosterID(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateCardsByBoosterIDDeactivatesWithValidIDReturnsTrue()
+    {
+        // arrange
+        const string boosterID = "Test Booster 1";
+        const bool active = false;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _boosterManager.ActivateCardsByBoosterID(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateCardsByBoosterIDDeactivatesWithAlreadyDeactiveIDReturnsTrue()
+    {
+        // arrange
+        const string boosterID = "Test Booster 4";
+        const bool active = false;
+        const bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _boosterManager.ActivateCardsByBoosterID(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateCardsByBoosterIDDeactivatesWithInvalidIDReturnsFalse()
+    {
+        // arrange
+        const string boosterID = "fails";
+        const bool active = true;
+        const bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _boosterManager.ActivateCardsByBoosterID(boosterID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestActivateCardsByBoosterIDThrowsArgumentExceptionWithNullID()
+    {
+        // arrange
+        const string boosterID = null;
+        const bool active = true;
+        bool actual = true;
+
+        // act
+        actual = _boosterManager.ActivateCardsByBoosterID(boosterID, active);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestActivateCardsByBoosterIDThrowsArgumentExceptionWithBlankID()
+    {
+        // arrange
+        const string boosterID = "";
+        const bool active = true;
+        bool actual = true;
+
+        // act
+        actual = _boosterManager.ActivateCardsByBoosterID(boosterID, active);
+
+        // assert
+        // do nothing
     }
 }

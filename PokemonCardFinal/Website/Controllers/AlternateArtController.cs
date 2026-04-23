@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace Website.Controllers
 {
     [Authorize]
+    [Route("Admin/[controller]/[action]")]
     public class AlternateArtController : Controller
     {
         IAltArtManager _altArtManager;
@@ -90,7 +91,8 @@ namespace Website.Controllers
             }
         }
 
-        // GET: AlternateArtController/Edit/5
+        [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Edit(string id)
         {
             try
@@ -106,9 +108,9 @@ namespace Website.Controllers
             }
         }
 
-        // POST: AlternateArtController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Edit(string id, AlternateArt alternateArt)
         {
             alternateArt.AlternateArtID = id;
@@ -138,7 +140,8 @@ namespace Website.Controllers
             }
         }
 
-        // GET: AlternateArtController/Delete/5
+        [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Deactivate(string id)
         {
             try
@@ -157,6 +160,7 @@ namespace Website.Controllers
         // POST: AlternateArtController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Deactivate(string id, AlternateArt alternateArt)
         {
             try
@@ -180,7 +184,8 @@ namespace Website.Controllers
             }
         }
 
-        // GET: AlternateArtController/Delete/5
+        [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Reactivate(string id)
         {
             try
@@ -199,6 +204,7 @@ namespace Website.Controllers
         // POST: AlternateArtController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Reactivate(string id, AlternateArt alternateArt)
         {
             try
@@ -222,7 +228,8 @@ namespace Website.Controllers
             }
         }
 
-        // GET: AlternateArtController/Delete/5
+        [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Delete(string id)
         {
             try
@@ -241,6 +248,7 @@ namespace Website.Controllers
         // POST: AlternateArtController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Delete(string id, AlternateArt alternateArt)
         {
             try

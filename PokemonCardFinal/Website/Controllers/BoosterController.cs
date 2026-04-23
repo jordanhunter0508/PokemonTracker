@@ -1,5 +1,7 @@
-﻿using DataDomain;
+﻿using System;
+using DataDomain;
 using LogicLayerInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Models;
 
@@ -8,12 +10,15 @@ namespace Website.Controllers
     public class BoosterController : Controller
     {
         private readonly IBoosterManager _boosterManager;
+        private readonly ISeriesManager _seriesManager;
         private readonly ISearchManager _searchManager;
 
-        public BoosterController(IBoosterManager boosterManager, ISearchManager searchManager)
+        public BoosterController(IBoosterManager boosterManager, ISearchManager searchManager,
+                                 ISeriesManager seriesManager)
         {
             _boosterManager = boosterManager;
             _searchManager = searchManager;
+            _seriesManager = seriesManager;
         }
 
         // GET: BoosterController
@@ -23,7 +28,7 @@ namespace Website.Controllers
             {
                 // Get each active series and booster
                 var activeBoosters = _boosterManager.GetActiveBoosters();
-                var activeSeries = _boosterManager.GetSeriesImagePaths();
+                var activeSeries = _seriesManager.GetSeriesImagePaths();
 
                 List<SeriesWithBoosters> vm = new List<SeriesWithBoosters>();
 
@@ -59,7 +64,7 @@ namespace Website.Controllers
                 };
 
                 BoosterDetailsVM vm = new BoosterDetailsVM();
-                vm.Booster = _boosterManager.GetBoosterByBoosterID(id);   
+                vm.Booster = _boosterManager.GetBoosterByBoosterID(id);
                 vm.Cards = _searchManager.GetCards(filter)
                                          .OrderBy(c => c.BoosterNumber).ToList();
                 Console.WriteLine(filter.BoosterID);
@@ -133,6 +138,28 @@ namespace Website.Controllers
             catch
             {
                 return View();
+            }
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Activate(string id, bool active)
+        {
+            try
+            {
+                _boosterManager.ActivateBooster(id, active);
+                _boosterManager.ActivateCardsByBoosterID(id, active);
+
+                return RedirectToAction("Index", "Admin");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Exception = ex;
+                ViewBag.DisplayError = $"Could not change the boosters activation status.";
+                return RedirectToAction("Error", "Home");
             }
         }
     }

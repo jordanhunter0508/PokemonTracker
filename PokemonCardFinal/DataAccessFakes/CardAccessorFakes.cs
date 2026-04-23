@@ -393,27 +393,18 @@ namespace DataAccessFakes
             }
 
             return count;
-        }  
-
-        public int DeactivateCard(int cardID)
-        {
-            int rowCount = 0;
-            Card card = _cards.FirstOrDefault(c => c.CardID == cardID);
-            if (card != null)
-            {
-                card.Active = false;
-                rowCount = 1;
-            }
-            return rowCount;
         }
-
-        public int ReactivateCard(int cardID)
+        
+        /// <summary>
+        /// Implements from <see cref="ICardAccessor"/> used for testing
+        /// </summary>
+        public int ActivateCard(int cardID, bool active)
         {
             int rowCount = 0;
             Card card = _cards.FirstOrDefault(c => c.CardID == cardID);
             if (card != null)
             {
-                card.Active = true;
+                card.Active = active;
                 rowCount = 1;
             }
             return rowCount;

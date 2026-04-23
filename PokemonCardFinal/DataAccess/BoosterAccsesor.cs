@@ -368,36 +368,71 @@ namespace DataAccess
 
         /// <summary>
         /// Implements from <see cref="IBoosterAccessor"/>. Access the database
-        /// using sp_select_series_image_paths
+        /// using sp_activate_booster
         /// </summary>
-        public List<Series> SelectSeriesImagePaths()
+        public int ActivateBooster(string boosterID, bool active)
         {
-            List<Series> results = new List<Series>();
+            int count = 0;
 
             SqlConnection conn = DBConnection.GetConnection();
-            string cmdText = "sp_select_series_image_paths";
+            string cmdText = "sp_activate_booster";
             SqlCommand cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@Active", active);
+            cmd.Parameters.Add("@BoosterID", SqlDbType.NVarChar,50);
+            cmd.Parameters["@BoosterID"].Value = boosterID;
 
             try
             {
                 conn.Open();
-
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    results.Add(new Series
-                    {
-                        SeriesID = reader.GetString(0),
-                        ImagePath = reader.IsDBNull(1) ? null : reader.GetString(1),
-                    });
-                }
+                count = cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
             finally
+            {
+                conn.Close();
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IBoosterAccessor"/>. Access the database
+        /// using sp_activate_card_by_boosterid
+        /// </summary>
+        public ActivationResults ActivateCardsByBoosterID(string boosterID, bool active)
+        {
+            ActivationResults results = new ActivationResults();
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_activate_card_by_boosterid";
+            SqlCommand cmd = new SqlCommand(cmdText,conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@Active", active);
+            cmd.Parameters.Add("@BoosterID", SqlDbType.NVarChar, 50);
+            cmd.Parameters["@BoosterID"].Value = boosterID;
+
+            try
+            {
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    results.ExpectedCount = reader.GetInt32(0);
+                    results.UpdatedCount = reader.GetInt32(1);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally 
             {
                 conn.Close();
             }

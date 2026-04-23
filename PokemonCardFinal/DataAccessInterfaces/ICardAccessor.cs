@@ -60,18 +60,11 @@ namespace DataAccessInterfaces
         public int DeleteCard(int cardID);
 
         /// <summary>
-        /// Sets the Active field to false for the given cardID.
+        /// Sets the Active field to the active parameter.
         /// </summary>
         /// <param name="cardID">CardID of the row to deactivate.</param>
+        /// <param name="active">Used to activate or deactivate the card</param>
         /// <returns>Returns the number of rows affected.</returns>
-        public int DeactivateCard(int cardID);
-
-        /// <summary>
-        /// Sets the Active field to true for the given cardID.
-        /// </summary>
-        /// <param name="cardID">CardID of the row to reactivate.</param>
-        /// <returns>Returns the number of rows affected.</returns>
-        public int ReactivateCard(int cardID);
-
+        public int ActivateCard(int cardID,bool active);
     }
 }

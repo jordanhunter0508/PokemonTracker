@@ -64,19 +64,22 @@ namespace DataAccessInterfaces
         /// <returns>Returns the number of rows affected.</returns>
         public int DeleteBooster(string boosterID);
 
-
-
-
-
-
-
-        // ======================================== Series Related ======================================================
-        // Could get it's own accessor if more is needed
+        /// <summary>
+        /// Changes the Active field for a single booster
+        /// based on the active parameter
+        /// </summary>
+        /// <param name="boosterID">Used to find the Booster</param>
+        /// <param name="active">Used to reactivate or deactivate</param>
+        /// <returns>Returns number of rows affected</returns>
+        public int ActivateBooster(string boosterID, bool active);
 
         /// <summary>
-        /// Requests all active image paths from the series table
+        /// Changes the Active field for all cards with the boosterID
+        /// based on the active parameter.
         /// </summary>
-        /// <returns>Returns a list of all active Series with only the imagePath and ID</returns>
-        public List<Series> SelectSeriesImagePaths();
+        /// <param name="boosterID">Used to find all card related to the Booster</param>
+        /// <param name="active">Used to reactivate or deactivate</param>
+        /// <returns>Returns an ActivationResults object were UpdatedCount is the number of rows affected</returns>
+        public ActivationResults ActivateCardsByBoosterID(string boosterID, bool active);
     }
 }
