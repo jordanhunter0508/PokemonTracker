@@ -606,7 +606,8 @@ a.card-link {
 /* ADMIN */
 
 .admin-layout-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 10% auto;
     flex-direction: row;
     align-content: flex-start;
 }
@@ -622,6 +623,7 @@ a.card-link {
     border-radius: 10px;
     background-color: var(--white);
     margin-bottom: 2%;
+    padding: 1%;
 }
 
 .admin-series-header {

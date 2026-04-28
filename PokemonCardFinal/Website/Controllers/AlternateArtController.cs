@@ -59,7 +59,7 @@ namespace Website.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Moderator")]
@@ -140,32 +140,24 @@ namespace Website.Controllers
             }
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Admin,Moderator")]
-        public ActionResult Deactivate(string id)
-        {
-            try
-            {
-                AlternateArt alternateArt = _altArtManager.GetAlternateArtByID(id);
-                return View(alternateArt);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Exception = ex;
-                ViewBag.DisplayError = $"Could not get the alternate art '{id}' for deactivation.";
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
         // POST: AlternateArtController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Moderator")]
-        public ActionResult Deactivate(string id, AlternateArt alternateArt)
+        public ActionResult Activate(string id, bool active)
         {
+            bool result = false;
             try
             {
-                bool result = _altArtManager.DeactivateAlternateArt(id);
+                if (!active)
+                {
+
+                    result = _altArtManager.DeactivateAlternateArt(id);
+                }
+                else
+                {
+                    result = _altArtManager.ReactivateAlternateArt(id);
+                }
 
                 if (result)
                 {
@@ -179,51 +171,7 @@ namespace Website.Controllers
             catch (Exception ex)
             {
                 ViewBag.Exception = ex;
-                ViewBag.DisplayError = $"Something went wrong when trying to deactivate alternate art '{id}'.";
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin,Moderator")]
-        public ActionResult Reactivate(string id)
-        {
-            try
-            {
-                AlternateArt alternateArt = _altArtManager.GetAlternateArtByID(id);
-                return View(alternateArt);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Exception = ex;
-                ViewBag.DisplayError = $"Could not get the alternate art '{id}' for reactivation.";
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
-        // POST: AlternateArtController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Moderator")]
-        public ActionResult Reactivate(string id, AlternateArt alternateArt)
-        {
-            try
-            {
-                bool result = _altArtManager.ReactivateAlternateArt(id);
-
-                if (result)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    return View(id);
-                }
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Exception = ex;
-                ViewBag.DisplayError = $"Something went wrong when trying to reactivate alternate art '{id}'.";
+                ViewBag.DisplayError = $"Something went wrong when trying to change alternate art '{id}' active status.";
                 return RedirectToAction("Error", "Home");
             }
         }

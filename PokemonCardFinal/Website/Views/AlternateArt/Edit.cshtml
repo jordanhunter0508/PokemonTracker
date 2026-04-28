@@ -4,33 +4,41 @@
 	ViewData["Title"] = "Edit an Alternate Art";
 }
 
-<h1>Edit @Model.AlternateArtID</h1>
+<div class="admin-layout-container">
+	<partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
-<hr />
-<div class="row">
-	<div class="col-md-4">
-		<form asp-action="Edit">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<div class="form-group">
-				<label asp-for="AlternateArtID" class="control-label"></label>
-				<input class="form-control" value="@Model.AlternateArtID" disabled />
-				<input asp-for="AlternateArtID" hidden />
-				<span asp-validation-for="AlternateArtID" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Description" class="control-label"></label>
-				<input asp-for="Description" class="form-control" />
-				<span asp-validation-for="Description" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<input type="submit" value="Save" class="btn btn-primary" />
-			</div>
-		</form>
-	</div>
-</div>
+	<section>
 
-<div>
-	<a asp-action="Index">Back to List</a>
+		<h1>Edit @(Model.AlternateArtID[0].ToString().ToUpper() + Model.AlternateArtID.Substring(1))</h1>
+		<hr />
+		<div class="admin-card button-row">
+			<div class="row">
+				<div class="col-md-4">
+					<form asp-action="Edit">
+						<input hidden name="id" value="@Model.AlternateArtID"/>
+						<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+						<div class="form-group">
+							<label asp-for="AlternateArtID" class="control-label"></label>
+							<input class="form-control" value="@Model.AlternateArtID" disabled />
+							<input asp-for="AlternateArtID" hidden />
+							<span asp-validation-for="AlternateArtID" class="text-danger"></span>
+						</div>
+						<div class="form-group">
+							<label asp-for="Description" class="control-label"></label>
+							<input asp-for="Description" class="form-control" />
+							<span asp-validation-for="Description" class="text-danger"></span>
+						</div>
+						<div class="form-group">
+							<input type="submit" value="Save" class="btn btn-primary" style="margin-top: 3%;" />
+						</div>
+					</form>
+				</div>
+			</div>
+			<div>
+				<a asp-action="Index">Back to List</a>
+			</div>
+		</div>
+	</section>
 </div>
 
 @section Scripts {
