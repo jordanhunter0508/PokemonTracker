@@ -16,7 +16,9 @@ VALUES
 	
 	('General','This is the standard user can not create new cards, boosters,
 		artist, alternate arts, abilitys, element types, moves, pokedex, pokemon rules,
-		stages, stage evolutions, or pokemon evolutions')
+		stages, stage evolutions, or pokemon evolutions'),
+		
+	('Moderator','This user can manage most aspects of the website. But can''t manage the active status of series or boosters. Also can''t manage permanent deletions.')
 GO
 
 PRINT '*** adding to Users Table ***'
@@ -38,6 +40,7 @@ INSERT INTO [dbo].[UserRole]
 VALUES
 	('Admin',10000),
 	('General',10001),
+	('Moderator',10001),
 	('General',10002),
 	('General',10003),
 	('General',10004)

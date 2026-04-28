@@ -32,9 +32,17 @@
 						<label class="switch switch-lg">
 							<form asp-controller="Series" asp-action="Activate" method="post">
 								<input type="hidden" name="id" value="@seriesID" />
-								<input type="checkbox" name="active" value="true"
-									   @(item.Series.Active ? "checked" : "")
-									   onchange="confirmSeries(this,'@seriesID')" />
+								@if (User.IsInRole("Admin"))
+								{
+									<input type="checkbox" name="active" value="true"
+										   @(item.Series.Active ? "checked" : "")
+										   onchange="confirmSeries(this,'@seriesID')" />
+								}
+								else
+								{
+									<input type="checkbox" name="active" value="true" disabled
+										   @(item.Series.Active ? "checked" : "")/>
+								}
 								<span class="slider"></span>
 							</form>
 						</label>
@@ -106,9 +114,18 @@
 									<label class="switch switch-sm">
 										<form asp-controller="Booster" asp-action="Activate" method="post">
 											<input type="hidden" name="id" value="@booster.BoosterID" />
-											<input type="checkbox" name="active" value="true"
-												   @(booster.Active ? "checked" : "")
-												   onchange="confirmBooster(this,'@booster.BoosterID')" />
+											@if (User.IsInRole("Admin"))
+											{
+												<input type="checkbox" name="active" value="true"
+													   @(booster.Active ? "checked" : "")
+													   onchange="confirmBooster(this,'@booster.BoosterID')" />
+											}
+											else
+											{
+												<input type="checkbox" name="active" value="true" disabled
+													   @(booster.Active ? "checked" : "") />
+											}
+
 											<span class="slider"></span>
 										</form>
 									</label>

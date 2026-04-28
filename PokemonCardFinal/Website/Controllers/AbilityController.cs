@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Website.Controllers
 {
+    [Authorize(Roles = "Admin,Moderator")]
+    [Route("/Admin/[controller]/[action]")]
     public class AbilityController : Controller
     {
         IAbilityManager _abilityManager;
@@ -25,9 +27,8 @@ namespace Website.Controllers
             };
         }
 
-        // GET: AbilityController
-        // Displays a list of all active abilities by default
-        public ActionResult Index()
+        [HttpGet]
+        public IActionResult Index()
         {
             try
             {
@@ -45,8 +46,8 @@ namespace Website.Controllers
             }
         }
 
-        // GET: AbilityController/Details/AbilityID
-        public ActionResult Details(string id)
+        [HttpGet]
+        public IActionResult Details(string id)
         {
             try
             {
@@ -61,17 +62,16 @@ namespace Website.Controllers
             }
         }
 
-        // GET: AbilityController/Create
-        public ActionResult Create()
+        [HttpGet]
+        public IActionResult Create()
         {
             ViewBag.AbilityTypes = _abilityTypes;
             return View();
         }
 
-        // POST: AbilityController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Ability ability)
+        public IActionResult Create(Ability ability)
         {
             ViewBag.AbilityTypes = _abilityTypes;
 
@@ -100,8 +100,8 @@ namespace Website.Controllers
             }
         }
 
-        // GET: AbilityController/Edit/5
-        public ActionResult Edit(string id)
+        [HttpGet]
+        public IActionResult Edit(string id)
         {
             ViewBag.AbilityTypes = _abilityTypes;
 
@@ -119,10 +119,9 @@ namespace Website.Controllers
             }
         }
 
-        // POST: AbilityController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id, Ability ability)
+        public IActionResult Edit(string id, Ability ability)
         {
             ViewBag.AbilityTypes = _abilityTypes;
             ability.AbilityID = id;
@@ -154,11 +153,9 @@ namespace Website.Controllers
             }
         }
 
-        // POST: AbilityController/Deactivate/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Moderator")]
-        public ActionResult Activate(string id, bool active)
+        public IActionResult Activate(string id, bool active)
         {
             bool result = false;
             try
@@ -190,8 +187,9 @@ namespace Website.Controllers
             }
         }
 
-        // GET: AbilityController/Deactivate/5
-        public ActionResult Delete(string id)
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(string id)
         {
             try
             {
@@ -206,10 +204,10 @@ namespace Website.Controllers
             }
         }
 
-        // POST: AbilityController/Deactivate/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(string id, IFormCollection collection)
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(string id, IFormCollection collection)
         {
             try
             {

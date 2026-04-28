@@ -20,7 +20,7 @@ namespace Website.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Index()
         {
             try

@@ -1,5 +1,6 @@
 using DataDomain;
 using LogicLayerInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +29,8 @@ namespace Website.Controllers
             _abilityManager = abilityManager;
         }
 
-        // GET: CardController
         [HttpGet]
-        public ActionResult Index(FilterOption filterOption, string filterTitle = "All", int pageNumber = 1)
+        public IActionResult Index(FilterOption filterOption, string filterTitle = "All", int pageNumber = 1)
         {
             ViewBag.FilterOption = filterOption;
             ViewBag.FilterTitle = filterTitle.Replace("-"," ");
@@ -60,8 +60,8 @@ namespace Website.Controllers
             }
         }
 
-        // GET: CardController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public IActionResult Details(int id)
         {
             try
             {
@@ -102,16 +102,17 @@ namespace Website.Controllers
 
         }
 
-        // GET: CardController/Create
-        public ActionResult Create()
+        [HttpGet]
+        [Authorize("Admin,Moderator")]
+        public IActionResult Create()
         {
             return View();
         }
 
-        // POST: CardController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [Authorize("Admin,Moderator")]
+        public IActionResult Create(IFormCollection collection)
         {
             try
             {
@@ -123,16 +124,17 @@ namespace Website.Controllers
             }
         }
 
-        // GET: CardController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        [Authorize("Admin,Moderator")]
+        public IActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: CardController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [Authorize("Admin,Moderator")]
+        public IActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -144,16 +146,17 @@ namespace Website.Controllers
             }
         }
 
-        // GET: CardController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        [Authorize("Admin,Moderator")]
+        public IActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: CardController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [Authorize("Admin,Moderator")]
+        public IActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
@@ -184,8 +187,5 @@ namespace Website.Controllers
 
             return results;
         }
-
-        [HttpGet]
-        public IActionResult test() { return View(); }
     }
 }

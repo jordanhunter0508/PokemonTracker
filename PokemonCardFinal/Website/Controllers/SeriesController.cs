@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Website.Controllers
 {
-    [Authorize]
+
+    [Authorize(Roles = "Admin,Moderator")]
     [Route("Admin/[controller]/[action]")]
     public class SeriesController : Controller
     {
@@ -16,6 +17,68 @@ namespace Website.Controllers
             _seriesManager = seriesManager;
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -23,7 +86,7 @@ namespace Website.Controllers
         {
             try
             {
-                _seriesManager.ActivateSeries(id,active);
+                _seriesManager.ActivateSeries(id, active);
                 _seriesManager.ActivateBoostersBySeriesID(id, active);
                 _seriesManager.ActivateCardsBySeriesID(id, active);
 
@@ -34,69 +97,6 @@ namespace Website.Controllers
                 ViewBag.Exception = ex;
                 ViewBag.DisplayError = $"Could not change the series activation status.";
                 return RedirectToAction("Error", "Home");
-            }
-        }
-
-        // GET: SeriesController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: SeriesController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SeriesController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: SeriesController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SeriesController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: SeriesController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
             }
         }
     }

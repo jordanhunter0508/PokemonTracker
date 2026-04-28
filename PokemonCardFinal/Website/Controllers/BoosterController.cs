@@ -21,8 +21,9 @@ namespace Website.Controllers
             _seriesManager = seriesManager;
         }
 
-        // GET: BoosterController
-        public ActionResult Index()
+
+        [HttpGet]
+        public IActionResult Index()
         {
             try
             {
@@ -53,8 +54,8 @@ namespace Website.Controllers
             }
         }
 
-        // GET: BoosterController/Details/5
-        public ActionResult Details(string id)
+        [HttpGet]
+        public IActionResult Details(string id)
         {
             try
             {
@@ -78,16 +79,17 @@ namespace Website.Controllers
             }
         }
 
-        // GET: BoosterController/Create
-        public ActionResult Create()
+        [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
+        public IActionResult Create()
         {
             return View();
         }
 
-        // POST: BoosterController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [Authorize(Roles = "Admin,Moderator")]
+        public IActionResult Create(IFormCollection collection)
         {
             try
             {
@@ -99,16 +101,17 @@ namespace Website.Controllers
             }
         }
 
-        // GET: BoosterController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        [Authorize(Roles = "Admin,Moderator")]
+        public IActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: BoosterController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [Authorize(Roles = "Admin,Moderator")]
+        public IActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -120,16 +123,17 @@ namespace Website.Controllers
             }
         }
 
-        // GET: BoosterController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: BoosterController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
@@ -140,8 +144,6 @@ namespace Website.Controllers
                 return View();
             }
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
