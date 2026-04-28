@@ -58,108 +58,17 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IAbilityManager"/>
         /// </summary>
-        public List<Ability> GetAllAbilities()
+        public List<AbilityVM> GetAllAbilities()
         {
-            List<Ability> results = new List<Ability>();
+            List<AbilityVM> results = new List<AbilityVM>();
 
             try
             {
-                results  = _abilityAccessor.SelectAllAbilities();
+                results = _abilityAccessor.SelectAllAbilities();
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Failed to retrieve a list of all abilites.", ex);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IAbilityManager"/>
-        /// </summary>
-        public PaginatedResult<Ability> GetActiveAbilities(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
-
-            if (pageNumber <= 0)
-            {
-                throw new ArgumentException("Page number must be greater than 0.");
-            }
-            if (pageSize <= 0)
-            {
-                throw new ArgumentException("Page size must be greater than 0.");
-            }
-
-            try
-            {
-                results = _abilityAccessor.SelectActiveAbilities(pageNumber, pageSize);
-                results.Items = FormatAbility(results.Items);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to retrieve a list of active abilities.", ex);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IAbilityManager"/>
-        /// </summary>
-        public PaginatedResult<Ability> GetDeactiveAbilities(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
-
-            if (pageNumber <= 0)
-            {
-                throw new ArgumentException("Page number must be greater than 0.");
-            }
-            if (pageSize <= 0)
-            {
-                throw new ArgumentException("Page size must be greater than 0.");
-            }
-
-            try
-            {
-                results = _abilityAccessor.SelectDeactiveAbilities(pageNumber, pageSize);
-                results.Items = FormatAbility(results.Items);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to retrieve a list of deactivated abilities.", ex);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IAbilityManager"/>
-        /// </summary>
-        public PaginatedResult<Ability> GetAbilitiesByAbilityType(string abilityType, int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
-
-            if (String.IsNullOrWhiteSpace(abilityType))
-            {
-                throw new ArgumentNullException("Ability type cannot empty or null.");
-            }
-            if (pageNumber <= 0)
-            {
-                throw new ArgumentException("Page number must be greater than 0.");
-            }
-            if (pageSize <= 0)
-            {
-                throw new ArgumentException("Page size must be greater than 0.");
-            }
-
-            try
-            {
-                results = _abilityAccessor.SelectAbilitiesByAbilityType(abilityType, pageNumber, pageSize);
-                results.Items = FormatAbility(results.Items);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to retrieve a list of abilities with a specified ability type.", ex);
             }
 
             return results;
@@ -310,7 +219,5 @@ namespace LogicLayer
             abilities = abilities.OrderBy(ability => ability.AbilityID);
             return abilities.ToList();
         }
-
-
     }
 }

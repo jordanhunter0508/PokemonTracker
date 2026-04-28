@@ -625,6 +625,10 @@ a.card-link {
     margin-bottom: 2%;
     padding: 1%;
 }
+    .admin-card dd, td {
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
 
 .admin-series-header {
     display: flex;
@@ -637,3 +641,4 @@ a.card-link {
         margin: 0;
         font-size: 1.75em;
     }
+

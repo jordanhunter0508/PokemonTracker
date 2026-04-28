@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
 using DataDomain;
-using LogicLayerInterfaces;
 using LogicLayer;
+using LogicLayerInterfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Website.Controllers
@@ -29,30 +31,16 @@ namespace Website.Controllers
         {
             try
             {
-                IEnumerable<Ability> abilities = _abilityManager.GetActiveAbilities().Items;
+                // Gets all abilities except the none to avoid it being updated
+                IEnumerable<AbilityVM> abilities = _abilityManager.GetAllAbilities()
+                                                                  .Where(a => !string.Equals(a.AbilityID, "none", StringComparison.OrdinalIgnoreCase));
+
                 return View(abilities);
             }
             catch (Exception ex)
             {
                 ViewBag.Exception = ex;
                 ViewBag.DisplayError = "Could not get a list of active abilites.";
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
-        // GET: AbilityController
-        // Displays a list of all deactive abilities by default
-        public ActionResult DeactivatedList()
-        {
-            try
-            {
-                IEnumerable<Ability> abilities = _abilityManager.GetDeactiveAbilities().Items;
-                return View(abilities);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Exception = ex;
-                ViewBag.DisplayError = "Could not get a list of deactivated abilites.";
                 return RedirectToAction("Error", "Home");
             }
         }
@@ -96,7 +84,7 @@ namespace Website.Controllers
                 bool wasAdded = _abilityManager.AddAbility(ability);
                 if (wasAdded)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Details), new {id = ability.AbilityID});
                 }
                 else
                 {
@@ -149,7 +137,7 @@ namespace Website.Controllers
                 bool wasUpdated = _abilityManager.EditAbility(ability);
                 if (wasUpdated)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Details), new { id = ability.AbilityID });
                 }
                 else 
                 {
@@ -166,31 +154,25 @@ namespace Website.Controllers
             }
         }
 
-        // GET: AbilityController/Deactivate/5
-        public ActionResult Deactivate(string id)
-        {
-            try
-            {
-                Ability ability = _abilityManager.GetAbilityByAbilityID(id);
-                return View(ability);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Exception = ex;
-                ViewBag.DisplayError = $"Could not get the ability '{id}' for deactivation.";
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
         // POST: AbilityController/Deactivate/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Deactivate(string id, IFormCollection collection)
+        [Authorize(Roles = "Admin,Moderator")]
+        public ActionResult Activate(string id, bool active)
         {
+            bool result = false;
             try
             {
-                bool result = _abilityManager.DeactivateAbility(id);
-                
+                if (!active)
+                {
+
+                    result = _abilityManager.DeactivateAbility(id);
+                }
+                else
+                {
+                    result = _abilityManager.ReactivateAbility(id);
+                }
+
                 if (result)
                 {
                     return RedirectToAction(nameof(Index));
@@ -203,49 +185,7 @@ namespace Website.Controllers
             catch(Exception ex)
             {
                 ViewBag.Exception = ex;
-                ViewBag.DisplayError = $"Something went wrong when trying to deactivate the ability '{id}'.";
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
-        // GET: AbilityController/Deactivate/5
-        public ActionResult Reactivate(string id)
-        {
-            try
-            {
-                Ability ability = _abilityManager.GetAbilityByAbilityID(id);
-                return View(ability);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Exception = ex;
-                ViewBag.DisplayError = $"Could not get the ability '{id}' for reactivation.";
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
-        // POST: AbilityController/Deactivate/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Reactivate(string id, IFormCollection collection)
-        {
-            try
-            {
-                bool result = _abilityManager.ReactivateAbility(id);
-                
-                if (result)
-                {
-                    return RedirectToAction(nameof(DeactivatedList));
-                }
-                else
-                {
-                    return View(id);
-                }
-            }
-            catch(Exception ex)
-            {
-                ViewBag.Exception = ex;
-                ViewBag.DisplayError = $"Something went wrong when trying to reactivate the ability '{id}'.";
+                ViewBag.DisplayError = $"Something went wrong when trying to change the ability '{id}' activation status.";
                 return RedirectToAction("Error", "Home");
             }
         }
@@ -277,7 +217,7 @@ namespace Website.Controllers
 
                 if (wasDeleted)
                 {
-                    return RedirectToAction(nameof(DeactivatedList));
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {

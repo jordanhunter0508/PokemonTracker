@@ -11,43 +11,43 @@ namespace DataAccessFakes
 {
     public class AbilityAccessorFakes : IAbilityAccessor
     {
-        List<Ability> _abilities;
+        List<AbilityVM> _abilities;
 
         /// <summary>
         /// Fills the _abilities list with fake data
         /// </summary>
         public AbilityAccessorFakes()
         {
-            _abilities = new List<Ability>();
-            _abilities.Add(new Ability()
+            _abilities = new List<AbilityVM>();
+            _abilities.Add(new AbilityVM()
             {
                 AbilityID = "Ability Test 1",
                 AbilityType = "Ability Type",
                 Description = "This is description 1.",
                 Active = true,
             });
-            _abilities.Add(new Ability()
+            _abilities.Add(new AbilityVM()
             {
                 AbilityID = "Ability Test 2",
                 AbilityType = "Ability Type",
                 Description = "This is description 2.",
                 Active = true,
             });
-            _abilities.Add(new Ability()
+            _abilities.Add(new AbilityVM()
             {
                 AbilityID = "Ability Test 3",
                 AbilityType = "Ability Type",
                 Description = "This is description 3.",
                 Active = true,
             });
-            _abilities.Add(new Ability()
+            _abilities.Add(new AbilityVM()
             {
                 AbilityID = "Ability Test 4",
                 AbilityType = "Ability Type",
                 Description = "This is description 4.",
                 Active = true,
             });
-            _abilities.Add(new Ability()
+            _abilities.Add(new AbilityVM()
             {
                 AbilityID = "Ability Test 5",
                 AbilityType = "Ability Test",
@@ -78,72 +78,10 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IAbilityAccessor"/> used for testing
         /// </summary>
-        public List<Ability> SelectAllAbilities()
+        public List<AbilityVM> SelectAllAbilities()
         {
-            List<Ability> results = new List<Ability>();
+            List<AbilityVM> results = new List<AbilityVM>();
             results = _abilities;
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IAbilityAccessor"/> used for testing
-        /// </summary>
-        public PaginatedResult<Ability> SelectActiveAbilities(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
-
-            IEnumerable<Ability> activeAbilities = _abilities.Where(ability => ability.Active);
-
-            results.TotalCount = activeAbilities.Count();
-            results.PageNumber = pageNumber;
-            results.PageSize = pageSize;
-            results.TotalPages = (int)Math.Ceiling((double)activeAbilities.Count() / pageSize);
-
-            results.Items = activeAbilities.Skip((pageNumber - 1) * pageSize)
-                                           .Take(pageSize)
-                                           .ToList();
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IAbilityAccessor"/> used for testing
-        /// </summary>
-        public PaginatedResult<Ability> SelectDeactiveAbilities(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
-
-            IEnumerable<Ability> deactiveAbilities = _abilities.Where(ability => !ability.Active);
-
-            results.TotalCount = deactiveAbilities.Count();
-            results.PageNumber = pageNumber;
-            results.PageSize = pageSize;
-            results.TotalPages = (int)Math.Ceiling((double)deactiveAbilities.Count() / pageSize);
-
-
-            results.Items = deactiveAbilities.Skip((pageNumber - 1) * pageSize)
-                                           .Take(pageSize)
-                                           .ToList();
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IAbilityAccessor"/> used for testing
-        /// </summary>
-        public PaginatedResult<Ability> SelectAbilitiesByAbilityType(string abilityType, int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<Ability> results = new PaginatedResult<Ability>();
-
-            IEnumerable<Ability> abilitiesByType = _abilities.Where(ability => 
-                                                                    ability.Active && 
-                                                                    ability.AbilityType == abilityType);
-
-            results.TotalCount = abilitiesByType.Count();
-            results.PageNumber = pageNumber;
-            results.PageSize = pageSize;
-
-            results.Items = abilitiesByType.Skip((pageNumber - 1) * pageSize)
-                                           .Take(pageSize)
-                                           .ToList();
             return results;
         }
 
@@ -162,8 +100,8 @@ namespace DataAccessFakes
                     throw new Exception("Ability ID already used.");
                 }
             }
-
-            _abilities.Add(ability);
+            AbilityVM abilityVM = ConvertToVM(ability);
+            _abilities.Add(abilityVM);
             count = 1;
 
             return count;
@@ -194,7 +132,8 @@ namespace DataAccessFakes
                 updatedAbility.AbilityType = ability.AbilityType;
                 updatedAbility.Description = ability.Description;
 
-                _abilities[index] = updatedAbility;
+                AbilityVM abilityVM = ConvertToVM(updatedAbility);
+                _abilities[index] = abilityVM;
 
                 count++;
             }
@@ -221,7 +160,8 @@ namespace DataAccessFakes
 
             if (count == 1)
             {
-                _abilities.Remove(deleteAbility);
+                AbilityVM abilityVM = ConvertToVM(deleteAbility);
+                _abilities.Remove(abilityVM);
             }
 
             return count;
@@ -263,6 +203,23 @@ namespace DataAccessFakes
             }
 
             return count;
+        }
+
+        /// <summary>
+        /// Converts an Ability to a AbilityVM
+        /// </summary>
+        /// <param name="ability">Ability to convert to a VM</param>
+        /// <returns>Returns an AbilityVM made from the inputed Ability</returns>
+        private AbilityVM ConvertToVM(Ability ability) 
+        {
+            AbilityVM result = new AbilityVM()
+            { 
+                AbilityID = ability.AbilityID,
+                AbilityType = ability.AbilityType,
+                Description = ability.Description,
+                Active = ability.Active,
+            };
+            return result;
         }
     }
 }

@@ -1,48 +1,74 @@
-﻿@model IEnumerable<DataDomain.Ability>
+﻿@model IEnumerable<DataDomain.AbilityVM>
 
 @{
 	ViewData["Title"] = "Abilities";
 }
 
-<h1>Abilites</h1>
+<script src="~/js/admin-toggles.js"></script>
 
-<p>
-	<a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.AbilityID)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.AbilityType)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Description)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.AbilityID)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.AbilityType)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Description)
-				</td>
-				<td>
-					@Html.ActionLink("Edit", "Edit", new { id = item.AbilityID }) |
-					@Html.ActionLink("Details", "Details", new { id = item.AbilityID }) |
-					@Html.ActionLink("Deactivate", "Deactivate", new { id = item.AbilityID })
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
+
+
+<div class="admin-layout-container">
+	<partial name="~/Views/Shared/_AdminPartial.cshtml" />
+
+	<section>
+		<h1 style="padding: 10px;">Abilites</h1>
+
+		<p>
+			<a asp-action="Create" style="padding: 10px;">Add Ability</a>
+		</p>
+
+		<div class="admin-card">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.AbilityID)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.AbilityType)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.DescriptionDisplay)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Active)
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.AbilityID)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.AbilityType)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.DescriptionDisplay)
+							</td>
+							<td>
+								<label class="switch switch-sm">
+									<form asp-controller="Ability" asp-action="Activate" method="post">
+										<input type="hidden" name="id" value="@item.AbilityID" />
+										<input type="checkbox" name="active" value="true"
+											   @(item.Active ? "checked" : "")
+											   onchange="confirmGeneralActivate(this,'@item.AbilityID')" />
+										<span class="slider"></span>
+									</form>
+								</label>
+							</td>
+							<td>
+								@Html.ActionLink("Edit", "Edit", new { id = item.AbilityID }) |
+								@Html.ActionLink("Details", "Details", new { id = item.AbilityID })
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</section>
+</div>

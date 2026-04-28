@@ -75,7 +75,7 @@ namespace Website.Controllers
                 bool wasAdded = _altArtManager.AddAlternateArt(alternateArt);
                 if (wasAdded)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Details), new { id = alternateArt.AlternateArtID });
                 }
                 else
                 {
@@ -125,7 +125,7 @@ namespace Website.Controllers
                 bool wasUpdated = _altArtManager.EditAlternateArt(alternateArt);
                 if (wasUpdated)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Details), new { id = alternateArt.AlternateArtID });
                 }
                 else
                 {

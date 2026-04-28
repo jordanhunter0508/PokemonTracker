@@ -20,37 +20,7 @@ namespace DataAccessInterfaces
         /// Requests all records from the Ability table to create a list of Abilities
         /// </summary>
         /// <returns>Returns all abilites from the database</returns>
-        public List<Ability> SelectAllAbilities();
-
-        /// <summary>
-        /// Requests a list of records from the Ability table that are active
-        /// and fall with in the range of pageNumber and pageSize to
-        /// create an Ability List.
-        /// </summary>
-        /// <param name="pageNumber">Represents how much to offset the records by</param>
-        /// <param name="pageSize">Represents how many records to return at most.</param>
-        /// <returns>Returns a PaginatedResult of active abilities in the database.</returns>
-        public PaginatedResult<Ability> SelectActiveAbilities(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
-        /// Requests a list of records from the Ability table that are not active
-        /// and fall with in the range of pageNumber and pageSize to
-        /// create an Ability List.
-        /// </summary>
-        /// <param name="pageNumber">Represents how much to offset the records by</param>
-        /// <param name="pageSize">Represents how many records to return at most.</param>
-        /// <returns>Returns a PaginatedResult of deactive abilities in the database.</returns>
-        public PaginatedResult<Ability> SelectDeactiveAbilities(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
-        /// Requests all fields from the Ability table where the abilityType match and
-        /// fall with in the range of pageNumber and pageSize.
-        /// </summary>
-        /// <param name="abilityType">Used to search the database for am Ability</param>
-        /// <param name="pageNumber">Represents how much to offset the records by</param>
-        /// <param name="pageSize">Represents how many records to return at most.</param>
-        /// <returns>Returns a PaginatedResult of abilities where the abilityType matches.</returns>
-        public PaginatedResult<Ability> SelectAbilitiesByAbilityType(string abilityType, int pageNumber = 1, int pageSize = 20);
+        public List<AbilityVM> SelectAllAbilities();
 
         /// <summary>
         /// Inserts the parameters into the stored procedure to try

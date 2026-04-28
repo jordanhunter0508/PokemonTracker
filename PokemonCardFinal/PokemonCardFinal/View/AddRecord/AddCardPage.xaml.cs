@@ -139,7 +139,7 @@ namespace PokemonCardFinal.View.AddRecord
                                             });
 
                 cmbAbility.ItemsSource = new AbilityManager()
-                                            .GetActiveAbilities().Items
+                                            .GetAllAbilities()
                                             .Prepend(new Ability()
                                             {
                                                 AbilityID = "Abilities",

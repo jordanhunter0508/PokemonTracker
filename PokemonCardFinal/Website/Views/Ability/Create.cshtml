@@ -5,46 +5,54 @@
     ViewData["Title"] = "Create an Ability";
 }
 
-<h1>Create a new ability</h1>
+<div class="admin-layout-container">
+    <partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="AbilityID" class="control-label"></label>
-                <input asp-for="AbilityID" class="form-control" />
-                <span asp-validation-for="AbilityID" class="text-danger"></span>
-            </div>
+    <section>
+        <h1>Create a new ability</h1>
+        <hr />
 
-            <div class="form-group">
-                <label asp-for="AbilityType" class="control-label"></label>
-                <div class="col-md-12">
-                    @Html.DropDownListFor(model => model.AbilityType,
-                    new SelectList(abilityTypes),
-                                        "Select an Ability Type",
-                                        new { @class = "form-control" })
+        <div class="admin-card">
+            <div class="row">
+                <div class="col-md-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="AbilityID" class="control-label"></label>
+                            <input asp-for="AbilityID" class="form-control" />
+                            <span asp-validation-for="AbilityID" class="text-danger"></span>
+                        </div>
 
-                    @Html.ValidationMessageFor(model => model.AbilityType,
-                                        "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <label asp-for="AbilityType" class="control-label"></label>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.AbilityType,
+                                new SelectList(abilityTypes),
+                                                                "Select an Ability Type",
+                                                                new { @class = "form-control" })
+
+                                @Html.ValidationMessageFor(model => model.AbilityType,
+                                                                "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" style="margin-top: 3%;" />
+                        </div>
+                    </form>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+            <div>
+                <a asp-action="Index">Back to List</a>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+        </div>
+    </section>
 </div>
 
 @section Scripts {

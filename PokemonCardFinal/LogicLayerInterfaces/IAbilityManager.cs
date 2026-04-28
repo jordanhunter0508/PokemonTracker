@@ -24,38 +24,7 @@ namespace LogicLayerInterfaces
         /// </summary>
         /// <returns>Returns a a list of all abilites</returns>
         /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public List<Ability> GetAllAbilities();
-
-        /// <summary>
-        /// Calls the <see href="IAbilityAccessor.SelectActiveAbilties(int,int)"/> method to get<br/>
-        /// a list of Abilities from the database.
-        /// </summary>
-        /// <param name="pageNumber">Represents what page to pull from.</param>
-        /// <param name="pageSize">Represents how many items are on the page.</param>
-        /// <returns>Returns a PaginatedResult where the Items is a list of Abilities that are active</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public PaginatedResult<Ability> GetActiveAbilities(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
-        /// Calls the <see href="IAbilityAccessor.SelectDeactiveAbilites(int,int)"/> method to get<br/>
-        /// a list of Abilities from the database.
-        /// </summary>
-        /// <param name="pageNumber">Represents what page to pull from.</param>
-        /// <param name="pageSize">Represents how many items are on the page.</param>
-        /// <returns>Returns a PaginatedResult where the Items is a list of Abilities that are deactive</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public PaginatedResult<Ability> GetDeactiveAbilities(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
-        /// Calls the <see href="IAbilityAccessor.SelectAbilityByAbilityType(string)"/> method to get<br/>
-        /// a list of Abilites from the database that hava a matching abilityType.
-        /// </summary>
-        /// <param name="abilityType">Used to search the database for abilites with the same type.</param>
-        /// <param name="pageNumber">Represents what page to pull from.</param>
-        /// <param name="pageSize">Represents how many items are on the page.</param>
-        /// <returns>Returns a PaginatedResult where the Items is a list of Abilities</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public PaginatedResult<Ability> GetAbilitiesByAbilityType(string abilityType, int pageNumber = 1, int pageSize = 20);
+        public List<AbilityVM> GetAllAbilities();
 
         /// <summary>
         /// Passes parameters to <see href="IAbilityAccessor.InsertAbility(Ability)"/><br/>

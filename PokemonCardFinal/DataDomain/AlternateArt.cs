@@ -20,6 +20,7 @@ namespace DataDomain
         [MaxLength(250, ErrorMessage = "Alternate art's description must be less than 250 characters.")]
         public string Description { get; set; }
 
+        [DisplayName("Active")]
         public bool Active { get; set; }
     }
 }
