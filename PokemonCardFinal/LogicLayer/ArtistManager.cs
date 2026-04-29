@@ -97,62 +97,6 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IArtistManager"/>
         /// </summary>
-        public PaginatedResult<Artist> GetActiveArtists(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<Artist> results = new PaginatedResult<Artist>();
-
-            if (pageNumber <= 0)
-            {
-                throw new ArgumentException("Page number must be greater than 0.");
-            }
-            if (pageSize <= 0)
-            {
-                throw new ArgumentException("Page size must be greater than 0.");
-            }
-
-            try
-            {
-                results = _artistAccessor.SelectActiveArtists(pageNumber, pageSize);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to retrieve active artists.", ex);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IArtistManager"/>
-        /// </summary>
-        public PaginatedResult<Artist> GetDeactiveArtists(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<Artist> results = new PaginatedResult<Artist>();
-
-            if (pageNumber <= 0)
-            {
-                throw new ArgumentException("Page number must be greater than 0.");
-            }
-            if (pageSize <= 0)
-            {
-                throw new ArgumentException("Page size must be greater than 0.");
-            }
-
-            try
-            {
-                results = _artistAccessor.SelectDeactiveArtists(pageNumber, pageSize);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to retrieve active artists.", ex);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IArtistManager"/>
-        /// </summary>
         public bool AddArtist(string givenName, string surname)
         {
             bool result = false;

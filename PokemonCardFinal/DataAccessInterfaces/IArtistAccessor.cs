@@ -27,26 +27,6 @@ namespace DataAccessInterfaces
         public Artist SelectArtistByArtistName(string givenName, string surname);
 
         /// <summary>
-        /// Requests a list of records from the Artist table that are active
-        /// and fall with in the range of pageNumber and pageSize to
-        /// create an Artist List.
-        /// </summary>
-        /// <param name="pageNumber">Represents how much to offset the records by</param>
-        /// <param name="pageSize">Represents how many records to return at most.</param>
-        /// <returns>Returns a PaginatedResult of active artists in the database.</returns>
-        public PaginatedResult<Artist> SelectActiveArtists(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
-        /// Requests a list of records from the Artist table that are not active
-        /// and fall with in the range of pageNumber and pageSize to
-        /// create an Artist List.
-        /// </summary>
-        /// <param name="pageNumber">Represents how much to offset the records by</param>
-        /// <param name="pageSize">Represents how many records to return at most.</param>
-        /// <returns>Returns a PaginatedResult of deactive artists in the database.</returns>
-        public PaginatedResult<Artist> SelectDeactiveArtists(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
         /// Requests all data from the Artist table to
         /// create an Artist List.
         /// </summary>

@@ -273,66 +273,12 @@ AS
 	END
 GO
 
-print '*** creating sp_select_artists_active_paginated ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_artists_active_paginated]
-(
-		@PageNumber			[int] = 1,
-		@PageSize			[int] = 20
-)
-AS
-	BEGIN
-		SELECT 	[ArtistID],[GivenName],[Surname],[Active],
-				
-				/*PaginatedList Components*/
-				COUNT([ArtistID]) OVER() AS TotalCount,
-				@PageNumber AS PageNumber, 
-				@PageSize AS PageSize,
-				CEILING(1.0 *  COUNT([ArtistID]) OVER() / @PageSize) AS TotalPages
-				
-		FROM	[Artist]
-		WHERE	[Artist].[Active] = 1
-		
-		/*Pagination*/
-		ORDER BY [GivenName] ASC
-		OFFSET	@PageSize * (@PageNumber - 1) ROWS
-		FETCH NEXT @PageSize ROWS ONLY;
-	END
-GO
-
-print '*** creating sp_select_artists_deactive_paginated ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_artists_deactive_paginated]
-(
-		@PageNumber			[int] = 1,
-		@PageSize			[int] = 20
-)
-AS
-	BEGIN
-		SELECT 	[ArtistID],[GivenName],[Surname],[Active],
-				
-				/*PaginatedList Components*/
-				COUNT([ArtistID]) OVER() AS TotalCount,
-				@PageNumber AS PageNumber, 
-				@PageSize AS PageSize,
-				CEILING(1.0 *  COUNT([ArtistID]) OVER() / @PageSize) AS TotalPages
-				
-		FROM	[Artist]
-		WHERE	[Artist].[Active] = 0
-		
-		/*Pagination*/
-		ORDER BY [GivenName] ASC
-		OFFSET	@PageSize * (@PageNumber - 1) ROWS
-		FETCH NEXT @PageSize ROWS ONLY;
-	END
-GO
-
 print '*** creating sp_insert_artist ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_artist]
 	(
 		@GivenName		[nvarchar](50),
-		@Surname		[nvarchar](100)
+		@Surname		[nvarchar](100) = ""
 	)
 AS
 	BEGIN
@@ -350,7 +296,7 @@ CREATE PROCEDURE [dbo].[sp_update_artist]
 	(
 		@ArtistID		[int],
 		@GivenName		[nvarchar](50),
-		@Surname		[nvarchar](100)
+		@Surname		[nvarchar](100) = ""
 	)
 AS
 	BEGIN

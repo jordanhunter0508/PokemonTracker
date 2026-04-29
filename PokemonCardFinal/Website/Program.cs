@@ -44,6 +44,7 @@ namespace Website
             builder.Services.AddScoped<IArtistManager, ArtistManager>();
             builder.Services.AddScoped<IAbilityManager, AbilityManager>();
             builder.Services.AddScoped<IAltArtManager, AltArtManager>();
+            builder.Services.AddScoped<IArtistManager, ArtistManager>();
             builder.Services.AddScoped<IRuleManager, RuleManager>();
 
 

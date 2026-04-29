@@ -1,0 +1,64 @@
+﻿@model IEnumerable<DataDomain.Artist>
+
+@{
+	ViewData["Title"] = "Artists";
+}
+
+<script src="~/js/admin-toggles.js"></script>
+
+<div class="admin-layout-container">
+	<partial name="~/Views/Shared/_AdminPartial.cshtml" />
+
+	<section>
+		<h1 style="padding: 10px;">Artists</h1>
+		<hr/>
+		<p>
+			<a asp-action="Create" style="padding: 10px;">Add a New Artist</a>
+		</p>
+		<div class="admin-card">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.GivenName)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Surname)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Active)
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.GivenName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Surname)
+							</td>
+							<td>
+								<label class="switch switch-sm">
+									<form asp-controller="Artist" asp-action="Activate" method="post">
+										<input type="hidden" name="id" value="@item.ArtistID" />
+										<input type="checkbox" name="active" value="true"
+											   @(item.Active ? "checked" : "")
+											   onchange="confirmGeneralActivate(this,'@item.Name')" />
+										<span class="slider"></span>
+									</form>
+								</label>
+							</td>
+							<td>
+								@Html.ActionLink("Edit", "Edit", new { id = item.ArtistID })
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</section>
+</div>

@@ -119,48 +119,6 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/> used for testing
         /// </summary>
-        public PaginatedResult<Artist> SelectActiveArtists(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<Artist> results = new PaginatedResult<Artist>();
-
-            IEnumerable<Artist> activeArtists = _artists.Where(ability => ability.Active);
-
-            results.TotalCount = activeArtists.Count();
-            results.PageNumber = pageNumber;
-            results.PageSize = pageSize;
-            results.TotalPages = (int)Math.Ceiling((double)activeArtists.Count() / pageSize);
-
-
-            results.Items = activeArtists.Skip((pageNumber - 1) * pageSize)
-                                          .Take(pageSize)
-                                          .ToList();
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IElementAccessor"/> used for testing
-        /// </summary>
-        public PaginatedResult<Artist> SelectDeactiveArtists(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<Artist> results = new PaginatedResult<Artist>();
-
-            IEnumerable<Artist> deactiveArtists = _artists.Where(ability => !ability.Active);
-
-            results.TotalCount = deactiveArtists.Count();
-            results.PageNumber = pageNumber;
-            results.PageSize = pageSize;
-            results.TotalPages = (int)Math.Ceiling((double)deactiveArtists.Count() / pageSize);
-
-
-            results.Items = deactiveArtists.Skip((pageNumber - 1) * pageSize)
-                                           .Take(pageSize)
-                                           .ToList();
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IElementAccessor"/> used for testing
-        /// </summary>
         public int InsertArtist(string givenName, string surname)
         {
             int result = 0;

@@ -37,26 +37,6 @@ namespace LogicLayerInterfaces
         public List<Artist> GetAllArtists();
 
         /// <summary>
-        /// Calls the <see href="IArtistAccessor.SelectActiveArtists(int,int)"/> method to get<br/>
-        /// a list of Artists from the database that are active.
-        /// </summary>
-        /// <param name="pageNumber">Represents what page to pull from.</param>
-        /// <param name="pageSize">Represents how many items are on the page.</param>
-        /// <returns>Returns a PaginatedResult where the Items is a list of Artists that are active</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public PaginatedResult<Artist> GetActiveArtists(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
-        /// Calls the <see href="IArtistAccessor.SelectDeactiveArtists(int,int)"/> method to get<br/>
-        /// a list of Artist from the database that are deactive.
-        /// </summary>
-        /// <param name="pageNumber">Represents what page to pull from.</param>
-        /// <param name="pageSize">Represents how many items are on the page.</param>
-        /// <returns>Returns a PaginatedResult where the Items is a list of Artists that are deactive</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public PaginatedResult<Artist> GetDeactiveArtists(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
         /// Passes parameters to <see href="InsertArtist(string,string)"/><br/>
         /// Then returns true if the record was created successfully
         /// </summary>
