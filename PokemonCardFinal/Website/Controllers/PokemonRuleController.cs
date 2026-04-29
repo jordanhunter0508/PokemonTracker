@@ -1,5 +1,4 @@
-﻿using AspNetCoreGeneratedDocument;
-using DataDomain;
+﻿using DataDomain;
 using LogicLayerInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
