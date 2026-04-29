@@ -36,12 +36,12 @@ function confirmBooster(checkBox, id) {
 	}
 }
 
-function confirmGeneralActivate(checkBox, id) {
+function confirmGeneralActivate(checkBox, itemName) {
 	const newState = checkBox.checked;
-	let message = "Are you sure you want deactivate " + id + ".\n";
+	let message = "Are you sure you want deactivate " + itemName + ".\n";
 
 	if (newState) {
-		message = "Are you sure you want activate " + id + ".\n";
+		message = "Are you sure you want activate " + itemName + ".\n";
 	}
 
 	if (confirm(message)) {

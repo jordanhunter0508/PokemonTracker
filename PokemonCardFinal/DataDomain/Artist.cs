@@ -11,6 +11,7 @@ namespace DataDomain
         public int ArtistID { get; set; }
         public string GivenName { get; set; }
         public string Surname { get; set; }
+        public bool Active { get; set; }
 
         public string Name
         {
@@ -24,7 +25,5 @@ namespace DataDomain
                 return name;
             }
         }
-
-        public bool Active { get; set; }
     }
 }

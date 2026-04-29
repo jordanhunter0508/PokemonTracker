@@ -24,7 +24,8 @@ namespace Website.Controllers
         {
             try
             {
-                IEnumerable<AlternateArt> altArts = _altArtManager.GetAllAlternateArt();
+                IEnumerable<AlternateArt> altArts = _altArtManager.GetAllAlternateArt()
+                                                                  .Where(a => !string.Equals(a.AlternateArtID,"none",StringComparison.OrdinalIgnoreCase));
                 return View(altArts);
             }
             catch (Exception ex)
@@ -138,27 +139,19 @@ namespace Website.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Activate(string id, bool active)
         {
-            bool result = false;
             try
             {
                 if (!active)
                 {
 
-                    result = _altArtManager.DeactivateAlternateArt(id);
+                    _altArtManager.DeactivateAlternateArt(id);
                 }
                 else
                 {
-                    result = _altArtManager.ReactivateAlternateArt(id);
+                    _altArtManager.ReactivateAlternateArt(id);
                 }
 
-                if (result)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    return View(id);
-                }
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {

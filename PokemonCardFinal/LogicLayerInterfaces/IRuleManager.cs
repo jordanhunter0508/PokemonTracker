@@ -22,26 +22,6 @@ namespace LogicLayerInterfaces
         public List<PokemonRule> GetAllRules();
 
         /// <summary>
-        /// Calls the <see href="IRuleAccessor.SelectActiveRules(int,int)"/> method to get<br/>
-        /// a list of PokemonRules from the database.
-        /// </summary>
-        /// <param name="pageNumber">Represents what page to pull from.</param>
-        /// <param name="pageSize">Represents how many items are on the page.</param>
-        /// <returns>Returns a PaginatedResult where the Items is a list of PokemonRules that are active</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public PaginatedResult<PokemonRule> GetActiveRules(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
-        /// Calls the <see href="IRuleAccessor.SelectDeactiveRules(int,int)"/> method to get<br/>
-        /// a list of PokemonRules from the database.
-        /// </summary>
-        /// <param name="pageNumber">Represents what page to pull from.</param>
-        /// <param name="pageSize">Represents how many items are on the page.</param>
-        /// <returns>Returns a PaginatedResult where the Items is a list of PokemonRules that are deactive</returns>
-        /// <exception cref="ApplicationException">Throws if there is an error retrieving data</exception>
-        public PaginatedResult<PokemonRule> GetDeactiveRules(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
         /// Passes parameters to <see href="InsertRule(PokemonRule)"/> Then returns true
         /// if the record was updated successfully.
         /// </summary>

@@ -82,48 +82,6 @@ namespace DataAccessFakes
         /// <summary>
         /// Implements from <see cref="IRuleAccessor"/> used for testing
         /// </summary>
-        public PaginatedResult<PokemonRule> SelectActiveRules(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<PokemonRule> results = new PaginatedResult<PokemonRule>();
-
-            IEnumerable<PokemonRule> activeRules = _rules.Where(rule => rule.Active);
-
-            results.PageNumber = pageNumber;
-            results.PageSize = pageSize;
-            results.TotalCount = activeRules.Count();
-            results.TotalPages = (int)Math.Ceiling((double)activeRules.Count() / pageSize);
-
-            results.Items = activeRules.Skip((pageNumber - 1) * pageSize)
-                                       .Take(pageSize)
-                                       .ToList();
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IRuleAccessor"/> used for testing
-        /// </summary>
-        public PaginatedResult<PokemonRule> SelectDeactiveRules(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<PokemonRule> results = new PaginatedResult<PokemonRule>();
-
-            IEnumerable<PokemonRule> deactiveRules = _rules.Where(rule => !rule.Active);
-
-            results.PageNumber = pageNumber;
-            results.PageSize = pageSize;
-            results.TotalCount = deactiveRules.Count();
-            results.TotalPages = (int)Math.Ceiling((double)deactiveRules.Count() / pageSize);
-
-            results.Items = deactiveRules.Skip((pageNumber - 1) * pageSize)
-                                       .Take(pageSize)
-                                       .ToList();
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IRuleAccessor"/> used for testing
-        /// </summary>
         public int InsertRule(PokemonRule rule)
         {
             int count = 0;

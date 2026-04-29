@@ -1,4 +1,5 @@
-﻿@model IEnumerable<DataDomain.AbilityVM>
+﻿@using Humanizer
+@model IEnumerable<DataDomain.AbilityVM>
 
 @{
 	ViewData["Title"] = "Abilities";
@@ -42,13 +43,13 @@
 					{
 						<tr>
 							<td>
-								@Html.DisplayFor(modelItem => item.AbilityID)
+								@item.AbilityID.Humanize(LetterCasing.Title)
 							</td>
 							<td>
-								@Html.DisplayFor(modelItem => item.AbilityType)
+								@item.AbilityType.Humanize(LetterCasing.Title)
 							</td>
 							<td>
-								@Html.DisplayFor(modelItem => item.DescriptionDisplay)
+								@item.Description.Humanize(LetterCasing.Sentence).Truncate(50, "... [more]")
 							</td>
 							<td>
 								<label class="switch switch-sm">
@@ -62,8 +63,8 @@
 								</label>
 							</td>
 							<td>
-								@Html.ActionLink("Edit", "Edit", new { id = item.AbilityID }) |
-								@Html.ActionLink("Details", "Details", new { id = item.AbilityID })
+								@Html.ActionLink("Details", "Details", new { id = item.AbilityID }) |
+								@Html.ActionLink("Edit", "Edit", new { id = item.AbilityID })
 							</td>
 						</tr>
 					}

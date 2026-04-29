@@ -1,7 +1,8 @@
-﻿@model DataDomain.AlternateArt
+﻿@using Humanizer
+@model DataDomain.AlternateArt
 
 @{
-    string capitalArtName = Model.AlternateArtID[0].ToString().ToUpper() + Model.AlternateArtID.Substring(1);
+    string capitalTitle = Model.AlternateArtID.Humanize(LetterCasing.Title);
     ViewData["Title"] = "Alternate Art Details";
 }
 
@@ -12,7 +13,7 @@
 
     <section>
         <div class="admin-card">
-            <h1>@capitalArtName's Details</h1>
+            <h1>@capitalTitle's Details</h1>
             <hr />
             <div>
                 <dl class="row">
@@ -20,7 +21,7 @@
                         @Html.DisplayNameFor(model => model.AlternateArtID)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.AlternateArtID)
+                        @Model.AlternateArtID.Humanize(LetterCasing.Title)
                     </dd>
                     <dt class="col-sm-2">
                         @Html.DisplayNameFor(model => model.Description)

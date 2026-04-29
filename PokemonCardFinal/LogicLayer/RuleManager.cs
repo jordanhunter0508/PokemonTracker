@@ -73,62 +73,6 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IRuleManager"/>
         /// </summary>
-        public PaginatedResult<PokemonRule> GetActiveRules(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<PokemonRule> results = new PaginatedResult<PokemonRule>();
-
-            if (pageNumber <= 0)
-            {
-                throw new ArgumentException("Page number must be greater than 0.");
-            }
-            if (pageSize <= 0)
-            {
-                throw new ArgumentException("Page size must be greater than 0.");
-            }
-
-            try
-            {
-                results = _ruleAccessor.SelectActiveRules(pageNumber, pageSize);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to retrieve a list of active pokemon rules.", ex);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IRuleManager"/>
-        /// </summary>
-        public PaginatedResult<PokemonRule> GetDeactiveRules(int pageNumber = 1, int pageSize = 20)
-        {
-            PaginatedResult<PokemonRule> results = new PaginatedResult<PokemonRule>();
-
-            if (pageNumber <= 0)
-            {
-                throw new ArgumentException("Page number must be greater than 0.");
-            }
-            if (pageSize <= 0)
-            {
-                throw new ArgumentException("Page size must be greater than 0.");
-            }
-
-            try
-            {
-                results = _ruleAccessor.SelectDeactiveRules(pageNumber, pageSize);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Failed to retrieve a list of deactive pokemon rules.", ex);
-            }
-
-            return results;
-        }
-
-        /// <summary>
-        /// Implements from <see cref="IRuleManager"/>
-        /// </summary>
         public bool AddRule(PokemonRule rule)
         {
             bool result = false;

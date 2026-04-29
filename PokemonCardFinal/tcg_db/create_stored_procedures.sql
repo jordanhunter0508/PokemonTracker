@@ -873,60 +873,6 @@ AS
 	END
 GO
 
-print '*** creating sp_select_rule_active_paginated ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_rule_active_paginated]
-(
-	@PageNumber			[int] = 1,
-	@PageSize			[int] = 20
-)
-AS
-	BEGIN
-		SELECT 	[PokemonRuleID],[Description],[Active],
-				
-				/*PaginatedList Components*/
-				COUNT([PokemonRuleID]) OVER() AS TotalCount,
-				@PageNumber AS PageNumber, 
-				@PageSize AS PageSize,
-				CEILING(1.0 *  COUNT([PokemonRuleID]) OVER() / @PageSize) AS TotalPages
-		
-		FROM	[PokemonRule]
-		WHERE	[Active] = 1
-		
-		/*Pagination*/
-		ORDER BY [PokemonRuleID] DESC
-		OFFSET	@PageSize * (@PageNumber - 1) ROWS
-		FETCH NEXT @PageSize ROWS ONLY;
-	END
-GO
-
-print '*** creating sp_select_rule_deactive_paginated ***'
-GO
-CREATE PROCEDURE [dbo].[sp_select_rule_deactive_paginated]
-(
-	@PageNumber			[int] = 1,
-	@PageSize			[int] = 20
-)
-AS
-	BEGIN
-		SELECT 	[PokemonRuleID],[Description],[Active],
-				
-				/*PaginatedList Components*/
-				COUNT([PokemonRuleID]) OVER() AS TotalCount,
-				@PageNumber AS PageNumber, 
-				@PageSize AS PageSize,
-				CEILING(1.0 *  COUNT([PokemonRuleID]) OVER() / @PageSize) AS TotalPages
-		
-		FROM	[PokemonRule]
-		WHERE	[Active] = 0
-		
-		/*Pagination*/
-		ORDER BY [PokemonRuleID] DESC
-		OFFSET	@PageSize * (@PageNumber - 1) ROWS
-		FETCH NEXT @PageSize ROWS ONLY;
-	END
-GO
-
 print '*** creating sp_insert_rule ***'
 GO
 CREATE PROCEDURE [dbo].[sp_insert_rule]

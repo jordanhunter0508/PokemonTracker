@@ -41,7 +41,7 @@ namespace Website.Controllers
             catch (Exception ex)
             {
                 ViewBag.Exception = ex;
-                ViewBag.DisplayError = "Could not get a list of active abilites.";
+                ViewBag.DisplayError = "Could not get a list of all abilites.";
                 return RedirectToAction("Error", "Home");
             }
         }
@@ -84,7 +84,7 @@ namespace Website.Controllers
                 bool wasAdded = _abilityManager.AddAbility(ability);
                 if (wasAdded)
                 {
-                    return RedirectToAction(nameof(Details), new {id = ability.AbilityID});
+                    return RedirectToAction(nameof(Details), new { id = ability.AbilityID });
                 }
                 else
                 {
@@ -138,16 +138,16 @@ namespace Website.Controllers
                 {
                     return RedirectToAction(nameof(Details), new { id = ability.AbilityID });
                 }
-                else 
+                else
                 {
                     return View(ability);
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.Exception = ex;
-                ViewBag.DisplayError = "Something went wrong when trying to update the ability '"+ ability.AbilityID + "'.\n" +
+                ViewBag.DisplayError = "Something went wrong when trying to update the ability '" + ability.AbilityID + "'.\n" +
                                        "Please make sure there isn't an ability with the same name and type.";
                 return RedirectToAction("Error", "Home");
             }
@@ -157,29 +157,21 @@ namespace Website.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Activate(string id, bool active)
         {
-            bool result = false;
             try
             {
                 if (!active)
                 {
 
-                    result = _abilityManager.DeactivateAbility(id);
+                    _abilityManager.DeactivateAbility(id);
                 }
                 else
                 {
-                    result = _abilityManager.ReactivateAbility(id);
+                    _abilityManager.ReactivateAbility(id);
                 }
 
-                if (result)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    return View(id);
-                }
+                return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.Exception = ex;
                 ViewBag.DisplayError = $"Something went wrong when trying to change the ability '{id}' activation status.";

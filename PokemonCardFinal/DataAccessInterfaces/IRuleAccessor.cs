@@ -25,26 +25,6 @@ namespace DataAccessInterfaces
         public List<PokemonRule> SelectAllRules();
 
         /// <summary>
-        /// Requests a list of records from the PokemonRule table that are active
-        /// and fall with in the range of pageNumber and pageSize to
-        /// create a PokemonRule List.
-        /// </summary>
-        /// <param name="pageNumber">Represents how much to offset the records by</param>
-        /// <param name="pageSize">Represents how many records to return at most.</param>
-        /// <returns>Returns a PaginatedResult of active rules in the database.</returns>
-        public PaginatedResult<PokemonRule> SelectActiveRules(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
-        /// Requests a list of records from the PokemonRule table that are deactive
-        /// and fall with in the range of pageNumber and pageSize to
-        /// create a PokemonRule List.
-        /// </summary>
-        /// <param name="pageNumber">Represents how much to offset the records by</param>
-        /// <param name="pageSize">Represents how many records to return at most.</param>
-        /// <returns>Returns a PaginatedResult of deactive rules in the database.</returns>
-        public PaginatedResult<PokemonRule> SelectDeactiveRules(int pageNumber = 1, int pageSize = 20);
-
-        /// <summary>
         /// Inserts the parameters into the stored procedure to try
         /// and create a new record for an Pokemon Rule.
         /// </summary>

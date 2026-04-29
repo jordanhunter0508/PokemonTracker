@@ -1,7 +1,8 @@
-﻿@model DataDomain.Ability
+﻿@using Humanizer
+@model DataDomain.Ability
 
 @{
-    string capitalName = Model.AbilityID[0].ToString().ToUpper() + Model.AbilityID.Substring(1);
+    string capitalTitle = Model.AbilityID.Humanize(LetterCasing.Title);
     ViewData["Title"] = $"Ability Details";
 }
 
@@ -9,7 +10,7 @@
     <partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
     <section>
-        <h1>@capitalName's Information</h1>
+        <h1>@capitalTitle's Information</h1>
         <hr />
         <div class="admin-card">
             <div>
@@ -18,13 +19,13 @@
                         @Html.DisplayNameFor(model => model.AbilityID)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.AbilityID)
+                        @Model.AbilityID.Humanize(LetterCasing.Title)
                     </dd>
                     <dt class="col-sm-2">
                         @Html.DisplayNameFor(model => model.AbilityType)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.AbilityType)
+                        @Model.AbilityType.Humanize(LetterCasing.Title)
                     </dd>
                     <dt class="col-sm-2">
                         @Html.DisplayNameFor(model => model.Description)
