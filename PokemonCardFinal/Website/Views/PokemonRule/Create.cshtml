@@ -1,25 +1,24 @@
-﻿@model DataDomain.AlternateArt
+﻿@model DataDomain.PokemonRule
 
 @{
-    ViewData["Title"] = "Create an Alternate Art";
+    ViewData["Title"] = "Create a Pokemon Rule";
 }
 
 <div class="admin-layout-container">
     <partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
     <section>
-        <h1 style="padding: 10px;">Create an Alternate Art</h1>
+        <h1 style="padding: 10px;">Create a Pokemon Rule</h1>
         <hr />
         <div class="admin-card">
-            
             <div class="row">
                 <div class="col-md-4">
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
-                            <label asp-for="AlternateArtID" class="control-label"></label>
-                            <input asp-for="AlternateArtID" class="form-control" />
-                            <span asp-validation-for="AlternateArtID" class="text-danger"></span>
+                            <label asp-for="RuleID" class="control-label"></label>
+                            <input asp-for="RuleID" class="form-control" />
+                            <span asp-validation-for="RuleID" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Description" class="control-label"></label>
@@ -41,5 +40,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

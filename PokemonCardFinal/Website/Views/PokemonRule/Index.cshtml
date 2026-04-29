@@ -2,66 +2,65 @@
 @model IEnumerable<DataDomain.PokemonRule>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Pokemon Card Rules";
 }
 
-
-
+<script src="~/js/admin-toggles.js"></script>
 
 <div class="admin-layout-container">
-    <partial name="~/Views/Shared/_AdminPartial.cshtml" />
+	<partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
-    <section>
-        <h1 style="padding: 10px;">Card Rules</h1>
-
-        <p>
-            <a asp-controller="PokemonRule" asp-action="Create" style="padding: 10px;">Add a new Card Rule</a>
-        </p>
-        <div class="admin-card">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RuleID)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Description)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Active)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @item.RuleID.Humanize(LetterCasing.Title)
-                            </td>
-                            <td>
-                                @item.Description.Humanize(LetterCasing.Sentence).Truncate(50, "... [more]")
-                            </td>
-                            <td>
-                                <label class="switch switch-sm">
-                                    <form asp-controller="PokemonRule" asp-action="Activate" method="post">
-                                        <input type="hidden" name="id" value="@item.RuleID" />
-                                        <input type="checkbox" name="active" value="true"
-                                               @(item.Active ? "checked" : "")
-                                               onchange="confirmGeneralActivate(this,'@item.RuleID')" />
-                                        <span class="slider"></span>
-                                    </form>
-                                </label>
-                            </td>
-                            <td>
-                                @Html.ActionLink("Details", "Details", new { id = item.RuleID }) | 
-                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </section>
+	<section>
+		<h1 style="padding: 10px;">Pokemon Card Rules</h1>
+		<hr/>
+		<p>
+			<a asp-controller="PokemonRule" asp-action="Create" style="padding: 10px;">Add a new Card Rule</a>
+		</p>
+		<div class="admin-card">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.RuleID)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Description)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Active)
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@item.RuleID.Humanize(LetterCasing.Title)
+							</td>
+							<td>
+								@item.Description.Humanize(LetterCasing.Sentence).Truncate(50, "... [more]")
+							</td>
+							<td>
+								<label class="switch switch-sm">
+									<form asp-controller="PokemonRule" asp-action="Activate" method="post">
+										<input type="hidden" name="id" value="@item.RuleID" />
+										<input type="checkbox" name="active" value="true"
+											   @(item.Active ? "checked" : "")
+											   onchange="confirmGeneralActivate(this,'@item.RuleID')" />
+										<span class="slider"></span>
+									</form>
+								</label>
+							</td>
+							<td>
+								@Html.ActionLink("Details", "Details", new { id = item.RuleID }) |
+								@Html.ActionLink("Edit", "Edit", new { id = item.RuleID })
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</section>
 </div>

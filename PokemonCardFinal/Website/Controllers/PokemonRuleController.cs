@@ -22,7 +22,8 @@ namespace Website.Controllers
         {
             try
             {
-                IEnumerable<PokemonRule> rules = _ruleManager.GetAllRules();
+                IEnumerable<PokemonRule> rules = _ruleManager.GetAllRules()
+                                                             .Where(r => !string.Equals(r.RuleID,"none", StringComparison.OrdinalIgnoreCase));
                 return View(rules);
             }
             catch (Exception ex)
@@ -66,56 +67,72 @@ namespace Website.Controllers
 
             try
             {
-                return RedirectToAction(nameof(Index));
+                bool wasAdded = _ruleManager.AddRule(rule);
+                if (wasAdded)
+                {
+                    return RedirectToAction(nameof(Details), new { id = rule.RuleID });
+                }
+                else
+                {
+                    return View(rule);
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Exception = ex;
+                ViewBag.DisplayError = "Could not save the new rule.";
+                return RedirectToAction("Error", "Home");
             }
         }
 
         [HttpGet]
         public IActionResult Edit(string id)
         {
-            return View();
+            try
+            {
+                var rule = _ruleManager.GetRuleByRuleID(id);
+                return View(rule);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Exception = ex;
+                ViewBag.DisplayError = "Could not get a pokemon card rule to edit.";
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(string id, PokemonRule rule)
         {
+            rule.RuleID = id;
+            if (!ModelState.IsValid)
+            {
+                return View(rule);
+            }
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                bool wasUpdated = _ruleManager.EditRule(rule);
+                if (wasUpdated)
+                {
+                    return RedirectToAction(nameof(Details), new { id = rule.RuleID });
+                }
+                else
+                {
+                    return View(rule);
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Exception = ex;
+                ViewBag.DisplayError = "Could not update the pokemon card rule.";
+                return RedirectToAction("Error", "Home");
             }
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public IActionResult Delete(string id)
-        {
-            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public IActionResult Delete(string id, PokemonRule rule)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         public IActionResult Activate(string id, bool active)
         {
             try
