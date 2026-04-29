@@ -40,7 +40,8 @@ namespace DataAccess
                     resultElement = new ElementType()
                     {
                         ElementTypeID = reader.GetString(0),
-                        Description = reader.GetString(1)
+                        Description = reader.GetString(1),
+                        Active = reader.GetBoolean(2),
                     };
                 }
             }
@@ -81,7 +82,8 @@ namespace DataAccess
                         results.Add(new ElementType()
                         {
                             ElementTypeID = reader.GetString(0),
-                            Description = reader.GetString(1)
+                            Description = reader.GetString(1),
+                            Active = reader.GetBoolean(2),
                         });
                     }
                 }
@@ -184,7 +186,7 @@ namespace DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.Add("@ElementTypeID", SqlDbType.NVarChar, 15);
-            
+
             cmd.Parameters["@ElementTypeID"].Value = elementTypeID;
 
             try
@@ -205,5 +207,40 @@ namespace DataAccess
             return count;
         }
 
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/>. Access the database
+        /// using sp_activate_element_type
+        /// </summary>
+        public int ActivateElementType(string elementTypeID, bool active)
+        {
+            int count = 0;
+
+            SqlConnection conn = DBConnection.GetConnection();
+            string cmdText = "sp_activate_element_type";
+            SqlCommand cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+
+            cmd.Parameters.AddWithValue("@Active", active);
+            cmd.Parameters.Add("@ElementTypeID",SqlDbType.NVarChar, 15);
+            cmd.Parameters["@ElementTypeID"].Value = elementTypeID;
+
+            try
+            {
+                conn.Open();
+                count = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            { 
+                conn.Close();
+            }
+
+
+            return count;
+        }
     }
 }

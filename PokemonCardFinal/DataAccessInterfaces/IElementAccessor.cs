@@ -47,6 +47,15 @@ namespace DataAccessInterfaces
         /// <param name="elementTypeID">Used to search the table Element Type for a match</param>
         /// <returns>Returns 1 if the record at elementTypeID was deleted successfully</returns>
         public int DeleteElementType(string elementTypeID);
- 
+
+        /// <summary>
+        /// Sets the Active field to the active parameter.
+        /// </summary>
+        /// <param name="elementTypeID">ElementTypeID of the row to deactivate.</param>
+        /// <param name="active">Used to activate or deactivate the card</param>
+        /// <returns>Returns number of rows affected</returns>
+        public int ActivateElementType(string elementTypeID, bool active);
+
+
     }
 }

@@ -1,0 +1,38 @@
+﻿@using Humanizer
+@model DataDomain.ElementType
+
+@{
+	string title = Model.ElementTypeID.Humanize(LetterCasing.Title);
+	ViewData["Title"] = "Element Details";
+}
+
+<div class="admin-layout-container">
+	<partial name="~/Views/Shared/_AdminPartial.cshtml" />
+
+	<section>
+		<h1 style="padding: 10px;">@title's Details</h1>
+		<hr />
+		<div class="admin-card">
+			<div>
+				<dl class="row">
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.ElementTypeID)
+					</dt>
+					<dd class="col-sm-10">
+						@title
+					</dd>
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Description)
+					</dt>
+					<dd class="col-sm-10">
+						@Html.DisplayFor(model => model.Description)
+					</dd>
+				</dl>
+			</div>
+			<div>
+				@Html.ActionLink("Edit", "Edit", new { id = Model.ElementTypeID }) |
+				<a asp-action="Index">Back to List</a>
+			</div>
+		</div>
+	</section>
+</div>

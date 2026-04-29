@@ -184,7 +184,7 @@ namespace LogicLayer
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to deactivate a card.", ex);
+                throw new ApplicationException("Failed to change card's active status.", ex);
             }
 
             return isDeactivated;

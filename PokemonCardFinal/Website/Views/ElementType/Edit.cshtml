@@ -1,8 +1,8 @@
 ﻿@using Humanizer
-@model DataDomain.AlternateArt
+@model DataDomain.ElementType
 
 @{
-	string title = Model.AlternateArtID.Humanize(LetterCasing.Title);
+	string title = Model.ElementTypeID.Humanize(LetterCasing.Title);
 	ViewData["Title"] = "Edit " + title;
 }
 
@@ -10,20 +10,19 @@
 	<partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
 	<section>
-
 		<h1 style="padding: 10px;">Edit @title</h1>
 		<hr />
-		<div class="admin-card button-row">
+		<div class="admin-card">
 			<div class="row">
 				<div class="col-md-4">
 					<form asp-action="Edit">
-						<input hidden name="id" value="@Model.AlternateArtID"/>
+						<input value="@Model.ElementTypeID" name="id" hidden />
 						<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 						<div class="form-group">
-							<label asp-for="AlternateArtID" class="control-label"></label>
-							<input class="form-control" value="@Model.AlternateArtID" disabled />
-							<input asp-for="AlternateArtID" hidden />
-							<span asp-validation-for="AlternateArtID" class="text-danger"></span>
+							<label asp-for="ElementTypeID" class="control-label"></label>
+							<input class="form-control" value="@Model.ElementTypeID" disabled />
+							<input asp-for="ElementTypeID" hidden />
+							<span asp-validation-for="ElementTypeID" class="text-danger"></span>
 						</div>
 						<div class="form-group">
 							<label asp-for="Description" class="control-label"></label>
@@ -36,6 +35,7 @@
 					</form>
 				</div>
 			</div>
+
 			<div>
 				<a asp-action="Index">Back to List</a>
 			</div>

@@ -140,6 +140,7 @@ CREATE TABLE [dbo].[ElementType]
 (
 	[ElementTypeID]			[nvarchar](15)		NOT NULL,
 	[Description]			[nvarchar](100)		NOT NULL	DEFAULT '',
+	[Active]				[bit]				NOT NULL	DEFAULT 1,
 	
 	CONSTRAINT [pk_elementtype_elementtypeid] PRIMARY KEY ([ElementTypeID] ASC)
 )

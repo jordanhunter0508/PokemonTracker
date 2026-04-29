@@ -237,4 +237,68 @@ public class ElementManagerTest
         Assert.AreEqual(count, actualResult.Count);
         Assert.AreEqual(elementTypeID1, actualResult[0]);
     }
+
+    [TestMethod]
+    public void TestActivateElementTypeWithValidIDReturnsTrue()
+    {
+        // arrange
+        const string elementTypeID = "testElement1";
+        const bool active = false;
+        bool expected = true;
+        bool actual = false;
+
+        // act
+        actual = _elementManager.ActivateElementType(elementTypeID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestActivateElementTypeWithInvalidIDReturnsFalse()
+    {
+        // arrange
+        const string elementTypeID = "fails";
+        const bool active = false;
+        bool expected = false;
+        bool actual = true;
+
+        // act
+        actual = _elementManager.ActivateElementType(elementTypeID, active);
+
+        // assert
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestActivateElementTypeThrowsArgumentExceptionWithBlankInput()
+    {
+        // arrange
+        const string elementTypeID = "";
+        const bool active = false;
+        bool actual = true;
+
+        // act
+        actual = _elementManager.ActivateElementType(elementTypeID, active);
+
+        // assert
+        // do nothing
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void TestActivateElementTypeThrowsArgumentExceptionWithNullInput()
+    {
+        // arrange
+        const string elementTypeID = null;
+        const bool active = false;
+        bool actual = true;
+
+        // act
+        actual = _elementManager.ActivateElementType(elementTypeID, active);
+
+        // assert
+        // do nothing
+    }
 }

@@ -527,6 +527,10 @@ AS
 	END
 GO
 
+
+/*============================== Start Element Type Stored Procedures ==============================*/
+print'' print'========== Start Element Type Stored Procedures =========='
+
 print '*** creating sp_select_element_by_element_type_id ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_element_by_element_type_id]
@@ -535,9 +539,9 @@ CREATE PROCEDURE [dbo].[sp_select_element_by_element_type_id]
 	)
 AS
 	BEGIN
-		SELECT 	[ElementType].[ElementTypeID],[ElementType].[Description]
+		SELECT 	[ElementTypeID],[Description],[Active]
 		FROM	[ElementType]
-		WHERE	[ElementType].[ElementTypeID] = @ElementTypeID;
+		WHERE	[ElementTypeID] = @ElementTypeID;
 	END
 GO
 
@@ -568,8 +572,8 @@ CREATE PROCEDURE [dbo].[sp_update_element_type]
 AS
 	BEGIN
 		UPDATE 	[ElementType]
-		SET		[ElementType].[Description] = @Description
-		WHERE	[ElementType].[ElementTypeID] = @ElementTypeID
+		SET		[Description] = @Description
+		WHERE	[ElementTypeID] = @ElementTypeID
 		RETURN	@@ROWCOUNT;
 	END
 GO
@@ -583,7 +587,7 @@ CREATE PROCEDURE [dbo].[sp_delete_element_type]
 AS
 	BEGIN
 		DELETE 	[ElementType]
-		WHERE 	[ElementType].[ElementTypeID] = @ElementTypeID
+		WHERE 	[ElementTypeID] = @ElementTypeID
 		RETURN 	@@ROWCOUNT;
 	END
 GO
@@ -593,11 +597,29 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_elements]
 AS
 	BEGIN
-		SELECT 	[ElementType].[ElementTypeID],[ElementType].[Description]
+		SELECT 	[ElementTypeID],[Description],[Active]
 		FROM	[ElementType];
 	END
 GO
 
+print '*** creating sp_activate_element_type ***'
+GO
+CREATE PROCEDURE [dbo].[sp_activate_element_type]
+	(
+		@ElementTypeID	[nvarchar](15),
+		@Active			[bit]
+	)
+AS
+	BEGIN
+		UPDATE 	[ElementType]
+		SET		[Active] = @Active
+		WHERE	[ElementTypeID] = @ElementTypeID;
+		RETURN @@ROWCOUNT;
+	END
+GO
+
+print'========== End Element Type Stored Procedures =========='
+/*============================== End Element Type Stored Procedures ==============================*/
 
 
 

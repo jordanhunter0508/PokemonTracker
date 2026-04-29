@@ -22,16 +22,19 @@ namespace DataAccessFakes
             {
                 ElementTypeID = "testElement1",
                 Description = "Description test 1.",
+                Active = true,
             });
             _elements.Add(new ElementType()
             {
                 ElementTypeID = "testElement2",
                 Description = "Description test 2.",
+                Active = true,
             });
             _elements.Add(new ElementType()
             {
                 ElementTypeID = "testElement3",
                 Description = "Description test 3.",
+                Active = false,
             });
         }
 
@@ -159,6 +162,23 @@ namespace DataAccessFakes
                 _elements.Remove(deletedElement);
                 count++;
             }
+            return count;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/> used for testing
+        /// </summary>
+        public int ActivateElementType(string elementTypeID, bool active)
+        {
+            int count = 0;
+            ElementType element = _elements.Find(e => string.Equals(e.ElementTypeID, elementTypeID, StringComparison.OrdinalIgnoreCase));
+
+            if (element != null)
+            {
+                element.Active = active;
+                count++;
+            }
+
             return count;
         }
     }

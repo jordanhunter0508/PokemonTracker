@@ -148,6 +148,29 @@ namespace LogicLayer
         /// <summary>
         /// Implements from <see cref="IElementAccessor"/>
         /// </summary>
+        public bool ActivateElementType(string elementTypeID, bool active)
+        {
+            bool result = false;
+
+            if (string.IsNullOrWhiteSpace(elementTypeID))
+            {
+                throw new ArgumentException("ElementTypeID was null or blank.");
+            }
+
+            try
+            {
+                result = (1 == _elementAccessor.ActivateElementType(elementTypeID, active));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Could not change element {elementTypeID}'s active status",ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Implements from <see cref="IElementAccessor"/>
+        /// </summary>
         public IEnumerable<ElementType> FormatElemetTypes(IEnumerable<ElementType> elementTypes) 
         {
             if (elementTypes == null)
@@ -161,8 +184,6 @@ namespace LogicLayer
             }
             elementTypes = elementTypes.OrderBy(element => element.ElementTypeID);
             return elementTypes;
-        }
-
-        
+        }   
     }
 }

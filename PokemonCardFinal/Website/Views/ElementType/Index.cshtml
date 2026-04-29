@@ -1,0 +1,66 @@
+﻿@using Humanizer
+@model IEnumerable<DataDomain.ElementType>
+
+@{
+    ViewData["Title"] = "Element Types";
+}
+
+<script src="~/js/admin-toggles.js"></script>
+
+<div class="admin-layout-container">
+    <partial name="~/Views/Shared/_AdminPartial.cshtml" />
+
+    <section>
+        <h1 style="padding: 10px;">Element Types</h1>
+        <hr />
+        <p>
+            <a asp-action="Create" style="padding: 10px;">Add a New Element Type</a>
+        </p>
+        <div class="admin-card">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ElementTypeID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Active)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.ElementTypeID.Humanize(LetterCasing.Title)
+                            </td>
+                            <td>
+                                @item.Description.Humanize(LetterCasing.Sentence).Truncate(50, "... [more]")
+                            </td>
+                            <td>
+                                <label class="switch switch-sm">
+                                    <form asp-controller="ElementType" asp-action="Activate" method="post">
+                                        <input type="hidden" name="id" value="@item.ElementTypeID" />
+                                        <input type="checkbox" name="active" value="true"
+                                               @(item.Active ? "checked" : "")
+                                               onchange="confirmGeneralActivate(this,'@item.ElementTypeID')" />
+                                        <span class="slider"></span>
+                                    </form>
+                                </label>
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", new { id = item.ElementTypeID }) |
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ElementTypeID })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

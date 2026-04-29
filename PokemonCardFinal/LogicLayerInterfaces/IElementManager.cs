@@ -64,6 +64,14 @@ namespace LogicLayerInterfaces
         public bool DeleteElementTypeByElementTypeID(string elementTypeID);
 
         /// <summary>
+        /// Reactivates or Deactivates a element type specified by the activate parameter.
+        /// </summary>
+        /// <param name="elementTypeID">ElementTypeID of the row to deactivate.</param>
+        /// <param name="active">Used to activate or deactivate the card</param>
+        /// <returns>Returns true if the ElementType's active status was successfully changed</returns>
+        public bool ActivateElementType(string elementTypeID, bool active);
+
+        /// <summary>
         /// Makes sure the first leter of a element type is capital
         /// then puts them in alphabetical order.
         /// </summary>
