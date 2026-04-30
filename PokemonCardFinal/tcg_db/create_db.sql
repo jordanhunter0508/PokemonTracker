@@ -238,8 +238,6 @@ CREATE TABLE [dbo].[PokemonRule]
 GO
 
 /*
-Has two related TRIGGERS one to update BoosterCount
-another to update the ReleaseDate to the earliest Booster ReleaseDate using the ID
 Active is false by default to prevent the series info showing prematurely
 */
 print '*** creating Series Table ***'
@@ -247,8 +245,6 @@ GO
 CREATE TABLE [dbo].[Series]
 (
 	[SeriesID]			[nvarchar](100)		NOT NULL,
-	[BoosterCount]		[int]				NOT NULL	DEFAULT 0,
-	[ReleaseDate]		[date]				NOT NULL,
 	[ImagePath]			[nvarchar](250)		NULL		DEFAULT 'default.png',
 	[Active]			[bit]				NOT NULL	DEFAULT 0,
 
@@ -271,7 +267,6 @@ CREATE TABLE [dbo].[Booster]
 	[Abbreviation]			[nvarchar](5)		NOT NULL,
 	[BaseCount]				[int]				NOT NULL,
 	[SecretCount]			[int]				NOT NULL,
-	[TotalCount]			[int]				NOT NULL,
 	[LogoPath]				[nvarchar](250)		NULL		DEFAULT 'default.png',
 	[SymbolPath]			[nvarchar](250)		NULL		DEFAULT 'none',
 	[Active]				[bit]				NOT NULL	DEFAULT 0,

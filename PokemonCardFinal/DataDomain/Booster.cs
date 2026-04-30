@@ -28,7 +28,13 @@ namespace DataDomain
         public int? SecretCount { get; set; }
 
         [DisplayName("Total Card Count")]
-        public int? TotalCount { get; set; }
+        public int? TotalCount 
+        {
+            get
+            {
+                return BaseCount + SecretCount;
+            }
+        }
 
         [DisplayName("Logo Path")]
         public string LogoPath { get; set; }

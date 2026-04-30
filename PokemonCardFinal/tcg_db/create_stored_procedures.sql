@@ -582,7 +582,7 @@ CREATE PROCEDURE [dbo].[sp_select_booster_by_boosterid]
 AS
 	BEGIN
 		SELECT 	[BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
-				[BaseCount],[SecretCount],[TotalCount],[LogoPath],
+				[BaseCount],[SecretCount],([BaseCount] + [SecretCount]) AS TotalCount,[LogoPath],
 				[SymbolPath],[Active]
 		FROM	[Booster]
 		WHERE	[Booster].[BoosterID] = @BoosterID;
@@ -599,7 +599,6 @@ CREATE PROCEDURE [dbo].[sp_insert_booster]
 		@Abbreviation	[nvarchar](5),
 		@BaseCount		[int],
 		@SecretCount	[int],
-		@TotalCount		[int],
 		@LogoPath		[nvarchar](250),
 		@SymbolPath		[nvarchar](250)
 	)	
@@ -607,11 +606,11 @@ AS
 	BEGIN
 		INSERT INTO [Booster]
 		([BoosterID], [SeriesID], [ReleaseDate], [Abbreviation],
-		 [BaseCount], [SecretCount], [TotalCount],
+		 [BaseCount], [SecretCount],
 		 [LogoPath], [SymbolPath])
 		VALUES
 		(@BoosterID, @SeriesID, @ReleaseDate, @Abbreviation,
-		 @BaseCount, @SecretCount, @TotalCount,
+		 @BaseCount, @SecretCount,
 		 ISNULL(@LogoPath, 'default.png'),
 		 ISNULL(@SymbolPath, 'default.png'))
 		 RETURN @@ROWCOUNT;
@@ -628,7 +627,6 @@ CREATE PROCEDURE [dbo].[sp_update_booster]
 		@Abbreviation	[nvarchar](5),
 		@BaseCount		[int],
 		@SecretCount	[int],
-		@TotalCount		[int],
 		@LogoPath		[nvarchar](250),
 		@SymbolPath		[nvarchar](250)
 	)
@@ -639,8 +637,7 @@ AS
 				[ReleaseDate] = @ReleaseDate,
 				[Abbreviation] = @Abbreviation,
 				[BaseCount] = @BaseCount,
-				[SecretCount] = @BoosterID,
-				[TotalCount] = @TotalCount,
+				[SecretCount] = @SecretCount,
 				[LogoPath] = @LogoPath,
 				[SymbolPath] = @SymbolPath
 		WHERE	[BoosterID] = @BoosterID
@@ -668,7 +665,7 @@ CREATE PROCEDURE [dbo].[sp_select_boosters]
 AS
 	BEGIN
 		SELECT 	[BoosterID],[SeriesID],[ReleaseDate],[Abbreviation],
-				[BaseCount],[SecretCount],[TotalCount],[LogoPath],
+				[BaseCount],[SecretCount],([BaseCount] + [SecretCount]) AS TotalCount,[LogoPath],
 				[SymbolPath],[Active]
 				
 		FROM	[Booster];
@@ -682,7 +679,7 @@ AS
 	BEGIN
 		SELECT 	[Booster].[BoosterID],[Booster].[SeriesID],[Booster].[ReleaseDate],
 				[Booster].[Abbreviation],[Booster].[BaseCount],[Booster].[SecretCount],
-				[Booster].[TotalCount],[Booster].[LogoPath],[Booster].[SymbolPath],
+				([Booster].[BaseCount] + [Booster].[SecretCount]) AS TotalCount,[Booster].[LogoPath],[Booster].[SymbolPath],
 				[Booster].[Active]
 				
 		FROM	[Booster] JOIN [Series]
@@ -772,10 +769,10 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_series_image_paths]
 AS
 	BEGIN
-		SELECT 	[SeriesID],[ImagePath]
+		SELECT 	[Series].[SeriesID],[Series].[ImagePath]
 		FROM	[Series]
-		WHERE	[Active] = 1
-		ORDER BY[ReleaseDate] DESC;
+		WHERE	[Series].[Active] = 1
+		ORDER BY (SELECT MIN(ReleaseDate) FROM Booster [Booster] WHERE [Booster].SeriesID = [Series].SeriesID) DESC;
 	END
 GO
 
@@ -784,10 +781,12 @@ GO
 CREATE PROCEDURE [dbo].[sp_select_all_series]
 AS
 	BEGIN
-		SELECT 	[SeriesID],[BoosterCount],[ReleaseDate],
+		SELECT 	[SeriesID],
+				(SELECT COUNT(BoosterID) FROM Booster [Booster] WHERE [Booster].SeriesID = Series.SeriesID) AS BoosterCount,
+				(SELECT MIN(ReleaseDate) FROM Booster [Booster] WHERE [Booster].SeriesID = Series.SeriesID) AS ReleaseDate,
 				[ImagePath],[Active]
 		FROM	[Series]
-		ORDER BY[ReleaseDate] DESC;
+		ORDER BY ReleaseDate DESC;
 	END
 GO
 

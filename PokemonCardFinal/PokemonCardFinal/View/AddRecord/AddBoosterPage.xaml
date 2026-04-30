@@ -1,4 +1,4 @@
-﻿<Page x:Class="PokemonCardFinal.View.AddRecord.AddBoosterPage"
+<Page x:Class="PokemonCardFinal.View.AddRecord.AddBoosterPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -50,10 +50,10 @@
         <TextBox x:Name="txtBaseCount" Grid.Column="0" Grid.Row="2" Width="100" Height="25" 
                 Margin="120 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 
-        <!--Total Count-->
-        <Label x:Name="lblTotalCount" Content="Total Count:" Grid.Column="1" Grid.Row="2"
+        <!--Secret Count-->
+        <Label x:Name="lblSecretCount" Content="Secret Count:" Grid.Column="1" Grid.Row="2"
                 Margin="20 0" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="txtTotalCount" Grid.Column="1" Grid.Row="2" Width="100" Height="25" 
+        <TextBox x:Name="txtSecretCount" Grid.Column="1" Grid.Row="2" Width="100" Height="25" 
                 Margin="120 0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 
 

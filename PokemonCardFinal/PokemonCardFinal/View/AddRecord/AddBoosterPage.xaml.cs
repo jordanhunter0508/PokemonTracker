@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -114,7 +114,7 @@ namespace PokemonCardFinal.View.AddRecord
                 }
 
                 int baseCount = int.Parse(txtBaseCount.Text);
-                int totalCount = int.Parse(txtTotalCount.Text);
+                int secretCount = int.Parse(txtSecretCount.Text);
 
                 Booster booster = new Booster()
                 {
@@ -123,8 +123,7 @@ namespace PokemonCardFinal.View.AddRecord
                     ReleaseDate = releaseDate,
                     Abbreviation = txtAbbreviation.Text,
                     BaseCount = baseCount,
-                    SecretCount = totalCount - baseCount,
-                    TotalCount = totalCount,
+                    SecretCount = secretCount,
                 };
 
                 if (_boosterManager.AddBooster(booster))
@@ -155,7 +154,7 @@ namespace PokemonCardFinal.View.AddRecord
                     MessageBox.Show("Failed to parse the date.\nPlease try again.");
                 }
                 int baseCount = int.Parse(txtBaseCount.Text);
-                int totalCount = int.Parse(txtTotalCount.Text);
+                int secretCount = int.Parse(txtSecretCount.Text);
 
                 Booster booster = new Booster()
                 {
@@ -164,8 +163,7 @@ namespace PokemonCardFinal.View.AddRecord
                     ReleaseDate = releaseDate,
                     Abbreviation = txtAbbreviation.Text,
                     BaseCount = baseCount,
-                    SecretCount = totalCount - baseCount,
-                    TotalCount = totalCount,
+                    SecretCount = secretCount,
                 };
 
                 if (_boosterManager.EditBooster(_booster))
@@ -248,27 +246,20 @@ namespace PokemonCardFinal.View.AddRecord
                 isValid = false;
             }
 
-            else if (string.IsNullOrWhiteSpace(txtTotalCount.Text))
+            else if (string.IsNullOrWhiteSpace(txtSecretCount.Text))
             {
-                MessageBox.Show("Total Count it required.");
-                txtTotalCount.SelectAll();
-                txtTotalCount.Focus();
+                MessageBox.Show("Secret Count is required.");
+                txtSecretCount.SelectAll();
+                txtSecretCount.Focus();
                 isValid = false;
             }
 
-            else if (!int.TryParse(txtTotalCount.Text, out int totalCount)
-                || baseCount < 0)
+            else if (!int.TryParse(txtSecretCount.Text, out int secretCount)
+                || secretCount < 0)
             {
-                MessageBox.Show("Total count must be a positive whole nuber.");
-                txtTotalCount.SelectAll();
-                txtTotalCount.Focus();
-                isValid = false;
-            }
-            else if (totalCount < baseCount)
-            {
-                MessageBox.Show("Total count must be greater or equal to base count.");
-                txtTotalCount.SelectAll();
-                txtTotalCount.Focus();
+                MessageBox.Show("Secret count must be a positive whole number.");
+                txtSecretCount.SelectAll();
+                txtSecretCount.Focus();
                 isValid = false;
             }
 
@@ -282,7 +273,7 @@ namespace PokemonCardFinal.View.AddRecord
             txtAbbreviation.Text = "";
             txtReleaseDate.Text = "";
             txtBaseCount.Text = "";
-            txtTotalCount.Text = "";
+            txtSecretCount.Text = "";
         }
 
         private void DisplayListViewPage()

@@ -68,7 +68,6 @@ namespace Website.Controllers
                 vm.Booster = _boosterManager.GetBoosterByBoosterID(id);
                 vm.Cards = _searchManager.GetCards(filter)
                                          .OrderBy(c => c.BoosterNumber).ToList();
-                Console.WriteLine(filter.BoosterID);
                 return View(vm);
             }
             catch (Exception ex)

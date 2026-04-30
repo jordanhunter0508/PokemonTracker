@@ -45,7 +45,6 @@ namespace DataAccess
                         Abbreviation = reader.GetString(3),
                         BaseCount = reader.GetInt32(4),
                         SecretCount = reader.GetInt32(5),
-                        TotalCount = reader.GetInt32(6),
                         LogoPath = reader.IsDBNull(7) ? null : reader.GetString(7),
                         SymbolPath = reader.IsDBNull(8) ? null : reader.GetString(8),
                         Active = reader.GetBoolean(9),
@@ -95,7 +94,6 @@ namespace DataAccess
                             Abbreviation = reader.GetString(3),
                             BaseCount = reader.GetInt32(4),
                             SecretCount = reader.GetInt32(5),
-                            TotalCount = reader.GetInt32(6),
                             LogoPath = reader.IsDBNull(7) ? null : reader.GetString(7),
                             SymbolPath = reader.IsDBNull(8) ? null : reader.GetString(8),
                             Active = reader.GetBoolean(9),
@@ -146,7 +144,6 @@ namespace DataAccess
                             Abbreviation = reader.GetString(3),
                             BaseCount = reader.GetInt32(4),
                             SecretCount = reader.GetInt32(5),
-                            TotalCount = reader.GetInt32(6),
                             LogoPath = reader.IsDBNull(7) ? null : reader.GetString(7),
                             SymbolPath = reader.IsDBNull(8) ? null : reader.GetString(8),
                             Active = reader.GetBoolean(9),
@@ -252,7 +249,6 @@ namespace DataAccess
             cmd.Parameters.AddWithValue("@ReleaseDate", booster.ReleaseDate);
             cmd.Parameters.AddWithValue("@BaseCount", booster.BaseCount);
             cmd.Parameters.AddWithValue("@SecretCount", booster.SecretCount);
-            cmd.Parameters.AddWithValue("@TotalCount", booster.TotalCount);
 
             cmd.Parameters.Add("@BoosterID", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@SeriesID", SqlDbType.NVarChar, 100);
@@ -300,7 +296,6 @@ namespace DataAccess
             cmd.Parameters.AddWithValue("@ReleaseDate", booster.ReleaseDate);
             cmd.Parameters.AddWithValue("@BaseCount", booster.BaseCount);
             cmd.Parameters.AddWithValue("@SecretCount", booster.SecretCount);
-            cmd.Parameters.AddWithValue("@TotalCount", booster.TotalCount);
 
             cmd.Parameters.Add("@BoosterID", SqlDbType.NVarChar, 50);
             cmd.Parameters.Add("@SeriesID", SqlDbType.NVarChar, 100);
