@@ -1,4 +1,4 @@
-﻿@using Humanizer
+@using Humanizer
 @model IEnumerable<DataDomain.ElementType>
 
 @{
@@ -11,13 +11,13 @@
     <partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
     <section>
-        <h1 style="padding: 10px;">Element Types</h1>
-        <hr />
-        <p>
-            <a asp-action="Create" style="padding: 10px;">Add a New Element Type</a>
-        </p>
-        <div class="admin-card">
-            <table class="table">
+        <h1>Element Types</h1>
+        
+        <div class="mb-3 mt-3">
+            <a asp-action="Create" class="btn btn-primary">Add a New Element Type</a>
+        </div>
+
+        <table class="table">
                 <thead>
                     <tr>
                         <th>
@@ -54,13 +54,14 @@
                                 </label>
                             </td>
                             <td>
-                                @Html.ActionLink("Details", "Details", new { id = item.ElementTypeID }) |
-                                @Html.ActionLink("Edit", "Edit", new { id = item.ElementTypeID })
+                                <div class="d-flex gap-2">
+                                    @Html.ActionLink("Details", "Details", new { id = item.ElementTypeID }, new { @class = "btn btn-primary btn-sm" })
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ElementTypeID }, new { @class = "btn btn-secondary btn-sm" })
+                                </div>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-        </div>
     </section>
 </div>

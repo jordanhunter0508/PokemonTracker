@@ -1,29 +1,17 @@
-﻿
+
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-<ul class="navbar-nav" style="border:1px solid black">
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Home Panel</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="AlternateArt" asp-action="Index">Alternate Arts</a>
-    </li>
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+}
 
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Ability" asp-action="Index">Abilities</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="PokemonRule" asp-action="Index">Pokemon Rules</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="ElementType" asp-action="Index">Element Types</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Artist" asp-action="Index">Artists</a>
-    </li>
-</ul>
+<nav class="admin-sidebar">
+    <a class="admin-nav-link @(currentController == "Admin" ? "active" : "")" asp-controller="Admin" asp-action="Index">Home Panel</a>
+    <a class="admin-nav-link @(currentController == "AlternateArt" ? "active" : "")" asp-controller="AlternateArt" asp-action="Index">Alternate Arts</a>
+    <a class="admin-nav-link @(currentController == "Ability" ? "active" : "")" asp-controller="Ability" asp-action="Index">Abilities</a>
+    <a class="admin-nav-link @(currentController == "PokemonRule" ? "active" : "")" asp-controller="PokemonRule" asp-action="Index">Pokemon Rules</a>
+    <a class="admin-nav-link @(currentController == "ElementType" ? "active" : "")" asp-controller="ElementType" asp-action="Index">Element Types</a>
+    <a class="admin-nav-link @(currentController == "Artist" ? "active" : "")" asp-controller="Artist" asp-action="Index">Artists</a>
+</nav>

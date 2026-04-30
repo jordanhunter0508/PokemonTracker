@@ -213,7 +213,7 @@ namespace LogicLayer
                 artist.GivenName = char.ToUpper(artist.GivenName[0]) + artist.GivenName.Substring(1);
                 if (artist.Surname.Length != 0)
                 {
-                    artist.Surname = char.ToUpper(artist.Surname[0]) + artist.GivenName.Substring(1);
+                    artist.Surname = char.ToUpper(artist.Surname[0]) + artist.Surname.Substring(1);
                 }
             }
             artists = artists.OrderBy(artist => artist.ArtistID);

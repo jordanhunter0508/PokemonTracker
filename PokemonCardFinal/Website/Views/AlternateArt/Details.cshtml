@@ -1,4 +1,4 @@
-﻿@using Humanizer
+@using Humanizer
 @model DataDomain.AlternateArt
 
 @{
@@ -12,9 +12,7 @@
     <partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
     <section>
-        <h1 style="padding: 10px;">@capitalTitle's Details</h1>
-        <hr />
-        <div class="admin-card">
+        <h1>@capitalTitle's Details</h1>
             <div>
                 <dl class="row">
                     <dt class="col-sm-2">
@@ -31,10 +29,9 @@
                     </dd>
                 </dl>
             </div>
-            <div>
-                @Html.ActionLink("Edit", "Edit", new { id = Model.AlternateArtID }) |
-                <a asp-action="Index">Back to List</a>
+            <div class="mt-4 d-flex gap-2">
+                @Html.ActionLink("Edit", "Edit", new { id = Model.AlternateArtID }, new { @class = "btn btn-primary" })
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
             </div>
-        </div>
     </section>
 </div>

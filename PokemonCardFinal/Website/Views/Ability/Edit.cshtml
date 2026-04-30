@@ -1,4 +1,4 @@
-﻿@model DataDomain.Ability
+@model DataDomain.Ability
 
 @{
 	IEnumerable<string> abilityTypes = (IEnumerable<string>)ViewBag.AbilityTypes;
@@ -9,14 +9,13 @@
 	<partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
 	<section>
-		<h1 style="padding: 10px;">Edit @(Model.AbilityID[0].ToString().ToUpper() + Model.AbilityID.Substring(1))</h1>
-		<hr />
+		<h1>Edit @(Model.AbilityID[0].ToString().ToUpper() + Model.AbilityID.Substring(1))</h1>
 
-		<div class="admin-card">
 			<div class="row">
 				<div class="col-md-4">
 					<form asp-action="Edit">
 						<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+						<input name="id" value="@Model.AbilityID" hidden />
 						<div class="form-group">
 							<label asp-for="AbilityID" class="control-label"></label>
 							<input class="form-control" value="@Model.AbilityID" disabled />
@@ -43,16 +42,15 @@
 							<span asp-validation-for="Description" class="text-danger"></span>
 						</div>
 						<div class="form-group">
-							<input type="submit" value="Save" class="btn btn-primary" style="margin-top: 3%;"/>
+							<input type="submit" value="Save" class="btn btn-primary mt-3" />
 						</div>
 					</form>
 				</div>
 			</div>
 
-			<div>
-				<a asp-action="Index">Back to List</a>
+			<div class="mt-4">
+				<a asp-action="Index" class="btn btn-secondary">Back to List</a>
 			</div>
-		</div>
 	</section>
 </div>
 

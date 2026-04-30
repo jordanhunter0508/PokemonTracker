@@ -1,4 +1,4 @@
-﻿@using Humanizer
+@using Humanizer
 @model IEnumerable<DataDomain.AbilityVM>
 
 @{
@@ -13,14 +13,13 @@
 	<partial name="~/Views/Shared/_AdminPartial.cshtml" />
 
 	<section>
-		<h1 style="padding: 10px;">Abilities</h1>
-		<hr />
-		<p>
-			<a asp-action="Create" style="padding: 10px;">Add a New Ability</a>
-		</p>
+		<h1>Abilities</h1>
+		
+		<div class="mb-3 mt-3">
+			<a asp-action="Create" class="btn btn-primary">Add a New Ability</a>
+		</div>
 
-		<div class="admin-card">
-			<table class="table">
+		<table class="table">
 				<thead>
 					<tr>
 						<th>
@@ -63,13 +62,14 @@
 								</label>
 							</td>
 							<td>
-								@Html.ActionLink("Details", "Details", new { id = item.AbilityID }) |
-								@Html.ActionLink("Edit", "Edit", new { id = item.AbilityID })
+								<div class="d-flex gap-2">
+									@Html.ActionLink("Details", "Details", new { id = item.AbilityID }, new { @class = "btn btn-primary btn-sm" })
+									@Html.ActionLink("Edit", "Edit", new { id = item.AbilityID }, new { @class = "btn btn-secondary btn-sm" })
+								</div>
 							</td>
 						</tr>
 					}
 				</tbody>
 			</table>
-		</div>
 	</section>
 </div>
