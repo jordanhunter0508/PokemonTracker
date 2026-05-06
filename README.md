@@ -1,0 +1,18 @@
+# PokemonTracker (PokemonCardFinal)
+
+![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)
+![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=flat&logo=c-sharp&logoColor=white)
+![WPF](https://img.shields.io/badge/WPF-Desktop-blueviolet)
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-Web-purple)
+
+## 📖 Overview
+**PokemonTracker (PokemonCardFinal)** is an enterprise-level, N-Tier architecture application built using C# (.NET 8). Designed to be highly scalable and maintainable, it allows users to browse and interact with a Trading Card Game (TCG) database. 
+
+## Presentation Layer
+- `PokemonCardFinal` **(WPF Application):** A Windows desktop application providing adminstrative access to the database.
+- `Website` **(ASP.NET Core Application):** A web frontend utilizing Identity for user credentials and an Entity Framework context purely for identity management, while consuming the core logic layers for business data.
+
+## Current Project
+
+> To view the newer version that scales better when adding a new tcg checkout
+> [TCGTracker](https://github.com/jordanhunter0508/TCGTracker)
