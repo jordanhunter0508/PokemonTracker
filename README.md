@@ -14,5 +14,5 @@
 
 ## Current Project
 
-> To view the newer version that scales better when adding a new tcg checkout
-> [TCGTracker](https://github.com/jordanhunter0508/TCGTracker)
+> To view the newer version that scales better when adding a new tcgs checkout my documentation for 
+> [TCGTracker](https://drive.google.com/drive/folders/1lq0lS8mSqEHt2KCi85gifbWih94VEm1y)
